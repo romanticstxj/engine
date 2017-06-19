@@ -1,0 +1,306 @@
+package com.madhouse.rtb;
+
+message BidRequest
+{
+    optional string id = 1;
+    repeated Impression imp = 2;
+    
+    oneof MediaOneof
+    {
+        App app = 3;
+        Site site = 4;
+    }
+    
+    optional Device device = 5;
+    optional User user = 6;
+    optional int32 test = 7;
+    optional int32 at = 8;
+    optional int32 tmax = 9;
+    repeated string bcat = 10;
+    repeated string badv = 11;
+    
+    message Impression
+    {
+        optional string id = 1;
+        
+        oneof ImpressionOneof {
+            Banner banner = 2;
+            Video video = 3;
+            Native native = 4;
+        }
+        
+        optional int32 instl = 5;
+        optional PMP pmp = 6;
+        optional string tagid = 7;
+        optional int32 bidfloor = 8;
+        optional int32 bidtype = 9;
+        
+        message Banner
+        {
+            optional int32 type = 1;
+            optional int32 w = 2;
+            optional int32 h = 3;
+            optional int32 plcmtcnt = 4;
+            repeated string mimes = 5;
+            repeated int32 api = 6;
+        }
+        
+        message Video
+        {
+            optional int32 w = 1;
+            optional int32 h = 2;
+            optional int32 minduration = 3;
+            optional int32 maxduration = 4;
+            optional int32 linearity = 5;
+            optional int32 startdelay = 6;
+            optional int32 plcmtcnt = 7;
+            repeated string mimes = 8;
+            repeated int32 protocols = 9;
+            repeated int32 api = 10;
+        }
+        
+        message Native
+        {
+            optional string args = 1;
+            optional string ver = 2;
+            optional NativeRequest request = 3;
+            repeated int32 api = 4;
+            
+            message NativeRequest
+            {
+                optional int32 layout = 1;
+                optional int32 plcmtcnt = 2;
+                repeated Asset assets = 3;
+                
+                message Asset
+                {
+                    optional string id = 1;
+                    optional bool required = 2;
+                    
+                    oneof AssetOneof
+                    {
+                        Title title = 3;
+                        Image image = 4;
+                        Video video = 5;
+                        Data data = 6;
+                    }
+                    
+                    message Title 
+                    {
+                        optional int32 len = 1;
+                    }
+                    
+                    message Image 
+                    {
+                        optional int32 type = 1;
+                        optional int32 w = 2;
+                        optional int32 h = 3;
+                        repeated string mimes = 4;
+                    }
+                    
+                    message Video
+                    {
+                        optional int32 w = 1;
+                        optional int32 h = 2;
+                        optional int32 minduration = 3;
+                        optional int32 maxduration = 4;
+                        repeated int32 protocols = 5;
+                        repeated string mimes = 6;
+                    }
+                    
+                    message Data
+                    {
+                        optional int32 type = 1;
+                        optional int32 len = 2;
+                    }
+                }
+            }
+        }
+        
+        message PMP
+        {
+            optional int32 private_auction = 1;
+            repeated Deal deals = 2;
+            
+            message Deal 
+            {
+                optional string id = 1;
+                optional int32 at = 2;
+                optional int32 bidfloor = 3;
+                repeated string wseat = 4;
+            }
+        }
+    }
+    
+    message User
+    {
+        optional string id = 1;
+        optional int32 yob = 2;
+        optional string gender = 3;
+        repeated Tag tags = 4;
+        
+        message Tag
+        {
+            optional string id = 1;
+            optional int32 similarity = 2;
+        }
+    }
+    
+    message Device
+    {
+        optional string ua = 1;
+        optional string ip = 2;
+        optional string ipv6 = 3;
+        optional string did = 4;
+        optional string didmd5 = 5;
+        optional string dpid = 6;
+        optional string dpidmd5 = 7;
+        optional string mac = 8;
+        optional string macmd5 = 9;
+        optional string mac1 = 10;
+        optional string mac1md5 = 11;
+        optional string ifa = 12;
+        optional int32 carrier = 13;
+        optional int32 connectiontype = 14;
+        optional int32 devicetype = 15;
+        optional string language = 16;
+        optional string make = 17;
+        optional string model = 18;
+        optional string os = 19;
+        optional string osv = 20;
+        optional string hwv = 21;
+        optional Geo geo = 22;
+        
+        message Geo 
+        {
+            optional float lon = 1;
+            optional float lat = 2;
+        }
+    }
+    
+    message App
+    {
+        optional string id = 1;
+        optional string name = 2;
+        optional string ver = 3;
+        repeated string cat = 4;
+        repeated string pagecat = 5;
+        repeated string sectioncat = 6;
+        optional string bundle = 7;
+        optional int32 paid = 8;
+        optional string storeurl = 9;
+        repeated string keywords = 10;
+        optional Content content = 11;
+        
+
+    }
+    
+    message Site
+    {
+        optional string id = 1;
+        optional string name = 2;
+        optional string domain = 3;
+        repeated string cat = 4;
+        repeated string pagecat = 5;
+        repeated string sectioncat = 6;
+        optional string page = 7;
+        optional string ref = 8;
+        optional int32 mobile = 9;
+        optional string keywords = 10;
+        optional Content content = 11;
+    }
+    
+    message Content 
+    {
+        optional string id = 1;
+        optional string title = 2;
+        repeated string keywords = 3;
+        repeated string channels = 4;
+    }
+}
+
+message BidResponse
+{
+    optional string id = 1;
+    optional string bidid = 2;
+    repeated SeatBid seatbid = 3;
+    optional int32 nbr = 4;
+    
+    message SeatBid
+    {
+        repeated Bid bid = 1;
+        
+        message Bid
+        {
+            optional string id = 1;
+            optional string impid = 2;
+            optional int32 price = 3;
+            optional string adid = 4;
+            optional string cid = 5;
+            optional string crid = 6;
+            optional int32 duration = 7;
+            repeated string adm = 8;
+            optional NativeResponse adm_native = 9;
+            optional string admid = 10;
+            optional string dealid = 11;
+            optional string nurl = 12;
+            optional string lpgurl = 13;
+            optional int32 acttype = 14;
+            optional Monitor monitor = 15;
+            
+            message NativeResponse
+            {
+                optional string ver = 1;
+                repeated Asset assets = 2;
+                
+                message Asset
+                {
+                    optional string id = 1;
+                    optional bool required = 2;
+                    
+                    oneof AssetOneof
+                    {
+                        Title title = 3;
+                        Image image = 4;
+                        Video video = 5;
+                        Data data = 6;
+                    }
+                    
+                    message Title
+                    {
+                        optional string text = 1;
+                    }
+                    
+                    message Image
+                    {
+                        optional int32 w = 1;
+                        optional int32 h = 2;
+                        repeated string url = 3;
+                    }
+                    
+                    message Video
+                    {
+                        optional int32 w = 1;
+                        optional int32 h = 2;
+                        optional string cover = 3;
+                        optional string url = 4;
+                        optional int32 duration = 5;
+                    }
+                    
+                    message Data
+                    {
+                        optional int32 type = 1;
+                        optional string value = 2;
+                    }
+                }
+            }
+            
+            message Monitor
+            {
+                repeated string impurl = 1;
+                repeated string clkurl = 2;
+                repeated string securl = 3;
+            }
+        }
+    }
+}
