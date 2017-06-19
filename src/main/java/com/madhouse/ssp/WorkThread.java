@@ -48,6 +48,9 @@ public class WorkThread {
             impressionTrack.setImpid(req.getParameter("impid"));
             impressionTrack.setMid(Long.parseLong(req.getParameter("mid")));
             impressionTrack.setPlcmtid(Long.parseLong(req.getParameter("plcmtid")));
+            impressionTrack.setDspid(Long.parseLong(req.getParameter("dspid")));
+            impressionTrack.setCost(0);
+            impressionTrack.setIncome(0);
             impressionTrack.setStatus(Constant.StatusCode.OK);
             LoggerUtil.getInstance().wirteImpressionTrackLog(this.resourceManager.getKafkaProducer(), impressionTrack.build());
 
@@ -70,8 +73,11 @@ public class WorkThread {
             clickTrack.setImpid(req.getParameter("impid"));
             clickTrack.setMid(Long.parseLong(req.getParameter("mid")));
             clickTrack.setPlcmtid(Long.parseLong(req.getParameter("plcmtid")));
+            clickTrack.setDspid(Long.parseLong(req.getParameter("dspid")));
             String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
             clickTrack.setUrl(url);
+            clickTrack.setCost(0);
+            clickTrack.setIncome(0);
 
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 resp.setHeader("Location", url);
@@ -111,8 +117,7 @@ public class WorkThread {
 
         //parse media request
         MediaBaseHandler mediaBaseHandler = this.cacheManager.getMediaBaseHandler(mediaApiType);
-        if (mediaBaseHandler.parseMediaRequest(req, mediaBidBuilder)) {
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+        if (mediaBaseHandler.parseMediaRequest(req, mediaBidBuilder, resp)) {
             return;
         }
 

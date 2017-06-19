@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public abstract class MediaBaseHandler {
-    public boolean parseMediaRequest(HttpServletRequest req, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
+    public boolean parseMediaRequest(HttpServletRequest req, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, HttpServletResponse resp) {
         return true;
     }
 

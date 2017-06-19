@@ -19,7 +19,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     }
 
     @Override
-    public boolean parseMediaRequest(HttpServletRequest req, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
-        return super.parseMediaRequest(req, mediaBidBuilder);
+    public boolean parseMediaRequest(HttpServletRequest req, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, HttpServletResponse resp) {
+        return super.parseMediaRequest(req, mediaBidBuilder, resp);
     }
 }
