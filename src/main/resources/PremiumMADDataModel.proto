@@ -1,0 +1,116 @@
+package com.madhouse.ssp;
+
+import "PremiumMadRTBProtocol.proto";
+
+message MediaBid
+{
+	optional int64 time = 1;
+	optional string ua = 2;
+	optional string ip = 3;
+	optional string impid = 4;
+	optional int32 status = 5;
+	optional MediaRequest request = 6;
+	optional MediaResponse response = 7;
+	
+	message MediaRequest
+	{
+		optional string bid = 1;
+		optional int64 mid = 2;
+		optional int32 mcat = 3;
+		optional int32 mtype = 4;
+		optional string bundle = 5;
+		optional string pkgname = 6;
+		optional int64 plcmtid = 7;
+		optional int32 adtype = 8;
+		optional int32 w = 9;
+		optional int32 h = 10;
+		optional string did = 11;
+		optional string didmd5 = 12;
+		optional string dpid = 13;
+		optional string dpidmd5 = 14;
+		optional string mac = 15;
+		optional string macmd5 = 16;
+		optional string ifa = 17;
+		optional int32 carrier = 18;
+		optional int32 connectiontype = 19;
+		optional int32 devicetype = 20;
+		optional float lon = 21;
+		optional float lat = 22;
+		optional string ip = 23;
+		optional string ua = 24;
+		optional string os = 25;
+		optional string osv = 26;
+		optional string make = 27;
+		optional string model = 28;
+		optional string cell = 29;
+		optional string cellmd5 = 30;
+		repeated string tags = 31;
+		optional string adspacekey = 32;
+		optional int32 test = 33;
+		optional int32 bidfloor = 34;
+		optional int32 bidtype = 35;
+		optional string location = 36;
+	}
+	
+	message MediaResponse
+	{
+		optional int64 dspid = 1;
+		optional string admid = 2;
+		optional string icon = 3;
+		optional string cover = 4;
+		optional string title = 5;
+		optional string desc = 6;
+		optional int32 duration = 7;
+		repeated string adm = 8;
+		optional string lpgurl = 9;
+		optional int32 acttype = 10;
+		repeated string impurl = 11;
+		repeated string clkurl = 12;
+		repeated string securl = 13;
+	}
+}
+
+message WinNotice
+{
+	optional int64 time = 1;
+	optional int32 status = 2;
+	optional int64 dspid = 3;
+	optional string impid = 4;
+	optional int64 mid = 5;
+	optional int64 plcmtid = 6;
+	optional int32 price = 7;
+}
+
+message ImpressionTrack
+{
+	optional int64 time = 1;
+	optional string ua = 2;
+	optional string ip = 3;
+	optional int32 status = 4;
+	optional string impid = 5;
+	optional int64 mid = 6;
+	optional int64 plcmtid = 7;
+}
+
+message ClickTrack
+{
+	optional int64 time = 1;
+	optional string ua = 2;
+	optional string ip = 3;
+	optional int32 status = 4;
+	optional string impid = 5;
+	optional int64 mid = 6;
+	optional int64 plcmtid = 7;
+	optional string url = 8;
+}
+
+message DSPBid
+{
+	optional int64 time = 1;
+	optional int64 dspid = 2;
+	optional int64 policyid = 3;
+	optional int32 tradingtype = 4;
+	optional int32 status = 5;
+	optional com.madhouse.rtb.BidRequest request = 6;
+	optional com.madhouse.rtb.BidResponse response = 7;
+}
