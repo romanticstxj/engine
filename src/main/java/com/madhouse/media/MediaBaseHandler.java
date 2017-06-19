@@ -1,6 +1,6 @@
 package com.madhouse.media;
 
-import com.madhouse.rtb.PremiumMadRTBProtocol.*;
+import com.madhouse.rtb.PremiumMADRTBProtocol.*;
 import com.madhouse.ssp.PremiumMADDataModel;
 
 import javax.servlet.ServletException;

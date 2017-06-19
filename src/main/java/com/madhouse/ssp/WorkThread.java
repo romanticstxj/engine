@@ -96,7 +96,7 @@ public class WorkThread {
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
 
         PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequestBuilder = mediaBidBuilder.getRequestBuilder();
-        Pair<Long, Long> mediaInfo = this.cacheManager.mediaPlcmtMapping(mediaBidBuilder.getRequestBuilder().getMappingkey());
+        Pair<Long, Long> mediaInfo = this.cacheManager.mediaPlcmtMapping(mediaBidBuilder.getRequestBuilder().getAdspacekey());
         if (mediaInfo != null) {
             mediaRequestBuilder.setMid(mediaInfo.getLeft());
             mediaRequestBuilder.setPlcmtid(mediaInfo.getRight());
