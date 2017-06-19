@@ -1,6 +1,7 @@
 package com.madhouse.util;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Created by WUJUNFENG on 2017/6/9.
@@ -32,5 +33,18 @@ public class HttpUtil {
         }
 
         return req.getHeader("User-Agent");
+    }
+
+    public static String getParameter(HttpServletRequest req, String param) {
+        try {
+            Map<String, String[]> params = req.getParameterMap();
+            if (params.containsKey(param)) {
+                return params.get(param)[0];
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        }
+
+        return "";
     }
 }
