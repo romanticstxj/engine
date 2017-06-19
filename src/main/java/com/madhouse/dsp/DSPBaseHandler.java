@@ -39,21 +39,11 @@ public abstract class DSPBaseHandler {
 
         PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
-        int bidfloor = plcmtMetaData.getBidfloor();
-        if (policyMetaData.getTradingtype() != Constant.TradingType.RTB) {
-            float floating = policyMetaData.getFloating(dspMetaData.getDspid());
-            if (floating <= 0.0f) {
-                floating = dspMetaData.getFloating();
-            }
-
-            bidfloor = (int)(bidfloor * floating);
-        }
-
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
         bidRequest.setId(StringUtil.getUUID());
         bidRequest.setTmax(mediaMetaData.getTmax());
-        bidRequest.setTest(0);
+        bidRequest.setTest(mediaBidBuilder.getRequestBuilder().getTest());
         bidRequest.setAt(2);
 
         if (adBlockMetaData != null) {
@@ -106,8 +96,15 @@ public abstract class DSPBaseHandler {
         {
             BidRequest.Impression.Builder impression = BidRequest.Impression.newBuilder();
             impression.setId(mediaBidBuilder.getImpid());
-            impression.setBidtype(Constant.BidType.CPM);
-            impression.setBidfloor(bidfloor);
+
+            if (policyMetaData.getTradingtype() == Constant.TradingType.RTB) {
+                impression.setBidfloor(plcmtMetaData.getBidfloor());
+                impression.setBidtype(plcmtMetaData.getBidtype());
+            } else {
+                impression.setBidfloor(0);
+                impression.setBidtype(Constant.BidType.CPM);
+            }
+
             impression.setTagid(tagid);
 
             if (policyMetaData.getTradingtype() != Constant.TradingType.RTB) {
@@ -115,7 +112,7 @@ public abstract class DSPBaseHandler {
                 pmp.setPrivateAuction(1);
                 BidRequest.Impression.PMP.Deal.Builder deal = BidRequest.Impression.PMP.Deal.newBuilder();
                 deal.setAt(3);
-                deal.setBidfloor(bidfloor);
+                deal.setBidfloor(0);
                 pmp.addDeals(deal);
                 impression.setPmp(pmp);
             }

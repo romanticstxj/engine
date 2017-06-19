@@ -100,13 +100,6 @@ public class WorkThread {
             return;
         }
 
-        //get media metadata
-        MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(mediaApiType);
-        if (mediaMetaData == null) {
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-            return;
-        }
-
         PremiumMADDataModel.MediaBid.Builder mediaBidBuilder = PremiumMADDataModel.MediaBid.newBuilder();
 
         //init mediaBid object
@@ -117,7 +110,7 @@ public class WorkThread {
         mediaBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
 
         //parse media request
-        MediaBaseHandler mediaBaseHandler = this.cacheManager.getMediaBaseHandler(mediaMetaData.getApitype());
+        MediaBaseHandler mediaBaseHandler = this.cacheManager.getMediaBaseHandler(mediaApiType);
         if (mediaBaseHandler.parseMediaRequest(req, mediaBidBuilder)) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -135,9 +128,15 @@ public class WorkThread {
             return;
         }
 
+        MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(mediaRequestBuilder.getMid());
+        if (mediaMetaData == null) {
+            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            return;
+        }
+
         //init user ip
         if (!mediaRequestBuilder.hasIp()) {
-            mediaBidBuilder.setIp(mediaBidBuilder.getIp());
+            mediaRequestBuilder.setIp(mediaBidBuilder.getIp());
         }
 
         //init location
@@ -312,10 +311,10 @@ public class WorkThread {
             winner = Pair.of(dspMetaDataList.get(0).getLeft(), Pair.of(dspMetaDataList.get(0).getRight(), price + 1));
         } else {
             List<Pair<Pair<DSPMetaData, BidMetaData>, Integer>> dspList = new LinkedList<Pair<Pair<DSPMetaData, BidMetaData>, Integer>>();
-            Map<Long, Pair<Integer, Float>> dsplist = policyMetaData.getDsplist();
+            Map<Long, Integer> dsplist = policyMetaData.getDsplist();
             for (Pair<DSPMetaData, BidMetaData> entry : dspMetaDataList) {
                 DSPMetaData dspMetaData = (DSPMetaData)entry.getLeft();
-                int weight = dsplist.get(dspMetaData.getDspid()).getLeft();
+                int weight = dsplist.get(dspMetaData.getDspid());
                 if (weight <= 0) {
                     weight = dspMetaData.getWeights();
                 }

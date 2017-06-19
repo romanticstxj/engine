@@ -14,39 +14,22 @@ public class PolicyMetaData {
     private long id;
     private int weight;
     private String dealid;
+    private int bidfloor;
+    private int bidtype;
+
+    //targeting info
     private String startdate;
     private String enddate;
     private Map<Integer, List<Integer>> weekday;
     private List<Integer> ostype;
     private List<Integer> connectiontype;
+
     private List<Long> plcmtlist;
-    //dspid, weight, floating
-    private Map<Long, Pair<Integer, Float>> dsplist;
+    //dspid, weight
+    private Map<Long, Integer> dsplist;
 
-    public Map<Long, Pair<Integer, Float>> getDsplist() {
-        return dsplist;
-    }
-
-    public float getFloating(long dspid) {
-        Pair<Integer, Float> var = this.dsplist.get(dspid);
-        if (var != null) {
-            return var.getRight();
-        }
-
-        return -1;
-    }
-
-    public void setDsplist(Map<Long, Pair<Integer, Float>> dsplist) {
-        this.dsplist = dsplist;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+    private int controltype;
+    private int maxcount;
 
     public int getTradingtype() {
         return tradingtype;
@@ -64,11 +47,91 @@ public class PolicyMetaData {
         this.id = id;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public String getDealid() {
         return dealid;
     }
 
     public void setDealid(String dealid) {
         this.dealid = dealid;
+    }
+
+    public int getBidfloor() {
+        return bidfloor;
+    }
+
+    public void setBidfloor(int bidfloor) {
+        this.bidfloor = bidfloor;
+    }
+
+    public int getBidtype() {
+        return bidtype;
+    }
+
+    public void setBidtype(int bidtype) {
+        this.bidtype = bidtype;
+    }
+
+    public String getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(String startdate) {
+        this.startdate = startdate;
+    }
+
+    public String getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(String enddate) {
+        this.enddate = enddate;
+    }
+
+    public Map<Integer, List<Integer>> getWeekday() {
+        return weekday;
+    }
+
+    public void setWeekday(Map<Integer, List<Integer>> weekday) {
+        this.weekday = weekday;
+    }
+
+    public List<Integer> getOstype() {
+        return ostype;
+    }
+
+    public void setOstype(List<Integer> ostype) {
+        this.ostype = ostype;
+    }
+
+    public List<Integer> getConnectiontype() {
+        return connectiontype;
+    }
+
+    public void setConnectiontype(List<Integer> connectiontype) {
+        this.connectiontype = connectiontype;
+    }
+
+    public List<Long> getPlcmtlist() {
+        return plcmtlist;
+    }
+
+    public void setPlcmtlist(List<Long> plcmtlist) {
+        this.plcmtlist = plcmtlist;
+    }
+
+    public Map<Long, Integer> getDsplist() {
+        return dsplist;
+    }
+
+    public void setDsplist(Map<Long, Integer> dsplist) {
+        this.dsplist = dsplist;
     }
 }

@@ -73,28 +73,28 @@ public final class PremiumMADDataModel {
     int getStatus();
 
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     boolean hasRequest();
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest getRequest();
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequestOrBuilder getRequestOrBuilder();
 
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     boolean hasResponse();
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse getResponse();
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponseOrBuilder getResponseOrBuilder();
   }
@@ -178,7 +178,7 @@ public final class PremiumMADDataModel {
               status_ = input.readInt32();
               break;
             }
-            case 50: {
+            case 90: {
               com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder subBuilder = null;
               if (((bitField0_ & 0x00000020) == 0x00000020)) {
                 subBuilder = request_.toBuilder();
@@ -191,7 +191,7 @@ public final class PremiumMADDataModel {
               bitField0_ |= 0x00000020;
               break;
             }
-            case 58: {
+            case 98: {
               com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder subBuilder = null;
               if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 subBuilder = response_.toBuilder();
@@ -303,18 +303,18 @@ public final class PremiumMADDataModel {
           getBundleBytes();
 
       /**
-       * <code>optional string pkgname = 6;</code>
+       * <code>optional string name = 6;</code>
        */
-      boolean hasPkgname();
+      boolean hasName();
       /**
-       * <code>optional string pkgname = 6;</code>
+       * <code>optional string name = 6;</code>
        */
-      java.lang.String getPkgname();
+      java.lang.String getName();
       /**
-       * <code>optional string pkgname = 6;</code>
+       * <code>optional string name = 6;</code>
        */
       com.google.protobuf.ByteString
-          getPkgnameBytes();
+          getNameBytes();
 
       /**
        * <code>optional int64 plcmtid = 7;</code>
@@ -478,205 +478,214 @@ public final class PremiumMADDataModel {
       int getDevicetype();
 
       /**
-       * <code>optional float lon = 21;</code>
+       * <code>optional string dealid = 21;</code>
+       */
+      boolean hasDealid();
+      /**
+       * <code>optional string dealid = 21;</code>
+       */
+      java.lang.String getDealid();
+      /**
+       * <code>optional string dealid = 21;</code>
+       */
+      com.google.protobuf.ByteString
+          getDealidBytes();
+
+      /**
+       * <code>optional float lon = 22;</code>
        */
       boolean hasLon();
       /**
-       * <code>optional float lon = 21;</code>
+       * <code>optional float lon = 22;</code>
        */
       float getLon();
 
       /**
-       * <code>optional float lat = 22;</code>
+       * <code>optional float lat = 23;</code>
        */
       boolean hasLat();
       /**
-       * <code>optional float lat = 22;</code>
+       * <code>optional float lat = 23;</code>
        */
       float getLat();
 
       /**
-       * <code>optional string ip = 23;</code>
-       */
-      boolean hasIp();
-      /**
-       * <code>optional string ip = 23;</code>
-       */
-      java.lang.String getIp();
-      /**
-       * <code>optional string ip = 23;</code>
-       */
-      com.google.protobuf.ByteString
-          getIpBytes();
-
-      /**
-       * <code>optional string ua = 24;</code>
-       */
-      boolean hasUa();
-      /**
-       * <code>optional string ua = 24;</code>
-       */
-      java.lang.String getUa();
-      /**
-       * <code>optional string ua = 24;</code>
-       */
-      com.google.protobuf.ByteString
-          getUaBytes();
-
-      /**
-       * <code>optional string os = 25;</code>
+       * <code>optional int32 os = 24;</code>
        */
       boolean hasOs();
       /**
-       * <code>optional string os = 25;</code>
+       * <code>optional int32 os = 24;</code>
        */
-      java.lang.String getOs();
-      /**
-       * <code>optional string os = 25;</code>
-       */
-      com.google.protobuf.ByteString
-          getOsBytes();
+      int getOs();
 
       /**
-       * <code>optional string osv = 26;</code>
+       * <code>optional string osv = 25;</code>
        */
       boolean hasOsv();
       /**
-       * <code>optional string osv = 26;</code>
+       * <code>optional string osv = 25;</code>
        */
       java.lang.String getOsv();
       /**
-       * <code>optional string osv = 26;</code>
+       * <code>optional string osv = 25;</code>
        */
       com.google.protobuf.ByteString
           getOsvBytes();
 
       /**
-       * <code>optional string make = 27;</code>
+       * <code>optional string ip = 26;</code>
+       */
+      boolean hasIp();
+      /**
+       * <code>optional string ip = 26;</code>
+       */
+      java.lang.String getIp();
+      /**
+       * <code>optional string ip = 26;</code>
+       */
+      com.google.protobuf.ByteString
+          getIpBytes();
+
+      /**
+       * <code>optional string ua = 27;</code>
+       */
+      boolean hasUa();
+      /**
+       * <code>optional string ua = 27;</code>
+       */
+      java.lang.String getUa();
+      /**
+       * <code>optional string ua = 27;</code>
+       */
+      com.google.protobuf.ByteString
+          getUaBytes();
+
+      /**
+       * <code>optional string make = 28;</code>
        */
       boolean hasMake();
       /**
-       * <code>optional string make = 27;</code>
+       * <code>optional string make = 28;</code>
        */
       java.lang.String getMake();
       /**
-       * <code>optional string make = 27;</code>
+       * <code>optional string make = 28;</code>
        */
       com.google.protobuf.ByteString
           getMakeBytes();
 
       /**
-       * <code>optional string model = 28;</code>
+       * <code>optional string model = 29;</code>
        */
       boolean hasModel();
       /**
-       * <code>optional string model = 28;</code>
+       * <code>optional string model = 29;</code>
        */
       java.lang.String getModel();
       /**
-       * <code>optional string model = 28;</code>
+       * <code>optional string model = 29;</code>
        */
       com.google.protobuf.ByteString
           getModelBytes();
 
       /**
-       * <code>optional string cell = 29;</code>
+       * <code>optional string cell = 30;</code>
        */
       boolean hasCell();
       /**
-       * <code>optional string cell = 29;</code>
+       * <code>optional string cell = 30;</code>
        */
       java.lang.String getCell();
       /**
-       * <code>optional string cell = 29;</code>
+       * <code>optional string cell = 30;</code>
        */
       com.google.protobuf.ByteString
           getCellBytes();
 
       /**
-       * <code>optional string cellmd5 = 30;</code>
+       * <code>optional string cellmd5 = 31;</code>
        */
       boolean hasCellmd5();
       /**
-       * <code>optional string cellmd5 = 30;</code>
+       * <code>optional string cellmd5 = 31;</code>
        */
       java.lang.String getCellmd5();
       /**
-       * <code>optional string cellmd5 = 30;</code>
+       * <code>optional string cellmd5 = 31;</code>
        */
       com.google.protobuf.ByteString
           getCellmd5Bytes();
 
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       com.google.protobuf.ProtocolStringList
           getTagsList();
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       int getTagsCount();
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       java.lang.String getTags(int index);
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       com.google.protobuf.ByteString
           getTagsBytes(int index);
 
       /**
-       * <code>optional string adspacekey = 32;</code>
+       * <code>optional string adspacekey = 33;</code>
        */
       boolean hasAdspacekey();
       /**
-       * <code>optional string adspacekey = 32;</code>
+       * <code>optional string adspacekey = 33;</code>
        */
       java.lang.String getAdspacekey();
       /**
-       * <code>optional string adspacekey = 32;</code>
+       * <code>optional string adspacekey = 33;</code>
        */
       com.google.protobuf.ByteString
           getAdspacekeyBytes();
 
       /**
-       * <code>optional int32 test = 33;</code>
+       * <code>optional int32 test = 34;</code>
        */
       boolean hasTest();
       /**
-       * <code>optional int32 test = 33;</code>
+       * <code>optional int32 test = 34;</code>
        */
       int getTest();
 
       /**
-       * <code>optional int32 bidfloor = 34;</code>
+       * <code>optional int32 bidfloor = 35;</code>
        */
       boolean hasBidfloor();
       /**
-       * <code>optional int32 bidfloor = 34;</code>
+       * <code>optional int32 bidfloor = 35;</code>
        */
       int getBidfloor();
 
       /**
-       * <code>optional int32 bidtype = 35;</code>
+       * <code>optional int32 bidtype = 36;</code>
        */
       boolean hasBidtype();
       /**
-       * <code>optional int32 bidtype = 35;</code>
+       * <code>optional int32 bidtype = 36;</code>
        */
       int getBidtype();
 
       /**
-       * <code>optional string location = 36;</code>
+       * <code>optional string location = 37;</code>
        */
       boolean hasLocation();
       /**
-       * <code>optional string location = 36;</code>
+       * <code>optional string location = 37;</code>
        */
       java.lang.String getLocation();
       /**
-       * <code>optional string location = 36;</code>
+       * <code>optional string location = 37;</code>
        */
       com.google.protobuf.ByteString
           getLocationBytes();
@@ -764,7 +773,7 @@ public final class PremiumMADDataModel {
               case 50: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000020;
-                pkgname_ = bs;
+                name_ = bs;
                 break;
               }
               case 56: {
@@ -844,97 +853,102 @@ public final class PremiumMADDataModel {
                 devicetype_ = input.readInt32();
                 break;
               }
-              case 173: {
+              case 170: {
+                com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00100000;
-                lon_ = input.readFloat();
+                dealid_ = bs;
                 break;
               }
               case 181: {
                 bitField0_ |= 0x00200000;
+                lon_ = input.readFloat();
+                break;
+              }
+              case 189: {
+                bitField0_ |= 0x00400000;
                 lat_ = input.readFloat();
                 break;
               }
-              case 186: {
-                com.google.protobuf.ByteString bs = input.readBytes();
-                bitField0_ |= 0x00400000;
-                ip_ = bs;
-                break;
-              }
-              case 194: {
-                com.google.protobuf.ByteString bs = input.readBytes();
+              case 192: {
                 bitField0_ |= 0x00800000;
-                ua_ = bs;
+                os_ = input.readInt32();
                 break;
               }
               case 202: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x01000000;
-                os_ = bs;
+                osv_ = bs;
                 break;
               }
               case 210: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x02000000;
-                osv_ = bs;
+                ip_ = bs;
                 break;
               }
               case 218: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x04000000;
-                make_ = bs;
+                ua_ = bs;
                 break;
               }
               case 226: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x08000000;
-                model_ = bs;
+                make_ = bs;
                 break;
               }
               case 234: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x10000000;
-                cell_ = bs;
+                model_ = bs;
                 break;
               }
               case 242: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x20000000;
-                cellmd5_ = bs;
+                cell_ = bs;
                 break;
               }
               case 250: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                if (!((mutable_bitField0_ & 0x40000000) == 0x40000000)) {
-                  tags_ = new com.google.protobuf.LazyStringArrayList();
-                  mutable_bitField0_ |= 0x40000000;
-                }
-                tags_.add(bs);
+                bitField0_ |= 0x40000000;
+                cellmd5_ = bs;
                 break;
               }
               case 258: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                bitField0_ |= 0x40000000;
-                adspacekey_ = bs;
+                if (!((mutable_bitField0_ & 0x80000000) == 0x80000000)) {
+                  tags_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x80000000;
+                }
+                tags_.add(bs);
                 break;
               }
-              case 264: {
+              case 266: {
+                com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x80000000;
-                test_ = input.readInt32();
+                adspacekey_ = bs;
                 break;
               }
               case 272: {
                 bitField1_ |= 0x00000001;
-                bidfloor_ = input.readInt32();
+                test_ = input.readInt32();
                 break;
               }
               case 280: {
                 bitField1_ |= 0x00000002;
+                bidfloor_ = input.readInt32();
+                break;
+              }
+              case 288: {
+                bitField1_ |= 0x00000004;
                 bidtype_ = input.readInt32();
                 break;
               }
-              case 290: {
+              case 298: {
                 com.google.protobuf.ByteString bs = input.readBytes();
-                bitField1_ |= 0x00000004;
+                bitField1_ |= 0x00000008;
                 location_ = bs;
                 break;
               }
@@ -946,7 +960,7 @@ public final class PremiumMADDataModel {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
-          if (((mutable_bitField0_ & 0x40000000) == 0x40000000)) {
+          if (((mutable_bitField0_ & 0x80000000) == 0x80000000)) {
             tags_ = tags_.getUnmodifiableView();
           }
           this.unknownFields = unknownFields.build();
@@ -1111,19 +1125,19 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int PKGNAME_FIELD_NUMBER = 6;
-      private java.lang.Object pkgname_;
+      public static final int NAME_FIELD_NUMBER = 6;
+      private java.lang.Object name_;
       /**
-       * <code>optional string pkgname = 6;</code>
+       * <code>optional string name = 6;</code>
        */
-      public boolean hasPkgname() {
+      public boolean hasName() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional string pkgname = 6;</code>
+       * <code>optional string name = 6;</code>
        */
-      public java.lang.String getPkgname() {
-        java.lang.Object ref = pkgname_;
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
         if (ref instanceof java.lang.String) {
           return (java.lang.String) ref;
         } else {
@@ -1131,22 +1145,22 @@ public final class PremiumMADDataModel {
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            pkgname_ = s;
+            name_ = s;
           }
           return s;
         }
       }
       /**
-       * <code>optional string pkgname = 6;</code>
+       * <code>optional string name = 6;</code>
        */
       public com.google.protobuf.ByteString
-          getPkgnameBytes() {
-        java.lang.Object ref = pkgname_;
+          getNameBytes() {
+        java.lang.Object ref = name_;
         if (ref instanceof java.lang.String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          pkgname_ = b;
+          name_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -1552,172 +1566,103 @@ public final class PremiumMADDataModel {
         return devicetype_;
       }
 
-      public static final int LON_FIELD_NUMBER = 21;
-      private float lon_;
+      public static final int DEALID_FIELD_NUMBER = 21;
+      private java.lang.Object dealid_;
       /**
-       * <code>optional float lon = 21;</code>
+       * <code>optional string dealid = 21;</code>
        */
-      public boolean hasLon() {
+      public boolean hasDealid() {
         return ((bitField0_ & 0x00100000) == 0x00100000);
       }
       /**
-       * <code>optional float lon = 21;</code>
+       * <code>optional string dealid = 21;</code>
+       */
+      public java.lang.String getDealid() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            dealid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string dealid = 21;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDealidBytes() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          dealid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int LON_FIELD_NUMBER = 22;
+      private float lon_;
+      /**
+       * <code>optional float lon = 22;</code>
+       */
+      public boolean hasLon() {
+        return ((bitField0_ & 0x00200000) == 0x00200000);
+      }
+      /**
+       * <code>optional float lon = 22;</code>
        */
       public float getLon() {
         return lon_;
       }
 
-      public static final int LAT_FIELD_NUMBER = 22;
+      public static final int LAT_FIELD_NUMBER = 23;
       private float lat_;
       /**
-       * <code>optional float lat = 22;</code>
+       * <code>optional float lat = 23;</code>
        */
       public boolean hasLat() {
-        return ((bitField0_ & 0x00200000) == 0x00200000);
+        return ((bitField0_ & 0x00400000) == 0x00400000);
       }
       /**
-       * <code>optional float lat = 22;</code>
+       * <code>optional float lat = 23;</code>
        */
       public float getLat() {
         return lat_;
       }
 
-      public static final int IP_FIELD_NUMBER = 23;
-      private java.lang.Object ip_;
+      public static final int OS_FIELD_NUMBER = 24;
+      private int os_;
       /**
-       * <code>optional string ip = 23;</code>
+       * <code>optional int32 os = 24;</code>
        */
-      public boolean hasIp() {
-        return ((bitField0_ & 0x00400000) == 0x00400000);
-      }
-      /**
-       * <code>optional string ip = 23;</code>
-       */
-      public java.lang.String getIp() {
-        java.lang.Object ref = ip_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            ip_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string ip = 23;</code>
-       */
-      public com.google.protobuf.ByteString
-          getIpBytes() {
-        java.lang.Object ref = ip_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          ip_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int UA_FIELD_NUMBER = 24;
-      private java.lang.Object ua_;
-      /**
-       * <code>optional string ua = 24;</code>
-       */
-      public boolean hasUa() {
+      public boolean hasOs() {
         return ((bitField0_ & 0x00800000) == 0x00800000);
       }
       /**
-       * <code>optional string ua = 24;</code>
+       * <code>optional int32 os = 24;</code>
        */
-      public java.lang.String getUa() {
-        java.lang.Object ref = ua_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            ua_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string ua = 24;</code>
-       */
-      public com.google.protobuf.ByteString
-          getUaBytes() {
-        java.lang.Object ref = ua_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          ua_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public int getOs() {
+        return os_;
       }
 
-      public static final int OS_FIELD_NUMBER = 25;
-      private java.lang.Object os_;
+      public static final int OSV_FIELD_NUMBER = 25;
+      private java.lang.Object osv_;
       /**
-       * <code>optional string os = 25;</code>
+       * <code>optional string osv = 25;</code>
        */
-      public boolean hasOs() {
+      public boolean hasOsv() {
         return ((bitField0_ & 0x01000000) == 0x01000000);
       }
       /**
-       * <code>optional string os = 25;</code>
-       */
-      public java.lang.String getOs() {
-        java.lang.Object ref = os_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            os_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string os = 25;</code>
-       */
-      public com.google.protobuf.ByteString
-          getOsBytes() {
-        java.lang.Object ref = os_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          os_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int OSV_FIELD_NUMBER = 26;
-      private java.lang.Object osv_;
-      /**
-       * <code>optional string osv = 26;</code>
-       */
-      public boolean hasOsv() {
-        return ((bitField0_ & 0x02000000) == 0x02000000);
-      }
-      /**
-       * <code>optional string osv = 26;</code>
+       * <code>optional string osv = 25;</code>
        */
       public java.lang.String getOsv() {
         java.lang.Object ref = osv_;
@@ -1734,7 +1679,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string osv = 26;</code>
+       * <code>optional string osv = 25;</code>
        */
       public com.google.protobuf.ByteString
           getOsvBytes() {
@@ -1750,16 +1695,100 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int MAKE_FIELD_NUMBER = 27;
-      private java.lang.Object make_;
+      public static final int IP_FIELD_NUMBER = 26;
+      private java.lang.Object ip_;
       /**
-       * <code>optional string make = 27;</code>
+       * <code>optional string ip = 26;</code>
        */
-      public boolean hasMake() {
+      public boolean hasIp() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional string ip = 26;</code>
+       */
+      public java.lang.String getIp() {
+        java.lang.Object ref = ip_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            ip_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string ip = 26;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIpBytes() {
+        java.lang.Object ref = ip_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int UA_FIELD_NUMBER = 27;
+      private java.lang.Object ua_;
+      /**
+       * <code>optional string ua = 27;</code>
+       */
+      public boolean hasUa() {
         return ((bitField0_ & 0x04000000) == 0x04000000);
       }
       /**
-       * <code>optional string make = 27;</code>
+       * <code>optional string ua = 27;</code>
+       */
+      public java.lang.String getUa() {
+        java.lang.Object ref = ua_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            ua_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string ua = 27;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUaBytes() {
+        java.lang.Object ref = ua_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ua_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int MAKE_FIELD_NUMBER = 28;
+      private java.lang.Object make_;
+      /**
+       * <code>optional string make = 28;</code>
+       */
+      public boolean hasMake() {
+        return ((bitField0_ & 0x08000000) == 0x08000000);
+      }
+      /**
+       * <code>optional string make = 28;</code>
        */
       public java.lang.String getMake() {
         java.lang.Object ref = make_;
@@ -1776,7 +1805,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string make = 27;</code>
+       * <code>optional string make = 28;</code>
        */
       public com.google.protobuf.ByteString
           getMakeBytes() {
@@ -1792,16 +1821,16 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int MODEL_FIELD_NUMBER = 28;
+      public static final int MODEL_FIELD_NUMBER = 29;
       private java.lang.Object model_;
       /**
-       * <code>optional string model = 28;</code>
+       * <code>optional string model = 29;</code>
        */
       public boolean hasModel() {
-        return ((bitField0_ & 0x08000000) == 0x08000000);
+        return ((bitField0_ & 0x10000000) == 0x10000000);
       }
       /**
-       * <code>optional string model = 28;</code>
+       * <code>optional string model = 29;</code>
        */
       public java.lang.String getModel() {
         java.lang.Object ref = model_;
@@ -1818,7 +1847,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string model = 28;</code>
+       * <code>optional string model = 29;</code>
        */
       public com.google.protobuf.ByteString
           getModelBytes() {
@@ -1834,16 +1863,16 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int CELL_FIELD_NUMBER = 29;
+      public static final int CELL_FIELD_NUMBER = 30;
       private java.lang.Object cell_;
       /**
-       * <code>optional string cell = 29;</code>
+       * <code>optional string cell = 30;</code>
        */
       public boolean hasCell() {
-        return ((bitField0_ & 0x10000000) == 0x10000000);
+        return ((bitField0_ & 0x20000000) == 0x20000000);
       }
       /**
-       * <code>optional string cell = 29;</code>
+       * <code>optional string cell = 30;</code>
        */
       public java.lang.String getCell() {
         java.lang.Object ref = cell_;
@@ -1860,7 +1889,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string cell = 29;</code>
+       * <code>optional string cell = 30;</code>
        */
       public com.google.protobuf.ByteString
           getCellBytes() {
@@ -1876,16 +1905,16 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int CELLMD5_FIELD_NUMBER = 30;
+      public static final int CELLMD5_FIELD_NUMBER = 31;
       private java.lang.Object cellmd5_;
       /**
-       * <code>optional string cellmd5 = 30;</code>
+       * <code>optional string cellmd5 = 31;</code>
        */
       public boolean hasCellmd5() {
-        return ((bitField0_ & 0x20000000) == 0x20000000);
+        return ((bitField0_ & 0x40000000) == 0x40000000);
       }
       /**
-       * <code>optional string cellmd5 = 30;</code>
+       * <code>optional string cellmd5 = 31;</code>
        */
       public java.lang.String getCellmd5() {
         java.lang.Object ref = cellmd5_;
@@ -1902,7 +1931,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string cellmd5 = 30;</code>
+       * <code>optional string cellmd5 = 31;</code>
        */
       public com.google.protobuf.ByteString
           getCellmd5Bytes() {
@@ -1918,45 +1947,45 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int TAGS_FIELD_NUMBER = 31;
+      public static final int TAGS_FIELD_NUMBER = 32;
       private com.google.protobuf.LazyStringList tags_;
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       public com.google.protobuf.ProtocolStringList
           getTagsList() {
         return tags_;
       }
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       public int getTagsCount() {
         return tags_.size();
       }
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       public java.lang.String getTags(int index) {
         return tags_.get(index);
       }
       /**
-       * <code>repeated string tags = 31;</code>
+       * <code>repeated string tags = 32;</code>
        */
       public com.google.protobuf.ByteString
           getTagsBytes(int index) {
         return tags_.getByteString(index);
       }
 
-      public static final int ADSPACEKEY_FIELD_NUMBER = 32;
+      public static final int ADSPACEKEY_FIELD_NUMBER = 33;
       private java.lang.Object adspacekey_;
       /**
-       * <code>optional string adspacekey = 32;</code>
+       * <code>optional string adspacekey = 33;</code>
        */
       public boolean hasAdspacekey() {
-        return ((bitField0_ & 0x40000000) == 0x40000000);
+        return ((bitField0_ & 0x80000000) == 0x80000000);
       }
       /**
-       * <code>optional string adspacekey = 32;</code>
+       * <code>optional string adspacekey = 33;</code>
        */
       public java.lang.String getAdspacekey() {
         java.lang.Object ref = adspacekey_;
@@ -1973,7 +2002,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string adspacekey = 32;</code>
+       * <code>optional string adspacekey = 33;</code>
        */
       public com.google.protobuf.ByteString
           getAdspacekeyBytes() {
@@ -1989,61 +2018,61 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int TEST_FIELD_NUMBER = 33;
+      public static final int TEST_FIELD_NUMBER = 34;
       private int test_;
       /**
-       * <code>optional int32 test = 33;</code>
+       * <code>optional int32 test = 34;</code>
        */
       public boolean hasTest() {
-        return ((bitField0_ & 0x80000000) == 0x80000000);
+        return ((bitField1_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int32 test = 33;</code>
+       * <code>optional int32 test = 34;</code>
        */
       public int getTest() {
         return test_;
       }
 
-      public static final int BIDFLOOR_FIELD_NUMBER = 34;
+      public static final int BIDFLOOR_FIELD_NUMBER = 35;
       private int bidfloor_;
       /**
-       * <code>optional int32 bidfloor = 34;</code>
+       * <code>optional int32 bidfloor = 35;</code>
        */
       public boolean hasBidfloor() {
-        return ((bitField1_ & 0x00000001) == 0x00000001);
+        return ((bitField1_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional int32 bidfloor = 34;</code>
+       * <code>optional int32 bidfloor = 35;</code>
        */
       public int getBidfloor() {
         return bidfloor_;
       }
 
-      public static final int BIDTYPE_FIELD_NUMBER = 35;
+      public static final int BIDTYPE_FIELD_NUMBER = 36;
       private int bidtype_;
       /**
-       * <code>optional int32 bidtype = 35;</code>
+       * <code>optional int32 bidtype = 36;</code>
        */
       public boolean hasBidtype() {
-        return ((bitField1_ & 0x00000002) == 0x00000002);
+        return ((bitField1_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 bidtype = 35;</code>
+       * <code>optional int32 bidtype = 36;</code>
        */
       public int getBidtype() {
         return bidtype_;
       }
 
-      public static final int LOCATION_FIELD_NUMBER = 36;
+      public static final int LOCATION_FIELD_NUMBER = 37;
       private java.lang.Object location_;
       /**
-       * <code>optional string location = 36;</code>
+       * <code>optional string location = 37;</code>
        */
       public boolean hasLocation() {
-        return ((bitField1_ & 0x00000004) == 0x00000004);
+        return ((bitField1_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional string location = 36;</code>
+       * <code>optional string location = 37;</code>
        */
       public java.lang.String getLocation() {
         java.lang.Object ref = location_;
@@ -2060,7 +2089,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string location = 36;</code>
+       * <code>optional string location = 37;</code>
        */
       public com.google.protobuf.ByteString
           getLocationBytes() {
@@ -2082,7 +2111,7 @@ public final class PremiumMADDataModel {
         mcat_ = 0;
         mtype_ = 0;
         bundle_ = "";
-        pkgname_ = "";
+        name_ = "";
         plcmtid_ = 0L;
         adtype_ = 0;
         w_ = 0;
@@ -2097,12 +2126,13 @@ public final class PremiumMADDataModel {
         carrier_ = 0;
         connectiontype_ = 0;
         devicetype_ = 0;
+        dealid_ = "";
         lon_ = 0F;
         lat_ = 0F;
+        os_ = 0;
+        osv_ = "";
         ip_ = "";
         ua_ = "";
-        os_ = "";
-        osv_ = "";
         make_ = "";
         model_ = "";
         cell_ = "";
@@ -2143,7 +2173,7 @@ public final class PremiumMADDataModel {
           output.writeBytes(5, getBundleBytes());
         }
         if (((bitField0_ & 0x00000020) == 0x00000020)) {
-          output.writeBytes(6, getPkgnameBytes());
+          output.writeBytes(6, getNameBytes());
         }
         if (((bitField0_ & 0x00000040) == 0x00000040)) {
           output.writeInt64(7, plcmtid_);
@@ -2188,52 +2218,55 @@ public final class PremiumMADDataModel {
           output.writeInt32(20, devicetype_);
         }
         if (((bitField0_ & 0x00100000) == 0x00100000)) {
-          output.writeFloat(21, lon_);
+          output.writeBytes(21, getDealidBytes());
         }
         if (((bitField0_ & 0x00200000) == 0x00200000)) {
-          output.writeFloat(22, lat_);
+          output.writeFloat(22, lon_);
         }
         if (((bitField0_ & 0x00400000) == 0x00400000)) {
-          output.writeBytes(23, getIpBytes());
+          output.writeFloat(23, lat_);
         }
         if (((bitField0_ & 0x00800000) == 0x00800000)) {
-          output.writeBytes(24, getUaBytes());
+          output.writeInt32(24, os_);
         }
         if (((bitField0_ & 0x01000000) == 0x01000000)) {
-          output.writeBytes(25, getOsBytes());
+          output.writeBytes(25, getOsvBytes());
         }
         if (((bitField0_ & 0x02000000) == 0x02000000)) {
-          output.writeBytes(26, getOsvBytes());
+          output.writeBytes(26, getIpBytes());
         }
         if (((bitField0_ & 0x04000000) == 0x04000000)) {
-          output.writeBytes(27, getMakeBytes());
+          output.writeBytes(27, getUaBytes());
         }
         if (((bitField0_ & 0x08000000) == 0x08000000)) {
-          output.writeBytes(28, getModelBytes());
+          output.writeBytes(28, getMakeBytes());
         }
         if (((bitField0_ & 0x10000000) == 0x10000000)) {
-          output.writeBytes(29, getCellBytes());
+          output.writeBytes(29, getModelBytes());
         }
         if (((bitField0_ & 0x20000000) == 0x20000000)) {
-          output.writeBytes(30, getCellmd5Bytes());
-        }
-        for (int i = 0; i < tags_.size(); i++) {
-          output.writeBytes(31, tags_.getByteString(i));
+          output.writeBytes(30, getCellBytes());
         }
         if (((bitField0_ & 0x40000000) == 0x40000000)) {
-          output.writeBytes(32, getAdspacekeyBytes());
+          output.writeBytes(31, getCellmd5Bytes());
+        }
+        for (int i = 0; i < tags_.size(); i++) {
+          output.writeBytes(32, tags_.getByteString(i));
         }
         if (((bitField0_ & 0x80000000) == 0x80000000)) {
-          output.writeInt32(33, test_);
+          output.writeBytes(33, getAdspacekeyBytes());
         }
         if (((bitField1_ & 0x00000001) == 0x00000001)) {
-          output.writeInt32(34, bidfloor_);
+          output.writeInt32(34, test_);
         }
         if (((bitField1_ & 0x00000002) == 0x00000002)) {
-          output.writeInt32(35, bidtype_);
+          output.writeInt32(35, bidfloor_);
         }
         if (((bitField1_ & 0x00000004) == 0x00000004)) {
-          output.writeBytes(36, getLocationBytes());
+          output.writeInt32(36, bidtype_);
+        }
+        if (((bitField1_ & 0x00000008) == 0x00000008)) {
+          output.writeBytes(37, getLocationBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -2266,7 +2299,7 @@ public final class PremiumMADDataModel {
         }
         if (((bitField0_ & 0x00000020) == 0x00000020)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(6, getPkgnameBytes());
+            .computeBytesSize(6, getNameBytes());
         }
         if (((bitField0_ & 0x00000040) == 0x00000040)) {
           size += com.google.protobuf.CodedOutputStream
@@ -2326,43 +2359,47 @@ public final class PremiumMADDataModel {
         }
         if (((bitField0_ & 0x00100000) == 0x00100000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeFloatSize(21, lon_);
+            .computeBytesSize(21, getDealidBytes());
         }
         if (((bitField0_ & 0x00200000) == 0x00200000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeFloatSize(22, lat_);
+            .computeFloatSize(22, lon_);
         }
         if (((bitField0_ & 0x00400000) == 0x00400000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(23, getIpBytes());
+            .computeFloatSize(23, lat_);
         }
         if (((bitField0_ & 0x00800000) == 0x00800000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(24, getUaBytes());
+            .computeInt32Size(24, os_);
         }
         if (((bitField0_ & 0x01000000) == 0x01000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(25, getOsBytes());
+            .computeBytesSize(25, getOsvBytes());
         }
         if (((bitField0_ & 0x02000000) == 0x02000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(26, getOsvBytes());
+            .computeBytesSize(26, getIpBytes());
         }
         if (((bitField0_ & 0x04000000) == 0x04000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(27, getMakeBytes());
+            .computeBytesSize(27, getUaBytes());
         }
         if (((bitField0_ & 0x08000000) == 0x08000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(28, getModelBytes());
+            .computeBytesSize(28, getMakeBytes());
         }
         if (((bitField0_ & 0x10000000) == 0x10000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(29, getCellBytes());
+            .computeBytesSize(29, getModelBytes());
         }
         if (((bitField0_ & 0x20000000) == 0x20000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(30, getCellmd5Bytes());
+            .computeBytesSize(30, getCellBytes());
+        }
+        if (((bitField0_ & 0x40000000) == 0x40000000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(31, getCellmd5Bytes());
         }
         {
           int dataSize = 0;
@@ -2373,25 +2410,25 @@ public final class PremiumMADDataModel {
           size += dataSize;
           size += 2 * getTagsList().size();
         }
-        if (((bitField0_ & 0x40000000) == 0x40000000)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(32, getAdspacekeyBytes());
-        }
         if (((bitField0_ & 0x80000000) == 0x80000000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(33, test_);
+            .computeBytesSize(33, getAdspacekeyBytes());
         }
         if (((bitField1_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(34, bidfloor_);
+            .computeInt32Size(34, test_);
         }
         if (((bitField1_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(35, bidtype_);
+            .computeInt32Size(35, bidfloor_);
         }
         if (((bitField1_ & 0x00000004) == 0x00000004)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(36, getLocationBytes());
+            .computeInt32Size(36, bidtype_);
+        }
+        if (((bitField1_ & 0x00000008) == 0x00000008)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(37, getLocationBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -2520,7 +2557,7 @@ public final class PremiumMADDataModel {
           bitField0_ = (bitField0_ & ~0x00000008);
           bundle_ = "";
           bitField0_ = (bitField0_ & ~0x00000010);
-          pkgname_ = "";
+          name_ = "";
           bitField0_ = (bitField0_ & ~0x00000020);
           plcmtid_ = 0L;
           bitField0_ = (bitField0_ & ~0x00000040);
@@ -2550,38 +2587,40 @@ public final class PremiumMADDataModel {
           bitField0_ = (bitField0_ & ~0x00040000);
           devicetype_ = 0;
           bitField0_ = (bitField0_ & ~0x00080000);
-          lon_ = 0F;
+          dealid_ = "";
           bitField0_ = (bitField0_ & ~0x00100000);
-          lat_ = 0F;
+          lon_ = 0F;
           bitField0_ = (bitField0_ & ~0x00200000);
-          ip_ = "";
+          lat_ = 0F;
           bitField0_ = (bitField0_ & ~0x00400000);
-          ua_ = "";
+          os_ = 0;
           bitField0_ = (bitField0_ & ~0x00800000);
-          os_ = "";
-          bitField0_ = (bitField0_ & ~0x01000000);
           osv_ = "";
+          bitField0_ = (bitField0_ & ~0x01000000);
+          ip_ = "";
           bitField0_ = (bitField0_ & ~0x02000000);
-          make_ = "";
+          ua_ = "";
           bitField0_ = (bitField0_ & ~0x04000000);
-          model_ = "";
+          make_ = "";
           bitField0_ = (bitField0_ & ~0x08000000);
-          cell_ = "";
+          model_ = "";
           bitField0_ = (bitField0_ & ~0x10000000);
-          cellmd5_ = "";
+          cell_ = "";
           bitField0_ = (bitField0_ & ~0x20000000);
-          tags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          cellmd5_ = "";
           bitField0_ = (bitField0_ & ~0x40000000);
-          adspacekey_ = "";
+          tags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           bitField0_ = (bitField0_ & ~0x80000000);
-          test_ = 0;
+          adspacekey_ = "";
           bitField1_ = (bitField1_ & ~0x00000001);
-          bidfloor_ = 0;
+          test_ = 0;
           bitField1_ = (bitField1_ & ~0x00000002);
-          bidtype_ = 0;
+          bidfloor_ = 0;
           bitField1_ = (bitField1_ & ~0x00000004);
-          location_ = "";
+          bidtype_ = 0;
           bitField1_ = (bitField1_ & ~0x00000008);
+          location_ = "";
+          bitField1_ = (bitField1_ & ~0x00000010);
           return this;
         }
 
@@ -2635,7 +2674,7 @@ public final class PremiumMADDataModel {
           if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
             to_bitField0_ |= 0x00000020;
           }
-          result.pkgname_ = pkgname_;
+          result.name_ = name_;
           if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
             to_bitField0_ |= 0x00000040;
           }
@@ -2695,66 +2734,70 @@ public final class PremiumMADDataModel {
           if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
             to_bitField0_ |= 0x00100000;
           }
-          result.lon_ = lon_;
+          result.dealid_ = dealid_;
           if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
             to_bitField0_ |= 0x00200000;
           }
-          result.lat_ = lat_;
+          result.lon_ = lon_;
           if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
             to_bitField0_ |= 0x00400000;
           }
-          result.ip_ = ip_;
+          result.lat_ = lat_;
           if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
             to_bitField0_ |= 0x00800000;
           }
-          result.ua_ = ua_;
+          result.os_ = os_;
           if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
             to_bitField0_ |= 0x01000000;
           }
-          result.os_ = os_;
+          result.osv_ = osv_;
           if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
             to_bitField0_ |= 0x02000000;
           }
-          result.osv_ = osv_;
+          result.ip_ = ip_;
           if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
             to_bitField0_ |= 0x04000000;
           }
-          result.make_ = make_;
+          result.ua_ = ua_;
           if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
             to_bitField0_ |= 0x08000000;
           }
-          result.model_ = model_;
+          result.make_ = make_;
           if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
             to_bitField0_ |= 0x10000000;
           }
-          result.cell_ = cell_;
+          result.model_ = model_;
           if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
             to_bitField0_ |= 0x20000000;
           }
-          result.cellmd5_ = cellmd5_;
-          if (((bitField0_ & 0x40000000) == 0x40000000)) {
-            tags_ = tags_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x40000000);
-          }
-          result.tags_ = tags_;
-          if (((from_bitField0_ & 0x80000000) == 0x80000000)) {
+          result.cell_ = cell_;
+          if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
             to_bitField0_ |= 0x40000000;
           }
-          result.adspacekey_ = adspacekey_;
+          result.cellmd5_ = cellmd5_;
+          if (((bitField0_ & 0x80000000) == 0x80000000)) {
+            tags_ = tags_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x80000000);
+          }
+          result.tags_ = tags_;
           if (((from_bitField1_ & 0x00000001) == 0x00000001)) {
             to_bitField0_ |= 0x80000000;
           }
-          result.test_ = test_;
+          result.adspacekey_ = adspacekey_;
           if (((from_bitField1_ & 0x00000002) == 0x00000002)) {
             to_bitField1_ |= 0x00000001;
           }
-          result.bidfloor_ = bidfloor_;
+          result.test_ = test_;
           if (((from_bitField1_ & 0x00000004) == 0x00000004)) {
             to_bitField1_ |= 0x00000002;
           }
-          result.bidtype_ = bidtype_;
+          result.bidfloor_ = bidfloor_;
           if (((from_bitField1_ & 0x00000008) == 0x00000008)) {
             to_bitField1_ |= 0x00000004;
+          }
+          result.bidtype_ = bidtype_;
+          if (((from_bitField1_ & 0x00000010) == 0x00000010)) {
+            to_bitField1_ |= 0x00000008;
           }
           result.location_ = location_;
           result.bitField0_ = to_bitField0_;
@@ -2793,9 +2836,9 @@ public final class PremiumMADDataModel {
             bundle_ = other.bundle_;
             onChanged();
           }
-          if (other.hasPkgname()) {
+          if (other.hasName()) {
             bitField0_ |= 0x00000020;
-            pkgname_ = other.pkgname_;
+            name_ = other.name_;
             onChanged();
           }
           if (other.hasPlcmtid()) {
@@ -2854,56 +2897,59 @@ public final class PremiumMADDataModel {
           if (other.hasDevicetype()) {
             setDevicetype(other.getDevicetype());
           }
+          if (other.hasDealid()) {
+            bitField0_ |= 0x00100000;
+            dealid_ = other.dealid_;
+            onChanged();
+          }
           if (other.hasLon()) {
             setLon(other.getLon());
           }
           if (other.hasLat()) {
             setLat(other.getLat());
           }
+          if (other.hasOs()) {
+            setOs(other.getOs());
+          }
+          if (other.hasOsv()) {
+            bitField0_ |= 0x01000000;
+            osv_ = other.osv_;
+            onChanged();
+          }
           if (other.hasIp()) {
-            bitField0_ |= 0x00400000;
+            bitField0_ |= 0x02000000;
             ip_ = other.ip_;
             onChanged();
           }
           if (other.hasUa()) {
-            bitField0_ |= 0x00800000;
+            bitField0_ |= 0x04000000;
             ua_ = other.ua_;
             onChanged();
           }
-          if (other.hasOs()) {
-            bitField0_ |= 0x01000000;
-            os_ = other.os_;
-            onChanged();
-          }
-          if (other.hasOsv()) {
-            bitField0_ |= 0x02000000;
-            osv_ = other.osv_;
-            onChanged();
-          }
           if (other.hasMake()) {
-            bitField0_ |= 0x04000000;
+            bitField0_ |= 0x08000000;
             make_ = other.make_;
             onChanged();
           }
           if (other.hasModel()) {
-            bitField0_ |= 0x08000000;
+            bitField0_ |= 0x10000000;
             model_ = other.model_;
             onChanged();
           }
           if (other.hasCell()) {
-            bitField0_ |= 0x10000000;
+            bitField0_ |= 0x20000000;
             cell_ = other.cell_;
             onChanged();
           }
           if (other.hasCellmd5()) {
-            bitField0_ |= 0x20000000;
+            bitField0_ |= 0x40000000;
             cellmd5_ = other.cellmd5_;
             onChanged();
           }
           if (!other.tags_.isEmpty()) {
             if (tags_.isEmpty()) {
               tags_ = other.tags_;
-              bitField0_ = (bitField0_ & ~0x40000000);
+              bitField0_ = (bitField0_ & ~0x80000000);
             } else {
               ensureTagsIsMutable();
               tags_.addAll(other.tags_);
@@ -2911,7 +2957,7 @@ public final class PremiumMADDataModel {
             onChanged();
           }
           if (other.hasAdspacekey()) {
-            bitField0_ |= 0x80000000;
+            bitField1_ |= 0x00000001;
             adspacekey_ = other.adspacekey_;
             onChanged();
           }
@@ -2925,7 +2971,7 @@ public final class PremiumMADDataModel {
             setBidtype(other.getBidtype());
           }
           if (other.hasLocation()) {
-            bitField1_ |= 0x00000008;
+            bitField1_ |= 0x00000010;
             location_ = other.location_;
             onChanged();
           }
@@ -3205,24 +3251,24 @@ public final class PremiumMADDataModel {
           return this;
         }
 
-        private java.lang.Object pkgname_ = "";
+        private java.lang.Object name_ = "";
         /**
-         * <code>optional string pkgname = 6;</code>
+         * <code>optional string name = 6;</code>
          */
-        public boolean hasPkgname() {
+        public boolean hasName() {
           return ((bitField0_ & 0x00000020) == 0x00000020);
         }
         /**
-         * <code>optional string pkgname = 6;</code>
+         * <code>optional string name = 6;</code>
          */
-        public java.lang.String getPkgname() {
-          java.lang.Object ref = pkgname_;
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
           if (!(ref instanceof java.lang.String)) {
             com.google.protobuf.ByteString bs =
                 (com.google.protobuf.ByteString) ref;
             java.lang.String s = bs.toStringUtf8();
             if (bs.isValidUtf8()) {
-              pkgname_ = s;
+              name_ = s;
             }
             return s;
           } else {
@@ -3230,53 +3276,53 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string pkgname = 6;</code>
+         * <code>optional string name = 6;</code>
          */
         public com.google.protobuf.ByteString
-            getPkgnameBytes() {
-          java.lang.Object ref = pkgname_;
+            getNameBytes() {
+          java.lang.Object ref = name_;
           if (ref instanceof String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (java.lang.String) ref);
-            pkgname_ = b;
+            name_ = b;
             return b;
           } else {
             return (com.google.protobuf.ByteString) ref;
           }
         }
         /**
-         * <code>optional string pkgname = 6;</code>
+         * <code>optional string name = 6;</code>
          */
-        public Builder setPkgname(
+        public Builder setName(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000020;
-          pkgname_ = value;
+          name_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string pkgname = 6;</code>
+         * <code>optional string name = 6;</code>
          */
-        public Builder clearPkgname() {
+        public Builder clearName() {
           bitField0_ = (bitField0_ & ~0x00000020);
-          pkgname_ = getDefaultInstance().getPkgname();
+          name_ = getDefaultInstance().getName();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string pkgname = 6;</code>
+         * <code>optional string name = 6;</code>
          */
-        public Builder setPkgnameBytes(
+        public Builder setNameBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000020;
-          pkgname_ = value;
+          name_ = value;
           onChanged();
           return this;
         }
@@ -4037,33 +4083,109 @@ public final class PremiumMADDataModel {
           return this;
         }
 
-        private float lon_ ;
+        private java.lang.Object dealid_ = "";
         /**
-         * <code>optional float lon = 21;</code>
+         * <code>optional string dealid = 21;</code>
          */
-        public boolean hasLon() {
+        public boolean hasDealid() {
           return ((bitField0_ & 0x00100000) == 0x00100000);
         }
         /**
-         * <code>optional float lon = 21;</code>
+         * <code>optional string dealid = 21;</code>
+         */
+        public java.lang.String getDealid() {
+          java.lang.Object ref = dealid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              dealid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 21;</code>
+         */
+        public com.google.protobuf.ByteString
+            getDealidBytes() {
+          java.lang.Object ref = dealid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            dealid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 21;</code>
+         */
+        public Builder setDealid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00100000;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 21;</code>
+         */
+        public Builder clearDealid() {
+          bitField0_ = (bitField0_ & ~0x00100000);
+          dealid_ = getDefaultInstance().getDealid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 21;</code>
+         */
+        public Builder setDealidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00100000;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private float lon_ ;
+        /**
+         * <code>optional float lon = 22;</code>
+         */
+        public boolean hasLon() {
+          return ((bitField0_ & 0x00200000) == 0x00200000);
+        }
+        /**
+         * <code>optional float lon = 22;</code>
          */
         public float getLon() {
           return lon_;
         }
         /**
-         * <code>optional float lon = 21;</code>
+         * <code>optional float lon = 22;</code>
          */
         public Builder setLon(float value) {
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00200000;
           lon_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional float lon = 21;</code>
+         * <code>optional float lon = 22;</code>
          */
         public Builder clearLon() {
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00200000);
           lon_ = 0F;
           onChanged();
           return this;
@@ -4071,273 +4193,77 @@ public final class PremiumMADDataModel {
 
         private float lat_ ;
         /**
-         * <code>optional float lat = 22;</code>
+         * <code>optional float lat = 23;</code>
          */
         public boolean hasLat() {
-          return ((bitField0_ & 0x00200000) == 0x00200000);
+          return ((bitField0_ & 0x00400000) == 0x00400000);
         }
         /**
-         * <code>optional float lat = 22;</code>
+         * <code>optional float lat = 23;</code>
          */
         public float getLat() {
           return lat_;
         }
         /**
-         * <code>optional float lat = 22;</code>
+         * <code>optional float lat = 23;</code>
          */
         public Builder setLat(float value) {
-          bitField0_ |= 0x00200000;
+          bitField0_ |= 0x00400000;
           lat_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional float lat = 22;</code>
+         * <code>optional float lat = 23;</code>
          */
         public Builder clearLat() {
-          bitField0_ = (bitField0_ & ~0x00200000);
+          bitField0_ = (bitField0_ & ~0x00400000);
           lat_ = 0F;
           onChanged();
           return this;
         }
 
-        private java.lang.Object ip_ = "";
+        private int os_ ;
         /**
-         * <code>optional string ip = 23;</code>
+         * <code>optional int32 os = 24;</code>
          */
-        public boolean hasIp() {
-          return ((bitField0_ & 0x00400000) == 0x00400000);
-        }
-        /**
-         * <code>optional string ip = 23;</code>
-         */
-        public java.lang.String getIp() {
-          java.lang.Object ref = ip_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              ip_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string ip = 23;</code>
-         */
-        public com.google.protobuf.ByteString
-            getIpBytes() {
-          java.lang.Object ref = ip_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            ip_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string ip = 23;</code>
-         */
-        public Builder setIp(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00400000;
-          ip_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string ip = 23;</code>
-         */
-        public Builder clearIp() {
-          bitField0_ = (bitField0_ & ~0x00400000);
-          ip_ = getDefaultInstance().getIp();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string ip = 23;</code>
-         */
-        public Builder setIpBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00400000;
-          ip_ = value;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object ua_ = "";
-        /**
-         * <code>optional string ua = 24;</code>
-         */
-        public boolean hasUa() {
+        public boolean hasOs() {
           return ((bitField0_ & 0x00800000) == 0x00800000);
         }
         /**
-         * <code>optional string ua = 24;</code>
+         * <code>optional int32 os = 24;</code>
          */
-        public java.lang.String getUa() {
-          java.lang.Object ref = ua_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              ua_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
+        public int getOs() {
+          return os_;
         }
         /**
-         * <code>optional string ua = 24;</code>
+         * <code>optional int32 os = 24;</code>
          */
-        public com.google.protobuf.ByteString
-            getUaBytes() {
-          java.lang.Object ref = ua_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            ua_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string ua = 24;</code>
-         */
-        public Builder setUa(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00800000;
-          ua_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string ua = 24;</code>
-         */
-        public Builder clearUa() {
-          bitField0_ = (bitField0_ & ~0x00800000);
-          ua_ = getDefaultInstance().getUa();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string ua = 24;</code>
-         */
-        public Builder setUaBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00800000;
-          ua_ = value;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object os_ = "";
-        /**
-         * <code>optional string os = 25;</code>
-         */
-        public boolean hasOs() {
-          return ((bitField0_ & 0x01000000) == 0x01000000);
-        }
-        /**
-         * <code>optional string os = 25;</code>
-         */
-        public java.lang.String getOs() {
-          java.lang.Object ref = os_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              os_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string os = 25;</code>
-         */
-        public com.google.protobuf.ByteString
-            getOsBytes() {
-          java.lang.Object ref = os_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            os_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string os = 25;</code>
-         */
-        public Builder setOs(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x01000000;
+        public Builder setOs(int value) {
+          bitField0_ |= 0x00800000;
           os_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string os = 25;</code>
+         * <code>optional int32 os = 24;</code>
          */
         public Builder clearOs() {
-          bitField0_ = (bitField0_ & ~0x01000000);
-          os_ = getDefaultInstance().getOs();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string os = 25;</code>
-         */
-        public Builder setOsBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x01000000;
-          os_ = value;
+          bitField0_ = (bitField0_ & ~0x00800000);
+          os_ = 0;
           onChanged();
           return this;
         }
 
         private java.lang.Object osv_ = "";
         /**
-         * <code>optional string osv = 26;</code>
+         * <code>optional string osv = 25;</code>
          */
         public boolean hasOsv() {
-          return ((bitField0_ & 0x02000000) == 0x02000000);
+          return ((bitField0_ & 0x01000000) == 0x01000000);
         }
         /**
-         * <code>optional string osv = 26;</code>
+         * <code>optional string osv = 25;</code>
          */
         public java.lang.String getOsv() {
           java.lang.Object ref = osv_;
@@ -4354,7 +4280,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string osv = 26;</code>
+         * <code>optional string osv = 25;</code>
          */
         public com.google.protobuf.ByteString
             getOsvBytes() {
@@ -4370,50 +4296,202 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string osv = 26;</code>
+         * <code>optional string osv = 25;</code>
          */
         public Builder setOsv(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x02000000;
+  bitField0_ |= 0x01000000;
           osv_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string osv = 26;</code>
+         * <code>optional string osv = 25;</code>
          */
         public Builder clearOsv() {
-          bitField0_ = (bitField0_ & ~0x02000000);
+          bitField0_ = (bitField0_ & ~0x01000000);
           osv_ = getDefaultInstance().getOsv();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string osv = 26;</code>
+         * <code>optional string osv = 25;</code>
          */
         public Builder setOsvBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x02000000;
+  bitField0_ |= 0x01000000;
           osv_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object ip_ = "";
+        /**
+         * <code>optional string ip = 26;</code>
+         */
+        public boolean hasIp() {
+          return ((bitField0_ & 0x02000000) == 0x02000000);
+        }
+        /**
+         * <code>optional string ip = 26;</code>
+         */
+        public java.lang.String getIp() {
+          java.lang.Object ref = ip_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              ip_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string ip = 26;</code>
+         */
+        public com.google.protobuf.ByteString
+            getIpBytes() {
+          java.lang.Object ref = ip_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            ip_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string ip = 26;</code>
+         */
+        public Builder setIp(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x02000000;
+          ip_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string ip = 26;</code>
+         */
+        public Builder clearIp() {
+          bitField0_ = (bitField0_ & ~0x02000000);
+          ip_ = getDefaultInstance().getIp();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string ip = 26;</code>
+         */
+        public Builder setIpBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x02000000;
+          ip_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object ua_ = "";
+        /**
+         * <code>optional string ua = 27;</code>
+         */
+        public boolean hasUa() {
+          return ((bitField0_ & 0x04000000) == 0x04000000);
+        }
+        /**
+         * <code>optional string ua = 27;</code>
+         */
+        public java.lang.String getUa() {
+          java.lang.Object ref = ua_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              ua_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string ua = 27;</code>
+         */
+        public com.google.protobuf.ByteString
+            getUaBytes() {
+          java.lang.Object ref = ua_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            ua_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string ua = 27;</code>
+         */
+        public Builder setUa(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+          ua_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string ua = 27;</code>
+         */
+        public Builder clearUa() {
+          bitField0_ = (bitField0_ & ~0x04000000);
+          ua_ = getDefaultInstance().getUa();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string ua = 27;</code>
+         */
+        public Builder setUaBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x04000000;
+          ua_ = value;
           onChanged();
           return this;
         }
 
         private java.lang.Object make_ = "";
         /**
-         * <code>optional string make = 27;</code>
+         * <code>optional string make = 28;</code>
          */
         public boolean hasMake() {
-          return ((bitField0_ & 0x04000000) == 0x04000000);
+          return ((bitField0_ & 0x08000000) == 0x08000000);
         }
         /**
-         * <code>optional string make = 27;</code>
+         * <code>optional string make = 28;</code>
          */
         public java.lang.String getMake() {
           java.lang.Object ref = make_;
@@ -4430,7 +4508,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string make = 27;</code>
+         * <code>optional string make = 28;</code>
          */
         public com.google.protobuf.ByteString
             getMakeBytes() {
@@ -4446,36 +4524,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string make = 27;</code>
+         * <code>optional string make = 28;</code>
          */
         public Builder setMake(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x08000000;
           make_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string make = 27;</code>
+         * <code>optional string make = 28;</code>
          */
         public Builder clearMake() {
-          bitField0_ = (bitField0_ & ~0x04000000);
+          bitField0_ = (bitField0_ & ~0x08000000);
           make_ = getDefaultInstance().getMake();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string make = 27;</code>
+         * <code>optional string make = 28;</code>
          */
         public Builder setMakeBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x08000000;
           make_ = value;
           onChanged();
           return this;
@@ -4483,13 +4561,13 @@ public final class PremiumMADDataModel {
 
         private java.lang.Object model_ = "";
         /**
-         * <code>optional string model = 28;</code>
+         * <code>optional string model = 29;</code>
          */
         public boolean hasModel() {
-          return ((bitField0_ & 0x08000000) == 0x08000000);
+          return ((bitField0_ & 0x10000000) == 0x10000000);
         }
         /**
-         * <code>optional string model = 28;</code>
+         * <code>optional string model = 29;</code>
          */
         public java.lang.String getModel() {
           java.lang.Object ref = model_;
@@ -4506,7 +4584,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string model = 28;</code>
+         * <code>optional string model = 29;</code>
          */
         public com.google.protobuf.ByteString
             getModelBytes() {
@@ -4522,36 +4600,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string model = 28;</code>
+         * <code>optional string model = 29;</code>
          */
         public Builder setModel(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x08000000;
+  bitField0_ |= 0x10000000;
           model_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string model = 28;</code>
+         * <code>optional string model = 29;</code>
          */
         public Builder clearModel() {
-          bitField0_ = (bitField0_ & ~0x08000000);
+          bitField0_ = (bitField0_ & ~0x10000000);
           model_ = getDefaultInstance().getModel();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string model = 28;</code>
+         * <code>optional string model = 29;</code>
          */
         public Builder setModelBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x08000000;
+  bitField0_ |= 0x10000000;
           model_ = value;
           onChanged();
           return this;
@@ -4559,13 +4637,13 @@ public final class PremiumMADDataModel {
 
         private java.lang.Object cell_ = "";
         /**
-         * <code>optional string cell = 29;</code>
+         * <code>optional string cell = 30;</code>
          */
         public boolean hasCell() {
-          return ((bitField0_ & 0x10000000) == 0x10000000);
+          return ((bitField0_ & 0x20000000) == 0x20000000);
         }
         /**
-         * <code>optional string cell = 29;</code>
+         * <code>optional string cell = 30;</code>
          */
         public java.lang.String getCell() {
           java.lang.Object ref = cell_;
@@ -4582,7 +4660,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string cell = 29;</code>
+         * <code>optional string cell = 30;</code>
          */
         public com.google.protobuf.ByteString
             getCellBytes() {
@@ -4598,36 +4676,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string cell = 29;</code>
+         * <code>optional string cell = 30;</code>
          */
         public Builder setCell(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x10000000;
+  bitField0_ |= 0x20000000;
           cell_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string cell = 29;</code>
+         * <code>optional string cell = 30;</code>
          */
         public Builder clearCell() {
-          bitField0_ = (bitField0_ & ~0x10000000);
+          bitField0_ = (bitField0_ & ~0x20000000);
           cell_ = getDefaultInstance().getCell();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string cell = 29;</code>
+         * <code>optional string cell = 30;</code>
          */
         public Builder setCellBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x10000000;
+  bitField0_ |= 0x20000000;
           cell_ = value;
           onChanged();
           return this;
@@ -4635,13 +4713,13 @@ public final class PremiumMADDataModel {
 
         private java.lang.Object cellmd5_ = "";
         /**
-         * <code>optional string cellmd5 = 30;</code>
+         * <code>optional string cellmd5 = 31;</code>
          */
         public boolean hasCellmd5() {
-          return ((bitField0_ & 0x20000000) == 0x20000000);
+          return ((bitField0_ & 0x40000000) == 0x40000000);
         }
         /**
-         * <code>optional string cellmd5 = 30;</code>
+         * <code>optional string cellmd5 = 31;</code>
          */
         public java.lang.String getCellmd5() {
           java.lang.Object ref = cellmd5_;
@@ -4658,7 +4736,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string cellmd5 = 30;</code>
+         * <code>optional string cellmd5 = 31;</code>
          */
         public com.google.protobuf.ByteString
             getCellmd5Bytes() {
@@ -4674,36 +4752,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string cellmd5 = 30;</code>
+         * <code>optional string cellmd5 = 31;</code>
          */
         public Builder setCellmd5(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField0_ |= 0x40000000;
           cellmd5_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string cellmd5 = 30;</code>
+         * <code>optional string cellmd5 = 31;</code>
          */
         public Builder clearCellmd5() {
-          bitField0_ = (bitField0_ & ~0x20000000);
+          bitField0_ = (bitField0_ & ~0x40000000);
           cellmd5_ = getDefaultInstance().getCellmd5();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string cellmd5 = 30;</code>
+         * <code>optional string cellmd5 = 31;</code>
          */
         public Builder setCellmd5Bytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField0_ |= 0x40000000;
           cellmd5_ = value;
           onChanged();
           return this;
@@ -4711,39 +4789,39 @@ public final class PremiumMADDataModel {
 
         private com.google.protobuf.LazyStringList tags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         private void ensureTagsIsMutable() {
-          if (!((bitField0_ & 0x40000000) == 0x40000000)) {
+          if (!((bitField0_ & 0x80000000) == 0x80000000)) {
             tags_ = new com.google.protobuf.LazyStringArrayList(tags_);
-            bitField0_ |= 0x40000000;
+            bitField0_ |= 0x80000000;
            }
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public com.google.protobuf.ProtocolStringList
             getTagsList() {
           return tags_.getUnmodifiableView();
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public int getTagsCount() {
           return tags_.size();
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public java.lang.String getTags(int index) {
           return tags_.get(index);
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public com.google.protobuf.ByteString
             getTagsBytes(int index) {
           return tags_.getByteString(index);
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public Builder setTags(
             int index, java.lang.String value) {
@@ -4756,7 +4834,7 @@ public final class PremiumMADDataModel {
           return this;
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public Builder addTags(
             java.lang.String value) {
@@ -4769,7 +4847,7 @@ public final class PremiumMADDataModel {
           return this;
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public Builder addAllTags(
             java.lang.Iterable<java.lang.String> values) {
@@ -4780,16 +4858,16 @@ public final class PremiumMADDataModel {
           return this;
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public Builder clearTags() {
           tags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x40000000);
+          bitField0_ = (bitField0_ & ~0x80000000);
           onChanged();
           return this;
         }
         /**
-         * <code>repeated string tags = 31;</code>
+         * <code>repeated string tags = 32;</code>
          */
         public Builder addTagsBytes(
             com.google.protobuf.ByteString value) {
@@ -4804,13 +4882,13 @@ public final class PremiumMADDataModel {
 
         private java.lang.Object adspacekey_ = "";
         /**
-         * <code>optional string adspacekey = 32;</code>
+         * <code>optional string adspacekey = 33;</code>
          */
         public boolean hasAdspacekey() {
-          return ((bitField0_ & 0x80000000) == 0x80000000);
+          return ((bitField1_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>optional string adspacekey = 32;</code>
+         * <code>optional string adspacekey = 33;</code>
          */
         public java.lang.String getAdspacekey() {
           java.lang.Object ref = adspacekey_;
@@ -4827,7 +4905,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string adspacekey = 32;</code>
+         * <code>optional string adspacekey = 33;</code>
          */
         public com.google.protobuf.ByteString
             getAdspacekeyBytes() {
@@ -4843,36 +4921,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string adspacekey = 32;</code>
+         * <code>optional string adspacekey = 33;</code>
          */
         public Builder setAdspacekey(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000001;
           adspacekey_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string adspacekey = 32;</code>
+         * <code>optional string adspacekey = 33;</code>
          */
         public Builder clearAdspacekey() {
-          bitField0_ = (bitField0_ & ~0x80000000);
+          bitField1_ = (bitField1_ & ~0x00000001);
           adspacekey_ = getDefaultInstance().getAdspacekey();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string adspacekey = 32;</code>
+         * <code>optional string adspacekey = 33;</code>
          */
         public Builder setAdspacekeyBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000001;
           adspacekey_ = value;
           onChanged();
           return this;
@@ -4880,31 +4958,31 @@ public final class PremiumMADDataModel {
 
         private int test_ ;
         /**
-         * <code>optional int32 test = 33;</code>
+         * <code>optional int32 test = 34;</code>
          */
         public boolean hasTest() {
-          return ((bitField1_ & 0x00000001) == 0x00000001);
+          return ((bitField1_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>optional int32 test = 33;</code>
+         * <code>optional int32 test = 34;</code>
          */
         public int getTest() {
           return test_;
         }
         /**
-         * <code>optional int32 test = 33;</code>
+         * <code>optional int32 test = 34;</code>
          */
         public Builder setTest(int value) {
-          bitField1_ |= 0x00000001;
+          bitField1_ |= 0x00000002;
           test_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 test = 33;</code>
+         * <code>optional int32 test = 34;</code>
          */
         public Builder clearTest() {
-          bitField1_ = (bitField1_ & ~0x00000001);
+          bitField1_ = (bitField1_ & ~0x00000002);
           test_ = 0;
           onChanged();
           return this;
@@ -4912,31 +4990,31 @@ public final class PremiumMADDataModel {
 
         private int bidfloor_ ;
         /**
-         * <code>optional int32 bidfloor = 34;</code>
+         * <code>optional int32 bidfloor = 35;</code>
          */
         public boolean hasBidfloor() {
-          return ((bitField1_ & 0x00000002) == 0x00000002);
+          return ((bitField1_ & 0x00000004) == 0x00000004);
         }
         /**
-         * <code>optional int32 bidfloor = 34;</code>
+         * <code>optional int32 bidfloor = 35;</code>
          */
         public int getBidfloor() {
           return bidfloor_;
         }
         /**
-         * <code>optional int32 bidfloor = 34;</code>
+         * <code>optional int32 bidfloor = 35;</code>
          */
         public Builder setBidfloor(int value) {
-          bitField1_ |= 0x00000002;
+          bitField1_ |= 0x00000004;
           bidfloor_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 bidfloor = 34;</code>
+         * <code>optional int32 bidfloor = 35;</code>
          */
         public Builder clearBidfloor() {
-          bitField1_ = (bitField1_ & ~0x00000002);
+          bitField1_ = (bitField1_ & ~0x00000004);
           bidfloor_ = 0;
           onChanged();
           return this;
@@ -4944,31 +5022,31 @@ public final class PremiumMADDataModel {
 
         private int bidtype_ ;
         /**
-         * <code>optional int32 bidtype = 35;</code>
+         * <code>optional int32 bidtype = 36;</code>
          */
         public boolean hasBidtype() {
-          return ((bitField1_ & 0x00000004) == 0x00000004);
+          return ((bitField1_ & 0x00000008) == 0x00000008);
         }
         /**
-         * <code>optional int32 bidtype = 35;</code>
+         * <code>optional int32 bidtype = 36;</code>
          */
         public int getBidtype() {
           return bidtype_;
         }
         /**
-         * <code>optional int32 bidtype = 35;</code>
+         * <code>optional int32 bidtype = 36;</code>
          */
         public Builder setBidtype(int value) {
-          bitField1_ |= 0x00000004;
+          bitField1_ |= 0x00000008;
           bidtype_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 bidtype = 35;</code>
+         * <code>optional int32 bidtype = 36;</code>
          */
         public Builder clearBidtype() {
-          bitField1_ = (bitField1_ & ~0x00000004);
+          bitField1_ = (bitField1_ & ~0x00000008);
           bidtype_ = 0;
           onChanged();
           return this;
@@ -4976,13 +5054,13 @@ public final class PremiumMADDataModel {
 
         private java.lang.Object location_ = "";
         /**
-         * <code>optional string location = 36;</code>
+         * <code>optional string location = 37;</code>
          */
         public boolean hasLocation() {
-          return ((bitField1_ & 0x00000008) == 0x00000008);
+          return ((bitField1_ & 0x00000010) == 0x00000010);
         }
         /**
-         * <code>optional string location = 36;</code>
+         * <code>optional string location = 37;</code>
          */
         public java.lang.String getLocation() {
           java.lang.Object ref = location_;
@@ -4999,7 +5077,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string location = 36;</code>
+         * <code>optional string location = 37;</code>
          */
         public com.google.protobuf.ByteString
             getLocationBytes() {
@@ -5015,36 +5093,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string location = 36;</code>
+         * <code>optional string location = 37;</code>
          */
         public Builder setLocation(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000008;
+  bitField1_ |= 0x00000010;
           location_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string location = 36;</code>
+         * <code>optional string location = 37;</code>
          */
         public Builder clearLocation() {
-          bitField1_ = (bitField1_ & ~0x00000008);
+          bitField1_ = (bitField1_ & ~0x00000010);
           location_ = getDefaultInstance().getLocation();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string location = 36;</code>
+         * <code>optional string location = 37;</code>
          */
         public Builder setLocationBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000008;
+  bitField1_ |= 0x00000010;
           location_ = value;
           onChanged();
           return this;
@@ -7445,43 +7523,43 @@ public final class PremiumMADDataModel {
       return status_;
     }
 
-    public static final int REQUEST_FIELD_NUMBER = 6;
+    public static final int REQUEST_FIELD_NUMBER = 11;
     private com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest request_;
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     public boolean hasRequest() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest getRequest() {
       return request_;
     }
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequestOrBuilder getRequestOrBuilder() {
       return request_;
     }
 
-    public static final int RESPONSE_FIELD_NUMBER = 7;
+    public static final int RESPONSE_FIELD_NUMBER = 12;
     private com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse response_;
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     public boolean hasResponse() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse getResponse() {
       return response_;
     }
     /**
-     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+     * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponseOrBuilder getResponseOrBuilder() {
       return response_;
@@ -7525,10 +7603,10 @@ public final class PremiumMADDataModel {
         output.writeInt32(5, status_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(6, request_);
+        output.writeMessage(11, request_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeMessage(7, response_);
+        output.writeMessage(12, response_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -7561,11 +7639,11 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, request_);
+          .computeMessageSize(11, request_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, response_);
+          .computeMessageSize(12, response_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -8138,13 +8216,13 @@ public final class PremiumMADDataModel {
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequestOrBuilder> requestBuilder_;
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public boolean hasRequest() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest getRequest() {
         if (requestBuilder_ == null) {
@@ -8154,7 +8232,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public Builder setRequest(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest value) {
         if (requestBuilder_ == null) {
@@ -8170,7 +8248,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public Builder setRequest(
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder builderForValue) {
@@ -8184,7 +8262,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public Builder mergeRequest(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest value) {
         if (requestBuilder_ == null) {
@@ -8203,7 +8281,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public Builder clearRequest() {
         if (requestBuilder_ == null) {
@@ -8216,7 +8294,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder getRequestBuilder() {
         bitField0_ |= 0x00000020;
@@ -8224,7 +8302,7 @@ public final class PremiumMADDataModel {
         return getRequestFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequestOrBuilder getRequestOrBuilder() {
         if (requestBuilder_ != null) {
@@ -8234,7 +8312,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 6;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequestOrBuilder> 
@@ -8254,13 +8332,13 @@ public final class PremiumMADDataModel {
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponseOrBuilder> responseBuilder_;
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public boolean hasResponse() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse getResponse() {
         if (responseBuilder_ == null) {
@@ -8270,7 +8348,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public Builder setResponse(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse value) {
         if (responseBuilder_ == null) {
@@ -8286,7 +8364,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public Builder setResponse(
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder builderForValue) {
@@ -8300,7 +8378,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public Builder mergeResponse(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse value) {
         if (responseBuilder_ == null) {
@@ -8319,7 +8397,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
@@ -8332,7 +8410,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder getResponseBuilder() {
         bitField0_ |= 0x00000040;
@@ -8340,7 +8418,7 @@ public final class PremiumMADDataModel {
         return getResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
@@ -8350,7 +8428,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 7;</code>
+       * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponseOrBuilder> 
@@ -9402,6 +9480,42 @@ public final class PremiumMADDataModel {
      * <code>optional int64 plcmtid = 7;</code>
      */
     long getPlcmtid();
+
+    /**
+     * <code>optional int64 policyid = 8;</code>
+     */
+    boolean hasPolicyid();
+    /**
+     * <code>optional int64 policyid = 8;</code>
+     */
+    long getPolicyid();
+
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    boolean hasDspid();
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    long getDspid();
+
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    boolean hasIncome();
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    int getIncome();
+
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    boolean hasCost();
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    int getCost();
   }
   /**
    * Protobuf type {@code com.madhouse.ssp.ImpressionTrack}
@@ -9491,6 +9605,26 @@ public final class PremiumMADDataModel {
             case 56: {
               bitField0_ |= 0x00000040;
               plcmtid_ = input.readInt64();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              policyid_ = input.readInt64();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              dspid_ = input.readInt64();
+              break;
+            }
+            case 168: {
+              bitField0_ |= 0x00000200;
+              income_ = input.readInt32();
+              break;
+            }
+            case 176: {
+              bitField0_ |= 0x00000400;
+              cost_ = input.readInt32();
               break;
             }
           }
@@ -9719,6 +9853,66 @@ public final class PremiumMADDataModel {
       return plcmtid_;
     }
 
+    public static final int POLICYID_FIELD_NUMBER = 8;
+    private long policyid_;
+    /**
+     * <code>optional int64 policyid = 8;</code>
+     */
+    public boolean hasPolicyid() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional int64 policyid = 8;</code>
+     */
+    public long getPolicyid() {
+      return policyid_;
+    }
+
+    public static final int DSPID_FIELD_NUMBER = 9;
+    private long dspid_;
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    public boolean hasDspid() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    public long getDspid() {
+      return dspid_;
+    }
+
+    public static final int INCOME_FIELD_NUMBER = 21;
+    private int income_;
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    public boolean hasIncome() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    public int getIncome() {
+      return income_;
+    }
+
+    public static final int COST_FIELD_NUMBER = 22;
+    private int cost_;
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    public boolean hasCost() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    public int getCost() {
+      return cost_;
+    }
+
     private void initFields() {
       time_ = 0L;
       ua_ = "";
@@ -9727,6 +9921,10 @@ public final class PremiumMADDataModel {
       impid_ = "";
       mid_ = 0L;
       plcmtid_ = 0L;
+      policyid_ = 0L;
+      dspid_ = 0L;
+      income_ = 0;
+      cost_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9761,6 +9959,18 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt64(7, plcmtid_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeInt64(8, policyid_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeInt64(9, dspid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeInt32(21, income_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeInt32(22, cost_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -9798,6 +10008,22 @@ public final class PremiumMADDataModel {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(7, plcmtid_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(8, policyid_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(9, dspid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(21, income_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(22, cost_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9930,6 +10156,14 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000020);
         plcmtid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
+        policyid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        dspid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        income_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        cost_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -9986,6 +10220,22 @@ public final class PremiumMADDataModel {
           to_bitField0_ |= 0x00000040;
         }
         result.plcmtid_ = plcmtid_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.policyid_ = policyid_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.dspid_ = dspid_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.income_ = income_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.cost_ = cost_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10028,6 +10278,18 @@ public final class PremiumMADDataModel {
         }
         if (other.hasPlcmtid()) {
           setPlcmtid(other.getPlcmtid());
+        }
+        if (other.hasPolicyid()) {
+          setPolicyid(other.getPolicyid());
+        }
+        if (other.hasDspid()) {
+          setDspid(other.getDspid());
+        }
+        if (other.hasIncome()) {
+          setIncome(other.getIncome());
+        }
+        if (other.hasCost()) {
+          setCost(other.getCost());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -10412,6 +10674,134 @@ public final class PremiumMADDataModel {
         return this;
       }
 
+      private long policyid_ ;
+      /**
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public boolean hasPolicyid() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public long getPolicyid() {
+        return policyid_;
+      }
+      /**
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public Builder setPolicyid(long value) {
+        bitField0_ |= 0x00000080;
+        policyid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public Builder clearPolicyid() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        policyid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long dspid_ ;
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public boolean hasDspid() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public long getDspid() {
+        return dspid_;
+      }
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public Builder setDspid(long value) {
+        bitField0_ |= 0x00000100;
+        dspid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public Builder clearDspid() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        dspid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int income_ ;
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public boolean hasIncome() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public int getIncome() {
+        return income_;
+      }
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public Builder setIncome(int value) {
+        bitField0_ |= 0x00000200;
+        income_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public Builder clearIncome() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        income_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int cost_ ;
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public boolean hasCost() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public int getCost() {
+        return cost_;
+      }
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public Builder setCost(int value) {
+        bitField0_ |= 0x00000400;
+        cost_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public Builder clearCost() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        cost_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.ImpressionTrack)
     }
 
@@ -10506,18 +10896,54 @@ public final class PremiumMADDataModel {
     long getPlcmtid();
 
     /**
-     * <code>optional string url = 8;</code>
+     * <code>optional int64 policyid = 8;</code>
+     */
+    boolean hasPolicyid();
+    /**
+     * <code>optional int64 policyid = 8;</code>
+     */
+    long getPolicyid();
+
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    boolean hasDspid();
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    long getDspid();
+
+    /**
+     * <code>optional string url = 10;</code>
      */
     boolean hasUrl();
     /**
-     * <code>optional string url = 8;</code>
+     * <code>optional string url = 10;</code>
      */
     java.lang.String getUrl();
     /**
-     * <code>optional string url = 8;</code>
+     * <code>optional string url = 10;</code>
      */
     com.google.protobuf.ByteString
         getUrlBytes();
+
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    boolean hasIncome();
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    int getIncome();
+
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    boolean hasCost();
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    int getCost();
   }
   /**
    * Protobuf type {@code com.madhouse.ssp.ClickTrack}
@@ -10609,10 +11035,30 @@ public final class PremiumMADDataModel {
               plcmtid_ = input.readInt64();
               break;
             }
-            case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 64: {
               bitField0_ |= 0x00000080;
+              policyid_ = input.readInt64();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              dspid_ = input.readInt64();
+              break;
+            }
+            case 82: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000200;
               url_ = bs;
+              break;
+            }
+            case 168: {
+              bitField0_ |= 0x00000400;
+              income_ = input.readInt32();
+              break;
+            }
+            case 176: {
+              bitField0_ |= 0x00000800;
+              cost_ = input.readInt32();
               break;
             }
           }
@@ -10841,16 +11287,46 @@ public final class PremiumMADDataModel {
       return plcmtid_;
     }
 
-    public static final int URL_FIELD_NUMBER = 8;
-    private java.lang.Object url_;
+    public static final int POLICYID_FIELD_NUMBER = 8;
+    private long policyid_;
     /**
-     * <code>optional string url = 8;</code>
+     * <code>optional int64 policyid = 8;</code>
      */
-    public boolean hasUrl() {
+    public boolean hasPolicyid() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional string url = 8;</code>
+     * <code>optional int64 policyid = 8;</code>
+     */
+    public long getPolicyid() {
+      return policyid_;
+    }
+
+    public static final int DSPID_FIELD_NUMBER = 9;
+    private long dspid_;
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    public boolean hasDspid() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional int64 dspid = 9;</code>
+     */
+    public long getDspid() {
+      return dspid_;
+    }
+
+    public static final int URL_FIELD_NUMBER = 10;
+    private java.lang.Object url_;
+    /**
+     * <code>optional string url = 10;</code>
+     */
+    public boolean hasUrl() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional string url = 10;</code>
      */
     public java.lang.String getUrl() {
       java.lang.Object ref = url_;
@@ -10867,7 +11343,7 @@ public final class PremiumMADDataModel {
       }
     }
     /**
-     * <code>optional string url = 8;</code>
+     * <code>optional string url = 10;</code>
      */
     public com.google.protobuf.ByteString
         getUrlBytes() {
@@ -10883,6 +11359,36 @@ public final class PremiumMADDataModel {
       }
     }
 
+    public static final int INCOME_FIELD_NUMBER = 21;
+    private int income_;
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    public boolean hasIncome() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional int32 income = 21;</code>
+     */
+    public int getIncome() {
+      return income_;
+    }
+
+    public static final int COST_FIELD_NUMBER = 22;
+    private int cost_;
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    public boolean hasCost() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional int32 cost = 22;</code>
+     */
+    public int getCost() {
+      return cost_;
+    }
+
     private void initFields() {
       time_ = 0L;
       ua_ = "";
@@ -10891,7 +11397,11 @@ public final class PremiumMADDataModel {
       impid_ = "";
       mid_ = 0L;
       plcmtid_ = 0L;
+      policyid_ = 0L;
+      dspid_ = 0L;
       url_ = "";
+      income_ = 0;
+      cost_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -10928,7 +11438,19 @@ public final class PremiumMADDataModel {
         output.writeInt64(7, plcmtid_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeBytes(8, getUrlBytes());
+        output.writeInt64(8, policyid_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeInt64(9, dspid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(10, getUrlBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeInt32(21, income_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeInt32(22, cost_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -10969,7 +11491,23 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, getUrlBytes());
+          .computeInt64Size(8, policyid_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(9, dspid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(10, getUrlBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(21, income_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(22, cost_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -11102,8 +11640,16 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000020);
         plcmtid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000040);
-        url_ = "";
+        policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
+        dspid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        url_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        income_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        cost_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -11163,7 +11709,23 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
+        result.policyid_ = policyid_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.dspid_ = dspid_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
         result.url_ = url_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.income_ = income_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.cost_ = cost_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -11207,10 +11769,22 @@ public final class PremiumMADDataModel {
         if (other.hasPlcmtid()) {
           setPlcmtid(other.getPlcmtid());
         }
+        if (other.hasPolicyid()) {
+          setPolicyid(other.getPolicyid());
+        }
+        if (other.hasDspid()) {
+          setDspid(other.getDspid());
+        }
         if (other.hasUrl()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000200;
           url_ = other.url_;
           onChanged();
+        }
+        if (other.hasIncome()) {
+          setIncome(other.getIncome());
+        }
+        if (other.hasCost()) {
+          setCost(other.getCost());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -11595,15 +12169,79 @@ public final class PremiumMADDataModel {
         return this;
       }
 
-      private java.lang.Object url_ = "";
+      private long policyid_ ;
       /**
-       * <code>optional string url = 8;</code>
+       * <code>optional int64 policyid = 8;</code>
        */
-      public boolean hasUrl() {
+      public boolean hasPolicyid() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional string url = 8;</code>
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public long getPolicyid() {
+        return policyid_;
+      }
+      /**
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public Builder setPolicyid(long value) {
+        bitField0_ |= 0x00000080;
+        policyid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 policyid = 8;</code>
+       */
+      public Builder clearPolicyid() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        policyid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long dspid_ ;
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public boolean hasDspid() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public long getDspid() {
+        return dspid_;
+      }
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public Builder setDspid(long value) {
+        bitField0_ |= 0x00000100;
+        dspid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 dspid = 9;</code>
+       */
+      public Builder clearDspid() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        dspid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object url_ = "";
+      /**
+       * <code>optional string url = 10;</code>
+       */
+      public boolean hasUrl() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string url = 10;</code>
        */
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
@@ -11620,7 +12258,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string url = 8;</code>
+       * <code>optional string url = 10;</code>
        */
       public com.google.protobuf.ByteString
           getUrlBytes() {
@@ -11636,37 +12274,101 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string url = 8;</code>
+       * <code>optional string url = 10;</code>
        */
       public Builder setUrl(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000200;
         url_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string url = 8;</code>
+       * <code>optional string url = 10;</code>
        */
       public Builder clearUrl() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000200);
         url_ = getDefaultInstance().getUrl();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string url = 8;</code>
+       * <code>optional string url = 10;</code>
        */
       public Builder setUrlBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000200;
         url_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int income_ ;
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public boolean hasIncome() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public int getIncome() {
+        return income_;
+      }
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public Builder setIncome(int value) {
+        bitField0_ |= 0x00000400;
+        income_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 income = 21;</code>
+       */
+      public Builder clearIncome() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        income_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int cost_ ;
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public boolean hasCost() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public int getCost() {
+        return cost_;
+      }
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public Builder setCost(int value) {
+        bitField0_ |= 0x00000800;
+        cost_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 cost = 22;</code>
+       */
+      public Builder clearCost() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        cost_ = 0;
         onChanged();
         return this;
       }
@@ -11732,28 +12434,28 @@ public final class PremiumMADDataModel {
     int getStatus();
 
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     boolean hasRequest();
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest getRequest();
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder getRequestOrBuilder();
 
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     boolean hasResponse();
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse getResponse();
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder getResponseOrBuilder();
   }
@@ -11834,7 +12536,7 @@ public final class PremiumMADDataModel {
               status_ = input.readInt32();
               break;
             }
-            case 50: {
+            case 90: {
               com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder subBuilder = null;
               if (((bitField0_ & 0x00000020) == 0x00000020)) {
                 subBuilder = request_.toBuilder();
@@ -11847,7 +12549,7 @@ public final class PremiumMADDataModel {
               bitField0_ |= 0x00000020;
               break;
             }
-            case 58: {
+            case 98: {
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder subBuilder = null;
               if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 subBuilder = response_.toBuilder();
@@ -11975,43 +12677,43 @@ public final class PremiumMADDataModel {
       return status_;
     }
 
-    public static final int REQUEST_FIELD_NUMBER = 6;
+    public static final int REQUEST_FIELD_NUMBER = 11;
     private com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest request_;
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     public boolean hasRequest() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest getRequest() {
       return request_;
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder getRequestOrBuilder() {
       return request_;
     }
 
-    public static final int RESPONSE_FIELD_NUMBER = 7;
+    public static final int RESPONSE_FIELD_NUMBER = 12;
     private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse response_;
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     public boolean hasResponse() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse getResponse() {
       return response_;
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder getResponseOrBuilder() {
       return response_;
@@ -12055,10 +12757,10 @@ public final class PremiumMADDataModel {
         output.writeInt32(5, status_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(6, request_);
+        output.writeMessage(11, request_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeMessage(7, response_);
+        output.writeMessage(12, response_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -12091,11 +12793,11 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, request_);
+          .computeMessageSize(11, request_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, response_);
+          .computeMessageSize(12, response_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -12530,13 +13232,13 @@ public final class PremiumMADDataModel {
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder> requestBuilder_;
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public boolean hasRequest() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest getRequest() {
         if (requestBuilder_ == null) {
@@ -12546,7 +13248,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public Builder setRequest(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest value) {
         if (requestBuilder_ == null) {
@@ -12562,7 +13264,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public Builder setRequest(
           com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder builderForValue) {
@@ -12576,7 +13278,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public Builder mergeRequest(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest value) {
         if (requestBuilder_ == null) {
@@ -12595,7 +13297,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public Builder clearRequest() {
         if (requestBuilder_ == null) {
@@ -12608,7 +13310,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder getRequestBuilder() {
         bitField0_ |= 0x00000020;
@@ -12616,7 +13318,7 @@ public final class PremiumMADDataModel {
         return getRequestFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder getRequestOrBuilder() {
         if (requestBuilder_ != null) {
@@ -12626,7 +13328,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 6;</code>
+       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder> 
@@ -12646,13 +13348,13 @@ public final class PremiumMADDataModel {
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder> responseBuilder_;
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public boolean hasResponse() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse getResponse() {
         if (responseBuilder_ == null) {
@@ -12662,7 +13364,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public Builder setResponse(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse value) {
         if (responseBuilder_ == null) {
@@ -12678,7 +13380,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public Builder setResponse(
           com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder builderForValue) {
@@ -12692,7 +13394,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public Builder mergeResponse(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse value) {
         if (responseBuilder_ == null) {
@@ -12711,7 +13413,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
@@ -12724,7 +13426,7 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder getResponseBuilder() {
         bitField0_ |= 0x00000040;
@@ -12732,7 +13434,7 @@ public final class PremiumMADDataModel {
         return getResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
@@ -12742,7 +13444,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 7;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder> 
@@ -12814,46 +13516,49 @@ public final class PremiumMADDataModel {
   static {
     java.lang.String[] descriptorData = {
       "\n\031PremiumMADDataModel.proto\022\020com.madhous" +
-      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\316\007\n\010M" +
+      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\333\007\n\010M" +
       "ediaBid\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030" +
       "\003 \001(\t\022\r\n\005impid\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\0228\n\007" +
-      "request\030\006 \001(\0132\'.com.madhouse.ssp.MediaBi" +
-      "d.MediaRequest\022:\n\010response\030\007 \001(\0132(.com.m" +
-      "adhouse.ssp.MediaBid.MediaResponse\032\254\004\n\014M" +
+      "request\030\013 \001(\0132\'.com.madhouse.ssp.MediaBi" +
+      "d.MediaRequest\022:\n\010response\030\014 \001(\0132(.com.m" +
+      "adhouse.ssp.MediaBid.MediaResponse\032\271\004\n\014M" +
       "ediaRequest\022\013\n\003bid\030\001 \001(\t\022\013\n\003mid\030\002 \001(\003\022\014\n" +
       "\004mcat\030\003 \001(\005\022\r\n\005mtype\030\004 \001(\005\022\016\n\006bundle\030\005 \001" +
-      "(\t\022\017\n\007pkgname\030\006 \001(\t\022\017\n\007plcmtid\030\007 \001(\003\022\016\n\006",
-      "adtype\030\010 \001(\005\022\t\n\001w\030\t \001(\005\022\t\n\001h\030\n \001(\005\022\013\n\003di" +
-      "d\030\013 \001(\t\022\016\n\006didmd5\030\014 \001(\t\022\014\n\004dpid\030\r \001(\t\022\017\n" +
-      "\007dpidmd5\030\016 \001(\t\022\013\n\003mac\030\017 \001(\t\022\016\n\006macmd5\030\020 " +
-      "\001(\t\022\013\n\003ifa\030\021 \001(\t\022\017\n\007carrier\030\022 \001(\005\022\026\n\016con" +
-      "nectiontype\030\023 \001(\005\022\022\n\ndevicetype\030\024 \001(\005\022\013\n" +
-      "\003lon\030\025 \001(\002\022\013\n\003lat\030\026 \001(\002\022\n\n\002ip\030\027 \001(\t\022\n\n\002u" +
-      "a\030\030 \001(\t\022\n\n\002os\030\031 \001(\t\022\013\n\003osv\030\032 \001(\t\022\014\n\004make" +
-      "\030\033 \001(\t\022\r\n\005model\030\034 \001(\t\022\014\n\004cell\030\035 \001(\t\022\017\n\007c" +
-      "ellmd5\030\036 \001(\t\022\014\n\004tags\030\037 \003(\t\022\022\n\nadspacekey" +
-      "\030  \001(\t\022\014\n\004test\030! \001(\005\022\020\n\010bidfloor\030\" \001(\005\022\017",
-      "\n\007bidtype\030# \001(\005\022\020\n\010location\030$ \001(\t\032\327\001\n\rMe" +
-      "diaResponse\022\r\n\005dspid\030\001 \001(\003\022\r\n\005admid\030\002 \001(" +
-      "\t\022\014\n\004icon\030\003 \001(\t\022\r\n\005cover\030\004 \001(\t\022\r\n\005title\030" +
-      "\005 \001(\t\022\014\n\004desc\030\006 \001(\t\022\020\n\010duration\030\007 \001(\005\022\013\n" +
-      "\003adm\030\010 \003(\t\022\016\n\006lpgurl\030\t \001(\t\022\017\n\007acttype\030\n " +
-      "\001(\005\022\016\n\006impurl\030\013 \003(\t\022\016\n\006clkurl\030\014 \003(\t\022\016\n\006s" +
-      "ecurl\030\r \003(\t\"t\n\tWinNotice\022\014\n\004time\030\001 \001(\003\022\016" +
-      "\n\006status\030\002 \001(\005\022\r\n\005dspid\030\003 \001(\003\022\r\n\005impid\030\004" +
-      " \001(\t\022\013\n\003mid\030\005 \001(\003\022\017\n\007plcmtid\030\006 \001(\003\022\r\n\005pr" +
-      "ice\030\007 \001(\005\"t\n\017ImpressionTrack\022\014\n\004time\030\001 \001",
-      "(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001" +
-      "(\005\022\r\n\005impid\030\005 \001(\t\022\013\n\003mid\030\006 \001(\003\022\017\n\007plcmti" +
-      "d\030\007 \001(\003\"|\n\nClickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002u" +
-      "a\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005i" +
-      "mpid\030\005 \001(\t\022\013\n\003mid\030\006 \001(\003\022\017\n\007plcmtid\030\007 \001(\003" +
-      "\022\013\n\003url\030\010 \001(\t\"\274\001\n\006DSPBid\022\014\n\004time\030\001 \001(\003\022\r" +
-      "\n\005dspid\030\002 \001(\003\022\020\n\010policyid\030\003 \001(\003\022\023\n\013tradi" +
-      "ngtype\030\004 \001(\005\022\016\n\006status\030\005 \001(\005\022-\n\007request\030" +
-      "\006 \001(\0132\034.com.madhouse.rtb.BidRequest\022/\n\010r" +
-      "esponse\030\007 \001(\0132\035.com.madhouse.rtb.BidResp",
-      "onse"
+      "(\t\022\014\n\004name\030\006 \001(\t\022\017\n\007plcmtid\030\007 \001(\003\022\016\n\006adt",
+      "ype\030\010 \001(\005\022\t\n\001w\030\t \001(\005\022\t\n\001h\030\n \001(\005\022\013\n\003did\030\013" +
+      " \001(\t\022\016\n\006didmd5\030\014 \001(\t\022\014\n\004dpid\030\r \001(\t\022\017\n\007dp" +
+      "idmd5\030\016 \001(\t\022\013\n\003mac\030\017 \001(\t\022\016\n\006macmd5\030\020 \001(\t" +
+      "\022\013\n\003ifa\030\021 \001(\t\022\017\n\007carrier\030\022 \001(\005\022\026\n\016connec" +
+      "tiontype\030\023 \001(\005\022\022\n\ndevicetype\030\024 \001(\005\022\016\n\006de" +
+      "alid\030\025 \001(\t\022\013\n\003lon\030\026 \001(\002\022\013\n\003lat\030\027 \001(\002\022\n\n\002" +
+      "os\030\030 \001(\005\022\013\n\003osv\030\031 \001(\t\022\n\n\002ip\030\032 \001(\t\022\n\n\002ua\030" +
+      "\033 \001(\t\022\014\n\004make\030\034 \001(\t\022\r\n\005model\030\035 \001(\t\022\014\n\004ce" +
+      "ll\030\036 \001(\t\022\017\n\007cellmd5\030\037 \001(\t\022\014\n\004tags\030  \003(\t\022" +
+      "\022\n\nadspacekey\030! \001(\t\022\014\n\004test\030\" \001(\005\022\020\n\010bid",
+      "floor\030# \001(\005\022\017\n\007bidtype\030$ \001(\005\022\020\n\010location" +
+      "\030% \001(\t\032\327\001\n\rMediaResponse\022\r\n\005dspid\030\001 \001(\003\022" +
+      "\r\n\005admid\030\002 \001(\t\022\014\n\004icon\030\003 \001(\t\022\r\n\005cover\030\004 " +
+      "\001(\t\022\r\n\005title\030\005 \001(\t\022\014\n\004desc\030\006 \001(\t\022\020\n\010dura" +
+      "tion\030\007 \001(\005\022\013\n\003adm\030\010 \003(\t\022\016\n\006lpgurl\030\t \001(\t\022" +
+      "\017\n\007acttype\030\n \001(\005\022\016\n\006impurl\030\013 \003(\t\022\016\n\006clku" +
+      "rl\030\014 \003(\t\022\016\n\006securl\030\r \003(\t\"t\n\tWinNotice\022\014\n" +
+      "\004time\030\001 \001(\003\022\016\n\006status\030\002 \001(\005\022\r\n\005dspid\030\003 \001" +
+      "(\003\022\r\n\005impid\030\004 \001(\t\022\013\n\003mid\030\005 \001(\003\022\017\n\007plcmti" +
+      "d\030\006 \001(\003\022\r\n\005price\030\007 \001(\005\"\263\001\n\017ImpressionTra",
+      "ck\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t" +
+      "\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\013\n\003mid\030\006" +
+      " \001(\003\022\017\n\007plcmtid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022" +
+      "\r\n\005dspid\030\t \001(\003\022\016\n\006income\030\025 \001(\005\022\014\n\004cost\030\026" +
+      " \001(\005\"\273\001\n\nClickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030" +
+      "\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005imp" +
+      "id\030\005 \001(\t\022\013\n\003mid\030\006 \001(\003\022\017\n\007plcmtid\030\007 \001(\003\022\020" +
+      "\n\010policyid\030\010 \001(\003\022\r\n\005dspid\030\t \001(\003\022\013\n\003url\030\n" +
+      " \001(\t\022\016\n\006income\030\025 \001(\005\022\014\n\004cost\030\026 \001(\005\"\274\001\n\006D" +
+      "SPBid\022\014\n\004time\030\001 \001(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010po",
+      "licyid\030\003 \001(\003\022\023\n\013tradingtype\030\004 \001(\005\022\016\n\006sta" +
+      "tus\030\005 \001(\005\022-\n\007request\030\013 \001(\0132\034.com.madhous" +
+      "e.rtb.BidRequest\022/\n\010response\030\014 \001(\0132\035.com" +
+      ".madhouse.rtb.BidResponse"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12879,7 +13584,7 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_MediaBid_MediaRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_MediaBid_MediaRequest_descriptor,
-        new java.lang.String[] { "Bid", "Mid", "Mcat", "Mtype", "Bundle", "Pkgname", "Plcmtid", "Adtype", "W", "H", "Did", "Didmd5", "Dpid", "Dpidmd5", "Mac", "Macmd5", "Ifa", "Carrier", "Connectiontype", "Devicetype", "Lon", "Lat", "Ip", "Ua", "Os", "Osv", "Make", "Model", "Cell", "Cellmd5", "Tags", "Adspacekey", "Test", "Bidfloor", "Bidtype", "Location", });
+        new java.lang.String[] { "Bid", "Mid", "Mcat", "Mtype", "Bundle", "Name", "Plcmtid", "Adtype", "W", "H", "Did", "Didmd5", "Dpid", "Dpidmd5", "Mac", "Macmd5", "Ifa", "Carrier", "Connectiontype", "Devicetype", "Dealid", "Lon", "Lat", "Os", "Osv", "Ip", "Ua", "Make", "Model", "Cell", "Cellmd5", "Tags", "Adspacekey", "Test", "Bidfloor", "Bidtype", "Location", });
     internal_static_com_madhouse_ssp_MediaBid_MediaResponse_descriptor =
       internal_static_com_madhouse_ssp_MediaBid_descriptor.getNestedTypes().get(1);
     internal_static_com_madhouse_ssp_MediaBid_MediaResponse_fieldAccessorTable = new
@@ -12897,13 +13602,13 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_ImpressionTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_ImpressionTrack_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Policyid", "Dspid", "Income", "Cost", });
     internal_static_com_madhouse_ssp_ClickTrack_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_com_madhouse_ssp_ClickTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_ClickTrack_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Url", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Policyid", "Dspid", "Url", "Income", "Cost", });
     internal_static_com_madhouse_ssp_DSPBid_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_com_madhouse_ssp_DSPBid_fieldAccessorTable = new
