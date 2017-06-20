@@ -28,12 +28,11 @@ message BidRequest
             Video video = 3;
             Native native = 4;
         }
-        
-        optional int32 instl = 5;
-        optional PMP pmp = 6;
-        optional string tagid = 7;
-        optional int32 bidfloor = 8;
-        optional int32 bidtype = 9;
+
+        optional PMP pmp = 5;
+        optional string tagid = 6;
+        optional int32 bidfloor = 7;
+        optional int32 bidtype = 8;
         
         message Banner
         {
