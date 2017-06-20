@@ -272,9 +272,10 @@ message BidResponse
                     
                     message Image
                     {
-                        optional int32 w = 1;
-                        optional int32 h = 2;
-                        repeated string url = 3;
+						optional int32 type = 1;
+                        optional int32 w = 2;
+                        optional int32 h = 3;
+                        repeated string url = 4;
                     }
                     
                     message Video
