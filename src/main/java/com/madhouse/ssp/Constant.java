@@ -1,6 +1,8 @@
 package com.madhouse.ssp;
 
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 /**
  * Created by WUJUNFENG on 2017/5/22.
  */
@@ -43,17 +45,15 @@ public final class Constant {
 
     public static final class PlcmtType {
         public static final int BANNER = 1;
-        public static final int INSTL = 2;
-        public static final int SPLASH = 3;
-        public static final int VIDEO = 11;
-        public static final int NATIVE = 21;
+        public static final int VIDEO = 2;
+        public static final int NATIVE = 3;
     }
 
     public static final class NativeLayout {
-        public static final int PIC_1 = 501;
-        public static final int PIC_2 = 502;
-        public static final int PIC_3 = 503;
-        public static final int VIDEO = 511;
+        public static final int PIC_1 = 301;
+        public static final int PIC_2 = 302;
+        public static final int PIC_3 = 303;
+        public static final int VIDEO = 311;
     }
 
     public static final class NativeImageType {
@@ -95,16 +95,20 @@ public final class Constant {
         public static final int ETHERNET = 11;
     }
 
+    public static final class OSType {
+        public static final int UNKNOWN = 0;
+        public static final int ANDROID = 1;
+        public static final int IOS = 2;
+        public static final int WINDOWS_PHONE = 3;
+    }
+
     public static final class DeviceType {
-        public static final int ANDROID_PHONE = 1;
-        public static final int ANDROID_PAD = 2;
-        public static final int IPHONE = 3;
-        public static final int IPAD = 4;
-        public static final int WINDOWS_PHONE = 5;
-        public static final int WINDOWS_PAD = 6;
-        public static final int COMPUTER = 51;
-        public static final int TV = 52;
-        public static final int BOX = 53;
+        public static final int UNKNOWN = 0;
+        public static final int PHONE = 1;
+        public static final int PAD = 2;
+        public static final int BOX = 3;
+        public static final int TV = 4;
+        public static final int COMPUTER = 11;
     }
 
     public static final class ActionType {
