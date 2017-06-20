@@ -41,74 +41,96 @@ public class WorkThread {
 
     public void onImpression(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            PremiumMADDataModel.ImpressionTrack.Builder impressionTrack = PremiumMADDataModel.ImpressionTrack.newBuilder();
-            impressionTrack.setTime(System.currentTimeMillis());
-            impressionTrack.setIp(HttpUtil.getRealIp(req));
-            impressionTrack.setUa(HttpUtil.getUserAgent(req));
-            impressionTrack.setImpid(req.getParameter("impid"));
-            impressionTrack.setMid(Long.parseLong(req.getParameter("mid")));
-            impressionTrack.setPlcmtid(Long.parseLong(req.getParameter("plcmtid")));
+            Map<String, String[]> params = req.getParameterMap();
+            if (params.containsKey("impid") && params.containsKey("mid") && params.containsKey("plcmtid") && params.containsKey("policyid") && params.containsKey("ext")) {
+                PremiumMADDataModel.ImpressionTrack.Builder impressionTrack = PremiumMADDataModel.ImpressionTrack.newBuilder();
 
-            String[] exts = req.getParameter("ext").split(",");
-            if (exts.length >= 3) {
-                PremiumMADDataModel.ImpressionTrack.Ext.Builder ext = PremiumMADDataModel.ImpressionTrack.Ext.newBuilder();
-                ext.setDspid(Long.parseLong(exts[0]));
-                ext.setIncome(Integer.parseInt(exts[1]));
-                ext.setCost(Integer.parseInt(exts[2]));
-                impressionTrack.setExt(ext);
+                impressionTrack.setTime(System.currentTimeMillis());
+                impressionTrack.setIp(HttpUtil.getRealIp(req));
+                impressionTrack.setUa(HttpUtil.getUserAgent(req));
+                impressionTrack.setImpid(HttpUtil.getParameter(req, "impid"));
+                impressionTrack.setMid(Long.parseLong(HttpUtil.getParameter(req, "mid")));
+                impressionTrack.setPlcmtid(Long.parseLong(HttpUtil.getParameter(req, "plcmtid")));
+                impressionTrack.setPolicyid(Long.parseLong(HttpUtil.getParameter(req, "policyid")));
+
+                String param = HttpUtil.getParameter(req, "ext");
+                if (param != null && !param.isEmpty()) {
+                    String[] exts = param.split(",");
+                    if (exts.length >= 3) {
+                        PremiumMADDataModel.ImpressionTrack.Ext.Builder ext = PremiumMADDataModel.ImpressionTrack.Ext.newBuilder();
+                        ext.setParam(param);
+                        ext.setDspid(Long.parseLong(exts[0]));
+                        ext.setIncome(Integer.parseInt(exts[1]));
+                        ext.setCost(Integer.parseInt(exts[2]));
+                        impressionTrack.setExt(ext);
+
+                        impressionTrack.setStatus(Constant.StatusCode.OK);
+                        LoggerUtil.getInstance().wirteImpressionTrackLog(this.resourceManager.getKafkaProducer(), impressionTrack.build());
+
+                        resp.getOutputStream().write(this.image);
+                        resp.setContentType("image/gif");
+                        resp.setContentLength(this.image.length);
+                        resp.setStatus(impressionTrack.getStatus());
+                        return;
+                    }
+                }
             }
-
-            impressionTrack.setStatus(Constant.StatusCode.OK);
-            LoggerUtil.getInstance().wirteImpressionTrackLog(this.resourceManager.getKafkaProducer(), impressionTrack.build());
-
-            resp.getOutputStream().write(this.image);
-            resp.setContentType("image/gif");
-            resp.setContentLength(this.image.length);
-            resp.setStatus(impressionTrack.getStatus());
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
         }
+
+        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
     }
 
     public void onClick(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            PremiumMADDataModel.ClickTrack.Builder clickTrack = PremiumMADDataModel.ClickTrack.newBuilder();
-            clickTrack.setTime(System.currentTimeMillis());
-            clickTrack.setIp(HttpUtil.getRealIp(req));
-            clickTrack.setUa(HttpUtil.getUserAgent(req));
-            clickTrack.setImpid(req.getParameter("impid"));
-            clickTrack.setMid(Long.parseLong(req.getParameter("mid")));
-            clickTrack.setPlcmtid(Long.parseLong(req.getParameter("plcmtid")));
+            Map<String, String[]> params = req.getParameterMap();
+            if (params.containsKey("impid") && params.containsKey("mid") && params.containsKey("plcmtid") && params.containsKey("policyid") && params.containsKey("ext")) {
+                PremiumMADDataModel.ClickTrack.Builder clickTrack = PremiumMADDataModel.ClickTrack.newBuilder();
 
-            String[] exts = req.getParameter("ext").split(",");
-            if (exts.length >= 3) {
-                PremiumMADDataModel.ClickTrack.Ext.Builder ext = PremiumMADDataModel.ClickTrack.Ext.newBuilder();
-                ext.setDspid(Long.parseLong(exts[0]));
-                ext.setIncome(Integer.parseInt(exts[1]));
-                ext.setCost(Integer.parseInt(exts[2]));
-                clickTrack.setExt(ext);
+                clickTrack.setTime(System.currentTimeMillis());
+                clickTrack.setIp(HttpUtil.getRealIp(req));
+                clickTrack.setUa(HttpUtil.getUserAgent(req));
+                clickTrack.setImpid(HttpUtil.getParameter(req, "impid"));
+                clickTrack.setMid(Long.parseLong(HttpUtil.getParameter(req, "mid")));
+                clickTrack.setPlcmtid(Long.parseLong(HttpUtil.getParameter(req, "plcmtid")));
+                clickTrack.setPolicyid(Long.parseLong(HttpUtil.getParameter(req, "policyid")));
+
+                String param = HttpUtil.getParameter(req, "ext");
+                if (param != null && !param.isEmpty()) {
+                    String[] exts = param.split(",");
+                    if (exts.length >= 3) {
+                        PremiumMADDataModel.ClickTrack.Ext.Builder ext = PremiumMADDataModel.ClickTrack.Ext.newBuilder();
+                        ext.setDspid(Long.parseLong(exts[0]));
+                        ext.setIncome(Integer.parseInt(exts[1]));
+                        ext.setCost(Integer.parseInt(exts[2]));
+                        clickTrack.setExt(ext);
+
+                        String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
+
+                        if (url.startsWith("http://") || url.startsWith("https://")) {
+                            resp.setHeader("Location", url);
+                            clickTrack.setStatus(Constant.StatusCode.REDIRECT);
+                        } else {
+                            resp.getOutputStream().write(this.image);
+                            resp.setContentType("image/gif");
+                            resp.setContentLength(this.image.length);
+                            resp.setStatus(Constant.StatusCode.OK);
+                            clickTrack.setStatus(Constant.StatusCode.OK);
+                        }
+
+                        LoggerUtil.getInstance().writeClickTrackLog(this.resourceManager.getKafkaProducer(), clickTrack.build());
+                        resp.setStatus(clickTrack.getStatus());
+                        return;
+                    }
+                }
             }
 
-            String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
-
-            if (url.startsWith("http://") || url.startsWith("https://")) {
-                resp.setHeader("Location", url);
-                clickTrack.setStatus(Constant.StatusCode.REDIRECT);
-            } else {
-                resp.getOutputStream().write(this.image);
-                resp.setContentType("image/gif");
-                resp.setContentLength(this.image.length);
-                resp.setStatus(Constant.StatusCode.OK);
-                clickTrack.setStatus(Constant.StatusCode.OK);
-            }
-
-            LoggerUtil.getInstance().writeClickTrackLog(this.resourceManager.getKafkaProducer(), clickTrack.build());
-            resp.setStatus(clickTrack.getStatus());
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
         }
+
+        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
     }
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
