@@ -1,5 +1,6 @@
 package com.madhouse.media;
 
+import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.rtb.PremiumMADRTBProtocol.*;
 import com.madhouse.ssp.PremiumMADDataModel;
 
@@ -14,11 +15,11 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public abstract class MediaBaseHandler {
-    public boolean parseMediaRequest(HttpServletRequest req, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, HttpServletResponse resp) {
+    public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         return true;
     }
 
-    public boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, HttpServletResponse resp, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
+    public boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         return true;
     }
 }

@@ -23,7 +23,8 @@ public class HttpUtil {
             return ip;
         }
 
-        return req.getRemoteHost();
+        ip = req.getRemoteAddr();
+        return ip.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ip;
     }
 
     public static String getUserAgent(HttpServletRequest req) {

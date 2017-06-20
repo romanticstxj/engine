@@ -6,7 +6,7 @@ import com.madhouse.ssp.PremiumMADDataModel;
 /**
  * Created by WUJUNFENG on 2017/6/15.
  */
-public class BidMetaData {
+public class DSPBidMetaData {
     private String id;
     private String impid;
     private String bidid;
@@ -14,15 +14,15 @@ public class BidMetaData {
     private String admid;
     private String winurl;
     private int price;
-    private PremiumMADDataModel.DSPBid.Builder builder;
+    private PremiumMADDataModel.DSPBid.Builder dspBidBuilder;
     private DSPBaseHandler dspBaseHandler;
 
-    public PremiumMADDataModel.DSPBid.Builder getBuilder() {
-        return builder;
+    public PremiumMADDataModel.DSPBid.Builder getDspBidBuilder() {
+        return dspBidBuilder;
     }
 
-    public void setBuilder(PremiumMADDataModel.DSPBid.Builder builder) {
-        this.builder = builder;
+    public void setDspBidBuilder(PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
+        this.dspBidBuilder = dspBidBuilder;
     }
 
     public DSPBaseHandler getDspBaseHandler() {

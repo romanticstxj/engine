@@ -1,5 +1,6 @@
 package com.madhouse.media.madhouse;
 
+import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.ssp.PremiumMADDataModel;
@@ -14,12 +15,12 @@ import java.io.IOException;
  */
 public class PremiumMADHandler extends MediaBaseHandler {
     @Override
-    public boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, HttpServletResponse resp, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
-        return super.packageMediaResponse(dspBidBuilder, resp, mediaBidBuilder);
+    public boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
+        return super.packageMediaResponse(dspBidBuilder, mediaBidMetaData, resp);
     }
 
     @Override
-    public boolean parseMediaRequest(HttpServletRequest req, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, HttpServletResponse resp) {
-        return super.parseMediaRequest(req, mediaBidBuilder, resp);
+    public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
+        return super.parseMediaRequest(req, mediaBidMetaData, resp);
     }
 }

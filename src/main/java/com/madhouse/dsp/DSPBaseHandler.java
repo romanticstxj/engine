@@ -31,7 +31,7 @@ public abstract class DSPBaseHandler {
                                              AdBlockMetaData adBlockMetaData,
                                              PolicyMetaData policyMetaData,
                                              DSPMetaData dspMetaData,
-                                             PremiumMADDataModel.DSPBid.Builder dspBidBuilder,
+                                             DSPBidMetaData dspBidMetaData,
                                              String tagid) {
 
         HttpPost httpPost = new HttpPost(dspMetaData.getBidurl());
@@ -235,6 +235,7 @@ public abstract class DSPBaseHandler {
         }
 
         try {
+            PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
             dspBidBuilder.setDspid(dspMetaData.getDspid());
             dspBidBuilder.setPolicyid(policyMetaData.getId());
             dspBidBuilder.setTradingtype(policyMetaData.getTradingtype());
@@ -251,8 +252,9 @@ public abstract class DSPBaseHandler {
         return httpPost;
     }
 
-    public boolean parseBidResponse(HttpResponse httpResponse, BidMetaData bidMetaData, PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
+    public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         if (httpResponse != null) {
+            PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
             int status = httpResponse.getStatusLine().getStatusCode();
             dspBidBuilder.setStatus(status);
 
@@ -266,12 +268,12 @@ public abstract class DSPBaseHandler {
                         if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
                             BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
 
-                            bidMetaData.setId(bidResponse.hasId() ? bidResponse.getId() : "");
-                            bidMetaData.setImpid(bid.hasImpid() ? bid.getImpid() : "");;
-                            bidMetaData.setBidid(bidResponse.hasBidid() ? bidResponse.getBidid() : "");
-                            bidMetaData.setAdid(bid.hasAdid() ? bid.getAdid() : "");
-                            bidMetaData.setAdmid(bid.hasAdmid() ? bid.getAdmid() : "");
-                            bidMetaData.setPrice(bid.hasPrice() ? bid.getPrice() : 0);
+                            dspBidMetaData.setId(bidResponse.hasId() ? bidResponse.getId() : "");
+                            dspBidMetaData.setImpid(bid.hasImpid() ? bid.getImpid() : "");;
+                            dspBidMetaData.setBidid(bidResponse.hasBidid() ? bidResponse.getBidid() : "");
+                            dspBidMetaData.setAdid(bid.hasAdid() ? bid.getAdid() : "");
+                            dspBidMetaData.setAdmid(bid.hasAdmid() ? bid.getAdmid() : "");
+                            dspBidMetaData.setPrice(bid.hasPrice() ? bid.getPrice() : 0);
                             return true;
                         }
                     }
@@ -286,14 +288,14 @@ public abstract class DSPBaseHandler {
         return false;
     }
 
-    public String getWinNoticeUrl(int price, DSPMetaData dspMetaData, BidMetaData bidMetaData) {
+    public String getWinNoticeUrl(int price, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
 
         try {
-            String url = bidMetaData.getWinurl();
-            url = url.replace("${AUCTION_ID}", bidMetaData.getId())
-                    .replace("${AUCTION_IMP_ID}", bidMetaData.getImpid())
-                    .replace("${AUCTION_BID_ID}", bidMetaData.getBidid())
-                    .replace("${AUCTION_AD_ID}", bidMetaData.getAdid());
+            String url = dspBidMetaData.getWinurl();
+            url = url.replace("${AUCTION_ID}", dspBidMetaData.getId())
+                    .replace("${AUCTION_IMP_ID}", dspBidMetaData.getImpid())
+                    .replace("${AUCTION_BID_ID}", dspBidMetaData.getBidid())
+                    .replace("${AUCTION_AD_ID}", dspBidMetaData.getAdid());
 
             if (url.contains("${AUCTION_PRICE")) {
                 String text = String.format("%d_%d", price, System.currentTimeMillis() / 1000);
@@ -305,7 +307,7 @@ public abstract class DSPBaseHandler {
             return url;
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return bidMetaData.getWinurl();
+            return dspBidMetaData.getWinurl();
         }
     }
 }

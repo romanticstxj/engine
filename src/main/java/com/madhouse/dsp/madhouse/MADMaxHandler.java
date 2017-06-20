@@ -22,12 +22,12 @@ import java.util.UUID;
  */
 public class MADMaxHandler extends DSPBaseHandler {
     @Override
-    public HttpRequestBase packageBidRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, PremiumMADDataModel.DSPBid.Builder dspBidBuilder, String tagid) {
-        return super.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidBuilder, tagid);
+    public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
+        return super.parseBidResponse(httpResponse, dspBidMetaData);
     }
 
     @Override
-    public boolean parseBidResponse(HttpResponse httpResponse, BidMetaData bidMetaData, PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
-        return super.parseBidResponse(httpResponse, bidMetaData, dspBidBuilder);
+    public HttpRequestBase packageBidRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData, String tagid) {
+        return super.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData, tagid);
     }
 }
