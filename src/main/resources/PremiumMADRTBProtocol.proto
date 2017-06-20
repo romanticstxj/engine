@@ -37,7 +37,7 @@ message BidRequest
         
         message Banner
         {
-            optional int32 type = 1;
+            optional int32 layout = 1;
             optional int32 w = 2;
             optional int32 h = 3;
             optional int32 plcmtcnt = 4;
@@ -163,11 +163,11 @@ message BidRequest
         optional int32 carrier = 13;
         optional int32 connectiontype = 14;
         optional int32 devicetype = 15;
-        optional string language = 16;
-        optional string make = 17;
-        optional string model = 18;
-        optional string os = 19;
-        optional string osv = 20;
+        optional int32 os = 16;
+        optional string osv = 17;
+        optional string language = 18;
+        optional string make = 19;
+        optional string model = 20;
         optional string hwv = 21;
         optional Geo geo = 22;
         

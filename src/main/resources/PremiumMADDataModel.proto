@@ -92,9 +92,14 @@ message ImpressionTrack
 	optional int64 mid = 6;
 	optional int64 plcmtid = 7;
 	optional int64 policyid = 8;
-	optional int64 dspid = 9;
-	optional int32 income = 21;
-	optional int32 cost = 22;
+	optional Ext ext = 9;
+
+	message Ext {
+		optional string param = 1;
+		optional int64 dspid = 11;
+		optional int32 income = 12;
+		optional int32 cost = 13;
+	}
 }
 
 message ClickTrack
@@ -107,10 +112,15 @@ message ClickTrack
 	optional int64 mid = 6;
 	optional int64 plcmtid = 7;
 	optional int64 policyid = 8;
-	optional int64 dspid = 9;
+	optional Ext ext = 9;
 	optional string url = 10;
-	optional int32 income = 21;
-	optional int32 cost = 22;
+
+	message Ext {
+		optional string param = 1;
+		optional int64 dspid = 11;
+		optional int32 income = 12;
+		optional int32 cost = 13;
+	}
 }
 
 message DSPBid
