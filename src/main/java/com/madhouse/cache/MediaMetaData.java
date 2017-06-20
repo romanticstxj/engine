@@ -13,7 +13,16 @@ public class MediaMetaData {
     private int mtype;
     private int mcat;
     private String name;
+    private boolean https;
     private int apitype;
+
+    public boolean isHttps() {
+        return https;
+    }
+
+    public void setHttps(boolean https) {
+        this.https = https;
+    }
 
     public int getApitype() {
         return apitype;

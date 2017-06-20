@@ -9491,31 +9491,17 @@ public final class PremiumMADDataModel {
     long getPolicyid();
 
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
      */
-    boolean hasDspid();
+    boolean hasExt();
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
      */
-    long getDspid();
-
+    com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getExt();
     /**
-     * <code>optional int32 income = 21;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
      */
-    boolean hasIncome();
-    /**
-     * <code>optional int32 income = 21;</code>
-     */
-    int getIncome();
-
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    boolean hasCost();
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    int getCost();
+    com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder getExtOrBuilder();
   }
   /**
    * Protobuf type {@code com.madhouse.ssp.ImpressionTrack}
@@ -9612,19 +9598,17 @@ public final class PremiumMADDataModel {
               policyid_ = input.readInt64();
               break;
             }
-            case 72: {
+            case 74: {
+              com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                subBuilder = ext_.toBuilder();
+              }
+              ext_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(ext_);
+                ext_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000100;
-              dspid_ = input.readInt64();
-              break;
-            }
-            case 168: {
-              bitField0_ |= 0x00000200;
-              income_ = input.readInt32();
-              break;
-            }
-            case 176: {
-              bitField0_ |= 0x00000400;
-              cost_ = input.readInt32();
               break;
             }
           }
@@ -9664,6 +9648,716 @@ public final class PremiumMADDataModel {
     @java.lang.Override
     public com.google.protobuf.Parser<ImpressionTrack> getParserForType() {
       return PARSER;
+    }
+
+    public interface ExtOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:com.madhouse.ssp.ImpressionTrack.Ext)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      boolean hasParam();
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      java.lang.String getParam();
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      com.google.protobuf.ByteString
+          getParamBytes();
+
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      boolean hasDspid();
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      long getDspid();
+
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      boolean hasIncome();
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      int getIncome();
+
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      boolean hasCost();
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      int getCost();
+    }
+    /**
+     * Protobuf type {@code com.madhouse.ssp.ImpressionTrack.Ext}
+     */
+    public static final class Ext extends
+        com.google.protobuf.GeneratedMessage implements
+        // @@protoc_insertion_point(message_implements:com.madhouse.ssp.ImpressionTrack.Ext)
+        ExtOrBuilder {
+      // Use Ext.newBuilder() to construct.
+      private Ext(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
+        this.unknownFields = builder.getUnknownFields();
+      }
+      private Ext(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+      private static final Ext defaultInstance;
+      public static Ext getDefaultInstance() {
+        return defaultInstance;
+      }
+
+      public Ext getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+
+      private final com.google.protobuf.UnknownFieldSet unknownFields;
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+          getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Ext(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        initFields();
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 10: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000001;
+                param_ = bs;
+                break;
+              }
+              case 88: {
+                bitField0_ |= 0x00000002;
+                dspid_ = input.readInt64();
+                break;
+              }
+              case 96: {
+                bitField0_ |= 0x00000004;
+                income_ = input.readInt32();
+                break;
+              }
+              case 104: {
+                bitField0_ |= 0x00000008;
+                cost_ = input.readInt32();
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e.getMessage()).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ImpressionTrack_Ext_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.class, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder.class);
+      }
+
+      public static com.google.protobuf.Parser<Ext> PARSER =
+          new com.google.protobuf.AbstractParser<Ext>() {
+        public Ext parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Ext(input, extensionRegistry);
+        }
+      };
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Ext> getParserForType() {
+        return PARSER;
+      }
+
+      private int bitField0_;
+      public static final int PARAM_FIELD_NUMBER = 1;
+      private java.lang.Object param_;
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      public boolean hasParam() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      public java.lang.String getParam() {
+        java.lang.Object ref = param_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            param_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getParamBytes() {
+        java.lang.Object ref = param_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          param_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int DSPID_FIELD_NUMBER = 11;
+      private long dspid_;
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      public boolean hasDspid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      public long getDspid() {
+        return dspid_;
+      }
+
+      public static final int INCOME_FIELD_NUMBER = 12;
+      private int income_;
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      public boolean hasIncome() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      public int getIncome() {
+        return income_;
+      }
+
+      public static final int COST_FIELD_NUMBER = 13;
+      private int cost_;
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      public boolean hasCost() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      public int getCost() {
+        return cost_;
+      }
+
+      private void initFields() {
+        param_ = "";
+        dspid_ = 0L;
+        income_ = 0;
+        cost_ = 0;
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeBytes(1, getParamBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeInt64(11, dspid_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          output.writeInt32(12, income_);
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          output.writeInt32(13, cost_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(1, getParamBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt64Size(11, dspid_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(12, income_);
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(13, cost_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code com.madhouse.ssp.ImpressionTrack.Ext}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:com.madhouse.ssp.ImpressionTrack.Ext)
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ImpressionTrack_Ext_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.class, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder.class);
+        }
+
+        // Construct using com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+
+        public Builder clear() {
+          super.clear();
+          param_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          dspid_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          income_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000004);
+          cost_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000008);
+          return this;
+        }
+
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getDefaultInstanceForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext build() {
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext buildPartial() {
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext result = new com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.param_ = param_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.dspid_ = dspid_;
+          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+            to_bitField0_ |= 0x00000004;
+          }
+          result.income_ = income_;
+          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+            to_bitField0_ |= 0x00000008;
+          }
+          result.cost_ = cost_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext) {
+            return mergeFrom((com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext other) {
+          if (other == com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance()) return this;
+          if (other.hasParam()) {
+            bitField0_ |= 0x00000001;
+            param_ = other.param_;
+            onChanged();
+          }
+          if (other.hasDspid()) {
+            setDspid(other.getDspid());
+          }
+          if (other.hasIncome()) {
+            setIncome(other.getIncome());
+          }
+          if (other.hasCost()) {
+            setCost(other.getCost());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext) e.getUnfinishedMessage();
+            throw e;
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private java.lang.Object param_ = "";
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public boolean hasParam() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public java.lang.String getParam() {
+          java.lang.Object ref = param_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              param_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public com.google.protobuf.ByteString
+            getParamBytes() {
+          java.lang.Object ref = param_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            param_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public Builder setParam(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          param_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public Builder clearParam() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          param_ = getDefaultInstance().getParam();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public Builder setParamBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          param_ = value;
+          onChanged();
+          return this;
+        }
+
+        private long dspid_ ;
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public boolean hasDspid() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public long getDspid() {
+          return dspid_;
+        }
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public Builder setDspid(long value) {
+          bitField0_ |= 0x00000002;
+          dspid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public Builder clearDspid() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          dspid_ = 0L;
+          onChanged();
+          return this;
+        }
+
+        private int income_ ;
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public boolean hasIncome() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public int getIncome() {
+          return income_;
+        }
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public Builder setIncome(int value) {
+          bitField0_ |= 0x00000004;
+          income_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public Builder clearIncome() {
+          bitField0_ = (bitField0_ & ~0x00000004);
+          income_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int cost_ ;
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public boolean hasCost() {
+          return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public int getCost() {
+          return cost_;
+        }
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public Builder setCost(int value) {
+          bitField0_ |= 0x00000008;
+          cost_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public Builder clearCost() {
+          bitField0_ = (bitField0_ & ~0x00000008);
+          cost_ = 0;
+          onChanged();
+          return this;
+        }
+
+        // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.ImpressionTrack.Ext)
+      }
+
+      static {
+        defaultInstance = new Ext(true);
+        defaultInstance.initFields();
+      }
+
+      // @@protoc_insertion_point(class_scope:com.madhouse.ssp.ImpressionTrack.Ext)
     }
 
     private int bitField0_;
@@ -9868,49 +10562,25 @@ public final class PremiumMADDataModel {
       return policyid_;
     }
 
-    public static final int DSPID_FIELD_NUMBER = 9;
-    private long dspid_;
+    public static final int EXT_FIELD_NUMBER = 9;
+    private com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext ext_;
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
      */
-    public boolean hasDspid() {
+    public boolean hasExt() {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
      */
-    public long getDspid() {
-      return dspid_;
-    }
-
-    public static final int INCOME_FIELD_NUMBER = 21;
-    private int income_;
-    /**
-     * <code>optional int32 income = 21;</code>
-     */
-    public boolean hasIncome() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
+    public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getExt() {
+      return ext_;
     }
     /**
-     * <code>optional int32 income = 21;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
      */
-    public int getIncome() {
-      return income_;
-    }
-
-    public static final int COST_FIELD_NUMBER = 22;
-    private int cost_;
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    public boolean hasCost() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    public int getCost() {
-      return cost_;
+    public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder getExtOrBuilder() {
+      return ext_;
     }
 
     private void initFields() {
@@ -9922,9 +10592,7 @@ public final class PremiumMADDataModel {
       mid_ = 0L;
       plcmtid_ = 0L;
       policyid_ = 0L;
-      dspid_ = 0L;
-      income_ = 0;
-      cost_ = 0;
+      ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9964,13 +10632,7 @@ public final class PremiumMADDataModel {
         output.writeInt64(8, policyid_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeInt64(9, dspid_);
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeInt32(21, income_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(22, cost_);
+        output.writeMessage(9, ext_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -10015,15 +10677,7 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(9, dspid_);
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(21, income_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(22, cost_);
+          .computeMessageSize(9, ext_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -10134,6 +10788,7 @@ public final class PremiumMADDataModel {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getExtFieldBuilder();
         }
       }
       private static Builder create() {
@@ -10158,12 +10813,12 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000040);
         policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        dspid_ = 0L;
+        if (extBuilder_ == null) {
+          ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
+        } else {
+          extBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000100);
-        income_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        cost_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -10227,15 +10882,11 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
           to_bitField0_ |= 0x00000100;
         }
-        result.dspid_ = dspid_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
+        if (extBuilder_ == null) {
+          result.ext_ = ext_;
+        } else {
+          result.ext_ = extBuilder_.build();
         }
-        result.income_ = income_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.cost_ = cost_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10282,14 +10933,8 @@ public final class PremiumMADDataModel {
         if (other.hasPolicyid()) {
           setPolicyid(other.getPolicyid());
         }
-        if (other.hasDspid()) {
-          setDspid(other.getDspid());
-        }
-        if (other.hasIncome()) {
-          setIncome(other.getIncome());
-        }
-        if (other.hasCost()) {
-          setCost(other.getCost());
+        if (other.hasExt()) {
+          mergeExt(other.getExt());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -10706,100 +11351,120 @@ public final class PremiumMADDataModel {
         return this;
       }
 
-      private long dspid_ ;
+      private com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder> extBuilder_;
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public boolean hasDspid() {
+      public boolean hasExt() {
         return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public long getDspid() {
-        return dspid_;
+      public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getExt() {
+        if (extBuilder_ == null) {
+          return ext_;
+        } else {
+          return extBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public Builder setDspid(long value) {
+      public Builder setExt(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext value) {
+        if (extBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ext_ = value;
+          onChanged();
+        } else {
+          extBuilder_.setMessage(value);
+        }
         bitField0_ |= 0x00000100;
-        dspid_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public Builder clearDspid() {
+      public Builder setExt(
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder builderForValue) {
+        if (extBuilder_ == null) {
+          ext_ = builderForValue.build();
+          onChanged();
+        } else {
+          extBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       */
+      public Builder mergeExt(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext value) {
+        if (extBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+              ext_ != com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance()) {
+            ext_ =
+              com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.newBuilder(ext_).mergeFrom(value).buildPartial();
+          } else {
+            ext_ = value;
+          }
+          onChanged();
+        } else {
+          extBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       */
+      public Builder clearExt() {
+        if (extBuilder_ == null) {
+          ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
+          onChanged();
+        } else {
+          extBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000100);
-        dspid_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private int income_ ;
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public boolean hasIncome() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public int getIncome() {
-        return income_;
-      }
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public Builder setIncome(int value) {
-        bitField0_ |= 0x00000200;
-        income_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int32 income = 21;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public Builder clearIncome() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        income_ = 0;
+      public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder getExtBuilder() {
+        bitField0_ |= 0x00000100;
         onChanged();
-        return this;
-      }
-
-      private int cost_ ;
-      /**
-       * <code>optional int32 cost = 22;</code>
-       */
-      public boolean hasCost() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
+        return getExtFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional int32 cost = 22;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public int getCost() {
-        return cost_;
+      public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder getExtOrBuilder() {
+        if (extBuilder_ != null) {
+          return extBuilder_.getMessageOrBuilder();
+        } else {
+          return ext_;
+        }
       }
       /**
-       * <code>optional int32 cost = 22;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
        */
-      public Builder setCost(int value) {
-        bitField0_ |= 0x00000400;
-        cost_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 cost = 22;</code>
-       */
-      public Builder clearCost() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        cost_ = 0;
-        onChanged();
-        return this;
+      private com.google.protobuf.SingleFieldBuilder<
+          com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder> 
+          getExtFieldBuilder() {
+        if (extBuilder_ == null) {
+          extBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder>(
+                  getExt(),
+                  getParentForChildren(),
+                  isClean());
+          ext_ = null;
+        }
+        return extBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.ImpressionTrack)
@@ -10905,13 +11570,17 @@ public final class PremiumMADDataModel {
     long getPolicyid();
 
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
      */
-    boolean hasDspid();
+    boolean hasExt();
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
      */
-    long getDspid();
+    com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getExt();
+    /**
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     */
+    com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder getExtOrBuilder();
 
     /**
      * <code>optional string url = 10;</code>
@@ -10926,24 +11595,6 @@ public final class PremiumMADDataModel {
      */
     com.google.protobuf.ByteString
         getUrlBytes();
-
-    /**
-     * <code>optional int32 income = 21;</code>
-     */
-    boolean hasIncome();
-    /**
-     * <code>optional int32 income = 21;</code>
-     */
-    int getIncome();
-
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    boolean hasCost();
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    int getCost();
   }
   /**
    * Protobuf type {@code com.madhouse.ssp.ClickTrack}
@@ -11040,25 +11691,23 @@ public final class PremiumMADDataModel {
               policyid_ = input.readInt64();
               break;
             }
-            case 72: {
+            case 74: {
+              com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                subBuilder = ext_.toBuilder();
+              }
+              ext_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(ext_);
+                ext_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000100;
-              dspid_ = input.readInt64();
               break;
             }
             case 82: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000200;
               url_ = bs;
-              break;
-            }
-            case 168: {
-              bitField0_ |= 0x00000400;
-              income_ = input.readInt32();
-              break;
-            }
-            case 176: {
-              bitField0_ |= 0x00000800;
-              cost_ = input.readInt32();
               break;
             }
           }
@@ -11098,6 +11747,716 @@ public final class PremiumMADDataModel {
     @java.lang.Override
     public com.google.protobuf.Parser<ClickTrack> getParserForType() {
       return PARSER;
+    }
+
+    public interface ExtOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:com.madhouse.ssp.ClickTrack.Ext)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      boolean hasParam();
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      java.lang.String getParam();
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      com.google.protobuf.ByteString
+          getParamBytes();
+
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      boolean hasDspid();
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      long getDspid();
+
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      boolean hasIncome();
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      int getIncome();
+
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      boolean hasCost();
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      int getCost();
+    }
+    /**
+     * Protobuf type {@code com.madhouse.ssp.ClickTrack.Ext}
+     */
+    public static final class Ext extends
+        com.google.protobuf.GeneratedMessage implements
+        // @@protoc_insertion_point(message_implements:com.madhouse.ssp.ClickTrack.Ext)
+        ExtOrBuilder {
+      // Use Ext.newBuilder() to construct.
+      private Ext(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
+        this.unknownFields = builder.getUnknownFields();
+      }
+      private Ext(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+      private static final Ext defaultInstance;
+      public static Ext getDefaultInstance() {
+        return defaultInstance;
+      }
+
+      public Ext getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+
+      private final com.google.protobuf.UnknownFieldSet unknownFields;
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+          getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Ext(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        initFields();
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 10: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000001;
+                param_ = bs;
+                break;
+              }
+              case 88: {
+                bitField0_ |= 0x00000002;
+                dspid_ = input.readInt64();
+                break;
+              }
+              case 96: {
+                bitField0_ |= 0x00000004;
+                income_ = input.readInt32();
+                break;
+              }
+              case 104: {
+                bitField0_ |= 0x00000008;
+                cost_ = input.readInt32();
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e.getMessage()).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ClickTrack_Ext_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.class, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder.class);
+      }
+
+      public static com.google.protobuf.Parser<Ext> PARSER =
+          new com.google.protobuf.AbstractParser<Ext>() {
+        public Ext parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Ext(input, extensionRegistry);
+        }
+      };
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Ext> getParserForType() {
+        return PARSER;
+      }
+
+      private int bitField0_;
+      public static final int PARAM_FIELD_NUMBER = 1;
+      private java.lang.Object param_;
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      public boolean hasParam() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      public java.lang.String getParam() {
+        java.lang.Object ref = param_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            param_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string param = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getParamBytes() {
+        java.lang.Object ref = param_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          param_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int DSPID_FIELD_NUMBER = 11;
+      private long dspid_;
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      public boolean hasDspid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int64 dspid = 11;</code>
+       */
+      public long getDspid() {
+        return dspid_;
+      }
+
+      public static final int INCOME_FIELD_NUMBER = 12;
+      private int income_;
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      public boolean hasIncome() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 income = 12;</code>
+       */
+      public int getIncome() {
+        return income_;
+      }
+
+      public static final int COST_FIELD_NUMBER = 13;
+      private int cost_;
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      public boolean hasCost() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 cost = 13;</code>
+       */
+      public int getCost() {
+        return cost_;
+      }
+
+      private void initFields() {
+        param_ = "";
+        dspid_ = 0L;
+        income_ = 0;
+        cost_ = 0;
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeBytes(1, getParamBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeInt64(11, dspid_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          output.writeInt32(12, income_);
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          output.writeInt32(13, cost_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(1, getParamBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt64Size(11, dspid_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(12, income_);
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(13, cost_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code com.madhouse.ssp.ClickTrack.Ext}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:com.madhouse.ssp.ClickTrack.Ext)
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ClickTrack_Ext_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.class, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder.class);
+        }
+
+        // Construct using com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+
+        public Builder clear() {
+          super.clear();
+          param_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          dspid_ = 0L;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          income_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000004);
+          cost_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000008);
+          return this;
+        }
+
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getDefaultInstanceForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext build() {
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext buildPartial() {
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext result = new com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.param_ = param_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.dspid_ = dspid_;
+          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+            to_bitField0_ |= 0x00000004;
+          }
+          result.income_ = income_;
+          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+            to_bitField0_ |= 0x00000008;
+          }
+          result.cost_ = cost_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext) {
+            return mergeFrom((com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext other) {
+          if (other == com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance()) return this;
+          if (other.hasParam()) {
+            bitField0_ |= 0x00000001;
+            param_ = other.param_;
+            onChanged();
+          }
+          if (other.hasDspid()) {
+            setDspid(other.getDspid());
+          }
+          if (other.hasIncome()) {
+            setIncome(other.getIncome());
+          }
+          if (other.hasCost()) {
+            setCost(other.getCost());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext) e.getUnfinishedMessage();
+            throw e;
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private java.lang.Object param_ = "";
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public boolean hasParam() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public java.lang.String getParam() {
+          java.lang.Object ref = param_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              param_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public com.google.protobuf.ByteString
+            getParamBytes() {
+          java.lang.Object ref = param_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            param_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public Builder setParam(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          param_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public Builder clearParam() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          param_ = getDefaultInstance().getParam();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string param = 1;</code>
+         */
+        public Builder setParamBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          param_ = value;
+          onChanged();
+          return this;
+        }
+
+        private long dspid_ ;
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public boolean hasDspid() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public long getDspid() {
+          return dspid_;
+        }
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public Builder setDspid(long value) {
+          bitField0_ |= 0x00000002;
+          dspid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int64 dspid = 11;</code>
+         */
+        public Builder clearDspid() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          dspid_ = 0L;
+          onChanged();
+          return this;
+        }
+
+        private int income_ ;
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public boolean hasIncome() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public int getIncome() {
+          return income_;
+        }
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public Builder setIncome(int value) {
+          bitField0_ |= 0x00000004;
+          income_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 income = 12;</code>
+         */
+        public Builder clearIncome() {
+          bitField0_ = (bitField0_ & ~0x00000004);
+          income_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int cost_ ;
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public boolean hasCost() {
+          return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public int getCost() {
+          return cost_;
+        }
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public Builder setCost(int value) {
+          bitField0_ |= 0x00000008;
+          cost_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 cost = 13;</code>
+         */
+        public Builder clearCost() {
+          bitField0_ = (bitField0_ & ~0x00000008);
+          cost_ = 0;
+          onChanged();
+          return this;
+        }
+
+        // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.ClickTrack.Ext)
+      }
+
+      static {
+        defaultInstance = new Ext(true);
+        defaultInstance.initFields();
+      }
+
+      // @@protoc_insertion_point(class_scope:com.madhouse.ssp.ClickTrack.Ext)
     }
 
     private int bitField0_;
@@ -11302,19 +12661,25 @@ public final class PremiumMADDataModel {
       return policyid_;
     }
 
-    public static final int DSPID_FIELD_NUMBER = 9;
-    private long dspid_;
+    public static final int EXT_FIELD_NUMBER = 9;
+    private com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext ext_;
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
      */
-    public boolean hasDspid() {
+    public boolean hasExt() {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional int64 dspid = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
      */
-    public long getDspid() {
-      return dspid_;
+    public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getExt() {
+      return ext_;
+    }
+    /**
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     */
+    public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder getExtOrBuilder() {
+      return ext_;
     }
 
     public static final int URL_FIELD_NUMBER = 10;
@@ -11359,36 +12724,6 @@ public final class PremiumMADDataModel {
       }
     }
 
-    public static final int INCOME_FIELD_NUMBER = 21;
-    private int income_;
-    /**
-     * <code>optional int32 income = 21;</code>
-     */
-    public boolean hasIncome() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional int32 income = 21;</code>
-     */
-    public int getIncome() {
-      return income_;
-    }
-
-    public static final int COST_FIELD_NUMBER = 22;
-    private int cost_;
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    public boolean hasCost() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
-    }
-    /**
-     * <code>optional int32 cost = 22;</code>
-     */
-    public int getCost() {
-      return cost_;
-    }
-
     private void initFields() {
       time_ = 0L;
       ua_ = "";
@@ -11398,10 +12733,8 @@ public final class PremiumMADDataModel {
       mid_ = 0L;
       plcmtid_ = 0L;
       policyid_ = 0L;
-      dspid_ = 0L;
+      ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
       url_ = "";
-      income_ = 0;
-      cost_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -11441,16 +12774,10 @@ public final class PremiumMADDataModel {
         output.writeInt64(8, policyid_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeInt64(9, dspid_);
+        output.writeMessage(9, ext_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeBytes(10, getUrlBytes());
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(21, income_);
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeInt32(22, cost_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -11495,19 +12822,11 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(9, dspid_);
+          .computeMessageSize(9, ext_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(10, getUrlBytes());
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(21, income_);
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(22, cost_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -11618,6 +12937,7 @@ public final class PremiumMADDataModel {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getExtFieldBuilder();
         }
       }
       private static Builder create() {
@@ -11642,14 +12962,14 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000040);
         policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
-        dspid_ = 0L;
+        if (extBuilder_ == null) {
+          ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
+        } else {
+          extBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000100);
         url_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
-        income_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000400);
-        cost_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -11713,19 +13033,15 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
           to_bitField0_ |= 0x00000100;
         }
-        result.dspid_ = dspid_;
+        if (extBuilder_ == null) {
+          result.ext_ = ext_;
+        } else {
+          result.ext_ = extBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000200;
         }
         result.url_ = url_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.income_ = income_;
-        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.cost_ = cost_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -11772,19 +13088,13 @@ public final class PremiumMADDataModel {
         if (other.hasPolicyid()) {
           setPolicyid(other.getPolicyid());
         }
-        if (other.hasDspid()) {
-          setDspid(other.getDspid());
+        if (other.hasExt()) {
+          mergeExt(other.getExt());
         }
         if (other.hasUrl()) {
           bitField0_ |= 0x00000200;
           url_ = other.url_;
           onChanged();
-        }
-        if (other.hasIncome()) {
-          setIncome(other.getIncome());
-        }
-        if (other.hasCost()) {
-          setCost(other.getCost());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12201,36 +13511,120 @@ public final class PremiumMADDataModel {
         return this;
       }
 
-      private long dspid_ ;
+      private com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder> extBuilder_;
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
        */
-      public boolean hasDspid() {
+      public boolean hasExt() {
         return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
        */
-      public long getDspid() {
-        return dspid_;
+      public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getExt() {
+        if (extBuilder_ == null) {
+          return ext_;
+        } else {
+          return extBuilder_.getMessage();
+        }
       }
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
        */
-      public Builder setDspid(long value) {
+      public Builder setExt(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext value) {
+        if (extBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ext_ = value;
+          onChanged();
+        } else {
+          extBuilder_.setMessage(value);
+        }
         bitField0_ |= 0x00000100;
-        dspid_ = value;
-        onChanged();
         return this;
       }
       /**
-       * <code>optional int64 dspid = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
        */
-      public Builder clearDspid() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        dspid_ = 0L;
-        onChanged();
+      public Builder setExt(
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder builderForValue) {
+        if (extBuilder_ == null) {
+          ext_ = builderForValue.build();
+          onChanged();
+        } else {
+          extBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000100;
         return this;
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       */
+      public Builder mergeExt(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext value) {
+        if (extBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+              ext_ != com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance()) {
+            ext_ =
+              com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.newBuilder(ext_).mergeFrom(value).buildPartial();
+          } else {
+            ext_ = value;
+          }
+          onChanged();
+        } else {
+          extBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000100;
+        return this;
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       */
+      public Builder clearExt() {
+        if (extBuilder_ == null) {
+          ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
+          onChanged();
+        } else {
+          extBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       */
+      public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder getExtBuilder() {
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return getExtFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       */
+      public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder getExtOrBuilder() {
+        if (extBuilder_ != null) {
+          return extBuilder_.getMessageOrBuilder();
+        } else {
+          return ext_;
+        }
+      }
+      /**
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder> 
+          getExtFieldBuilder() {
+        if (extBuilder_ == null) {
+          extBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder>(
+                  getExt(),
+                  getParentForChildren(),
+                  isClean());
+          ext_ = null;
+        }
+        return extBuilder_;
       }
 
       private java.lang.Object url_ = "";
@@ -12305,70 +13699,6 @@ public final class PremiumMADDataModel {
   }
   bitField0_ |= 0x00000200;
         url_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int income_ ;
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public boolean hasIncome() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public int getIncome() {
-        return income_;
-      }
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public Builder setIncome(int value) {
-        bitField0_ |= 0x00000400;
-        income_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 income = 21;</code>
-       */
-      public Builder clearIncome() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        income_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int cost_ ;
-      /**
-       * <code>optional int32 cost = 22;</code>
-       */
-      public boolean hasCost() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
-      }
-      /**
-       * <code>optional int32 cost = 22;</code>
-       */
-      public int getCost() {
-        return cost_;
-      }
-      /**
-       * <code>optional int32 cost = 22;</code>
-       */
-      public Builder setCost(int value) {
-        bitField0_ |= 0x00000800;
-        cost_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 cost = 22;</code>
-       */
-      public Builder clearCost() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        cost_ = 0;
         onChanged();
         return this;
       }
@@ -13497,10 +14827,20 @@ public final class PremiumMADDataModel {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_madhouse_ssp_ImpressionTrack_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_madhouse_ssp_ImpressionTrack_Ext_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_madhouse_ssp_ClickTrack_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_madhouse_ssp_ClickTrack_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_madhouse_ssp_ClickTrack_Ext_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_madhouse_ssp_DSPBid_descriptor;
   private static
@@ -13544,21 +14884,25 @@ public final class PremiumMADDataModel {
       "rl\030\014 \003(\t\022\016\n\006securl\030\r \003(\t\"t\n\tWinNotice\022\014\n" +
       "\004time\030\001 \001(\003\022\016\n\006status\030\002 \001(\005\022\r\n\005dspid\030\003 \001" +
       "(\003\022\r\n\005impid\030\004 \001(\t\022\013\n\003mid\030\005 \001(\003\022\017\n\007plcmti" +
-      "d\030\006 \001(\003\022\r\n\005price\030\007 \001(\005\"\263\001\n\017ImpressionTra",
+      "d\030\006 \001(\003\022\r\n\005price\030\007 \001(\005\"\375\001\n\017ImpressionTra",
       "ck\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t" +
       "\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\013\n\003mid\030\006" +
       " \001(\003\022\017\n\007plcmtid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022" +
-      "\r\n\005dspid\030\t \001(\003\022\016\n\006income\030\025 \001(\005\022\014\n\004cost\030\026" +
-      " \001(\005\"\273\001\n\nClickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030" +
-      "\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005imp" +
-      "id\030\005 \001(\t\022\013\n\003mid\030\006 \001(\003\022\017\n\007plcmtid\030\007 \001(\003\022\020" +
-      "\n\010policyid\030\010 \001(\003\022\r\n\005dspid\030\t \001(\003\022\013\n\003url\030\n" +
-      " \001(\t\022\016\n\006income\030\025 \001(\005\022\014\n\004cost\030\026 \001(\005\"\274\001\n\006D" +
-      "SPBid\022\014\n\004time\030\001 \001(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010po",
-      "licyid\030\003 \001(\003\022\023\n\013tradingtype\030\004 \001(\005\022\016\n\006sta" +
-      "tus\030\005 \001(\005\022-\n\007request\030\013 \001(\0132\034.com.madhous" +
-      "e.rtb.BidRequest\022/\n\010response\030\014 \001(\0132\035.com" +
-      ".madhouse.rtb.BidResponse"
+      "2\n\003ext\030\t \001(\0132%.com.madhouse.ssp.Impressi" +
+      "onTrack.Ext\032A\n\003Ext\022\r\n\005param\030\001 \001(\t\022\r\n\005dsp" +
+      "id\030\013 \001(\003\022\016\n\006income\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\200" +
+      "\002\n\nClickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022" +
+      "\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001" +
+      "(\t\022\013\n\003mid\030\006 \001(\003\022\017\n\007plcmtid\030\007 \001(\003\022\020\n\010poli" +
+      "cyid\030\010 \001(\003\022-\n\003ext\030\t \001(\0132 .com.madhouse.s",
+      "sp.ClickTrack.Ext\022\013\n\003url\030\n \001(\t\032A\n\003Ext\022\r\n" +
+      "\005param\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014 " +
+      "\001(\005\022\014\n\004cost\030\r \001(\005\"\274\001\n\006DSPBid\022\014\n\004time\030\001 \001" +
+      "(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010policyid\030\003 \001(\003\022\023\n\013t" +
+      "radingtype\030\004 \001(\005\022\016\n\006status\030\005 \001(\005\022-\n\007requ" +
+      "est\030\013 \001(\0132\034.com.madhouse.rtb.BidRequest\022" +
+      "/\n\010response\030\014 \001(\0132\035.com.madhouse.rtb.Bid" +
+      "Response"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13602,13 +14946,25 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_ImpressionTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_ImpressionTrack_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Policyid", "Dspid", "Income", "Cost", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Policyid", "Ext", });
+    internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor =
+      internal_static_com_madhouse_ssp_ImpressionTrack_descriptor.getNestedTypes().get(0);
+    internal_static_com_madhouse_ssp_ImpressionTrack_Ext_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor,
+        new java.lang.String[] { "Param", "Dspid", "Income", "Cost", });
     internal_static_com_madhouse_ssp_ClickTrack_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_com_madhouse_ssp_ClickTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_ClickTrack_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Policyid", "Dspid", "Url", "Income", "Cost", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mid", "Plcmtid", "Policyid", "Ext", "Url", });
+    internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor =
+      internal_static_com_madhouse_ssp_ClickTrack_descriptor.getNestedTypes().get(0);
+    internal_static_com_madhouse_ssp_ClickTrack_Ext_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor,
+        new java.lang.String[] { "Param", "Dspid", "Income", "Cost", });
     internal_static_com_madhouse_ssp_DSPBid_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_com_madhouse_ssp_DSPBid_fieldAccessorTable = new

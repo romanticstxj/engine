@@ -84,34 +84,7 @@ public abstract class DSPBaseHandler {
             device.setCarrier(mediaRequest.getCarrier());
             device.setMake(mediaRequest.getMake());
             device.setModel(mediaRequest.getModel());
-
-            switch (mediaRequest.getOs()) {
-                case 0: {
-                    device.setOs("Android");
-                    break;
-                }
-
-                case 1: {
-                    device.setOs("iOS");
-                    break;
-                }
-
-                case 2: {
-                    device.setOs("Windows Phone");
-                    break;
-                }
-
-                case 3: {
-                    device.setOs("Unknown");
-                    break;
-                }
-
-                default: {
-                    device.setOs("Unknown");
-                    break;
-                }
-            }
-
+            device.setOs(mediaRequest.getOs());
             device.setOsv(mediaRequest.getOsv());
             BidRequest.Device.Geo.Builder geo = BidRequest.Device.Geo.newBuilder();
             geo.setLon(mediaRequest.getLon());
@@ -249,7 +222,7 @@ public abstract class DSPBaseHandler {
 
                 default: {
                     BidRequest.Impression.Banner.Builder banner = BidRequest.Impression.Banner.newBuilder();
-                    banner.setType(plcmtMetaData.getType());
+                    banner.setLayout(plcmtMetaData.getLayout());
                     banner.setW(plcmtMetaData.getW());
                     banner.setH(plcmtMetaData.getH());
                     banner.addAllMimes(plcmtMetaData.getMimes());

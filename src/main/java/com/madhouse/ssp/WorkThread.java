@@ -48,9 +48,16 @@ public class WorkThread {
             impressionTrack.setImpid(req.getParameter("impid"));
             impressionTrack.setMid(Long.parseLong(req.getParameter("mid")));
             impressionTrack.setPlcmtid(Long.parseLong(req.getParameter("plcmtid")));
-            impressionTrack.setDspid(Long.parseLong(req.getParameter("dspid")));
-            impressionTrack.setCost(0);
-            impressionTrack.setIncome(0);
+
+            String[] exts = req.getParameter("ext").split(",");
+            if (exts.length >= 3) {
+                PremiumMADDataModel.ImpressionTrack.Ext.Builder ext = PremiumMADDataModel.ImpressionTrack.Ext.newBuilder();
+                ext.setDspid(Long.parseLong(exts[0]));
+                ext.setIncome(Integer.parseInt(exts[1]));
+                ext.setCost(Integer.parseInt(exts[2]));
+                impressionTrack.setExt(ext);
+            }
+
             impressionTrack.setStatus(Constant.StatusCode.OK);
             LoggerUtil.getInstance().wirteImpressionTrackLog(this.resourceManager.getKafkaProducer(), impressionTrack.build());
 
@@ -73,11 +80,17 @@ public class WorkThread {
             clickTrack.setImpid(req.getParameter("impid"));
             clickTrack.setMid(Long.parseLong(req.getParameter("mid")));
             clickTrack.setPlcmtid(Long.parseLong(req.getParameter("plcmtid")));
-            clickTrack.setDspid(Long.parseLong(req.getParameter("dspid")));
+
+            String[] exts = req.getParameter("ext").split(",");
+            if (exts.length >= 3) {
+                PremiumMADDataModel.ClickTrack.Ext.Builder ext = PremiumMADDataModel.ClickTrack.Ext.newBuilder();
+                ext.setDspid(Long.parseLong(exts[0]));
+                ext.setIncome(Integer.parseInt(exts[1]));
+                ext.setCost(Integer.parseInt(exts[2]));
+                clickTrack.setExt(ext);
+            }
+
             String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
-            clickTrack.setUrl(url);
-            clickTrack.setCost(0);
-            clickTrack.setIncome(0);
 
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 resp.setHeader("Location", url);
@@ -341,16 +354,27 @@ public class WorkThread {
     public int getMediaApiType(HttpServletRequest req) {
         try {
             int mediaApiType = this.cacheManager.getMediaApiType(req.getRequestURI());
+
             if (mediaApiType <= 0) {
+                long mid = 0;
                 String adspaceid = req.getParameter("adspaceid");
                 if (adspaceid != null) {
                     Pair<Long, Long> plcmtInfo = this.cacheManager.mediaPlcmtMapping(adspaceid);
                     if (plcmtInfo != null) {
-                        MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(plcmtInfo.getLeft());
-                        if (mediaMetaData != null) {
-                            return mediaMetaData.getApitype();
-                        }
+                        mid = plcmtInfo.getLeft();
                     }
+                }
+
+                if (mid <= 0) {
+                    String pid = req.getParameter("pid");
+                    if (pid != null) {
+                        mid = Long.parseLong(pid);
+                    }
+                }
+
+                MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(mid);
+                if (mediaMetaData != null) {
+                    return mediaMetaData.getApitype();
                 }
             } else {
                 return mediaApiType;

@@ -652,13 +652,13 @@ public final class PremiumMADRTBProtocol {
           com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>optional int32 type = 1;</code>
+         * <code>optional int32 layout = 1;</code>
          */
-        boolean hasType();
+        boolean hasLayout();
         /**
-         * <code>optional int32 type = 1;</code>
+         * <code>optional int32 layout = 1;</code>
          */
-        int getType();
+        int getLayout();
 
         /**
          * <code>optional int32 w = 2;</code>
@@ -773,7 +773,7 @@ public final class PremiumMADRTBProtocol {
                 }
                 case 8: {
                   bitField0_ |= 0x00000001;
-                  type_ = input.readInt32();
+                  layout_ = input.readInt32();
                   break;
                 }
                 case 16: {
@@ -867,19 +867,19 @@ public final class PremiumMADRTBProtocol {
         }
 
         private int bitField0_;
-        public static final int TYPE_FIELD_NUMBER = 1;
-        private int type_;
+        public static final int LAYOUT_FIELD_NUMBER = 1;
+        private int layout_;
         /**
-         * <code>optional int32 type = 1;</code>
+         * <code>optional int32 layout = 1;</code>
          */
-        public boolean hasType() {
+        public boolean hasLayout() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>optional int32 type = 1;</code>
+         * <code>optional int32 layout = 1;</code>
          */
-        public int getType() {
-          return type_;
+        public int getLayout() {
+          return layout_;
         }
 
         public static final int W_FIELD_NUMBER = 2;
@@ -979,7 +979,7 @@ public final class PremiumMADRTBProtocol {
         }
 
         private void initFields() {
-          type_ = 0;
+          layout_ = 0;
           w_ = 0;
           h_ = 0;
           plcmtcnt_ = 0;
@@ -1000,7 +1000,7 @@ public final class PremiumMADRTBProtocol {
                             throws java.io.IOException {
           getSerializedSize();
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            output.writeInt32(1, type_);
+            output.writeInt32(1, layout_);
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             output.writeInt32(2, w_);
@@ -1028,7 +1028,7 @@ public final class PremiumMADRTBProtocol {
           size = 0;
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeInt32Size(1, type_);
+              .computeInt32Size(1, layout_);
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             size += com.google.protobuf.CodedOutputStream
@@ -1177,7 +1177,7 @@ public final class PremiumMADRTBProtocol {
 
           public Builder clear() {
             super.clear();
-            type_ = 0;
+            layout_ = 0;
             bitField0_ = (bitField0_ & ~0x00000001);
             w_ = 0;
             bitField0_ = (bitField0_ & ~0x00000002);
@@ -1220,7 +1220,7 @@ public final class PremiumMADRTBProtocol {
             if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
               to_bitField0_ |= 0x00000001;
             }
-            result.type_ = type_;
+            result.layout_ = layout_;
             if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
               to_bitField0_ |= 0x00000002;
             }
@@ -1259,8 +1259,8 @@ public final class PremiumMADRTBProtocol {
 
           public Builder mergeFrom(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Banner other) {
             if (other == com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Banner.getDefaultInstance()) return this;
-            if (other.hasType()) {
-              setType(other.getType());
+            if (other.hasLayout()) {
+              setLayout(other.getLayout());
             }
             if (other.hasW()) {
               setW(other.getW());
@@ -1318,34 +1318,34 @@ public final class PremiumMADRTBProtocol {
           }
           private int bitField0_;
 
-          private int type_ ;
+          private int layout_ ;
           /**
-           * <code>optional int32 type = 1;</code>
+           * <code>optional int32 layout = 1;</code>
            */
-          public boolean hasType() {
+          public boolean hasLayout() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
           }
           /**
-           * <code>optional int32 type = 1;</code>
+           * <code>optional int32 layout = 1;</code>
            */
-          public int getType() {
-            return type_;
+          public int getLayout() {
+            return layout_;
           }
           /**
-           * <code>optional int32 type = 1;</code>
+           * <code>optional int32 layout = 1;</code>
            */
-          public Builder setType(int value) {
+          public Builder setLayout(int value) {
             bitField0_ |= 0x00000001;
-            type_ = value;
+            layout_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional int32 type = 1;</code>
+           * <code>optional int32 layout = 1;</code>
            */
-          public Builder clearType() {
+          public Builder clearLayout() {
             bitField0_ = (bitField0_ & ~0x00000001);
-            type_ = 0;
+            layout_ = 0;
             onChanged();
             return this;
           }
@@ -13638,74 +13638,69 @@ public final class PremiumMADRTBProtocol {
       int getDevicetype();
 
       /**
-       * <code>optional string language = 16;</code>
+       * <code>optional int32 os = 16;</code>
+       */
+      boolean hasOs();
+      /**
+       * <code>optional int32 os = 16;</code>
+       */
+      int getOs();
+
+      /**
+       * <code>optional string osv = 17;</code>
+       */
+      boolean hasOsv();
+      /**
+       * <code>optional string osv = 17;</code>
+       */
+      java.lang.String getOsv();
+      /**
+       * <code>optional string osv = 17;</code>
+       */
+      com.google.protobuf.ByteString
+          getOsvBytes();
+
+      /**
+       * <code>optional string language = 18;</code>
        */
       boolean hasLanguage();
       /**
-       * <code>optional string language = 16;</code>
+       * <code>optional string language = 18;</code>
        */
       java.lang.String getLanguage();
       /**
-       * <code>optional string language = 16;</code>
+       * <code>optional string language = 18;</code>
        */
       com.google.protobuf.ByteString
           getLanguageBytes();
 
       /**
-       * <code>optional string make = 17;</code>
+       * <code>optional string make = 19;</code>
        */
       boolean hasMake();
       /**
-       * <code>optional string make = 17;</code>
+       * <code>optional string make = 19;</code>
        */
       java.lang.String getMake();
       /**
-       * <code>optional string make = 17;</code>
+       * <code>optional string make = 19;</code>
        */
       com.google.protobuf.ByteString
           getMakeBytes();
 
       /**
-       * <code>optional string model = 18;</code>
+       * <code>optional string model = 20;</code>
        */
       boolean hasModel();
       /**
-       * <code>optional string model = 18;</code>
+       * <code>optional string model = 20;</code>
        */
       java.lang.String getModel();
       /**
-       * <code>optional string model = 18;</code>
+       * <code>optional string model = 20;</code>
        */
       com.google.protobuf.ByteString
           getModelBytes();
-
-      /**
-       * <code>optional string os = 19;</code>
-       */
-      boolean hasOs();
-      /**
-       * <code>optional string os = 19;</code>
-       */
-      java.lang.String getOs();
-      /**
-       * <code>optional string os = 19;</code>
-       */
-      com.google.protobuf.ByteString
-          getOsBytes();
-
-      /**
-       * <code>optional string osv = 20;</code>
-       */
-      boolean hasOsv();
-      /**
-       * <code>optional string osv = 20;</code>
-       */
-      java.lang.String getOsv();
-      /**
-       * <code>optional string osv = 20;</code>
-       */
-      com.google.protobuf.ByteString
-          getOsvBytes();
 
       /**
        * <code>optional string hwv = 21;</code>
@@ -13873,34 +13868,33 @@ public final class PremiumMADRTBProtocol {
                 devicetype_ = input.readInt32();
                 break;
               }
-              case 130: {
-                com.google.protobuf.ByteString bs = input.readBytes();
+              case 128: {
                 bitField0_ |= 0x00008000;
-                language_ = bs;
+                os_ = input.readInt32();
                 break;
               }
               case 138: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00010000;
-                make_ = bs;
+                osv_ = bs;
                 break;
               }
               case 146: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00020000;
-                model_ = bs;
+                language_ = bs;
                 break;
               }
               case 154: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00040000;
-                os_ = bs;
+                make_ = bs;
                 break;
               }
               case 162: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00080000;
-                osv_ = bs;
+                model_ = bs;
                 break;
               }
               case 170: {
@@ -14986,184 +14980,31 @@ public final class PremiumMADRTBProtocol {
         return devicetype_;
       }
 
-      public static final int LANGUAGE_FIELD_NUMBER = 16;
-      private java.lang.Object language_;
+      public static final int OS_FIELD_NUMBER = 16;
+      private int os_;
       /**
-       * <code>optional string language = 16;</code>
+       * <code>optional int32 os = 16;</code>
        */
-      public boolean hasLanguage() {
+      public boolean hasOs() {
         return ((bitField0_ & 0x00008000) == 0x00008000);
       }
       /**
-       * <code>optional string language = 16;</code>
+       * <code>optional int32 os = 16;</code>
        */
-      public java.lang.String getLanguage() {
-        java.lang.Object ref = language_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            language_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string language = 16;</code>
-       */
-      public com.google.protobuf.ByteString
-          getLanguageBytes() {
-        java.lang.Object ref = language_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          language_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public int getOs() {
+        return os_;
       }
 
-      public static final int MAKE_FIELD_NUMBER = 17;
-      private java.lang.Object make_;
+      public static final int OSV_FIELD_NUMBER = 17;
+      private java.lang.Object osv_;
       /**
-       * <code>optional string make = 17;</code>
+       * <code>optional string osv = 17;</code>
        */
-      public boolean hasMake() {
+      public boolean hasOsv() {
         return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional string make = 17;</code>
-       */
-      public java.lang.String getMake() {
-        java.lang.Object ref = make_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            make_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string make = 17;</code>
-       */
-      public com.google.protobuf.ByteString
-          getMakeBytes() {
-        java.lang.Object ref = make_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          make_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int MODEL_FIELD_NUMBER = 18;
-      private java.lang.Object model_;
-      /**
-       * <code>optional string model = 18;</code>
-       */
-      public boolean hasModel() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
-      }
-      /**
-       * <code>optional string model = 18;</code>
-       */
-      public java.lang.String getModel() {
-        java.lang.Object ref = model_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            model_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string model = 18;</code>
-       */
-      public com.google.protobuf.ByteString
-          getModelBytes() {
-        java.lang.Object ref = model_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          model_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int OS_FIELD_NUMBER = 19;
-      private java.lang.Object os_;
-      /**
-       * <code>optional string os = 19;</code>
-       */
-      public boolean hasOs() {
-        return ((bitField0_ & 0x00040000) == 0x00040000);
-      }
-      /**
-       * <code>optional string os = 19;</code>
-       */
-      public java.lang.String getOs() {
-        java.lang.Object ref = os_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            os_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string os = 19;</code>
-       */
-      public com.google.protobuf.ByteString
-          getOsBytes() {
-        java.lang.Object ref = os_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          os_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int OSV_FIELD_NUMBER = 20;
-      private java.lang.Object osv_;
-      /**
-       * <code>optional string osv = 20;</code>
-       */
-      public boolean hasOsv() {
-        return ((bitField0_ & 0x00080000) == 0x00080000);
-      }
-      /**
-       * <code>optional string osv = 20;</code>
+       * <code>optional string osv = 17;</code>
        */
       public java.lang.String getOsv() {
         java.lang.Object ref = osv_;
@@ -15180,7 +15021,7 @@ public final class PremiumMADRTBProtocol {
         }
       }
       /**
-       * <code>optional string osv = 20;</code>
+       * <code>optional string osv = 17;</code>
        */
       public com.google.protobuf.ByteString
           getOsvBytes() {
@@ -15190,6 +15031,132 @@ public final class PremiumMADRTBProtocol {
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           osv_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int LANGUAGE_FIELD_NUMBER = 18;
+      private java.lang.Object language_;
+      /**
+       * <code>optional string language = 18;</code>
+       */
+      public boolean hasLanguage() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional string language = 18;</code>
+       */
+      public java.lang.String getLanguage() {
+        java.lang.Object ref = language_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            language_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string language = 18;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLanguageBytes() {
+        java.lang.Object ref = language_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          language_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int MAKE_FIELD_NUMBER = 19;
+      private java.lang.Object make_;
+      /**
+       * <code>optional string make = 19;</code>
+       */
+      public boolean hasMake() {
+        return ((bitField0_ & 0x00040000) == 0x00040000);
+      }
+      /**
+       * <code>optional string make = 19;</code>
+       */
+      public java.lang.String getMake() {
+        java.lang.Object ref = make_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            make_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string make = 19;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMakeBytes() {
+        java.lang.Object ref = make_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          make_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int MODEL_FIELD_NUMBER = 20;
+      private java.lang.Object model_;
+      /**
+       * <code>optional string model = 20;</code>
+       */
+      public boolean hasModel() {
+        return ((bitField0_ & 0x00080000) == 0x00080000);
+      }
+      /**
+       * <code>optional string model = 20;</code>
+       */
+      public java.lang.String getModel() {
+        java.lang.Object ref = model_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            model_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string model = 20;</code>
+       */
+      public com.google.protobuf.ByteString
+          getModelBytes() {
+        java.lang.Object ref = model_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          model_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -15275,11 +15242,11 @@ public final class PremiumMADRTBProtocol {
         carrier_ = 0;
         connectiontype_ = 0;
         devicetype_ = 0;
+        os_ = 0;
+        osv_ = "";
         language_ = "";
         make_ = "";
         model_ = "";
-        os_ = "";
-        osv_ = "";
         hwv_ = "";
         geo_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Device.Geo.getDefaultInstance();
       }
@@ -15342,19 +15309,19 @@ public final class PremiumMADRTBProtocol {
           output.writeInt32(15, devicetype_);
         }
         if (((bitField0_ & 0x00008000) == 0x00008000)) {
-          output.writeBytes(16, getLanguageBytes());
+          output.writeInt32(16, os_);
         }
         if (((bitField0_ & 0x00010000) == 0x00010000)) {
-          output.writeBytes(17, getMakeBytes());
+          output.writeBytes(17, getOsvBytes());
         }
         if (((bitField0_ & 0x00020000) == 0x00020000)) {
-          output.writeBytes(18, getModelBytes());
+          output.writeBytes(18, getLanguageBytes());
         }
         if (((bitField0_ & 0x00040000) == 0x00040000)) {
-          output.writeBytes(19, getOsBytes());
+          output.writeBytes(19, getMakeBytes());
         }
         if (((bitField0_ & 0x00080000) == 0x00080000)) {
-          output.writeBytes(20, getOsvBytes());
+          output.writeBytes(20, getModelBytes());
         }
         if (((bitField0_ & 0x00100000) == 0x00100000)) {
           output.writeBytes(21, getHwvBytes());
@@ -15433,23 +15400,23 @@ public final class PremiumMADRTBProtocol {
         }
         if (((bitField0_ & 0x00008000) == 0x00008000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(16, getLanguageBytes());
+            .computeInt32Size(16, os_);
         }
         if (((bitField0_ & 0x00010000) == 0x00010000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(17, getMakeBytes());
+            .computeBytesSize(17, getOsvBytes());
         }
         if (((bitField0_ & 0x00020000) == 0x00020000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(18, getModelBytes());
+            .computeBytesSize(18, getLanguageBytes());
         }
         if (((bitField0_ & 0x00040000) == 0x00040000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(19, getOsBytes());
+            .computeBytesSize(19, getMakeBytes());
         }
         if (((bitField0_ & 0x00080000) == 0x00080000)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(20, getOsvBytes());
+            .computeBytesSize(20, getModelBytes());
         }
         if (((bitField0_ & 0x00100000) == 0x00100000)) {
           size += com.google.protobuf.CodedOutputStream
@@ -15607,15 +15574,15 @@ public final class PremiumMADRTBProtocol {
           bitField0_ = (bitField0_ & ~0x00002000);
           devicetype_ = 0;
           bitField0_ = (bitField0_ & ~0x00004000);
-          language_ = "";
+          os_ = 0;
           bitField0_ = (bitField0_ & ~0x00008000);
-          make_ = "";
-          bitField0_ = (bitField0_ & ~0x00010000);
-          model_ = "";
-          bitField0_ = (bitField0_ & ~0x00020000);
-          os_ = "";
-          bitField0_ = (bitField0_ & ~0x00040000);
           osv_ = "";
+          bitField0_ = (bitField0_ & ~0x00010000);
+          language_ = "";
+          bitField0_ = (bitField0_ & ~0x00020000);
+          make_ = "";
+          bitField0_ = (bitField0_ & ~0x00040000);
+          model_ = "";
           bitField0_ = (bitField0_ & ~0x00080000);
           hwv_ = "";
           bitField0_ = (bitField0_ & ~0x00100000);
@@ -15716,23 +15683,23 @@ public final class PremiumMADRTBProtocol {
           if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
             to_bitField0_ |= 0x00008000;
           }
-          result.language_ = language_;
+          result.os_ = os_;
           if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
             to_bitField0_ |= 0x00010000;
           }
-          result.make_ = make_;
+          result.osv_ = osv_;
           if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
             to_bitField0_ |= 0x00020000;
           }
-          result.model_ = model_;
+          result.language_ = language_;
           if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
             to_bitField0_ |= 0x00040000;
           }
-          result.os_ = os_;
+          result.make_ = make_;
           if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
             to_bitField0_ |= 0x00080000;
           }
-          result.osv_ = osv_;
+          result.model_ = model_;
           if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
             to_bitField0_ |= 0x00100000;
           }
@@ -15830,29 +15797,27 @@ public final class PremiumMADRTBProtocol {
           if (other.hasDevicetype()) {
             setDevicetype(other.getDevicetype());
           }
+          if (other.hasOs()) {
+            setOs(other.getOs());
+          }
+          if (other.hasOsv()) {
+            bitField0_ |= 0x00010000;
+            osv_ = other.osv_;
+            onChanged();
+          }
           if (other.hasLanguage()) {
-            bitField0_ |= 0x00008000;
+            bitField0_ |= 0x00020000;
             language_ = other.language_;
             onChanged();
           }
           if (other.hasMake()) {
-            bitField0_ |= 0x00010000;
+            bitField0_ |= 0x00040000;
             make_ = other.make_;
             onChanged();
           }
           if (other.hasModel()) {
-            bitField0_ |= 0x00020000;
-            model_ = other.model_;
-            onChanged();
-          }
-          if (other.hasOs()) {
-            bitField0_ |= 0x00040000;
-            os_ = other.os_;
-            onChanged();
-          }
-          if (other.hasOsv()) {
             bitField0_ |= 0x00080000;
-            osv_ = other.osv_;
+            model_ = other.model_;
             onChanged();
           }
           if (other.hasHwv()) {
@@ -16898,319 +16863,47 @@ public final class PremiumMADRTBProtocol {
           return this;
         }
 
-        private java.lang.Object language_ = "";
+        private int os_ ;
         /**
-         * <code>optional string language = 16;</code>
+         * <code>optional int32 os = 16;</code>
          */
-        public boolean hasLanguage() {
+        public boolean hasOs() {
           return ((bitField0_ & 0x00008000) == 0x00008000);
         }
         /**
-         * <code>optional string language = 16;</code>
+         * <code>optional int32 os = 16;</code>
          */
-        public java.lang.String getLanguage() {
-          java.lang.Object ref = language_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              language_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
+        public int getOs() {
+          return os_;
         }
         /**
-         * <code>optional string language = 16;</code>
+         * <code>optional int32 os = 16;</code>
          */
-        public com.google.protobuf.ByteString
-            getLanguageBytes() {
-          java.lang.Object ref = language_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            language_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string language = 16;</code>
-         */
-        public Builder setLanguage(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00008000;
-          language_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string language = 16;</code>
-         */
-        public Builder clearLanguage() {
-          bitField0_ = (bitField0_ & ~0x00008000);
-          language_ = getDefaultInstance().getLanguage();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string language = 16;</code>
-         */
-        public Builder setLanguageBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00008000;
-          language_ = value;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object make_ = "";
-        /**
-         * <code>optional string make = 17;</code>
-         */
-        public boolean hasMake() {
-          return ((bitField0_ & 0x00010000) == 0x00010000);
-        }
-        /**
-         * <code>optional string make = 17;</code>
-         */
-        public java.lang.String getMake() {
-          java.lang.Object ref = make_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              make_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string make = 17;</code>
-         */
-        public com.google.protobuf.ByteString
-            getMakeBytes() {
-          java.lang.Object ref = make_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            make_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string make = 17;</code>
-         */
-        public Builder setMake(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00010000;
-          make_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string make = 17;</code>
-         */
-        public Builder clearMake() {
-          bitField0_ = (bitField0_ & ~0x00010000);
-          make_ = getDefaultInstance().getMake();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string make = 17;</code>
-         */
-        public Builder setMakeBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00010000;
-          make_ = value;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object model_ = "";
-        /**
-         * <code>optional string model = 18;</code>
-         */
-        public boolean hasModel() {
-          return ((bitField0_ & 0x00020000) == 0x00020000);
-        }
-        /**
-         * <code>optional string model = 18;</code>
-         */
-        public java.lang.String getModel() {
-          java.lang.Object ref = model_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              model_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string model = 18;</code>
-         */
-        public com.google.protobuf.ByteString
-            getModelBytes() {
-          java.lang.Object ref = model_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            model_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string model = 18;</code>
-         */
-        public Builder setModel(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00020000;
-          model_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string model = 18;</code>
-         */
-        public Builder clearModel() {
-          bitField0_ = (bitField0_ & ~0x00020000);
-          model_ = getDefaultInstance().getModel();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string model = 18;</code>
-         */
-        public Builder setModelBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00020000;
-          model_ = value;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object os_ = "";
-        /**
-         * <code>optional string os = 19;</code>
-         */
-        public boolean hasOs() {
-          return ((bitField0_ & 0x00040000) == 0x00040000);
-        }
-        /**
-         * <code>optional string os = 19;</code>
-         */
-        public java.lang.String getOs() {
-          java.lang.Object ref = os_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              os_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string os = 19;</code>
-         */
-        public com.google.protobuf.ByteString
-            getOsBytes() {
-          java.lang.Object ref = os_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            os_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string os = 19;</code>
-         */
-        public Builder setOs(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00040000;
+        public Builder setOs(int value) {
+          bitField0_ |= 0x00008000;
           os_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string os = 19;</code>
+         * <code>optional int32 os = 16;</code>
          */
         public Builder clearOs() {
-          bitField0_ = (bitField0_ & ~0x00040000);
-          os_ = getDefaultInstance().getOs();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string os = 19;</code>
-         */
-        public Builder setOsBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00040000;
-          os_ = value;
+          bitField0_ = (bitField0_ & ~0x00008000);
+          os_ = 0;
           onChanged();
           return this;
         }
 
         private java.lang.Object osv_ = "";
         /**
-         * <code>optional string osv = 20;</code>
+         * <code>optional string osv = 17;</code>
          */
         public boolean hasOsv() {
-          return ((bitField0_ & 0x00080000) == 0x00080000);
+          return ((bitField0_ & 0x00010000) == 0x00010000);
         }
         /**
-         * <code>optional string osv = 20;</code>
+         * <code>optional string osv = 17;</code>
          */
         public java.lang.String getOsv() {
           java.lang.Object ref = osv_;
@@ -17227,7 +16920,7 @@ public final class PremiumMADRTBProtocol {
           }
         }
         /**
-         * <code>optional string osv = 20;</code>
+         * <code>optional string osv = 17;</code>
          */
         public com.google.protobuf.ByteString
             getOsvBytes() {
@@ -17243,37 +16936,265 @@ public final class PremiumMADRTBProtocol {
           }
         }
         /**
-         * <code>optional string osv = 20;</code>
+         * <code>optional string osv = 17;</code>
          */
         public Builder setOsv(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00080000;
+  bitField0_ |= 0x00010000;
           osv_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string osv = 20;</code>
+         * <code>optional string osv = 17;</code>
          */
         public Builder clearOsv() {
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x00010000);
           osv_ = getDefaultInstance().getOsv();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string osv = 20;</code>
+         * <code>optional string osv = 17;</code>
          */
         public Builder setOsvBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00080000;
+  bitField0_ |= 0x00010000;
           osv_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object language_ = "";
+        /**
+         * <code>optional string language = 18;</code>
+         */
+        public boolean hasLanguage() {
+          return ((bitField0_ & 0x00020000) == 0x00020000);
+        }
+        /**
+         * <code>optional string language = 18;</code>
+         */
+        public java.lang.String getLanguage() {
+          java.lang.Object ref = language_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              language_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string language = 18;</code>
+         */
+        public com.google.protobuf.ByteString
+            getLanguageBytes() {
+          java.lang.Object ref = language_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            language_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string language = 18;</code>
+         */
+        public Builder setLanguage(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00020000;
+          language_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string language = 18;</code>
+         */
+        public Builder clearLanguage() {
+          bitField0_ = (bitField0_ & ~0x00020000);
+          language_ = getDefaultInstance().getLanguage();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string language = 18;</code>
+         */
+        public Builder setLanguageBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00020000;
+          language_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object make_ = "";
+        /**
+         * <code>optional string make = 19;</code>
+         */
+        public boolean hasMake() {
+          return ((bitField0_ & 0x00040000) == 0x00040000);
+        }
+        /**
+         * <code>optional string make = 19;</code>
+         */
+        public java.lang.String getMake() {
+          java.lang.Object ref = make_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              make_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string make = 19;</code>
+         */
+        public com.google.protobuf.ByteString
+            getMakeBytes() {
+          java.lang.Object ref = make_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            make_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string make = 19;</code>
+         */
+        public Builder setMake(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00040000;
+          make_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string make = 19;</code>
+         */
+        public Builder clearMake() {
+          bitField0_ = (bitField0_ & ~0x00040000);
+          make_ = getDefaultInstance().getMake();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string make = 19;</code>
+         */
+        public Builder setMakeBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00040000;
+          make_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object model_ = "";
+        /**
+         * <code>optional string model = 20;</code>
+         */
+        public boolean hasModel() {
+          return ((bitField0_ & 0x00080000) == 0x00080000);
+        }
+        /**
+         * <code>optional string model = 20;</code>
+         */
+        public java.lang.String getModel() {
+          java.lang.Object ref = model_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              model_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string model = 20;</code>
+         */
+        public com.google.protobuf.ByteString
+            getModelBytes() {
+          java.lang.Object ref = model_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            model_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string model = 20;</code>
+         */
+        public Builder setModel(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00080000;
+          model_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string model = 20;</code>
+         */
+        public Builder clearModel() {
+          bitField0_ = (bitField0_ & ~0x00080000);
+          model_ = getDefaultInstance().getModel();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string model = 20;</code>
+         */
+        public Builder setModelBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00080000;
+          model_ = value;
           onChanged();
           return this;
         }
@@ -34702,7 +34623,7 @@ public final class PremiumMADRTBProtocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\033PremiumMADRTBProtocol.proto\022\020com.madho" +
-      "use.rtb\"\274\030\n\nBidRequest\022\n\n\002id\030\001 \001(\t\0224\n\003im" +
+      "use.rtb\"\276\030\n\nBidRequest\022\n\n\002id\030\001 \001(\t\0224\n\003im" +
       "p\030\002 \003(\0132\'.com.madhouse.rtb.BidRequest.Im" +
       "pression\022/\n\003app\030\003 \001(\0132 .com.madhouse.rtb" +
       ".BidRequest.AppH\000\0221\n\004site\030\004 \001(\0132!.com.ma" +
@@ -34710,7 +34631,7 @@ public final class PremiumMADRTBProtocol {
       " \001(\0132#.com.madhouse.rtb.BidRequest.Devic" +
       "e\022/\n\004user\030\006 \001(\0132!.com.madhouse.rtb.BidRe" +
       "quest.User\022\014\n\004test\030\007 \001(\005\022\n\n\002at\030\010 \001(\005\022\014\n\004" +
-      "tmax\030\t \001(\005\022\014\n\004bcat\030\n \003(\t\022\014\n\004badv\030\013 \003(\t\032\245",
+      "tmax\030\t \001(\005\022\014\n\004bcat\030\n \003(\t\022\014\n\004badv\030\013 \003(\t\032\247",
       "\r\n\nImpression\022\n\n\002id\030\001 \001(\t\022@\n\006banner\030\002 \001(" +
       "\0132..com.madhouse.rtb.BidRequest.Impressi" +
       "on.BannerH\000\022>\n\005video\030\003 \001(\0132-.com.madhous" +
@@ -34719,100 +34640,100 @@ public final class PremiumMADRTBProtocol {
       "t.Impression.NativeH\000\022\r\n\005instl\030\005 \001(\005\0228\n\003" +
       "pmp\030\006 \001(\0132+.com.madhouse.rtb.BidRequest." +
       "Impression.PMP\022\r\n\005tagid\030\007 \001(\t\022\020\n\010bidfloo" +
-      "r\030\010 \001(\005\022\017\n\007bidtype\030\t \001(\005\032Z\n\006Banner\022\014\n\004ty" +
-      "pe\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\020\n\010plcmtc",
-      "nt\030\004 \001(\005\022\r\n\005mimes\030\005 \003(\t\022\013\n\003api\030\006 \003(\005\032\257\001\n" +
-      "\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\023\n\013mindurat" +
-      "ion\030\003 \001(\005\022\023\n\013maxduration\030\004 \001(\005\022\021\n\tlinear" +
-      "ity\030\005 \001(\005\022\022\n\nstartdelay\030\006 \001(\005\022\020\n\010plcmtcn" +
-      "t\030\007 \001(\005\022\r\n\005mimes\030\010 \003(\t\022\021\n\tprotocols\030\t \003(" +
-      "\005\022\013\n\003api\030\n \003(\005\032\207\007\n\006Native\022\014\n\004args\030\001 \001(\t\022" +
-      "\013\n\003ver\030\002 \001(\t\022M\n\007request\030\003 \001(\0132<.com.madh" +
-      "ouse.rtb.BidRequest.Impression.Native.Na" +
-      "tiveRequest\022\013\n\003api\030\004 \003(\005\032\205\006\n\rNativeReque" +
-      "st\022\016\n\006layout\030\001 \001(\005\022\020\n\010plcmtcnt\030\002 \001(\005\022R\n\006",
-      "assets\030\003 \003(\0132B.com.madhouse.rtb.BidReque" +
-      "st.Impression.Native.NativeRequest.Asset" +
-      "\032\375\004\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010required\030\002 \001(\010" +
-      "\022Y\n\005title\030\003 \001(\0132H.com.madhouse.rtb.BidRe" +
-      "quest.Impression.Native.NativeRequest.As" +
-      "set.TitleH\000\022Y\n\005image\030\004 \001(\0132H.com.madhous" +
-      "e.rtb.BidRequest.Impression.Native.Nativ" +
-      "eRequest.Asset.ImageH\000\022Y\n\005video\030\005 \001(\0132H." +
-      "com.madhouse.rtb.BidRequest.Impression.N" +
-      "ative.NativeRequest.Asset.VideoH\000\022W\n\004dat",
-      "a\030\006 \001(\0132G.com.madhouse.rtb.BidRequest.Im" +
-      "pression.Native.NativeRequest.Asset.Data" +
-      "H\000\032\024\n\005Title\022\013\n\003len\030\001 \001(\005\032:\n\005Image\022\014\n\004typ" +
-      "e\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\r\n\005mimes\030\004" +
-      " \003(\t\032i\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\023\n\013m" +
-      "induration\030\003 \001(\005\022\023\n\013maxduration\030\004 \001(\005\022\021\n" +
-      "\tprotocols\030\005 \003(\005\022\r\n\005mimes\030\006 \003(\t\032!\n\004Data\022" +
-      "\014\n\004type\030\001 \001(\005\022\013\n\003len\030\002 \001(\005B\014\n\nAssetOneof" +
-      "\032\240\001\n\003PMP\022\027\n\017private_auction\030\001 \001(\005\022?\n\005dea" +
-      "ls\030\002 \003(\01320.com.madhouse.rtb.BidRequest.I",
-      "mpression.PMP.Deal\032?\n\004Deal\022\n\n\002id\030\001 \001(\t\022\n" +
-      "\n\002at\030\002 \001(\005\022\020\n\010bidfloor\030\003 \001(\005\022\r\n\005wseat\030\004 " +
-      "\003(\tB\021\n\017ImpressionOneof\032\213\001\n\004User\022\n\n\002id\030\001 " +
-      "\001(\t\022\013\n\003yob\030\002 \001(\005\022\016\n\006gender\030\003 \001(\t\0223\n\004tags" +
-      "\030\004 \003(\0132%.com.madhouse.rtb.BidRequest.Use" +
-      "r.Tag\032%\n\003Tag\022\n\n\002id\030\001 \001(\t\022\022\n\nsimilarity\030\002" +
-      " \001(\005\032\234\003\n\006Device\022\n\n\002ua\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022" +
-      "\014\n\004ipv6\030\003 \001(\t\022\013\n\003did\030\004 \001(\t\022\016\n\006didmd5\030\005 \001" +
-      "(\t\022\014\n\004dpid\030\006 \001(\t\022\017\n\007dpidmd5\030\007 \001(\t\022\013\n\003mac" +
-      "\030\010 \001(\t\022\016\n\006macmd5\030\t \001(\t\022\014\n\004mac1\030\n \001(\t\022\017\n\007",
-      "mac1md5\030\013 \001(\t\022\013\n\003ifa\030\014 \001(\t\022\017\n\007carrier\030\r " +
-      "\001(\005\022\026\n\016connectiontype\030\016 \001(\005\022\022\n\ndevicetyp" +
-      "e\030\017 \001(\005\022\020\n\010language\030\020 \001(\t\022\014\n\004make\030\021 \001(\t\022" +
-      "\r\n\005model\030\022 \001(\t\022\n\n\002os\030\023 \001(\t\022\013\n\003osv\030\024 \001(\t\022" +
-      "\013\n\003hwv\030\025 \001(\t\0224\n\003geo\030\026 \001(\0132\'.com.madhouse" +
-      ".rtb.BidRequest.Device.Geo\032\037\n\003Geo\022\013\n\003lon" +
-      "\030\001 \001(\002\022\013\n\003lat\030\002 \001(\002\032\327\001\n\003App\022\n\n\002id\030\001 \001(\t\022" +
-      "\014\n\004name\030\002 \001(\t\022\013\n\003ver\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022" +
-      "\017\n\007pagecat\030\005 \003(\t\022\022\n\nsectioncat\030\006 \003(\t\022\016\n\006" +
-      "bundle\030\007 \001(\t\022\014\n\004paid\030\010 \001(\005\022\020\n\010storeurl\030\t",
-      " \001(\t\022\020\n\010keywords\030\n \003(\t\0225\n\007content\030\013 \001(\0132" +
-      "$.com.madhouse.rtb.BidRequest.Content\032\326\001" +
-      "\n\004Site\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\016\n\006doma" +
-      "in\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022\017\n\007pagecat\030\005 \003(\t\022\022" +
-      "\n\nsectioncat\030\006 \003(\t\022\014\n\004page\030\007 \001(\t\022\013\n\003ref\030" +
-      "\010 \001(\t\022\016\n\006mobile\030\t \001(\005\022\020\n\010keywords\030\n \001(\t\022" +
-      "5\n\007content\030\013 \001(\0132$.com.madhouse.rtb.BidR" +
-      "equest.Content\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r\n" +
-      "\005title\030\002 \001(\t\022\020\n\010keywords\030\003 \003(\t\022\020\n\010channe" +
-      "ls\030\004 \003(\tB\014\n\nMediaOneof\"\373\t\n\013BidResponse\022\n",
-      "\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 \003" +
-      "(\0132%.com.madhouse.rtb.BidResponse.SeatBi" +
-      "d\022\013\n\003nbr\030\004 \001(\005\032\213\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132" +
-      ").com.madhouse.rtb.BidResponse.SeatBid.B" +
-      "id\032\307\010\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r\n" +
-      "\005price\030\003 \001(\005\022\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022" +
-      "\014\n\004crid\030\006 \001(\t\022\020\n\010duration\030\007 \001(\005\022\013\n\003adm\030\010" +
-      " \003(\t\022L\n\nadm_native\030\t \001(\01328.com.madhouse." +
-      "rtb.BidResponse.SeatBid.Bid.NativeRespon" +
-      "se\022\r\n\005admid\030\n \001(\t\022\016\n\006dealid\030\013 \001(\t\022\014\n\004nur",
-      "l\030\014 \001(\t\022\016\n\006lpgurl\030\r \001(\t\022\017\n\007acttype\030\016 \001(\005" +
-      "\022B\n\007monitor\030\017 \001(\01321.com.madhouse.rtb.Bid" +
-      "Response.SeatBid.Bid.Monitor\032\262\005\n\016NativeR" +
-      "esponse\022\013\n\003ver\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>.c" +
-      "om.madhouse.rtb.BidResponse.SeatBid.Bid." +
-      "NativeResponse.Asset\032\302\004\n\005Asset\022\n\n\002id\030\001 \001" +
-      "(\t\022\020\n\010required\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D.co" +
-      "m.madhouse.rtb.BidResponse.SeatBid.Bid.N" +
-      "ativeResponse.Asset.TitleH\000\022U\n\005image\030\004 \001" +
-      "(\0132D.com.madhouse.rtb.BidResponse.SeatBi",
-      "d.Bid.NativeResponse.Asset.ImageH\000\022U\n\005vi" +
-      "deo\030\005 \001(\0132D.com.madhouse.rtb.BidResponse" +
-      ".SeatBid.Bid.NativeResponse.Asset.VideoH" +
-      "\000\022S\n\004data\030\006 \001(\0132C.com.madhouse.rtb.BidRe" +
-      "sponse.SeatBid.Bid.NativeResponse.Asset." +
-      "DataH\000\032\025\n\005Title\022\014\n\004text\030\001 \001(\t\032*\n\005Image\022\t" +
-      "\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url\030\003 \003(\t\032K\n\005Vid" +
-      "eo\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\r\n\005cover\030\003 \001(\t\022" +
-      "\013\n\003url\030\004 \001(\t\022\020\n\010duration\030\005 \001(\005\032#\n\004Data\022\014" +
-      "\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOneo",
-      "f\0329\n\007Monitor\022\016\n\006impurl\030\001 \003(\t\022\016\n\006clkurl\030\002" +
-      " \003(\t\022\016\n\006securl\030\003 \003(\t"
+      "r\030\010 \001(\005\022\017\n\007bidtype\030\t \001(\005\032\\\n\006Banner\022\016\n\006la" +
+      "yout\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\020\n\010plcm",
+      "tcnt\030\004 \001(\005\022\r\n\005mimes\030\005 \003(\t\022\013\n\003api\030\006 \003(\005\032\257" +
+      "\001\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\023\n\013mindur" +
+      "ation\030\003 \001(\005\022\023\n\013maxduration\030\004 \001(\005\022\021\n\tline" +
+      "arity\030\005 \001(\005\022\022\n\nstartdelay\030\006 \001(\005\022\020\n\010plcmt" +
+      "cnt\030\007 \001(\005\022\r\n\005mimes\030\010 \003(\t\022\021\n\tprotocols\030\t " +
+      "\003(\005\022\013\n\003api\030\n \003(\005\032\207\007\n\006Native\022\014\n\004args\030\001 \001(" +
+      "\t\022\013\n\003ver\030\002 \001(\t\022M\n\007request\030\003 \001(\0132<.com.ma" +
+      "dhouse.rtb.BidRequest.Impression.Native." +
+      "NativeRequest\022\013\n\003api\030\004 \003(\005\032\205\006\n\rNativeReq" +
+      "uest\022\016\n\006layout\030\001 \001(\005\022\020\n\010plcmtcnt\030\002 \001(\005\022R",
+      "\n\006assets\030\003 \003(\0132B.com.madhouse.rtb.BidReq" +
+      "uest.Impression.Native.NativeRequest.Ass" +
+      "et\032\375\004\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010required\030\002 \001" +
+      "(\010\022Y\n\005title\030\003 \001(\0132H.com.madhouse.rtb.Bid" +
+      "Request.Impression.Native.NativeRequest." +
+      "Asset.TitleH\000\022Y\n\005image\030\004 \001(\0132H.com.madho" +
+      "use.rtb.BidRequest.Impression.Native.Nat" +
+      "iveRequest.Asset.ImageH\000\022Y\n\005video\030\005 \001(\0132" +
+      "H.com.madhouse.rtb.BidRequest.Impression" +
+      ".Native.NativeRequest.Asset.VideoH\000\022W\n\004d",
+      "ata\030\006 \001(\0132G.com.madhouse.rtb.BidRequest." +
+      "Impression.Native.NativeRequest.Asset.Da" +
+      "taH\000\032\024\n\005Title\022\013\n\003len\030\001 \001(\005\032:\n\005Image\022\014\n\004t" +
+      "ype\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\r\n\005mimes" +
+      "\030\004 \003(\t\032i\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\023\n" +
+      "\013minduration\030\003 \001(\005\022\023\n\013maxduration\030\004 \001(\005\022" +
+      "\021\n\tprotocols\030\005 \003(\005\022\r\n\005mimes\030\006 \003(\t\032!\n\004Dat" +
+      "a\022\014\n\004type\030\001 \001(\005\022\013\n\003len\030\002 \001(\005B\014\n\nAssetOne" +
+      "of\032\240\001\n\003PMP\022\027\n\017private_auction\030\001 \001(\005\022?\n\005d" +
+      "eals\030\002 \003(\01320.com.madhouse.rtb.BidRequest",
+      ".Impression.PMP.Deal\032?\n\004Deal\022\n\n\002id\030\001 \001(\t" +
+      "\022\n\n\002at\030\002 \001(\005\022\020\n\010bidfloor\030\003 \001(\005\022\r\n\005wseat\030" +
+      "\004 \003(\tB\021\n\017ImpressionOneof\032\213\001\n\004User\022\n\n\002id\030" +
+      "\001 \001(\t\022\013\n\003yob\030\002 \001(\005\022\016\n\006gender\030\003 \001(\t\0223\n\004ta" +
+      "gs\030\004 \003(\0132%.com.madhouse.rtb.BidRequest.U" +
+      "ser.Tag\032%\n\003Tag\022\n\n\002id\030\001 \001(\t\022\022\n\nsimilarity" +
+      "\030\002 \001(\005\032\234\003\n\006Device\022\n\n\002ua\030\001 \001(\t\022\n\n\002ip\030\002 \001(" +
+      "\t\022\014\n\004ipv6\030\003 \001(\t\022\013\n\003did\030\004 \001(\t\022\016\n\006didmd5\030\005" +
+      " \001(\t\022\014\n\004dpid\030\006 \001(\t\022\017\n\007dpidmd5\030\007 \001(\t\022\013\n\003m" +
+      "ac\030\010 \001(\t\022\016\n\006macmd5\030\t \001(\t\022\014\n\004mac1\030\n \001(\t\022\017",
+      "\n\007mac1md5\030\013 \001(\t\022\013\n\003ifa\030\014 \001(\t\022\017\n\007carrier\030" +
+      "\r \001(\005\022\026\n\016connectiontype\030\016 \001(\005\022\022\n\ndevicet" +
+      "ype\030\017 \001(\005\022\n\n\002os\030\020 \001(\005\022\013\n\003osv\030\021 \001(\t\022\020\n\010la" +
+      "nguage\030\022 \001(\t\022\014\n\004make\030\023 \001(\t\022\r\n\005model\030\024 \001(" +
+      "\t\022\013\n\003hwv\030\025 \001(\t\0224\n\003geo\030\026 \001(\0132\'.com.madhou" +
+      "se.rtb.BidRequest.Device.Geo\032\037\n\003Geo\022\013\n\003l" +
+      "on\030\001 \001(\002\022\013\n\003lat\030\002 \001(\002\032\327\001\n\003App\022\n\n\002id\030\001 \001(" +
+      "\t\022\014\n\004name\030\002 \001(\t\022\013\n\003ver\030\003 \001(\t\022\013\n\003cat\030\004 \003(" +
+      "\t\022\017\n\007pagecat\030\005 \003(\t\022\022\n\nsectioncat\030\006 \003(\t\022\016" +
+      "\n\006bundle\030\007 \001(\t\022\014\n\004paid\030\010 \001(\005\022\020\n\010storeurl",
+      "\030\t \001(\t\022\020\n\010keywords\030\n \003(\t\0225\n\007content\030\013 \001(" +
+      "\0132$.com.madhouse.rtb.BidRequest.Content\032" +
+      "\326\001\n\004Site\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\016\n\006do" +
+      "main\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022\017\n\007pagecat\030\005 \003(\t" +
+      "\022\022\n\nsectioncat\030\006 \003(\t\022\014\n\004page\030\007 \001(\t\022\013\n\003re" +
+      "f\030\010 \001(\t\022\016\n\006mobile\030\t \001(\005\022\020\n\010keywords\030\n \001(" +
+      "\t\0225\n\007content\030\013 \001(\0132$.com.madhouse.rtb.Bi" +
+      "dRequest.Content\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022" +
+      "\r\n\005title\030\002 \001(\t\022\020\n\010keywords\030\003 \003(\t\022\020\n\010chan" +
+      "nels\030\004 \003(\tB\014\n\nMediaOneof\"\373\t\n\013BidResponse",
+      "\022\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003" +
+      " \003(\0132%.com.madhouse.rtb.BidResponse.Seat" +
+      "Bid\022\013\n\003nbr\030\004 \001(\005\032\213\t\n\007SeatBid\0226\n\003bid\030\001 \003(" +
+      "\0132).com.madhouse.rtb.BidResponse.SeatBid" +
+      ".Bid\032\307\010\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022" +
+      "\r\n\005price\030\003 \001(\005\022\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(" +
+      "\t\022\014\n\004crid\030\006 \001(\t\022\020\n\010duration\030\007 \001(\005\022\013\n\003adm" +
+      "\030\010 \003(\t\022L\n\nadm_native\030\t \001(\01328.com.madhous" +
+      "e.rtb.BidResponse.SeatBid.Bid.NativeResp" +
+      "onse\022\r\n\005admid\030\n \001(\t\022\016\n\006dealid\030\013 \001(\t\022\014\n\004n",
+      "url\030\014 \001(\t\022\016\n\006lpgurl\030\r \001(\t\022\017\n\007acttype\030\016 \001" +
+      "(\005\022B\n\007monitor\030\017 \001(\01321.com.madhouse.rtb.B" +
+      "idResponse.SeatBid.Bid.Monitor\032\262\005\n\016Nativ" +
+      "eResponse\022\013\n\003ver\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>" +
+      ".com.madhouse.rtb.BidResponse.SeatBid.Bi" +
+      "d.NativeResponse.Asset\032\302\004\n\005Asset\022\n\n\002id\030\001" +
+      " \001(\t\022\020\n\010required\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D." +
+      "com.madhouse.rtb.BidResponse.SeatBid.Bid" +
+      ".NativeResponse.Asset.TitleH\000\022U\n\005image\030\004" +
+      " \001(\0132D.com.madhouse.rtb.BidResponse.Seat",
+      "Bid.Bid.NativeResponse.Asset.ImageH\000\022U\n\005" +
+      "video\030\005 \001(\0132D.com.madhouse.rtb.BidRespon" +
+      "se.SeatBid.Bid.NativeResponse.Asset.Vide" +
+      "oH\000\022S\n\004data\030\006 \001(\0132C.com.madhouse.rtb.Bid" +
+      "Response.SeatBid.Bid.NativeResponse.Asse" +
+      "t.DataH\000\032\025\n\005Title\022\014\n\004text\030\001 \001(\t\032*\n\005Image" +
+      "\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url\030\003 \003(\t\032K\n\005V" +
+      "ideo\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\r\n\005cover\030\003 \001(" +
+      "\t\022\013\n\003url\030\004 \001(\t\022\020\n\010duration\030\005 \001(\005\032#\n\004Data" +
+      "\022\014\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOn",
+      "eof\0329\n\007Monitor\022\016\n\006impurl\030\001 \003(\t\022\016\n\006clkurl" +
+      "\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34843,7 +34764,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidRequest_Impression_Banner_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidRequest_Impression_Banner_descriptor,
-        new java.lang.String[] { "Type", "W", "H", "Plcmtcnt", "Mimes", "Api", });
+        new java.lang.String[] { "Layout", "W", "H", "Plcmtcnt", "Mimes", "Api", });
     internal_static_com_madhouse_rtb_BidRequest_Impression_Video_descriptor =
       internal_static_com_madhouse_rtb_BidRequest_Impression_descriptor.getNestedTypes().get(1);
     internal_static_com_madhouse_rtb_BidRequest_Impression_Video_fieldAccessorTable = new
@@ -34921,7 +34842,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidRequest_Device_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidRequest_Device_descriptor,
-        new java.lang.String[] { "Ua", "Ip", "Ipv6", "Did", "Didmd5", "Dpid", "Dpidmd5", "Mac", "Macmd5", "Mac1", "Mac1Md5", "Ifa", "Carrier", "Connectiontype", "Devicetype", "Language", "Make", "Model", "Os", "Osv", "Hwv", "Geo", });
+        new java.lang.String[] { "Ua", "Ip", "Ipv6", "Did", "Didmd5", "Dpid", "Dpidmd5", "Mac", "Macmd5", "Mac1", "Mac1Md5", "Ifa", "Carrier", "Connectiontype", "Devicetype", "Os", "Osv", "Language", "Make", "Model", "Hwv", "Geo", });
     internal_static_com_madhouse_rtb_BidRequest_Device_Geo_descriptor =
       internal_static_com_madhouse_rtb_BidRequest_Device_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidRequest_Device_Geo_fieldAccessorTable = new
