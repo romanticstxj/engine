@@ -26001,38 +26001,47 @@ public final class PremiumMADRTBProtocol {
                 com.google.protobuf.MessageOrBuilder {
 
               /**
-               * <code>optional int32 w = 1;</code>
+               * <code>optional int32 type = 1;</code>
+               */
+              boolean hasType();
+              /**
+               * <code>optional int32 type = 1;</code>
+               */
+              int getType();
+
+              /**
+               * <code>optional int32 w = 2;</code>
                */
               boolean hasW();
               /**
-               * <code>optional int32 w = 1;</code>
+               * <code>optional int32 w = 2;</code>
                */
               int getW();
 
               /**
-               * <code>optional int32 h = 2;</code>
+               * <code>optional int32 h = 3;</code>
                */
               boolean hasH();
               /**
-               * <code>optional int32 h = 2;</code>
+               * <code>optional int32 h = 3;</code>
                */
               int getH();
 
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               com.google.protobuf.ProtocolStringList
                   getUrlList();
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               int getUrlCount();
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               java.lang.String getUrl(int index);
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               com.google.protobuf.ByteString
                   getUrlBytes(int index);
@@ -26091,19 +26100,24 @@ public final class PremiumMADRTBProtocol {
                       }
                       case 8: {
                         bitField0_ |= 0x00000001;
-                        w_ = input.readInt32();
+                        type_ = input.readInt32();
                         break;
                       }
                       case 16: {
                         bitField0_ |= 0x00000002;
+                        w_ = input.readInt32();
+                        break;
+                      }
+                      case 24: {
+                        bitField0_ |= 0x00000004;
                         h_ = input.readInt32();
                         break;
                       }
-                      case 26: {
+                      case 34: {
                         com.google.protobuf.ByteString bs = input.readBytes();
-                        if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                        if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
                           url_ = new com.google.protobuf.LazyStringArrayList();
-                          mutable_bitField0_ |= 0x00000004;
+                          mutable_bitField0_ |= 0x00000008;
                         }
                         url_.add(bs);
                         break;
@@ -26116,7 +26130,7 @@ public final class PremiumMADRTBProtocol {
                   throw new com.google.protobuf.InvalidProtocolBufferException(
                       e.getMessage()).setUnfinishedMessage(this);
                 } finally {
-                  if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                  if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
                     url_ = url_.getUnmodifiableView();
                   }
                   this.unknownFields = unknownFields.build();
@@ -26151,59 +26165,74 @@ public final class PremiumMADRTBProtocol {
               }
 
               private int bitField0_;
-              public static final int W_FIELD_NUMBER = 1;
-              private int w_;
+              public static final int TYPE_FIELD_NUMBER = 1;
+              private int type_;
               /**
-               * <code>optional int32 w = 1;</code>
+               * <code>optional int32 type = 1;</code>
                */
-              public boolean hasW() {
+              public boolean hasType() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
               }
               /**
-               * <code>optional int32 w = 1;</code>
+               * <code>optional int32 type = 1;</code>
+               */
+              public int getType() {
+                return type_;
+              }
+
+              public static final int W_FIELD_NUMBER = 2;
+              private int w_;
+              /**
+               * <code>optional int32 w = 2;</code>
+               */
+              public boolean hasW() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+              }
+              /**
+               * <code>optional int32 w = 2;</code>
                */
               public int getW() {
                 return w_;
               }
 
-              public static final int H_FIELD_NUMBER = 2;
+              public static final int H_FIELD_NUMBER = 3;
               private int h_;
               /**
-               * <code>optional int32 h = 2;</code>
+               * <code>optional int32 h = 3;</code>
                */
               public boolean hasH() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
+                return ((bitField0_ & 0x00000004) == 0x00000004);
               }
               /**
-               * <code>optional int32 h = 2;</code>
+               * <code>optional int32 h = 3;</code>
                */
               public int getH() {
                 return h_;
               }
 
-              public static final int URL_FIELD_NUMBER = 3;
+              public static final int URL_FIELD_NUMBER = 4;
               private com.google.protobuf.LazyStringList url_;
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               public com.google.protobuf.ProtocolStringList
                   getUrlList() {
                 return url_;
               }
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               public int getUrlCount() {
                 return url_.size();
               }
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               public java.lang.String getUrl(int index) {
                 return url_.get(index);
               }
               /**
-               * <code>repeated string url = 3;</code>
+               * <code>repeated string url = 4;</code>
                */
               public com.google.protobuf.ByteString
                   getUrlBytes(int index) {
@@ -26211,6 +26240,7 @@ public final class PremiumMADRTBProtocol {
               }
 
               private void initFields() {
+                type_ = 0;
                 w_ = 0;
                 h_ = 0;
                 url_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -26229,13 +26259,16 @@ public final class PremiumMADRTBProtocol {
                                   throws java.io.IOException {
                 getSerializedSize();
                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                  output.writeInt32(1, w_);
+                  output.writeInt32(1, type_);
                 }
                 if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                  output.writeInt32(2, h_);
+                  output.writeInt32(2, w_);
+                }
+                if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                  output.writeInt32(3, h_);
                 }
                 for (int i = 0; i < url_.size(); i++) {
-                  output.writeBytes(3, url_.getByteString(i));
+                  output.writeBytes(4, url_.getByteString(i));
                 }
                 getUnknownFields().writeTo(output);
               }
@@ -26248,11 +26281,15 @@ public final class PremiumMADRTBProtocol {
                 size = 0;
                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
                   size += com.google.protobuf.CodedOutputStream
-                    .computeInt32Size(1, w_);
+                    .computeInt32Size(1, type_);
                 }
                 if (((bitField0_ & 0x00000002) == 0x00000002)) {
                   size += com.google.protobuf.CodedOutputStream
-                    .computeInt32Size(2, h_);
+                    .computeInt32Size(2, w_);
+                }
+                if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                  size += com.google.protobuf.CodedOutputStream
+                    .computeInt32Size(3, h_);
                 }
                 {
                   int dataSize = 0;
@@ -26380,12 +26417,14 @@ public final class PremiumMADRTBProtocol {
 
                 public Builder clear() {
                   super.clear();
-                  w_ = 0;
+                  type_ = 0;
                   bitField0_ = (bitField0_ & ~0x00000001);
-                  h_ = 0;
+                  w_ = 0;
                   bitField0_ = (bitField0_ & ~0x00000002);
-                  url_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+                  h_ = 0;
                   bitField0_ = (bitField0_ & ~0x00000004);
+                  url_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+                  bitField0_ = (bitField0_ & ~0x00000008);
                   return this;
                 }
 
@@ -26417,14 +26456,18 @@ public final class PremiumMADRTBProtocol {
                   if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
                     to_bitField0_ |= 0x00000001;
                   }
-                  result.w_ = w_;
+                  result.type_ = type_;
                   if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                   }
+                  result.w_ = w_;
+                  if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                  }
                   result.h_ = h_;
-                  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                  if (((bitField0_ & 0x00000008) == 0x00000008)) {
                     url_ = url_.getUnmodifiableView();
-                    bitField0_ = (bitField0_ & ~0x00000004);
+                    bitField0_ = (bitField0_ & ~0x00000008);
                   }
                   result.url_ = url_;
                   result.bitField0_ = to_bitField0_;
@@ -26443,6 +26486,9 @@ public final class PremiumMADRTBProtocol {
 
                 public Builder mergeFrom(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Image other) {
                   if (other == com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Image.getDefaultInstance()) return this;
+                  if (other.hasType()) {
+                    setType(other.getType());
+                  }
                   if (other.hasW()) {
                     setW(other.getW());
                   }
@@ -26452,7 +26498,7 @@ public final class PremiumMADRTBProtocol {
                   if (!other.url_.isEmpty()) {
                     if (url_.isEmpty()) {
                       url_ = other.url_;
-                      bitField0_ = (bitField0_ & ~0x00000004);
+                      bitField0_ = (bitField0_ & ~0x00000008);
                     } else {
                       ensureUrlIsMutable();
                       url_.addAll(other.url_);
@@ -26486,33 +26532,65 @@ public final class PremiumMADRTBProtocol {
                 }
                 private int bitField0_;
 
-                private int w_ ;
+                private int type_ ;
                 /**
-                 * <code>optional int32 w = 1;</code>
+                 * <code>optional int32 type = 1;</code>
                  */
-                public boolean hasW() {
+                public boolean hasType() {
                   return ((bitField0_ & 0x00000001) == 0x00000001);
                 }
                 /**
-                 * <code>optional int32 w = 1;</code>
+                 * <code>optional int32 type = 1;</code>
+                 */
+                public int getType() {
+                  return type_;
+                }
+                /**
+                 * <code>optional int32 type = 1;</code>
+                 */
+                public Builder setType(int value) {
+                  bitField0_ |= 0x00000001;
+                  type_ = value;
+                  onChanged();
+                  return this;
+                }
+                /**
+                 * <code>optional int32 type = 1;</code>
+                 */
+                public Builder clearType() {
+                  bitField0_ = (bitField0_ & ~0x00000001);
+                  type_ = 0;
+                  onChanged();
+                  return this;
+                }
+
+                private int w_ ;
+                /**
+                 * <code>optional int32 w = 2;</code>
+                 */
+                public boolean hasW() {
+                  return ((bitField0_ & 0x00000002) == 0x00000002);
+                }
+                /**
+                 * <code>optional int32 w = 2;</code>
                  */
                 public int getW() {
                   return w_;
                 }
                 /**
-                 * <code>optional int32 w = 1;</code>
+                 * <code>optional int32 w = 2;</code>
                  */
                 public Builder setW(int value) {
-                  bitField0_ |= 0x00000001;
+                  bitField0_ |= 0x00000002;
                   w_ = value;
                   onChanged();
                   return this;
                 }
                 /**
-                 * <code>optional int32 w = 1;</code>
+                 * <code>optional int32 w = 2;</code>
                  */
                 public Builder clearW() {
-                  bitField0_ = (bitField0_ & ~0x00000001);
+                  bitField0_ = (bitField0_ & ~0x00000002);
                   w_ = 0;
                   onChanged();
                   return this;
@@ -26520,31 +26598,31 @@ public final class PremiumMADRTBProtocol {
 
                 private int h_ ;
                 /**
-                 * <code>optional int32 h = 2;</code>
+                 * <code>optional int32 h = 3;</code>
                  */
                 public boolean hasH() {
-                  return ((bitField0_ & 0x00000002) == 0x00000002);
+                  return ((bitField0_ & 0x00000004) == 0x00000004);
                 }
                 /**
-                 * <code>optional int32 h = 2;</code>
+                 * <code>optional int32 h = 3;</code>
                  */
                 public int getH() {
                   return h_;
                 }
                 /**
-                 * <code>optional int32 h = 2;</code>
+                 * <code>optional int32 h = 3;</code>
                  */
                 public Builder setH(int value) {
-                  bitField0_ |= 0x00000002;
+                  bitField0_ |= 0x00000004;
                   h_ = value;
                   onChanged();
                   return this;
                 }
                 /**
-                 * <code>optional int32 h = 2;</code>
+                 * <code>optional int32 h = 3;</code>
                  */
                 public Builder clearH() {
-                  bitField0_ = (bitField0_ & ~0x00000002);
+                  bitField0_ = (bitField0_ & ~0x00000004);
                   h_ = 0;
                   onChanged();
                   return this;
@@ -26552,39 +26630,39 @@ public final class PremiumMADRTBProtocol {
 
                 private com.google.protobuf.LazyStringList url_ = com.google.protobuf.LazyStringArrayList.EMPTY;
                 private void ensureUrlIsMutable() {
-                  if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+                  if (!((bitField0_ & 0x00000008) == 0x00000008)) {
                     url_ = new com.google.protobuf.LazyStringArrayList(url_);
-                    bitField0_ |= 0x00000004;
+                    bitField0_ |= 0x00000008;
                    }
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public com.google.protobuf.ProtocolStringList
                     getUrlList() {
                   return url_.getUnmodifiableView();
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public int getUrlCount() {
                   return url_.size();
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public java.lang.String getUrl(int index) {
                   return url_.get(index);
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public com.google.protobuf.ByteString
                     getUrlBytes(int index) {
                   return url_.getByteString(index);
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public Builder setUrl(
                     int index, java.lang.String value) {
@@ -26597,7 +26675,7 @@ public final class PremiumMADRTBProtocol {
                   return this;
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public Builder addUrl(
                     java.lang.String value) {
@@ -26610,7 +26688,7 @@ public final class PremiumMADRTBProtocol {
                   return this;
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public Builder addAllUrl(
                     java.lang.Iterable<java.lang.String> values) {
@@ -26621,16 +26699,16 @@ public final class PremiumMADRTBProtocol {
                   return this;
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public Builder clearUrl() {
                   url_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-                  bitField0_ = (bitField0_ & ~0x00000004);
+                  bitField0_ = (bitField0_ & ~0x00000008);
                   onChanged();
                   return this;
                 }
                 /**
-                 * <code>repeated string url = 3;</code>
+                 * <code>repeated string url = 4;</code>
                  */
                 public Builder addUrlBytes(
                     com.google.protobuf.ByteString value) {
@@ -34623,11 +34701,11 @@ public final class PremiumMADRTBProtocol {
       "\001(\0132$.com.madhouse.rtb.BidRequest.Conten" +
       "t\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022" +
       "\020\n\010keywords\030\003 \003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nM" +
-      "ediaOneof\"\373\t\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
+      "ediaOneof\"\211\n\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
       "\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 \003(\0132%.com.madh" +
       "ouse.rtb.BidResponse.SeatBid\022\013\n\003nbr\030\004 \001(" +
-      "\005\032\213\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
-      "e.rtb.BidResponse.SeatBid.Bid\032\307\010\n\003Bid\022\n\n" +
+      "\005\032\231\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
+      "e.rtb.BidResponse.SeatBid.Bid\032\325\010\n\003Bid\022\n\n" +
       "\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022" +
       "\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004crid\030\006 \001(\t" +
       "\022\020\n\010duration\030\007 \001(\005\022\013\n\003adm\030\010 \003(\t\022L\n\nadm_n" +
@@ -34636,10 +34714,10 @@ public final class PremiumMADRTBProtocol {
       " \001(\t\022\016\n\006dealid\030\013 \001(\t\022\014\n\004nurl\030\014 \001(\t\022\016\n\006lp",
       "gurl\030\r \001(\t\022\017\n\007acttype\030\016 \001(\005\022B\n\007monitor\030\017" +
       " \001(\01321.com.madhouse.rtb.BidResponse.Seat" +
-      "Bid.Bid.Monitor\032\262\005\n\016NativeResponse\022\013\n\003ve" +
+      "Bid.Bid.Monitor\032\300\005\n\016NativeResponse\022\013\n\003ve" +
       "r\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>.com.madhouse.r" +
       "tb.BidResponse.SeatBid.Bid.NativeRespons" +
-      "e.Asset\032\302\004\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010require" +
+      "e.Asset\032\320\004\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010require" +
       "d\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D.com.madhouse.rt" +
       "b.BidResponse.SeatBid.Bid.NativeResponse" +
       ".Asset.TitleH\000\022U\n\005image\030\004 \001(\0132D.com.madh" +
@@ -34649,13 +34727,13 @@ public final class PremiumMADRTBProtocol {
       "NativeResponse.Asset.VideoH\000\022S\n\004data\030\006 \001" +
       "(\0132C.com.madhouse.rtb.BidResponse.SeatBi" +
       "d.Bid.NativeResponse.Asset.DataH\000\032\025\n\005Tit" +
-      "le\022\014\n\004text\030\001 \001(\t\032*\n\005Image\022\t\n\001w\030\001 \001(\005\022\t\n\001" +
-      "h\030\002 \001(\005\022\013\n\003url\030\003 \003(\t\032K\n\005Video\022\t\n\001w\030\001 \001(\005" +
-      "\022\t\n\001h\030\002 \001(\005\022\r\n\005cover\030\003 \001(\t\022\013\n\003url\030\004 \001(\t\022" +
-      "\020\n\010duration\030\005 \001(\005\032#\n\004Data\022\014\n\004type\030\001 \001(\005\022" +
-      "\r\n\005value\030\002 \001(\tB\014\n\nAssetOneof\0329\n\007Monitor\022",
-      "\016\n\006impurl\030\001 \003(\t\022\016\n\006clkurl\030\002 \003(\t\022\016\n\006secur" +
-      "l\030\003 \003(\t"
+      "le\022\014\n\004text\030\001 \001(\t\0328\n\005Image\022\014\n\004type\030\001 \001(\005\022" +
+      "\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003(\t\032K\n\005Vi" +
+      "deo\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\r\n\005cover\030\003 \001(\t" +
+      "\022\013\n\003url\030\004 \001(\t\022\020\n\010duration\030\005 \001(\005\032#\n\004Data\022" +
+      "\014\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOne",
+      "of\0329\n\007Monitor\022\016\n\006impurl\030\001 \003(\t\022\016\n\006clkurl\030" +
+      "\002 \003(\t\022\016\n\006securl\030\003 \003(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -34830,7 +34908,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Image_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Image_descriptor,
-        new java.lang.String[] { "W", "H", "Url", });
+        new java.lang.String[] { "Type", "W", "H", "Url", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Video_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_descriptor.getNestedTypes().get(2);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Video_fieldAccessorTable = new
