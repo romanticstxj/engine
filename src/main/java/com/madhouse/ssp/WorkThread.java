@@ -48,7 +48,15 @@ public class WorkThread {
             String policyid = req.getParameter("policyid");
             String ext = req.getParameter("ext");
 
+            //args check
             if (StringUtil.isEmpty(impid) || StringUtil.isEmpty(mid) || StringUtil.isEmpty(plcmtid) || StringUtil.isEmpty(policyid) || StringUtil.isEmpty(ext)) {
+                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                return;
+            }
+
+            //bid redis check
+            String key = String.format(Constant.RedisKey.BID_RECORD, impid, mid, plcmtid, policyid);
+            if (key.isEmpty()) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -96,7 +104,15 @@ public class WorkThread {
             String policyid = req.getParameter("policyid");
             String ext = req.getParameter("ext");
 
+            //args check
             if (StringUtil.isEmpty(impid) || StringUtil.isEmpty(mid) || StringUtil.isEmpty(plcmtid) || StringUtil.isEmpty(policyid) || StringUtil.isEmpty(ext)) {
+                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                return;
+            }
+
+            //bid redis check
+            String key = String.format(Constant.RedisKey.BID_RECORD, impid, mid, plcmtid, policyid);
+            if (key.isEmpty()) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }

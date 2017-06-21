@@ -9,6 +9,10 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 
 public final class Constant {
 
+    public static final class RedisKey {
+        public static final String BID_RECORD = "bid:%s:%s:%s:%s:record";
+    }
+
     public static final class StatusCode {
         public static final int OK  = 200;
         public static final int NO_CONTENT = 204;
