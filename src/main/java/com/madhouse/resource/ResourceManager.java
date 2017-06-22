@@ -32,6 +32,7 @@ public class ResourceManager {
     private final ArrayList<Pair<Long, String>> iptables = this.loadLocations();
     private final Premiummad premiummad = JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
 
+
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
     public static ResourceManager getInstance() {
@@ -130,7 +131,7 @@ public class ResourceManager {
 
     public Premiummad getPremiummad()
     {
-        return premiummad;
+        return this.premiummad;
     }
     public DSPBaseHandler getDSPHandler(int apiType) {
         return this.dspBaseHandlerMap.get(apiType);
