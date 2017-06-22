@@ -159,7 +159,7 @@ public class WorkThread {
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
 
-        int mediaApiType = this.getMediaApiType(req);
+        int mediaApiType = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
         if (mediaApiType <= 0) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -388,41 +388,6 @@ public class WorkThread {
         }
 
         return winner;
-    }
-
-    public int getMediaApiType(HttpServletRequest req) {
-        try {
-            int mediaApiType = CacheManager.getInstance().getMediaApiType(req.getRequestURI());
-
-            if (mediaApiType <= 0) {
-                long mediaId = 0;
-                String adspaceid = req.getParameter("adspaceid");
-                if (adspaceid != null) {
-                    PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceid);
-                    if (plcmtMetaData != null) {
-                        mediaId = plcmtMetaData.getMediaId();
-                    }
-                }
-
-                if (mediaId <= 0) {
-                    String pid = req.getParameter("pid");
-                    if (pid != null) {
-                        mediaId = Long.parseLong(pid);
-                    }
-                }
-
-                MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(mediaId);
-                if (mediaMetaData != null) {
-                    return mediaMetaData.getApiType();
-                }
-            } else {
-                return mediaApiType;
-            }
-        } catch (Exception ex){
-            System.err.println(ex.toString());
-        }
-
-        return -1;
     }
 }
 

@@ -1,11 +1,19 @@
 package com.madhouse;
 
+import com.madhouse.cache.CacheManager;
+import com.madhouse.configuration.Bid;
+import com.madhouse.configuration.Premiummad;
+import com.madhouse.configuration.WebApp;
+import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.BidServlet;
 import com.madhouse.ssp.ClickServlet;
 import com.madhouse.ssp.ImpressionServlet;
 import com.madhouse.util.httpserver.HttpServer;
 import com.madhouse.util.httpserver.ServletHandler;
+
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
+
+import sun.net.www.content.audio.wav;
 
 import java.util.UUID;
 
@@ -16,10 +24,14 @@ import java.util.UUID;
 public class ServerMain {
     public static void main(String[] args) {
         ServletHandler servletHandler = new ServletHandler(null);
-        servletHandler.addHandler("/api/request", new BidServlet());
-        servletHandler.addHandler("/api/impression", new ImpressionServlet());
-        servletHandler.addHandler("/api/click", new ClickServlet());
-
+        BidServlet bidServlet=new BidServlet();
+        WebApp app= ResourceManager.getInstance().getPremiummad().getWebapp();
+        servletHandler.addHandler(app.getImpression(), new ImpressionServlet());
+        servletHandler.addHandler(app.getClick(), new ClickServlet());
+        for (Bid bid : app.getBids())
+        {
+            servletHandler.addHandler(bid.getPath(), bidServlet);
+        } 
         HttpServer httpServer = new HttpServer(servletHandler);
         boolean gzipOn = false;
         if (gzipOn) {
