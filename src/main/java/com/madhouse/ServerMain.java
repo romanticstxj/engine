@@ -17,21 +17,23 @@ import com.madhouse.util.httpserver.ServletHandler;
 public class ServerMain {
 	public static void main(String[] args) {
 		ServletHandler servletHandler = new ServletHandler(null);
+		WebApp webApp = ResourceManager.getInstance().getPremiummad().getWebapp();
+		servletHandler.addHandler(webApp.getImpression(), new ImpressionServlet());
+		servletHandler.addHandler(webApp.getClick(), new ClickServlet());
+
 		BidServlet bidServlet = new BidServlet();
-		WebApp app = ResourceManager.getInstance().getPremiummad().getWebapp();
-		servletHandler.addHandler(app.getImpression(), new ImpressionServlet());
-		servletHandler.addHandler(app.getClick(), new ClickServlet());
-		for (Bid bid : app.getBids()) {
+		for (Bid bid : webApp.getBids()) {
 			servletHandler.addHandler(bid.getPath(), bidServlet);
 		}
+
 		HttpServer httpServer = new HttpServer(servletHandler);
-		if (app.getgZipOn()) {
+		if (webApp.getgZipOn()) {
 			GzipHandler gzipHandler = new GzipHandler();
 			gzipHandler.setMinGzipSize(1024);
 			httpServer.insertHandler(gzipHandler);
 		}
 
-		if (httpServer.start(app.getPort())) {
+		if (httpServer.start(webApp.getPort())) {
 			try {
 				httpServer.join();
 			} catch (Exception ex) {
