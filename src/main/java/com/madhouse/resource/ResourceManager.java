@@ -24,7 +24,7 @@ public class ResourceManager {
     private ConcurrentHashMap<Integer, MediaBaseHandler> mediaBaseHandlerMap = new ConcurrentHashMap<Integer, MediaBaseHandler>();
     private ConcurrentHashMap<String, Integer> mediaApiType = new ConcurrentHashMap<String, Integer>();
     
-    private final Premiummad premiummad =JSON.parseObject(ObjectUtils.ReadFile(Log4jDemo.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
+    private final Premiummad premiummad =JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
 
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
@@ -71,7 +71,7 @@ public class ResourceManager {
 
     public Premiummad getPremiummad()
     {
-        return premiummad;
+        return this.premiummad;
     }
     public DSPBaseHandler getDSPHandler(int apiType) {
         return this.dspBaseHandlerMap.get(apiType);
