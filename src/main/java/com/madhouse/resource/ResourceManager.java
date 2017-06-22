@@ -72,27 +72,21 @@ public class ResourceManager {
 
     public boolean init()
     {
-        this.kafkaProducer = new KafkaProducer("", 1048576, 8, null);
-        this.loadLocations();
+        this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);
 
-        for (Bid bid : premiummad.getWebapp().getBids())
-        {
+        for (Bid bid : premiummad.getWebapp().getBids()) {
             this.mediaApiType.put(bid.getPath(),bid.getType());
-            try
-            {
+            try {
                 if(!StringUtil.isEmpty(bid.getApiClass())){
                     this.mediaBaseHandlerMap.put(bid.getType(), (MediaBaseHandler)Class.forName(bid.getApiClass()).newInstance());
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 // TODO 自动生成的 catch 块
                 e.printStackTrace();
             }
         }
 
         return this.kafkaProducer.start(LoggerUtil.getInstance());
-        
-        
     }
 
     public KafkaProducer getKafkaProducer() {
@@ -104,7 +98,7 @@ public class ResourceManager {
             return null;
         }
 
-        String[] ips = ip.split(".");
+        String[] ips = ip.split("\\.");
         if (ips.length >= 4) {
             Long addr = (Long.parseLong(ips[0]) << 24) | (Long.parseLong(ips[1]) << 16 ) | (Long.parseLong(ips[2]) << 8) | Long.parseLong(ips[3]);
 
