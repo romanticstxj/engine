@@ -6,7 +6,6 @@ import com.madhouse.configuration.Premiummad;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
-import com.madhouse.media.baofeng.Log4jDemo;
 import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
@@ -14,6 +13,7 @@ import com.madhouse.util.StringUtil;
 import sun.security.jca.GetInstance;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
@@ -23,8 +23,9 @@ public class ResourceManager {
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     private ConcurrentHashMap<Integer, MediaBaseHandler> mediaBaseHandlerMap = new ConcurrentHashMap<Integer, MediaBaseHandler>();
     private ConcurrentHashMap<String, Integer> mediaApiType = new ConcurrentHashMap<String, Integer>();
-    
-    private final Premiummad premiummad =JSON.parseObject(ObjectUtils.ReadFile(Log4jDemo.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
+    private ConcurrentLinkedDeque<pai> locations = new ConcurrentLinkedDeque<>();
+
+    private final Premiummad premiummad = JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
 
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
