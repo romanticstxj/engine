@@ -128,7 +128,7 @@ message DSPBid
 	optional int64 time = 1;
 	optional int64 dspid = 2;
 	optional int64 policyid = 3;
-	optional int32 tradingtype = 4;
+	optional int32 deliverytype = 4;
 	optional int32 status = 5;
 	optional com.madhouse.rtb.BidRequest request = 11;
 	optional com.madhouse.rtb.BidResponse response = 12;
