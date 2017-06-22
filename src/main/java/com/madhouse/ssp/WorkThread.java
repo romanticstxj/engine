@@ -26,7 +26,6 @@ import java.util.concurrent.Executors;
  */
 public class WorkThread {
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
-    private CacheManager cacheManager = new CacheManager();
     private ResourceManager resourceManager = new ResourceManager();
     private HttpClient winNoticeHttpClient = new HttpClient();
     private ExecutorService winNoticeService = Executors.newCachedThreadPool();
@@ -36,7 +35,7 @@ public class WorkThread {
                                     0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x4c, 0x01, 0x00, 0x3b};
 
     public boolean init() {
-        return cacheManager.init() && resourceManager.init();
+        return resourceManager.init();
     }
 
     public void onImpression(HttpServletRequest req, HttpServletResponse resp) {
@@ -180,7 +179,7 @@ public class WorkThread {
         mediaBidMetaData.setMediaBidBuilder(mediaBidBuilder);
 
         //parse media request
-        MediaBaseHandler mediaBaseHandler = this.cacheManager.getMediaBaseHandler(mediaApiType);
+        MediaBaseHandler mediaBaseHandler = CacheManager.getInstance().getMediaBaseHandler(mediaApiType);
         if (mediaBaseHandler != null) {
             if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -191,16 +190,15 @@ public class WorkThread {
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
 
         PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequestBuilder = mediaBidBuilder.getRequestBuilder();
-        Pair<Long, Long> mediaInfo = this.cacheManager.mediaPlcmtMapping(mediaBidBuilder.getRequestBuilder().getAdspacekey());
-        if (mediaInfo != null) {
-            mediaRequestBuilder.setMid(mediaInfo.getLeft());
-            mediaRequestBuilder.setPlcmtid(mediaInfo.getRight());
-        } else {
+
+        //get placement metadata
+        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequestBuilder.getAdspacekey());
+        if (plcmtMetaData == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
         }
 
-        MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(mediaRequestBuilder.getMid());
+        MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
         if (mediaMetaData == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -220,13 +218,6 @@ public class WorkThread {
 
         mediaRequestBuilder.setLocation(location);
 
-        //get placement metadata
-        PlcmtMetaData plcmtMetaData = this.cacheManager.getPlcmtMetaData(mediaRequestBuilder.getMid());
-        if (plcmtMetaData == null) {
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-            return;
-        }
-
         //init adtype, bidfloor, bidtype
         mediaRequestBuilder.setAdtype(plcmtMetaData.getType());
         mediaRequestBuilder.setBidfloor(plcmtMetaData.getBidfloor());
@@ -241,7 +232,7 @@ public class WorkThread {
         long blockid = plcmtMetaData.getBlockid();
         AdBlockMetaData adBlockMetaData = null;
         if (blockid > 0) {
-            adBlockMetaData = this.cacheManager.getAdBlockMetaData(blockid);
+            adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(blockid);
             if (adBlockMetaData == null) {
                 this.internalError(resp, mediaBidBuilder, Constant.StatusCode.INTERNAL_ERROR);
                 return;
@@ -259,18 +250,13 @@ public class WorkThread {
         Map<Long, Pair<DSPBidMetaData, Pair<DSPMetaData, DSPBaseHandler>>> dspInfoList = new HashMap<Long, Pair<DSPBidMetaData, Pair<DSPMetaData, DSPBaseHandler>>>();
         for (Map.Entry entry : policyMetaData.getDsplist().entrySet()) {
             long dspid = (Long)entry.getKey();
-            DSPMetaData dspMetaData = this.cacheManager.getDSPMetaData(dspid);
+            DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspid);
             if (dspMetaData.isEnable()) {
-                String tagid = this.cacheManager.dspPlcmtMapping(dspMetaData.getDspid(), mediaRequestBuilder.getMid(), mediaRequestBuilder.getPlcmtid());
-                if (tagid == null) {
-                    tagid = Long.toString(mediaRequestBuilder.getPlcmtid());
-                }
-
                 DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
                 PremiumMADDataModel.DSPBid.Builder builder = PremiumMADDataModel.DSPBid.newBuilder();
                 dspBidMetaData.setDspBidBuilder(builder);
-                DSPBaseHandler dspBaseHandler = this.cacheManager.getDSPBaseHandler(dspMetaData.getApitype());
-                HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData, tagid);
+                DSPBaseHandler dspBaseHandler = CacheManager.getInstance().getDSPBaseHandler(dspMetaData.getApitype());
+                HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData);
                 if (httpRequestBase != null) {
                     HttpClient httpClient = dspMetaData.getHttpClient();
                     httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
@@ -337,7 +323,7 @@ public class WorkThread {
 
         List<PolicyMetaData> policyMetaDatas = new LinkedList<PolicyMetaData>();
         for (long policyId : policyList) {
-            PolicyMetaData policyMetaData = this.cacheManager.getPolicyMetaData(policyId);
+            PolicyMetaData policyMetaData = CacheManager.getInstance().getPolicyMetaData(policyId);
             if (policyMetaData != null) {
                 policyMetaDatas.add(policyMetaData);
             }
@@ -407,26 +393,26 @@ public class WorkThread {
 
     public int getMediaApiType(HttpServletRequest req) {
         try {
-            int mediaApiType = this.cacheManager.getMediaApiType(req.getRequestURI());
+            int mediaApiType = CacheManager.getInstance().getMediaApiType(req.getRequestURI());
 
             if (mediaApiType <= 0) {
-                long mid = 0;
+                long mediaId = 0;
                 String adspaceid = req.getParameter("adspaceid");
                 if (adspaceid != null) {
-                    Pair<Long, Long> plcmtInfo = this.cacheManager.mediaPlcmtMapping(adspaceid);
-                    if (plcmtInfo != null) {
-                        mid = plcmtInfo.getLeft();
+                    PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceid);
+                    if (plcmtMetaData != null) {
+                        mediaId = plcmtMetaData.getMediaId();
                     }
                 }
 
-                if (mid <= 0) {
+                if (mediaId <= 0) {
                     String pid = req.getParameter("pid");
                     if (pid != null) {
-                        mid = Long.parseLong(pid);
+                        mediaId = Long.parseLong(pid);
                     }
                 }
 
-                MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(mid);
+                MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(mediaId);
                 if (mediaMetaData != null) {
                     return mediaMetaData.getApiType();
                 }

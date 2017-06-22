@@ -8,6 +8,7 @@ import java.util.List;
  * Created by WUJUNFENG on 2017/6/9.
  */
 public class PlcmtMetaData {
+    private long mediaId;
     private long id;
     private int w;
     private int h;
@@ -25,6 +26,23 @@ public class PlcmtMetaData {
     private int bidtype;
     private int bidfloor;
     private int layout;
+    private String adspaceKey;
+
+    public String getAdspaceKey() {
+        return adspaceKey;
+    }
+
+    public void setAdspaceKey(String adspaceKey) {
+        this.adspaceKey = adspaceKey;
+    }
+
+    public long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
+    }
 
     public int getLayout() {
         return layout;

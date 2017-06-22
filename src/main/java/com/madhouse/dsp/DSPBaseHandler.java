@@ -31,13 +31,13 @@ public abstract class DSPBaseHandler {
                                              AdBlockMetaData adBlockMetaData,
                                              PolicyMetaData policyMetaData,
                                              DSPMetaData dspMetaData,
-                                             DSPBidMetaData dspBidMetaData,
-                                             String tagid) {
+                                             DSPBidMetaData dspBidMetaData) {
 
         HttpPost httpPost = new HttpPost(dspMetaData.getBidurl());
         httpPost.setHeader("Content-Type", "application/x-protobuf");
 
         PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+        DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspMetaData.getDspid(), plcmtMetaData.getId());
 
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
@@ -53,7 +53,7 @@ public abstract class DSPBaseHandler {
 
         if (mediaMetaData.getType() == Constant.MediaType.APP) {
             BidRequest.App.Builder app = BidRequest.App.newBuilder();
-            app.setId(Long.toString(mediaMetaData.getMediaId()));
+            app.setId(Long.toString(mediaMetaData.getId()));
             app.setBundle(mediaRequest.getBundle());
             app.addCat(Integer.toString(mediaMetaData.getCategory()));
             app.setName(mediaMetaData.getName());
@@ -62,7 +62,7 @@ public abstract class DSPBaseHandler {
 
         if (mediaMetaData.getType() == Constant.MediaType.SITE) {
             BidRequest.Site.Builder site = BidRequest.Site.newBuilder();
-            site.setId(Long.toString(mediaMetaData.getMediaId()));
+            site.setId(Long.toString(mediaMetaData.getId()));
             site.addCat(Integer.toString(mediaMetaData.getCategory()));
             site.setName(mediaMetaData.getName());
             bidRequest.setSite(site);
@@ -105,7 +105,11 @@ public abstract class DSPBaseHandler {
                 impression.setBidtype(Constant.BidType.CPM);
             }
 
-            impression.setTagid(tagid);
+            if (dspMappingMetaData != null && !StringUtil.isEmpty(dspMappingMetaData.getMappingKey())) {
+                impression.setTagid(dspMappingMetaData.getMappingKey());
+            } else {
+                impression.setTagid(plcmtMetaData.getAdspaceKey());
+            }
 
             if (policyMetaData.getDeliverytype() != Constant.DeliveryType.RTB) {
                 BidRequest.Impression.PMP.Builder pmp = BidRequest.Impression.PMP.newBuilder();

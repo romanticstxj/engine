@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class MediaMetaData {
-    private long mediaId;
+    private long id;
     private String name;
     private int category;
     private int type;
@@ -24,12 +24,12 @@ public class MediaMetaData {
         this.type = type;
     }
 
-    public long getMediaId() {
-        return mediaId;
+    public long getId() {
+        return id;
     }
 
-    public void setMediaId(long mediaId) {
-        this.mediaId = mediaId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

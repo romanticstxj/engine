@@ -7,24 +7,33 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.print.attribute.standard.Media;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
  */
-public class CacheManager {
-    private Map<String, Integer> mediaApiType = new HashMap<String, Integer>();
-    private Map<Long, DSPMetaData> dspMetaDataMap = new HashMap<Long, DSPMetaData>();
-    private Map<Long, MediaMetaData> mediaMetaDataMap = new HashMap<Long, MediaMetaData>();
-    private Map<Long, PlcmtMetaData> plcmtMetaDataMap = new HashMap<Long, PlcmtMetaData>();
-    private Map<Long, AdBlockMetaData> adBlockMetaDataMap = new HashMap<Long, AdBlockMetaData>();
-    private Map<Long, PolicyMetaData> policyMetaDataMap = new HashMap<Long, PolicyMetaData>();
-    private Map<Integer, DSPBaseHandler> dspBaseHandlerMap = new HashMap<Integer, DSPBaseHandler>();
+public class CacheManager implements Runnable {
+    private ConcurrentHashMap<String, Integer> mediaApiType = new ConcurrentHashMap<String, Integer>();
+    private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
+    private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
+    private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
+    private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
+    private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
+    private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     //apitype, handler
     private Map<Integer, MediaBaseHandler> mediaBaseHandlerMap = new HashMap<Integer, MediaBaseHandler>();
-    //adspacekey, mediaid, plcmtid
-    private Map<String, Pair<Long, Long>> mediaPlcmtMappingMap = new HashMap<String, Pair<Long, Long>>();
-    //dspid, mediaid, plcmtid, dspplcmtid
-    private Map<Long, Map<Long, Map<Long, String>>> dspPlcmtMappingMap = new HashMap<Long, Map<Long, Map<Long, String>>>();
+
+    //adspaceId, MediaMappingMetaData
+    private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
+    //dspid, <adspaceId, DSPMappingMetaData>
+    private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
+
+    private CacheManager(){};
+    private static CacheManager cacheManager = new CacheManager();
+    public static CacheManager getInstance() {
+        return cacheManager;
+    }
 
     public boolean init() {
         this.mediaApiType.put("/adcall/bidrequest", 0);
@@ -42,6 +51,19 @@ public class CacheManager {
         return true;
     }
 
+    public MediaMappingMetaData getMediaMapping(long adspaceId) {
+        return this.mediaMappingMetaDataMap.get(adspaceId);
+    }
+
+    public DSPMappingMetaData getDSPMapping(long dspid, long adspaceId) {
+        ConcurrentHashMap<Long, DSPMappingMetaData> var = this.dspMappingMetaDataMap.get(dspid);
+        if (var != null) {
+            return var.get(adspaceId);
+        }
+
+        return null;
+    }
+
     public int getMediaApiType(String url) {
         return this.mediaApiType.get(url);
     }
@@ -54,8 +76,8 @@ public class CacheManager {
         return this.mediaMetaDataMap.get(id);
     }
 
-    public PlcmtMetaData getPlcmtMetaData(long id) {
-        return this.plcmtMetaDataMap.get(id);
+    public PlcmtMetaData getPlcmtMetaData(String key) {
+        return this.plcmtMetaDataMap.get(key);
     }
 
     public AdBlockMetaData getAdBlockMetaData(long id) {
@@ -74,23 +96,11 @@ public class CacheManager {
         return this.mediaBaseHandlerMap.get(apitype);
     }
 
-    public Pair<Long, Long> mediaPlcmtMapping(String id) {
-        return this.mediaPlcmtMappingMap.get(id);
-    }
-
-    public String dspPlcmtMapping(long dspid, long mid, long plcmtid) {
-        Map<Long, Map<Long, String>> var1 = this.dspPlcmtMappingMap.get(dspid);
-        if (var1 != null) {
-            Map<Long, String> var2 = var1.get(mid);
-            if (var2 != null) {
-                return var2.get(plcmtid);
-            }
-        }
-
-        return null;
-    }
-
     public String getLocation(String ip) {
         return "";
+    }
+
+    public void run() {
+
     }
 }
