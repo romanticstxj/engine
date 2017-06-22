@@ -20,10 +20,6 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
     private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
     private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
-    private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
-    //apitype, handler
-    private Map<Integer, MediaBaseHandler> mediaBaseHandlerMap = new HashMap<Integer, MediaBaseHandler>();
-
     //adspaceId, MediaMappingMetaData
     private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
     //dspid, <adspaceId, DSPMappingMetaData>
@@ -86,14 +82,6 @@ public class CacheManager implements Runnable {
 
     public PolicyMetaData getPolicyMetaData(long id) {
         return this.policyMetaDataMap.get(id);
-    }
-
-    public DSPBaseHandler getDSPBaseHandler(int apitype) {
-        return this.dspBaseHandlerMap.get(apitype);
-    }
-
-    public MediaBaseHandler getMediaBaseHandler(int apitype) {
-        return this.mediaBaseHandlerMap.get(apitype);
     }
 
     public String getLocation(String ip) {

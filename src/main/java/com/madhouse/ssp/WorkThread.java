@@ -26,7 +26,6 @@ import java.util.concurrent.Executors;
  */
 public class WorkThread {
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
-    private ResourceManager resourceManager = new ResourceManager();
     private HttpClient winNoticeHttpClient = new HttpClient();
     private ExecutorService winNoticeService = Executors.newCachedThreadPool();
     private final byte[] image = {  0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
@@ -35,7 +34,7 @@ public class WorkThread {
                                     0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x4c, 0x01, 0x00, 0x3b};
 
     public boolean init() {
-        return resourceManager.init();
+        return ResourceManager.getInstance().init() && CacheManager.getInstance().init();
     }
 
     public void onImpression(HttpServletRequest req, HttpServletResponse resp) {
@@ -80,7 +79,7 @@ public class WorkThread {
                 impressionTrack.setExt(var1);
 
                 impressionTrack.setStatus(Constant.StatusCode.OK);
-                LoggerUtil.getInstance().wirteImpressionTrackLog(this.resourceManager.getKafkaProducer(), impressionTrack.build());
+                LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack.build());
 
                 resp.getOutputStream().write(this.image);
                 resp.setContentType("image/gif");
@@ -147,7 +146,7 @@ public class WorkThread {
                     clickTrack.setStatus(Constant.StatusCode.OK);
                 }
 
-                LoggerUtil.getInstance().writeClickTrackLog(this.resourceManager.getKafkaProducer(), clickTrack.build());
+                LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack.build());
                 resp.setStatus(clickTrack.getStatus());
                 return;
             }
@@ -179,7 +178,7 @@ public class WorkThread {
         mediaBidMetaData.setMediaBidBuilder(mediaBidBuilder);
 
         //parse media request
-        MediaBaseHandler mediaBaseHandler = CacheManager.getInstance().getMediaBaseHandler(mediaApiType);
+        MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaHandler(mediaApiType);
         if (mediaBaseHandler != null) {
             if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -210,7 +209,7 @@ public class WorkThread {
         }
 
         //init location
-        String location = this.resourceManager.getLocation(mediaRequestBuilder.getIp());
+        String location = ResourceManager.getInstance().getLocation(mediaRequestBuilder.getIp());
         if (location == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -255,7 +254,7 @@ public class WorkThread {
                 DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
                 PremiumMADDataModel.DSPBid.Builder builder = PremiumMADDataModel.DSPBid.newBuilder();
                 dspBidMetaData.setDspBidBuilder(builder);
-                DSPBaseHandler dspBaseHandler = CacheManager.getInstance().getDSPBaseHandler(dspMetaData.getApitype());
+                DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApitype());
                 HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData);
                 if (httpRequestBase != null) {
                     HttpClient httpClient = dspMetaData.getHttpClient();
@@ -313,7 +312,7 @@ public class WorkThread {
         try {
             resp.setStatus(statusCode);
             mediaBidBuilder.setStatus(statusCode);
-            LoggerUtil.getInstance().writeMediaLog(this.resourceManager.getKafkaProducer(), mediaBidBuilder.build());
+            LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBidBuilder.build());
         } catch (Exception ex) {
 
         }
