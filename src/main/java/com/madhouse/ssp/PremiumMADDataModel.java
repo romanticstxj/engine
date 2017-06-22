@@ -13746,13 +13746,13 @@ public final class PremiumMADDataModel {
     long getPolicyid();
 
     /**
-     * <code>optional int32 tradingtype = 4;</code>
+     * <code>optional int32 deliverytype = 4;</code>
      */
-    boolean hasTradingtype();
+    boolean hasDeliverytype();
     /**
-     * <code>optional int32 tradingtype = 4;</code>
+     * <code>optional int32 deliverytype = 4;</code>
      */
-    int getTradingtype();
+    int getDeliverytype();
 
     /**
      * <code>optional int32 status = 5;</code>
@@ -13858,7 +13858,7 @@ public final class PremiumMADDataModel {
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              tradingtype_ = input.readInt32();
+              deliverytype_ = input.readInt32();
               break;
             }
             case 40: {
@@ -13977,19 +13977,19 @@ public final class PremiumMADDataModel {
       return policyid_;
     }
 
-    public static final int TRADINGTYPE_FIELD_NUMBER = 4;
-    private int tradingtype_;
+    public static final int DELIVERYTYPE_FIELD_NUMBER = 4;
+    private int deliverytype_;
     /**
-     * <code>optional int32 tradingtype = 4;</code>
+     * <code>optional int32 deliverytype = 4;</code>
      */
-    public boolean hasTradingtype() {
+    public boolean hasDeliverytype() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 tradingtype = 4;</code>
+     * <code>optional int32 deliverytype = 4;</code>
      */
-    public int getTradingtype() {
-      return tradingtype_;
+    public int getDeliverytype() {
+      return deliverytype_;
     }
 
     public static final int STATUS_FIELD_NUMBER = 5;
@@ -14053,7 +14053,7 @@ public final class PremiumMADDataModel {
       time_ = 0L;
       dspid_ = 0L;
       policyid_ = 0L;
-      tradingtype_ = 0;
+      deliverytype_ = 0;
       status_ = 0;
       request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
       response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
@@ -14081,7 +14081,7 @@ public final class PremiumMADDataModel {
         output.writeInt64(3, policyid_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, tradingtype_);
+        output.writeInt32(4, deliverytype_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(5, status_);
@@ -14115,7 +14115,7 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, tradingtype_);
+          .computeInt32Size(4, deliverytype_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -14254,7 +14254,7 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000002);
         policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
-        tradingtype_ = 0;
+        deliverytype_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
         status_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -14313,7 +14313,7 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.tradingtype_ = tradingtype_;
+        result.deliverytype_ = deliverytype_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -14359,8 +14359,8 @@ public final class PremiumMADDataModel {
         if (other.hasPolicyid()) {
           setPolicyid(other.getPolicyid());
         }
-        if (other.hasTradingtype()) {
-          setTradingtype(other.getTradingtype());
+        if (other.hasDeliverytype()) {
+          setDeliverytype(other.getDeliverytype());
         }
         if (other.hasStatus()) {
           setStatus(other.getStatus());
@@ -14494,34 +14494,34 @@ public final class PremiumMADDataModel {
         return this;
       }
 
-      private int tradingtype_ ;
+      private int deliverytype_ ;
       /**
-       * <code>optional int32 tradingtype = 4;</code>
+       * <code>optional int32 deliverytype = 4;</code>
        */
-      public boolean hasTradingtype() {
+      public boolean hasDeliverytype() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 tradingtype = 4;</code>
+       * <code>optional int32 deliverytype = 4;</code>
        */
-      public int getTradingtype() {
-        return tradingtype_;
+      public int getDeliverytype() {
+        return deliverytype_;
       }
       /**
-       * <code>optional int32 tradingtype = 4;</code>
+       * <code>optional int32 deliverytype = 4;</code>
        */
-      public Builder setTradingtype(int value) {
+      public Builder setDeliverytype(int value) {
         bitField0_ |= 0x00000008;
-        tradingtype_ = value;
+        deliverytype_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 tradingtype = 4;</code>
+       * <code>optional int32 deliverytype = 4;</code>
        */
-      public Builder clearTradingtype() {
+      public Builder clearDeliverytype() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        tradingtype_ = 0;
+        deliverytype_ = 0;
         onChanged();
         return this;
       }
@@ -14897,12 +14897,12 @@ public final class PremiumMADDataModel {
       "cyid\030\010 \001(\003\022-\n\003ext\030\t \001(\0132 .com.madhouse.s",
       "sp.ClickTrack.Ext\022\013\n\003url\030\n \001(\t\032A\n\003Ext\022\r\n" +
       "\005param\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014 " +
-      "\001(\005\022\014\n\004cost\030\r \001(\005\"\274\001\n\006DSPBid\022\014\n\004time\030\001 \001" +
-      "(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010policyid\030\003 \001(\003\022\023\n\013t" +
-      "radingtype\030\004 \001(\005\022\016\n\006status\030\005 \001(\005\022-\n\007requ" +
-      "est\030\013 \001(\0132\034.com.madhouse.rtb.BidRequest\022" +
-      "/\n\010response\030\014 \001(\0132\035.com.madhouse.rtb.Bid" +
-      "Response"
+      "\001(\005\022\014\n\004cost\030\r \001(\005\"\275\001\n\006DSPBid\022\014\n\004time\030\001 \001" +
+      "(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010policyid\030\003 \001(\003\022\024\n\014d" +
+      "eliverytype\030\004 \001(\005\022\016\n\006status\030\005 \001(\005\022-\n\007req" +
+      "uest\030\013 \001(\0132\034.com.madhouse.rtb.BidRequest" +
+      "\022/\n\010response\030\014 \001(\0132\035.com.madhouse.rtb.Bi" +
+      "dResponse"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14970,7 +14970,7 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_DSPBid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_DSPBid_descriptor,
-        new java.lang.String[] { "Time", "Dspid", "Policyid", "Tradingtype", "Status", "Request", "Response", });
+        new java.lang.String[] { "Time", "Dspid", "Policyid", "Deliverytype", "Status", "Request", "Response", });
     com.madhouse.rtb.PremiumMADRTBProtocol.getDescriptor();
   }
 

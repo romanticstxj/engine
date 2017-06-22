@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/6/12.
  */
 public class PolicyMetaData {
-    private int tradingtype;
+    private int deliverytype;
     private long id;
     private int weight;
     private String dealid;
@@ -31,12 +31,28 @@ public class PolicyMetaData {
     private int controltype;
     private int maxcount;
 
-    public int getTradingtype() {
-        return tradingtype;
+    public int getDeliverytype() {
+        return deliverytype;
     }
 
-    public void setTradingtype(int tradingtype) {
-        this.tradingtype = tradingtype;
+    public void setDeliverytype(int deliverytype) {
+        this.deliverytype = deliverytype;
+    }
+
+    public int getControltype() {
+        return controltype;
+    }
+
+    public void setControltype(int controltype) {
+        this.controltype = controltype;
+    }
+
+    public int getMaxcount() {
+        return maxcount;
+    }
+
+    public void setMaxcount(int maxcount) {
+        this.maxcount = maxcount;
     }
 
     public long getId() {

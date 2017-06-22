@@ -273,7 +273,7 @@ public class WorkThread {
                 HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData, tagid);
                 if (httpRequestBase != null) {
                     HttpClient httpClient = dspMetaData.getHttpClient();
-                    httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTmax());
+                    httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
                     this.multiHttpClient.addHttpClient(httpClient);
                     dspInfoList.put(dspid, Pair.of(dspBidMetaData, Pair.of(dspMetaData, dspBaseHandler)));
                 }
@@ -290,7 +290,7 @@ public class WorkThread {
                 DSPBaseHandler dspBaseHandler = dspInfo.getRight().getRight();
                 dspBidMetaData.setDspBaseHandler(dspBaseHandler);
                 if (dspBaseHandler.parseBidResponse(dspMetaData.getHttpClient().getResp(), dspBidMetaData)) {
-                    if (policyMetaData.getTradingtype() != Constant.TradingType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
+                    if (policyMetaData.getDeliverytype() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
                         dspMetaDataList.add(Pair.of(dspMetaData, dspBidMetaData));
                     }
                 }
@@ -301,7 +301,7 @@ public class WorkThread {
                 if (winner != null) {
                     DSPBidMetaData dspBidMetaData = winner.getRight().getLeft();
                     mediaBaseHandler.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp);
-                    if (policyMetaData.getTradingtype() == Constant.TradingType.RTB) {
+                    if (policyMetaData.getDeliverytype() == Constant.DeliveryType.RTB) {
                         String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), winner.getLeft(), dspBidMetaData);
                         final HttpGet httpGet = new HttpGet(url);
                         final HttpClient httpClient = this.winNoticeHttpClient;
@@ -345,14 +345,14 @@ public class WorkThread {
 
         policyMetaDatas.sort(new Comparator<PolicyMetaData>() {
             public int compare(PolicyMetaData o1, PolicyMetaData o2) {
-                return (o1.getTradingtype() < o2.getTradingtype()) ? 1 : -1;
+                return (o1.getDeliverytype() < o2.getDeliverytype()) ? 1 : -1;
             }
         });
 
         int selectType = -1;
         List<Pair<PolicyMetaData, Integer>> policyMetaList = new LinkedList<Pair<PolicyMetaData, Integer>>();
         for (PolicyMetaData policyMetaData : policyMetaDatas) {
-            if (selectType > 0 && selectType != policyMetaData.getTradingtype()) {
+            if (selectType > 0 && selectType != policyMetaData.getDeliverytype()) {
                 break;
             } else {
                 policyMetaList.add(Pair.of(policyMetaData, policyMetaData.getWeight()));
@@ -367,7 +367,7 @@ public class WorkThread {
                                                                    List<Pair<DSPMetaData, DSPBidMetaData>> dspMetaDataList) {
         Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = null;
 
-        if (policyMetaData.getTradingtype() == Constant.TradingType.RTB) {
+        if (policyMetaData.getDeliverytype() == Constant.DeliveryType.RTB) {
             dspMetaDataList.sort(new Comparator<Pair<DSPMetaData, DSPBidMetaData>>() {
                 public int compare(Pair<DSPMetaData, DSPBidMetaData> o1, Pair<DSPMetaData, DSPBidMetaData> o2) {
                     return o1.getRight().getPrice() > o2.getRight().getPrice() ? 1 : -1;
@@ -428,7 +428,7 @@ public class WorkThread {
 
                 MediaMetaData mediaMetaData = this.cacheManager.getMediaMetaData(mid);
                 if (mediaMetaData != null) {
-                    return mediaMetaData.getApitype();
+                    return mediaMetaData.getApiType();
                 }
             } else {
                 return mediaApiType;

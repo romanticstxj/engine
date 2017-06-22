@@ -8,28 +8,28 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class MediaMetaData {
-    private long mid;
-    private int tmax;
-    private int mtype;
-    private int mcat;
+    private long mediaId;
     private String name;
-    private boolean https;
-    private int apitype;
+    private int category;
+    private int type;
+    private int apiType;
+    private int status;
+    private int timeout;
 
-    public boolean isHttps() {
-        return https;
+    public int getType() {
+        return type;
     }
 
-    public void setHttps(boolean https) {
-        this.https = https;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public int getApitype() {
-        return apitype;
+    public long getMediaId() {
+        return mediaId;
     }
 
-    public void setApitype(int apitype) {
-        this.apitype = apitype;
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
     }
 
     public String getName() {
@@ -40,35 +40,35 @@ public class MediaMetaData {
         this.name = name;
     }
 
-    public long getMid() {
-        return mid;
+    public int getCategory() {
+        return category;
     }
 
-    public void setMid(long mid) {
-        this.mid = mid;
+    public void setCategory(int category) {
+        this.category = category;
     }
 
-    public int getTmax() {
-        return tmax;
+    public int getApiType() {
+        return apiType;
     }
 
-    public void setTmax(int tmax) {
-        this.tmax = tmax;
+    public void setApiType(int apiType) {
+        this.apiType = apiType;
     }
 
-    public int getMtype() {
-        return mtype;
+    public int getStatus() {
+        return status;
     }
 
-    public void setMtype(int mtype) {
-        this.mtype = mtype;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public int getMcat() {
-        return mcat;
+    public int getTimeout() {
+        return timeout;
     }
 
-    public void setMcat(int mcat) {
-        this.mcat = mcat;
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

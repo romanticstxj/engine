@@ -42,7 +42,7 @@ public abstract class DSPBaseHandler {
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
         bidRequest.setId(StringUtil.getUUID());
-        bidRequest.setTmax(mediaMetaData.getTmax());
+        bidRequest.setTmax(mediaMetaData.getTimeout());
         bidRequest.setTest(mediaBidBuilder.getRequestBuilder().getTest());
         bidRequest.setAt(2);
 
@@ -51,19 +51,19 @@ public abstract class DSPBaseHandler {
             bidRequest.addAllBcat(adBlockMetaData.getBcat());
         }
 
-        if (mediaMetaData.getMtype() == Constant.MediaType.APP) {
+        if (mediaMetaData.getType() == Constant.MediaType.APP) {
             BidRequest.App.Builder app = BidRequest.App.newBuilder();
-            app.setId(Long.toString(mediaMetaData.getMid()));
+            app.setId(Long.toString(mediaMetaData.getMediaId()));
             app.setBundle(mediaRequest.getBundle());
-            app.addCat(Integer.toString(mediaMetaData.getMcat()));
+            app.addCat(Integer.toString(mediaMetaData.getCategory()));
             app.setName(mediaMetaData.getName());
             bidRequest.setApp(app);
         }
 
-        if (mediaMetaData.getMtype() == Constant.MediaType.SITE) {
+        if (mediaMetaData.getType() == Constant.MediaType.SITE) {
             BidRequest.Site.Builder site = BidRequest.Site.newBuilder();
-            site.setId(Long.toString(mediaMetaData.getMid()));
-            site.addCat(Integer.toString(mediaMetaData.getMcat()));
+            site.setId(Long.toString(mediaMetaData.getMediaId()));
+            site.addCat(Integer.toString(mediaMetaData.getCategory()));
             site.setName(mediaMetaData.getName());
             bidRequest.setSite(site);
         }
@@ -97,7 +97,7 @@ public abstract class DSPBaseHandler {
             BidRequest.Impression.Builder impression = BidRequest.Impression.newBuilder();
             impression.setId(mediaBidBuilder.getImpid());
 
-            if (policyMetaData.getTradingtype() == Constant.TradingType.RTB) {
+            if (policyMetaData.getDeliverytype() == Constant.DeliveryType.RTB) {
                 impression.setBidfloor(plcmtMetaData.getBidfloor());
                 impression.setBidtype(plcmtMetaData.getBidtype());
             } else {
@@ -107,7 +107,7 @@ public abstract class DSPBaseHandler {
 
             impression.setTagid(tagid);
 
-            if (policyMetaData.getTradingtype() != Constant.TradingType.RTB) {
+            if (policyMetaData.getDeliverytype() != Constant.DeliveryType.RTB) {
                 BidRequest.Impression.PMP.Builder pmp = BidRequest.Impression.PMP.newBuilder();
                 pmp.setPrivateAuction(1);
                 BidRequest.Impression.PMP.Deal.Builder deal = BidRequest.Impression.PMP.Deal.newBuilder();
@@ -238,7 +238,7 @@ public abstract class DSPBaseHandler {
             PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
             dspBidBuilder.setDspid(dspMetaData.getDspid());
             dspBidBuilder.setPolicyid(policyMetaData.getId());
-            dspBidBuilder.setTradingtype(policyMetaData.getTradingtype());
+            dspBidBuilder.setDeliverytype(policyMetaData.getDeliverytype());
             dspBidBuilder.setTime(System.currentTimeMillis());
             dspBidBuilder.setRequest(bidRequest);
 

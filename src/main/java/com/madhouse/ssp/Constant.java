@@ -31,7 +31,7 @@ public final class Constant {
         public static final int MADHOUSE_JSON = 2;
     }
 
-    public static final class TradingType {
+    public static final class DeliveryType {
         public static final int PDB = 1;
         public static final int PD = 2;
         public static final int RTB = 4;
