@@ -52,7 +52,7 @@ public class ResourceManager {
                 while((text = bufferedReader.readLine()) != null) {
                     String[] var1 = text.split(",");
                     if (var1.length >= 3) {
-                        String[] var2 = var1[0].split(".");
+                        String[] var2 = var1[0].split("\\.");
                         if (var2.length >= 4) {
                             Long addr = (Long.parseLong(var2[0]) << 24) | (Long.parseLong(var2[1]) << 16 ) | (Long.parseLong(var2[2]) << 8) | Long.parseLong(var2[3]);
                             iptables.add(Pair.of(addr, var1[2]));
