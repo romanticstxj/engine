@@ -17,7 +17,7 @@ message MediaBid
         //media request id
 		optional string bid = 1;
         //media id
-		optional int64 mediaId = 2;
+		optional int64 mediaid = 2;
         //media category
 		optional int32 category = 3;
         //media type(app/site)
@@ -27,7 +27,7 @@ message MediaBid
         //media name
 		optional string name = 6;
         //adspace id
-		optional int64 adspaceId = 7;
+		optional int64 adspaceid = 7;
         //adspace key
 		optional string adspacekey = 8;
         //adtype
@@ -112,8 +112,8 @@ message WinNotice
 	optional int32 status = 2;
 	optional int64 dspid = 3;
 	optional string impid = 4;
-	optional int64 mediaId = 5;
-	optional int64 adspaceId = 6;
+	optional int64 mediaid = 5;
+	optional int64 adspaceid = 6;
 	optional int32 price = 7;
 }
 
@@ -124,9 +124,9 @@ message ImpressionTrack
 	optional string ip = 3;
 	optional int32 status = 4;
 	optional string impid = 5;
-	optional int64 mediaId = 6;
-	optional int64 adspaceId = 7;
-	optional int64 policyId = 8;
+	optional int64 mediaid = 6;
+	optional int64 adspaceid = 7;
+	optional int64 policyid = 8;
 	optional Ext ext = 9;
 
 	message Ext {
@@ -144,9 +144,9 @@ message ClickTrack
 	optional string ip = 3;
 	optional int32 status = 4;
 	optional string impid = 5;
-	optional int64 mediaId = 6;
-	optional int64 adspaceId = 7;
-	optional int64 policyId = 8;
+	optional int64 mediaid = 6;
+	optional int64 adspaceid = 7;
+	optional int64 policyid = 8;
 	optional Ext ext = 9;
 	optional string url = 10;
 
@@ -162,8 +162,8 @@ message DSPBid
 {
 	optional int64 time = 1;
 	optional int64 dspid = 2;
-	optional int64 policyId = 3;
-	optional int32 deliveryType = 4;
+	optional int64 policyid = 3;
+	optional int32 deliverytype = 4;
 	optional int32 status = 5;
 	optional com.madhouse.rtb.BidRequest request = 11;
 	optional com.madhouse.rtb.BidResponse response = 12;
