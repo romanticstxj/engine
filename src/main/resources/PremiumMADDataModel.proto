@@ -14,39 +14,73 @@ message MediaBid
 	
 	message MediaRequest
 	{
+        //media request id
 		optional string bid = 1;
-		optional int64 mid = 2;
-		optional int32 mcat = 3;
-		optional int32 mtype = 4;
+        //media id
+		optional int64 mediaId = 2;
+        //media category
+		optional int32 category = 3;
+        //media type(app/site)
+		optional int32 type = 4;
+        //media package name
 		optional string bundle = 5;
+        //media name
 		optional string name = 6;
-		optional int64 plcmtid = 7;
-		optional int32 adtype = 8;
-		optional int32 w = 9;
-		optional int32 h = 10;
-		optional string did = 11;
-		optional string didmd5 = 12;
-		optional string dpid = 13;
-		optional string dpidmd5 = 14;
-		optional string mac = 15;
-		optional string macmd5 = 16;
-		optional string ifa = 17;
-		optional int32 carrier = 18;
-		optional int32 connectiontype = 19;
-		optional int32 devicetype = 20;
-        optional string dealid = 21;
-        optional float lon = 22;
-		optional float lat = 23;
-		optional int32 os = 24;
-		optional string osv = 25;
-		optional string ip = 26;
-		optional string ua = 27;
-		optional string make = 28;
-		optional string model = 29;
-		optional string cell = 30;
-		optional string cellmd5 = 31;
-		repeated string tags = 32;
-		optional string adspacekey = 33;
+        //adspace id
+		optional int64 adspaceId = 7;
+        //adspace key
+		optional string adspacekey = 8;
+        //adtype
+		optional int32 adtype = 9;
+        //width
+		optional int32 w = 10;
+        //height
+		optional int32 h = 11;
+        //device id(android imei)
+		optional string did = 12;
+        //device id md5
+		optional string didmd5 = 13;
+        //device platform id(android id, udid, uuid)
+		optional string dpid = 14;
+        //device platform id md5;
+		optional string dpidmd5 = 15;
+        //mac(eth0 address)
+		optional string mac = 16;
+        //mac md5
+		optional string macmd5 = 17;
+        //id for advertising(aaid, idfa)
+		optional string ifa = 18;
+        //carrier type
+		optional int32 carrier = 19;
+        //connection type
+		optional int32 connectiontype = 20;
+        //device type
+		optional int32 devicetype = 21;
+        //deal id
+        optional string dealid = 22;
+        //longitude
+        optional float lon = 23;
+        //latitude
+		optional float lat = 24;
+        //device os type
+		optional int32 os = 25;
+        //os version
+		optional string osv = 26;
+        //user ip
+		optional string ip = 27;
+        //user ua
+		optional string ua = 28;
+        //device make
+		optional string make = 29;
+        //device model
+		optional string model = 30;
+        //phone number
+		optional string cell = 31;
+        //phone number md5
+		optional string cellmd5 = 32;
+        //user tags from media
+		repeated string tags = 33;
+        //test mode
 		optional int32 test = 34;
 		optional int32 bidfloor = 35;
 		optional int32 bidtype = 36;
@@ -57,17 +91,18 @@ message MediaBid
 	{
 		optional int64 dspid = 1;
 		optional string admid = 2;
-		optional string icon = 3;
-		optional string cover = 4;
-		optional string title = 5;
-		optional string desc = 6;
-		optional int32 duration = 7;
-		repeated string adm = 8;
-		optional string lpgurl = 9;
-		optional int32 acttype = 10;
-		repeated string impurl = 11;
-		repeated string clkurl = 12;
-		repeated string securl = 13;
+        optional int32 layout = 3;
+		optional string icon = 4;
+		optional string cover = 5;
+		optional string title = 6;
+		optional string desc = 7;
+		optional int32 duration = 8;
+		repeated string adm = 9;
+		optional string lpgurl = 10;
+		optional int32 acttype = 11;
+		repeated string impurl = 12;
+		repeated string clkurl = 13;
+		repeated string securl = 14;
 	}
 }
 
@@ -77,8 +112,8 @@ message WinNotice
 	optional int32 status = 2;
 	optional int64 dspid = 3;
 	optional string impid = 4;
-	optional int64 mid = 5;
-	optional int64 plcmtid = 6;
+	optional int64 mediaId = 5;
+	optional int64 adspaceId = 6;
 	optional int32 price = 7;
 }
 
@@ -89,13 +124,13 @@ message ImpressionTrack
 	optional string ip = 3;
 	optional int32 status = 4;
 	optional string impid = 5;
-	optional int64 mid = 6;
-	optional int64 plcmtid = 7;
-	optional int64 policyid = 8;
+	optional int64 mediaId = 6;
+	optional int64 adspaceId = 7;
+	optional int64 policyId = 8;
 	optional Ext ext = 9;
 
 	message Ext {
-		optional string param = 1;
+		optional string args = 1;
 		optional int64 dspid = 11;
 		optional int32 income = 12;
 		optional int32 cost = 13;
@@ -109,14 +144,14 @@ message ClickTrack
 	optional string ip = 3;
 	optional int32 status = 4;
 	optional string impid = 5;
-	optional int64 mid = 6;
-	optional int64 plcmtid = 7;
-	optional int64 policyid = 8;
+	optional int64 mediaId = 6;
+	optional int64 adspaceId = 7;
+	optional int64 policyId = 8;
 	optional Ext ext = 9;
 	optional string url = 10;
 
 	message Ext {
-		optional string param = 1;
+		optional string args = 1;
 		optional int64 dspid = 11;
 		optional int32 income = 12;
 		optional int32 cost = 13;
@@ -127,8 +162,8 @@ message DSPBid
 {
 	optional int64 time = 1;
 	optional int64 dspid = 2;
-	optional int64 policyid = 3;
-	optional int32 deliverytype = 4;
+	optional int64 policyId = 3;
+	optional int32 deliveryType = 4;
 	optional int32 status = 5;
 	optional com.madhouse.rtb.BidRequest request = 11;
 	optional com.madhouse.rtb.BidResponse response = 12;
