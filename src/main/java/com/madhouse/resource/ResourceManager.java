@@ -1,5 +1,14 @@
 package com.madhouse.resource;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.alibaba.fastjson.JSON;
 import com.madhouse.configuration.Bid;
 import com.madhouse.configuration.Premiummad;
@@ -10,25 +19,13 @@ import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
-import org.apache.commons.lang3.tuple.Pair;
-import sun.security.jca.GetInstance;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class ResourceManager {
     private KafkaProducer kafkaProducer;
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
-    private ConcurrentHashMap<Integer, MediaBaseHandler> mediaBaseHandlerMap = new ConcurrentHashMap<Integer, MediaBaseHandler>();
-    private ConcurrentHashMap<String, Integer> mediaApiType = new ConcurrentHashMap<String, Integer>();
+    private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
     private final ArrayList<Pair<Long, String>> iptables = this.loadLocations();
     private final Premiummad premiummad = JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
 
@@ -74,16 +71,15 @@ public class ResourceManager {
     {
         this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);
 
-        for (Bid bid : premiummad.getWebapp().getBids()) {
-            this.mediaApiType.put(bid.getPath(),bid.getType());
-            try {
-                if(!StringUtil.isEmpty(bid.getApiClass())){
-                    this.mediaBaseHandlerMap.put(bid.getType(), (MediaBaseHandler)Class.forName(bid.getApiClass()).newInstance());
-                }
-            } catch (Exception e) {
-                // TODO 自动生成的 catch 块
-                e.printStackTrace();
-            }
+        for (Bid bid : premiummad.getWebapp().getBids())
+        {
+			if (!StringUtil.isEmpty(bid.getApiClass())) {
+				try {
+					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getApiClass()).newInstance());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
         }
 
         return this.kafkaProducer.start(LoggerUtil.getInstance());
@@ -119,10 +115,6 @@ public class ResourceManager {
         return null;
     }
 
-    public MediaBaseHandler getMediaHandler(int apiType) {
-        return this.mediaBaseHandlerMap.get(apiType);
-    }
-
     public Premiummad getPremiummad()
     {
         return this.premiummad;
@@ -130,7 +122,7 @@ public class ResourceManager {
     public DSPBaseHandler getDSPHandler(int apiType) {
         return this.dspBaseHandlerMap.get(apiType);
     }
-    public int getMediaApiType(String url) {
+    public MediaBaseHandler getMediaApiType(String url) {
         return this.mediaApiType.get(url);
     }
 }
