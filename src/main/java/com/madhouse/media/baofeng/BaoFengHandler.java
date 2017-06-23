@@ -341,10 +341,11 @@ public class BaoFengHandler extends MediaBaseHandler {
 		}
 
 		if (adspaceKey != null) {
-			PlcmtMetaData plcmtMetaData = CacheManager.getInstance()
-					.getPlcmtMetaData(adspaceKey);
+			PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
 			if (plcmtMetaData != null) {
 				mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+				mediaRequest.setMediaid(plcmtMetaData.getMediaId());
+				mediaRequest.setAdspaceid(plcmtMetaData.getId());
 			}
 		}
 
