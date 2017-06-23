@@ -1,25 +1,38 @@
 package com.madhouse.ssp;
 
-import com.madhouse.cache.*;
-import com.madhouse.dsp.DSPBaseHandler;
-import com.madhouse.media.MediaBaseHandler;
-import com.madhouse.resource.ResourceManager;
-import com.madhouse.util.HttpUtil;
-import com.madhouse.util.StringUtil;
-import com.madhouse.util.Utility;
-import com.madhouse.util.httpclient.MultiHttpClient;
-import com.madhouse.util.httpclient.HttpClient;
+import java.net.URLDecoder;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.madhouse.cache.AdBlockMetaData;
+import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.DSPBidMetaData;
+import com.madhouse.cache.DSPMetaData;
+import com.madhouse.cache.MediaBidMetaData;
+import com.madhouse.cache.MediaMetaData;
+import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.PolicyMetaData;
+import com.madhouse.dsp.DSPBaseHandler;
+import com.madhouse.media.MediaBaseHandler;
+import com.madhouse.resource.ResourceManager;
+import com.madhouse.util.HttpUtil;
+import com.madhouse.util.ObjectUtils;
+import com.madhouse.util.StringUtil;
+import com.madhouse.util.Utility;
+import com.madhouse.util.httpclient.HttpClient;
+import com.madhouse.util.httpclient.MultiHttpClient;
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
@@ -159,8 +172,8 @@ public class WorkThread {
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
 
-        int mediaApiType = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
-        if (mediaApiType <= 0) {
+        MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
+        if ( ObjectUtils.isEmpty(mediaBaseHandler)) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
         }
@@ -178,7 +191,7 @@ public class WorkThread {
         mediaBidMetaData.setMediaBidBuilder(mediaBidBuilder);
 
         //parse media request
-        MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaHandler(mediaApiType);
+        //MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaHandler(mediaApiType);
         if (mediaBaseHandler != null) {
             if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);

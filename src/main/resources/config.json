@@ -6,59 +6,48 @@
         "bids": [
             {
                 "path": "/adcall/bidrequest",
-                "apiClass":"com.madhouse.media.madhouse.PremiumMADHandler",
-                "type": 1
+                "apiClass":"com.madhouse.media.madhouse.PremiumMADHandler"
             },
             {
                 "path": "/client/bidrequest",
-                "apiClass":"com.madhouse.media.madhouse.PremiumMADHandler",
-                "type": 1
+                "apiClass":"com.madhouse.media.madhouse.PremiumMADHandler"
             },
             {
                 "path": "/motv/bidrequest",
-                "apiClass":"com.madhouse.media.madhouse.PremiumMADHandler",
-                "type": 1
+                "apiClass":"com.madhouse.media.madhouse.PremiumMADHandler"
             },
             {
                 "path": "/adcall/xtrader/bidrequest",
-                "apiClass":"",
-                "type": 11
+                "apiClass":""
             },
             {
                 "path": "/adcall/dianping/bidrequest",
-                "apiClass":"",
-                "type": 12
+                "apiClass":""
             },
             {
                 "path": "/adcall/xiaomi/bidrequest",
-                "apiClass":"",
-                "type": 13
+                "apiClass":""
             },
             {
                 "path": "/adcall/moweather/bidrequest",
-                "apiClass":"",
-                "type": 14
+                "apiClass":""
             },
             {
                 "path": "/adcall/baofeng/bidrequest",
-                "apiClass":"com.madhouse.media.baofeng.BaoFengHandler",
-                "type": 15
+                "apiClass":"com.madhouse.media.baofeng.BaoFengHandler"
             },
             {
                 "path": "/adcall/momo/bidrequest",
-                "apiClass":"",
-                "type": 16
+                "apiClass":""
             },
             {
                 "path": "/adcall/toutiao/bidrequest",
-                "apiClass":"",
-                "type": 17
+                "apiClass":""
             }
             ,
             {
                 "path": "/adcall/toutiao/bidrequest",
-                "apiClass":"",
-                "type": 18
+                "apiClass":""
             }
         ],
         "impression": "/adcall/impression",

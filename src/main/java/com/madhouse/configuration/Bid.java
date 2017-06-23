@@ -1,19 +1,10 @@
 package com.madhouse.configuration;
 
 public class Bid {
-	private int type;
 
 	private String path;
 
 	private String apiClass;
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
 
 	public String getPath() {
 		return path;
@@ -23,9 +14,8 @@ public class Bid {
 		this.path = path;
 	}
 
-	public Bid(int type, String path) {
+	public Bid(String path) {
 		super();
-		this.type = type;
 		this.path = path;
 	}
 
