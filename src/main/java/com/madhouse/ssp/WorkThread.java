@@ -65,14 +65,14 @@ public class WorkThread {
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setImpid(impid);
-            impressionTrack.setMid(Long.parseLong(mid));
-            impressionTrack.setPlcmtid(Long.parseLong(plcmtid));
+            impressionTrack.setMediaid(Long.parseLong(mid));
+            impressionTrack.setAdspaceid(Long.parseLong(plcmtid));
             impressionTrack.setPolicyid(Long.parseLong(policyid));
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
                 PremiumMADDataModel.ImpressionTrack.Ext.Builder var1 = PremiumMADDataModel.ImpressionTrack.Ext.newBuilder();
-                var1.setParam(ext);
+                var1.setArgs(ext);
                 var1.setDspid(Long.parseLong(exts[0]));
                 var1.setIncome(Integer.parseInt(exts[1]));
                 var1.setCost(Integer.parseInt(exts[2]));
@@ -121,8 +121,8 @@ public class WorkThread {
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setImpid(impid);
-            clickTrack.setMid(Long.parseLong(mid));
-            clickTrack.setPlcmtid(Long.parseLong(plcmtid));
+            clickTrack.setMediaid(Long.parseLong(mid));
+            clickTrack.setAdspaceid(Long.parseLong(plcmtid));
             clickTrack.setPolicyid(Long.parseLong(policyid));
 
             String[] exts = ext.split(",");
