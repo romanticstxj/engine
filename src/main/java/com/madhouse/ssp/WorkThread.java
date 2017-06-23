@@ -10,6 +10,7 @@ import com.madhouse.util.Utility;
 import com.madhouse.util.httpclient.MultiHttpClient;
 import com.madhouse.util.httpclient.HttpClient;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
@@ -246,7 +247,7 @@ public class WorkThread {
 
         this.multiHttpClient.reset();
         PolicyMetaData policyMetaData = this.selectPolicy(policyList);
-        Map<Long, Pair<DSPBidMetaData, Pair<DSPMetaData, DSPBaseHandler>>> dspInfoList = new HashMap<Long, Pair<DSPBidMetaData, Pair<DSPMetaData, DSPBaseHandler>>>();
+        Map<Long, Pair<DSPMetaData, DSPBidMetaData>> dspInfoList = new HashMap<>();
         for (Map.Entry entry : policyMetaData.getDsplist().entrySet()) {
             long dspid = (Long)entry.getKey();
             DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspid);
@@ -255,12 +256,14 @@ public class WorkThread {
                 PremiumMADDataModel.DSPBid.Builder builder = PremiumMADDataModel.DSPBid.newBuilder();
                 dspBidMetaData.setDspBidBuilder(builder);
                 DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApitype());
+                dspBidMetaData.setDspBaseHandler(dspBaseHandler);
                 HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData);
                 if (httpRequestBase != null) {
                     HttpClient httpClient = dspMetaData.getHttpClient();
                     httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
                     this.multiHttpClient.addHttpClient(httpClient);
-                    dspInfoList.put(dspid, Pair.of(dspBidMetaData, Pair.of(dspMetaData, dspBaseHandler)));
+                    dspBidMetaData.setHttpRequestBase(httpRequestBase);
+                    dspInfoList.put(dspid, Pair.of(dspMetaData, dspBidMetaData));
                 }
             }
         }
@@ -268,17 +271,22 @@ public class WorkThread {
         if (this.multiHttpClient.execute()) {
             List<Pair<DSPMetaData, DSPBidMetaData>> dspMetaDataList = new LinkedList<Pair<DSPMetaData, DSPBidMetaData>>();
             for (Map.Entry entry : dspInfoList.entrySet()) {
-                Pair<DSPBidMetaData, Pair<DSPMetaData, DSPBaseHandler>> dspInfo = (Pair<DSPBidMetaData, Pair<DSPMetaData, DSPBaseHandler>>)entry.getValue();
-                DSPBidMetaData dspBidMetaData = dspInfo.getLeft();
-                //PremiumMADDataModel.DSPBid.Builder builder = dspBidMetaData.getDspBidBuilder();
-                DSPMetaData dspMetaData = dspInfo.getRight().getLeft();
-                DSPBaseHandler dspBaseHandler = dspInfo.getRight().getRight();
-                dspBidMetaData.setDspBaseHandler(dspBaseHandler);
-                if (dspBaseHandler.parseBidResponse(dspMetaData.getHttpClient().getResp(), dspBidMetaData)) {
-                    if (policyMetaData.getDeliverytype() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
-                        dspMetaDataList.add(Pair.of(dspMetaData, dspBidMetaData));
+                Pair<DSPMetaData, DSPBidMetaData> dspInfo = (Pair<DSPMetaData, DSPBidMetaData>)entry.getValue();
+                DSPMetaData dspMetaData = dspInfo.getLeft();
+                DSPBidMetaData dspBidMetaData = dspInfo.getRight();
+                DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
+                HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
+                if (httpResponse != null) {
+                    if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
+                        if (policyMetaData.getDeliverytype() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
+                            dspMetaDataList.add(Pair.of(dspMetaData, dspBidMetaData));
+                        }
                     }
+                } else {
+                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
                 }
+
+                dspBidMetaData.getHttpRequestBase().releaseConnection();
             }
 
             if (!dspMetaDataList.isEmpty()) {

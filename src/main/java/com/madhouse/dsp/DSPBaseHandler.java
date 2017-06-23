@@ -10,18 +10,13 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.PremiumMADDataModel;
 import com.madhouse.util.AESUtil;
 import com.madhouse.util.StringUtil;
-import com.madhouse.util.Utility;
 import com.madhouse.rtb.PremiumMADRTBProtocol.*;
-import com.sun.corba.se.pept.transport.ReaderThread;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
-import scala.Predef;
-
-import javax.print.DocFlavor;
 
 
 public abstract class DSPBaseHandler {
@@ -257,36 +252,49 @@ public abstract class DSPBaseHandler {
     }
 
     public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
-        if (httpResponse != null) {
+        try {
             PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
-            int status = httpResponse.getStatusLine().getStatusCode();
-            dspBidBuilder.setStatus(status);
+            if (httpResponse != null) {
+                int status = httpResponse.getStatusLine().getStatusCode();
+                if (status != 200) {
+                    dspBidBuilder.setStatus(status);
+                    return false;
+                }
 
-            if (status == 200) {
-                try {
-                    HttpEntity entity = httpResponse.getEntity();
-                    BidResponse bidResponse = BidResponse.parseFrom(EntityUtils.toByteArray(entity));
+                HttpEntity entity = httpResponse.getEntity();
+                BidResponse bidResponse = BidResponse.parseFrom(EntityUtils.toByteArray(entity));
+                if (bidResponse != null) {
                     dspBidBuilder.setResponse(bidResponse);
 
-                    if (!bidResponse.hasNbr() || bidResponse.getNbr() < 0) {
-                        if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
-                            BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
-
-                            dspBidMetaData.setId(bidResponse.hasId() ? bidResponse.getId() : "");
-                            dspBidMetaData.setImpid(bid.hasImpid() ? bid.getImpid() : "");;
-                            dspBidMetaData.setBidid(bidResponse.hasBidid() ? bidResponse.getBidid() : "");
-                            dspBidMetaData.setAdid(bid.hasAdid() ? bid.getAdid() : "");
-                            dspBidMetaData.setAdmid(bid.hasAdmid() ? bid.getAdmid() : "");
-                            dspBidMetaData.setPrice(bid.hasPrice() ? bid.getPrice() : 0);
-                            return true;
-                        }
+                    if (bidResponse.hasNbr() && bidResponse.getNbr() >= 0) {
+                        dspBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
+                        return false;
                     }
 
-                } catch (Exception ex) {
+                    if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
+                        BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
+
+                        dspBidMetaData.setId(bidResponse.hasId() ? bidResponse.getId() : "");
+                        dspBidMetaData.setImpid(bid.hasImpid() ? bid.getImpid() : "");;
+                        dspBidMetaData.setBidid(bid.hasId() ? bid.getId() : "");
+                        dspBidMetaData.setAdid(bid.hasAdid() ? bid.getAdid() : "");
+                        dspBidMetaData.setAdmid(bid.hasAdmid() ? bid.getAdmid() : "");
+                        dspBidMetaData.setPrice(bid.hasPrice() ? bid.getPrice() : 0);
+
+                        return true;
+                    } else {
+                        dspBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
+                    }
+
+                } else {
                     dspBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    System.err.println(ex.toString());
                 }
+            } else {
+                dspBidBuilder.setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
             }
+        } catch (Exception ex) {
+            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
+            System.err.println(ex.toString());
         }
 
         return false;
