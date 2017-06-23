@@ -16,11 +16,11 @@ import org.apache.http.client.methods.HttpRequestBase;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
@@ -160,8 +160,8 @@ public class WorkThread {
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
 
-        int mediaApiType = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
-        if (mediaApiType <= 0) {
+        MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
+        if (mediaBaseHandler == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
         }
@@ -179,7 +179,7 @@ public class WorkThread {
         mediaBidMetaData.setMediaBidBuilder(mediaBidBuilder);
 
         //parse media request
-        MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaHandler(mediaApiType);
+        //MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaHandler(mediaApiType);
         if (mediaBaseHandler != null) {
             if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
