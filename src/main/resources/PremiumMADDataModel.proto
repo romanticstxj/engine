@@ -28,7 +28,7 @@ message MediaBid
 		optional string name = 6;
         //adspace id
 		optional int64 adspaceid = 7;
-        //adspace key
+        //adspace key(required)
 		optional string adspacekey = 8;
         //adtype
 		optional int32 adtype = 9;
@@ -50,11 +50,11 @@ message MediaBid
 		optional string macmd5 = 17;
         //id for advertising(aaid, idfa)
 		optional string ifa = 18;
-        //carrier type
+        //carrier type(required)
 		optional int32 carrier = 19;
-        //connection type
+        //connection type(required)
 		optional int32 connectiontype = 20;
-        //device type
+        //device type(required)
 		optional int32 devicetype = 21;
         //deal id
         optional string dealid = 22;
@@ -62,13 +62,13 @@ message MediaBid
         optional float lon = 23;
         //latitude
 		optional float lat = 24;
-        //device os type
+        //device os type(required)
 		optional int32 os = 25;
         //os version
 		optional string osv = 26;
-        //user ip
+        //user ip(required)
 		optional string ip = 27;
-        //user ua
+        //user ua(required)
 		optional string ua = 28;
         //device make
 		optional string make = 29;
