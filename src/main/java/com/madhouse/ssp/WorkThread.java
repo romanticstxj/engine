@@ -182,7 +182,6 @@ public class WorkThread {
         //parse media request
         if (mediaBaseHandler != null) {
             if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
         }
@@ -203,9 +202,18 @@ public class WorkThread {
             return;
         }
 
+        //init mediaid, adspaceid
+        mediaRequest.setMediaid(mediaMetaData.getId());
+        mediaRequest.setAdspaceid(plcmtMetaData.getId());
+
         //init user ip
         if (!mediaRequest.hasIp()) {
             mediaRequest.setIp(mediaBidBuilder.getIp());
+        }
+
+        //init user ua
+        if (!mediaRequest.hasUa()) {
+            mediaRequest.setUa(mediaBidBuilder.getUa());
         }
 
         //init location
