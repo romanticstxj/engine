@@ -28,14 +28,11 @@ public class ResourceManager {
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
     private final ArrayList<Pair<Long, String>> iptables = this.loadLocations();
     private final Premiummad premiummad = JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
-
-
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
     public static ResourceManager getInstance() {
         return resourceManager;
     }
-
     public ArrayList loadLocations() {
         try {
             ArrayList<Pair<Long, String>> iptables = new ArrayList<>();

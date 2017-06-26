@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出 monitorInterval 
+	设置间隔秒数。. 日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > 
+	ALL : Log4j能够自动检测修改配置文件和重新配置本身, -->
+<Configuration status="TRACE">
+	<Properties>
+		<Property name="LOG_HOME">${sys:user.home}\logs</Property>
+	</Properties>
+	<Appenders>
+
+		<!--这个输出控制台的配置 -->
+		<!-- <Console name="Console" target="SYSTEM_OUT">
+			输出日志的格式
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{1} %L - %msg%xEx%n" />
+		</Console> -->
+		<!-- 基础的 -->
+		<RollingRandomAccessFile name="premiummad"
+			fileName="${LOG_HOME}\premiummad.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\premiummad-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{1} %L - %msg%xEx%n" />
+			<Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+		</RollingRandomAccessFile>
+		<!-- 媒体 -->
+		<RollingRandomAccessFile name="mediabid"
+			fileName="${LOG_HOME}\mediabid.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\mediabid-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout>
+                <Pattern>%m%n</Pattern>
+            </PatternLayout>
+			<Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+		</RollingRandomAccessFile>
+		
+	</Appenders>
+	<loggers>
+		<!-- <Root level="TRACE">
+			<appender-ref ref="Console" />
+			<appender-ref ref="premiummad" />
+		</Root> -->
+		<Logger name="premiummad" additivity="false" level="TRACE">
+			<appender-ref ref="premiummad" />
+		</Logger>
+		
+		<Logger name="mediabid" additivity="false" level="all">
+			<appender-ref ref="mediabid" />
+		</Logger>
+	</loggers>
+</Configuration>

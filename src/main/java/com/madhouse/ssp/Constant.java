@@ -145,4 +145,16 @@ public final class Constant {
         public static final int VAST_2_0_WRAPPER = 5;
         public static final int VAST_3_0_WRAPPER = 6;
     }
+    public static final class Test {
+        public static final int REAL_BIDDING = 0;
+        public static final int SIMULATED_BIDDING = 1;
+        public static final int PING_TEST = 2;
+    }
+    public static final class Topic {
+        public static final String MEDIABID = "mediabid";
+        public static final String DSPBID = "dspbid";
+        public static final String WINNOTICE = "winnotice";
+        public static final String IMPRESSION = "impression";
+        public static final String CLICK = "click";
+    }
 }

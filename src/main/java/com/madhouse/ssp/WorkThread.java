@@ -416,7 +416,7 @@ public class WorkThread {
             mediaBidBuilder.setStatus(statusCode);
             LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBidBuilder.build());
         } catch (Exception ex) {
-
+            LoggerUtil.getInstance().getBaseLogger(Constant.Topic.MEDIABID).info(mediaBidBuilder.build());
         }
     }
 
