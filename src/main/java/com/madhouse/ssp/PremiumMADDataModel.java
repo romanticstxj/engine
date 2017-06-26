@@ -6711,23 +6711,28 @@ public final class PremiumMADDataModel {
       int getActtype();
 
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
-      com.google.protobuf.ProtocolStringList
+      java.util.List<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track> 
           getImpurlList();
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+       */
+      com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track getImpurl(int index);
+      /**
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
       int getImpurlCount();
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
-      java.lang.String getImpurl(int index);
+      java.util.List<? extends com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder> 
+          getImpurlOrBuilderList();
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
-      com.google.protobuf.ByteString
-          getImpurlBytes(int index);
+      com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder getImpurlOrBuilder(
+          int index);
 
       /**
        * <code>repeated string clkurl = 13;</code>
@@ -6885,12 +6890,11 @@ public final class PremiumMADDataModel {
                 break;
               }
               case 98: {
-                com.google.protobuf.ByteString bs = input.readBytes();
                 if (!((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
-                  impurl_ = new com.google.protobuf.LazyStringArrayList();
+                  impurl_ = new java.util.ArrayList<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track>();
                   mutable_bitField0_ |= 0x00000800;
                 }
-                impurl_.add(bs);
+                impurl_.add(input.readMessage(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.PARSER, extensionRegistry));
                 break;
               }
               case 106: {
@@ -6923,7 +6927,7 @@ public final class PremiumMADDataModel {
             adm_ = adm_.getUnmodifiableView();
           }
           if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
-            impurl_ = impurl_.getUnmodifiableView();
+            impurl_ = java.util.Collections.unmodifiableList(impurl_);
           }
           if (((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
             clkurl_ = clkurl_.getUnmodifiableView();
@@ -6960,6 +6964,560 @@ public final class PremiumMADDataModel {
       @java.lang.Override
       public com.google.protobuf.Parser<MediaResponse> getParserForType() {
         return PARSER;
+      }
+
+      public interface TrackOrBuilder extends
+          // @@protoc_insertion_point(interface_extends:com.madhouse.ssp.MediaBid.MediaResponse.Track)
+          com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>optional int32 startdelay = 1;</code>
+         */
+        boolean hasStartdelay();
+        /**
+         * <code>optional int32 startdelay = 1;</code>
+         */
+        int getStartdelay();
+
+        /**
+         * <code>optional string url = 2;</code>
+         */
+        boolean hasUrl();
+        /**
+         * <code>optional string url = 2;</code>
+         */
+        java.lang.String getUrl();
+        /**
+         * <code>optional string url = 2;</code>
+         */
+        com.google.protobuf.ByteString
+            getUrlBytes();
+      }
+      /**
+       * Protobuf type {@code com.madhouse.ssp.MediaBid.MediaResponse.Track}
+       */
+      public static final class Track extends
+          com.google.protobuf.GeneratedMessage implements
+          // @@protoc_insertion_point(message_implements:com.madhouse.ssp.MediaBid.MediaResponse.Track)
+          TrackOrBuilder {
+        // Use Track.newBuilder() to construct.
+        private Track(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+          super(builder);
+          this.unknownFields = builder.getUnknownFields();
+        }
+        private Track(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+        private static final Track defaultInstance;
+        public static Track getDefaultInstance() {
+          return defaultInstance;
+        }
+
+        public Track getDefaultInstanceForType() {
+          return defaultInstance;
+        }
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+            getUnknownFields() {
+          return this.unknownFields;
+        }
+        private Track(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          initFields();
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!parseUnknownField(input, unknownFields,
+                                         extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 8: {
+                  bitField0_ |= 0x00000001;
+                  startdelay_ = input.readInt32();
+                  break;
+                }
+                case 18: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  bitField0_ |= 0x00000002;
+                  url_ = bs;
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this);
+          } finally {
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.class, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<Track> PARSER =
+            new com.google.protobuf.AbstractParser<Track>() {
+          public Track parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new Track(input, extensionRegistry);
+          }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<Track> getParserForType() {
+          return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int STARTDELAY_FIELD_NUMBER = 1;
+        private int startdelay_;
+        /**
+         * <code>optional int32 startdelay = 1;</code>
+         */
+        public boolean hasStartdelay() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional int32 startdelay = 1;</code>
+         */
+        public int getStartdelay() {
+          return startdelay_;
+        }
+
+        public static final int URL_FIELD_NUMBER = 2;
+        private java.lang.Object url_;
+        /**
+         * <code>optional string url = 2;</code>
+         */
+        public boolean hasUrl() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional string url = 2;</code>
+         */
+        public java.lang.String getUrl() {
+          java.lang.Object ref = url_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              url_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string url = 2;</code>
+         */
+        public com.google.protobuf.ByteString
+            getUrlBytes() {
+          java.lang.Object ref = url_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            url_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        private void initFields() {
+          startdelay_ = 0;
+          url_ = "";
+        }
+        private byte memoizedIsInitialized = -1;
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized == 1) return true;
+          if (isInitialized == 0) return false;
+
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          getSerializedSize();
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            output.writeInt32(1, startdelay_);
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            output.writeBytes(2, getUrlBytes());
+          }
+          getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+        public int getSerializedSize() {
+          int size = memoizedSerializedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(1, startdelay_);
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeBytesSize(2, getUrlBytes());
+          }
+          size += getUnknownFields().getSerializedSize();
+          memoizedSerializedSize = size;
+          return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+            throws java.io.ObjectStreamException {
+          return super.writeReplace();
+        }
+
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() { return Builder.create(); }
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track prototype) {
+          return newBuilder().mergeFrom(prototype);
+        }
+        public Builder toBuilder() { return newBuilder(this); }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code com.madhouse.ssp.MediaBid.MediaResponse.Track}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:com.madhouse.ssp.MediaBid.MediaResponse.Track)
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_descriptor;
+          }
+
+          protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.class, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder.class);
+          }
+
+          // Construct using com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            }
+          }
+          private static Builder create() {
+            return new Builder();
+          }
+
+          public Builder clear() {
+            super.clear();
+            startdelay_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            url_ = "";
+            bitField0_ = (bitField0_ & ~0x00000002);
+            return this;
+          }
+
+          public Builder clone() {
+            return create().mergeFrom(buildPartial());
+          }
+
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_descriptor;
+          }
+
+          public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track getDefaultInstanceForType() {
+            return com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.getDefaultInstance();
+          }
+
+          public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track build() {
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track buildPartial() {
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track result = new com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.startdelay_ = startdelay_;
+            if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.url_ = url_;
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track) {
+              return mergeFrom((com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track other) {
+            if (other == com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.getDefaultInstance()) return this;
+            if (other.hasStartdelay()) {
+              setStartdelay(other.getStartdelay());
+            }
+            if (other.hasUrl()) {
+              bitField0_ |= 0x00000002;
+              url_ = other.url_;
+              onChanged();
+            }
+            this.mergeUnknownFields(other.getUnknownFields());
+            return this;
+          }
+
+          public final boolean isInitialized() {
+            return true;
+          }
+
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track) e.getUnfinishedMessage();
+              throw e;
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          private int startdelay_ ;
+          /**
+           * <code>optional int32 startdelay = 1;</code>
+           */
+          public boolean hasStartdelay() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+          }
+          /**
+           * <code>optional int32 startdelay = 1;</code>
+           */
+          public int getStartdelay() {
+            return startdelay_;
+          }
+          /**
+           * <code>optional int32 startdelay = 1;</code>
+           */
+          public Builder setStartdelay(int value) {
+            bitField0_ |= 0x00000001;
+            startdelay_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int32 startdelay = 1;</code>
+           */
+          public Builder clearStartdelay() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            startdelay_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object url_ = "";
+          /**
+           * <code>optional string url = 2;</code>
+           */
+          public boolean hasUrl() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+          }
+          /**
+           * <code>optional string url = 2;</code>
+           */
+          public java.lang.String getUrl() {
+            java.lang.Object ref = url_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                url_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string url = 2;</code>
+           */
+          public com.google.protobuf.ByteString
+              getUrlBytes() {
+            java.lang.Object ref = url_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              url_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string url = 2;</code>
+           */
+          public Builder setUrl(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            url_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string url = 2;</code>
+           */
+          public Builder clearUrl() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            url_ = getDefaultInstance().getUrl();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string url = 2;</code>
+           */
+          public Builder setUrlBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+            url_ = value;
+            onChanged();
+            return this;
+          }
+
+          // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.MediaBid.MediaResponse.Track)
+        }
+
+        static {
+          defaultInstance = new Track(true);
+          defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:com.madhouse.ssp.MediaBid.MediaResponse.Track)
       }
 
       private int bitField0_;
@@ -7305,32 +7863,38 @@ public final class PremiumMADDataModel {
       }
 
       public static final int IMPURL_FIELD_NUMBER = 12;
-      private com.google.protobuf.LazyStringList impurl_;
+      private java.util.List<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track> impurl_;
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
-      public com.google.protobuf.ProtocolStringList
-          getImpurlList() {
+      public java.util.List<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track> getImpurlList() {
         return impurl_;
       }
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+       */
+      public java.util.List<? extends com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder> 
+          getImpurlOrBuilderList() {
+        return impurl_;
+      }
+      /**
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
       public int getImpurlCount() {
         return impurl_.size();
       }
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
-      public java.lang.String getImpurl(int index) {
+      public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track getImpurl(int index) {
         return impurl_.get(index);
       }
       /**
-       * <code>repeated string impurl = 12;</code>
+       * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
        */
-      public com.google.protobuf.ByteString
-          getImpurlBytes(int index) {
-        return impurl_.getByteString(index);
+      public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder getImpurlOrBuilder(
+          int index) {
+        return impurl_.get(index);
       }
 
       public static final int CLKURL_FIELD_NUMBER = 13;
@@ -7403,7 +7967,7 @@ public final class PremiumMADDataModel {
         adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         lpgurl_ = "";
         acttype_ = 0;
-        impurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        impurl_ = java.util.Collections.emptyList();
         clkurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         securl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       }
@@ -7454,7 +8018,7 @@ public final class PremiumMADDataModel {
           output.writeInt32(11, acttype_);
         }
         for (int i = 0; i < impurl_.size(); i++) {
-          output.writeBytes(12, impurl_.getByteString(i));
+          output.writeMessage(12, impurl_.get(i));
         }
         for (int i = 0; i < clkurl_.size(); i++) {
           output.writeBytes(13, clkurl_.getByteString(i));
@@ -7520,14 +8084,9 @@ public final class PremiumMADDataModel {
           size += com.google.protobuf.CodedOutputStream
             .computeInt32Size(11, acttype_);
         }
-        {
-          int dataSize = 0;
-          for (int i = 0; i < impurl_.size(); i++) {
-            dataSize += com.google.protobuf.CodedOutputStream
-              .computeBytesSizeNoTag(impurl_.getByteString(i));
-          }
-          size += dataSize;
-          size += 1 * getImpurlList().size();
+        for (int i = 0; i < impurl_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(12, impurl_.get(i));
         }
         {
           int dataSize = 0;
@@ -7656,6 +8215,7 @@ public final class PremiumMADDataModel {
         }
         private void maybeForceBuilderInitialization() {
           if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getImpurlFieldBuilder();
           }
         }
         private static Builder create() {
@@ -7686,8 +8246,12 @@ public final class PremiumMADDataModel {
           bitField0_ = (bitField0_ & ~0x00000200);
           acttype_ = 0;
           bitField0_ = (bitField0_ & ~0x00000400);
-          impurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000800);
+          if (impurlBuilder_ == null) {
+            impurl_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000800);
+          } else {
+            impurlBuilder_.clear();
+          }
           clkurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           bitField0_ = (bitField0_ & ~0x00001000);
           securl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -7765,11 +8329,15 @@ public final class PremiumMADDataModel {
             to_bitField0_ |= 0x00000200;
           }
           result.acttype_ = acttype_;
-          if (((bitField0_ & 0x00000800) == 0x00000800)) {
-            impurl_ = impurl_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x00000800);
+          if (impurlBuilder_ == null) {
+            if (((bitField0_ & 0x00000800) == 0x00000800)) {
+              impurl_ = java.util.Collections.unmodifiableList(impurl_);
+              bitField0_ = (bitField0_ & ~0x00000800);
+            }
+            result.impurl_ = impurl_;
+          } else {
+            result.impurl_ = impurlBuilder_.build();
           }
-          result.impurl_ = impurl_;
           if (((bitField0_ & 0x00001000) == 0x00001000)) {
             clkurl_ = clkurl_.getUnmodifiableView();
             bitField0_ = (bitField0_ & ~0x00001000);
@@ -7848,15 +8416,31 @@ public final class PremiumMADDataModel {
           if (other.hasActtype()) {
             setActtype(other.getActtype());
           }
-          if (!other.impurl_.isEmpty()) {
-            if (impurl_.isEmpty()) {
-              impurl_ = other.impurl_;
-              bitField0_ = (bitField0_ & ~0x00000800);
-            } else {
-              ensureImpurlIsMutable();
-              impurl_.addAll(other.impurl_);
+          if (impurlBuilder_ == null) {
+            if (!other.impurl_.isEmpty()) {
+              if (impurl_.isEmpty()) {
+                impurl_ = other.impurl_;
+                bitField0_ = (bitField0_ & ~0x00000800);
+              } else {
+                ensureImpurlIsMutable();
+                impurl_.addAll(other.impurl_);
+              }
+              onChanged();
             }
-            onChanged();
+          } else {
+            if (!other.impurl_.isEmpty()) {
+              if (impurlBuilder_.isEmpty()) {
+                impurlBuilder_.dispose();
+                impurlBuilder_ = null;
+                impurl_ = other.impurl_;
+                bitField0_ = (bitField0_ & ~0x00000800);
+                impurlBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getImpurlFieldBuilder() : null;
+              } else {
+                impurlBuilder_.addAllMessages(other.impurl_);
+              }
+            }
           }
           if (!other.clkurl_.isEmpty()) {
             if (clkurl_.isEmpty()) {
@@ -8582,97 +9166,244 @@ public final class PremiumMADDataModel {
           return this;
         }
 
-        private com.google.protobuf.LazyStringList impurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private java.util.List<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track> impurl_ =
+          java.util.Collections.emptyList();
         private void ensureImpurlIsMutable() {
           if (!((bitField0_ & 0x00000800) == 0x00000800)) {
-            impurl_ = new com.google.protobuf.LazyStringArrayList(impurl_);
+            impurl_ = new java.util.ArrayList<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track>(impurl_);
             bitField0_ |= 0x00000800;
            }
         }
+
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder> impurlBuilder_;
+
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
-        public com.google.protobuf.ProtocolStringList
-            getImpurlList() {
-          return impurl_.getUnmodifiableView();
+        public java.util.List<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track> getImpurlList() {
+          if (impurlBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(impurl_);
+          } else {
+            return impurlBuilder_.getMessageList();
+          }
         }
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
         public int getImpurlCount() {
-          return impurl_.size();
+          if (impurlBuilder_ == null) {
+            return impurl_.size();
+          } else {
+            return impurlBuilder_.getCount();
+          }
         }
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
-        public java.lang.String getImpurl(int index) {
-          return impurl_.get(index);
+        public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track getImpurl(int index) {
+          if (impurlBuilder_ == null) {
+            return impurl_.get(index);
+          } else {
+            return impurlBuilder_.getMessage(index);
+          }
         }
         /**
-         * <code>repeated string impurl = 12;</code>
-         */
-        public com.google.protobuf.ByteString
-            getImpurlBytes(int index) {
-          return impurl_.getByteString(index);
-        }
-        /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
         public Builder setImpurl(
-            int index, java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureImpurlIsMutable();
-          impurl_.set(index, value);
-          onChanged();
+            int index, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track value) {
+          if (impurlBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureImpurlIsMutable();
+            impurl_.set(index, value);
+            onChanged();
+          } else {
+            impurlBuilder_.setMessage(index, value);
+          }
           return this;
         }
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public Builder setImpurl(
+            int index, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder builderForValue) {
+          if (impurlBuilder_ == null) {
+            ensureImpurlIsMutable();
+            impurl_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            impurlBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public Builder addImpurl(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track value) {
+          if (impurlBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureImpurlIsMutable();
+            impurl_.add(value);
+            onChanged();
+          } else {
+            impurlBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
         public Builder addImpurl(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureImpurlIsMutable();
-          impurl_.add(value);
-          onChanged();
+            int index, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track value) {
+          if (impurlBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureImpurlIsMutable();
+            impurl_.add(index, value);
+            onChanged();
+          } else {
+            impurlBuilder_.addMessage(index, value);
+          }
           return this;
         }
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public Builder addImpurl(
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder builderForValue) {
+          if (impurlBuilder_ == null) {
+            ensureImpurlIsMutable();
+            impurl_.add(builderForValue.build());
+            onChanged();
+          } else {
+            impurlBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public Builder addImpurl(
+            int index, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder builderForValue) {
+          if (impurlBuilder_ == null) {
+            ensureImpurlIsMutable();
+            impurl_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            impurlBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
         public Builder addAllImpurl(
-            java.lang.Iterable<java.lang.String> values) {
-          ensureImpurlIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, impurl_);
-          onChanged();
+            java.lang.Iterable<? extends com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track> values) {
+          if (impurlBuilder_ == null) {
+            ensureImpurlIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, impurl_);
+            onChanged();
+          } else {
+            impurlBuilder_.addAllMessages(values);
+          }
           return this;
         }
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
         public Builder clearImpurl() {
-          impurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000800);
-          onChanged();
+          if (impurlBuilder_ == null) {
+            impurl_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000800);
+            onChanged();
+          } else {
+            impurlBuilder_.clear();
+          }
           return this;
         }
         /**
-         * <code>repeated string impurl = 12;</code>
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
          */
-        public Builder addImpurlBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureImpurlIsMutable();
-          impurl_.add(value);
-          onChanged();
+        public Builder removeImpurl(int index) {
+          if (impurlBuilder_ == null) {
+            ensureImpurlIsMutable();
+            impurl_.remove(index);
+            onChanged();
+          } else {
+            impurlBuilder_.remove(index);
+          }
           return this;
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder getImpurlBuilder(
+            int index) {
+          return getImpurlFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder getImpurlOrBuilder(
+            int index) {
+          if (impurlBuilder_ == null) {
+            return impurl_.get(index);  } else {
+            return impurlBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public java.util.List<? extends com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder> 
+             getImpurlOrBuilderList() {
+          if (impurlBuilder_ != null) {
+            return impurlBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(impurl_);
+          }
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder addImpurlBuilder() {
+          return getImpurlFieldBuilder().addBuilder(
+              com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder addImpurlBuilder(
+            int index) {
+          return getImpurlFieldBuilder().addBuilder(
+              index, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .com.madhouse.ssp.MediaBid.MediaResponse.Track impurl = 12;</code>
+         */
+        public java.util.List<com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder> 
+             getImpurlBuilderList() {
+          return getImpurlFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder> 
+            getImpurlFieldBuilder() {
+          if (impurlBuilder_ == null) {
+            impurlBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.TrackOrBuilder>(
+                    impurl_,
+                    ((bitField0_ & 0x00000800) == 0x00000800),
+                    getParentForChildren(),
+                    isClean());
+            impurl_ = null;
+          }
+          return impurlBuilder_;
         }
 
         private com.google.protobuf.LazyStringList clkurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -10997,15 +11728,24 @@ public final class PremiumMADDataModel {
     long getPolicyid();
 
     /**
-     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+     * <code>optional bool valid = 9;</code>
+     */
+    boolean hasValid();
+    /**
+     * <code>optional bool valid = 9;</code>
+     */
+    boolean getValid();
+
+    /**
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
      */
     boolean hasExt();
     /**
-     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getExt();
     /**
-     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder getExtOrBuilder();
   }
@@ -11104,9 +11844,14 @@ public final class PremiumMADDataModel {
               policyid_ = input.readInt64();
               break;
             }
-            case 74: {
+            case 72: {
+              bitField0_ |= 0x00000100;
+              valid_ = input.readBool();
+              break;
+            }
+            case 82: {
               com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = ext_.toBuilder();
               }
               ext_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.PARSER, extensionRegistry);
@@ -11114,7 +11859,7 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(ext_);
                 ext_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000200;
               break;
             }
           }
@@ -12068,22 +12813,37 @@ public final class PremiumMADDataModel {
       return policyid_;
     }
 
-    public static final int EXT_FIELD_NUMBER = 9;
-    private com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext ext_;
+    public static final int VALID_FIELD_NUMBER = 9;
+    private boolean valid_;
     /**
-     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+     * <code>optional bool valid = 9;</code>
      */
-    public boolean hasExt() {
+    public boolean hasValid() {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+     * <code>optional bool valid = 9;</code>
+     */
+    public boolean getValid() {
+      return valid_;
+    }
+
+    public static final int EXT_FIELD_NUMBER = 10;
+    private com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext ext_;
+    /**
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
+     */
+    public boolean hasExt() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getExt() {
       return ext_;
     }
     /**
-     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+     * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder getExtOrBuilder() {
       return ext_;
@@ -12098,6 +12858,7 @@ public final class PremiumMADDataModel {
       mediaid_ = 0L;
       adspaceid_ = 0L;
       policyid_ = 0L;
+      valid_ = false;
       ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -12138,7 +12899,10 @@ public final class PremiumMADDataModel {
         output.writeInt64(8, policyid_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeMessage(9, ext_);
+        output.writeBool(9, valid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeMessage(10, ext_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -12183,7 +12947,11 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, ext_);
+          .computeBoolSize(9, valid_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, ext_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -12319,12 +13087,14 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000040);
         policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
+        valid_ = false;
+        bitField0_ = (bitField0_ & ~0x00000100);
         if (extBuilder_ == null) {
           ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
         } else {
           extBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -12388,6 +13158,10 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
           to_bitField0_ |= 0x00000100;
         }
+        result.valid_ = valid_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
         if (extBuilder_ == null) {
           result.ext_ = ext_;
         } else {
@@ -12438,6 +13212,9 @@ public final class PremiumMADDataModel {
         }
         if (other.hasPolicyid()) {
           setPolicyid(other.getPolicyid());
+        }
+        if (other.hasValid()) {
+          setValid(other.getValid());
         }
         if (other.hasExt()) {
           mergeExt(other.getExt());
@@ -12857,17 +13634,49 @@ public final class PremiumMADDataModel {
         return this;
       }
 
+      private boolean valid_ ;
+      /**
+       * <code>optional bool valid = 9;</code>
+       */
+      public boolean hasValid() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional bool valid = 9;</code>
+       */
+      public boolean getValid() {
+        return valid_;
+      }
+      /**
+       * <code>optional bool valid = 9;</code>
+       */
+      public Builder setValid(boolean value) {
+        bitField0_ |= 0x00000100;
+        valid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool valid = 9;</code>
+       */
+      public Builder clearValid() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        valid_ = false;
+        onChanged();
+        return this;
+      }
+
       private com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext ext_ = com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder> extBuilder_;
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public boolean hasExt() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext getExt() {
         if (extBuilder_ == null) {
@@ -12877,7 +13686,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public Builder setExt(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext value) {
         if (extBuilder_ == null) {
@@ -12889,11 +13698,11 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public Builder setExt(
           com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder builderForValue) {
@@ -12903,15 +13712,15 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public Builder mergeExt(com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext value) {
         if (extBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               ext_ != com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.getDefaultInstance()) {
             ext_ =
               com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.newBuilder(ext_).mergeFrom(value).buildPartial();
@@ -12922,11 +13731,11 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public Builder clearExt() {
         if (extBuilder_ == null) {
@@ -12935,19 +13744,19 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder getExtBuilder() {
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getExtFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder getExtOrBuilder() {
         if (extBuilder_ != null) {
@@ -12957,7 +13766,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ImpressionTrack.Ext ext = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ImpressionTrack.ExtOrBuilder> 
@@ -13076,28 +13885,37 @@ public final class PremiumMADDataModel {
     long getPolicyid();
 
     /**
-     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     * <code>optional bool valid = 10;</code>
+     */
+    boolean hasValid();
+    /**
+     * <code>optional bool valid = 10;</code>
+     */
+    boolean getValid();
+
+    /**
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
      */
     boolean hasExt();
     /**
-     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getExt();
     /**
-     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
      */
     com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder getExtOrBuilder();
 
     /**
-     * <code>optional string url = 10;</code>
+     * <code>optional string url = 12;</code>
      */
     boolean hasUrl();
     /**
-     * <code>optional string url = 10;</code>
+     * <code>optional string url = 12;</code>
      */
     java.lang.String getUrl();
     /**
-     * <code>optional string url = 10;</code>
+     * <code>optional string url = 12;</code>
      */
     com.google.protobuf.ByteString
         getUrlBytes();
@@ -13197,9 +14015,14 @@ public final class PremiumMADDataModel {
               policyid_ = input.readInt64();
               break;
             }
-            case 74: {
+            case 80: {
+              bitField0_ |= 0x00000100;
+              valid_ = input.readBool();
+              break;
+            }
+            case 90: {
               com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = ext_.toBuilder();
               }
               ext_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.PARSER, extensionRegistry);
@@ -13207,12 +14030,12 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(ext_);
                 ext_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000200;
               break;
             }
-            case 82: {
+            case 98: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000400;
               url_ = bs;
               break;
             }
@@ -14167,37 +14990,52 @@ public final class PremiumMADDataModel {
       return policyid_;
     }
 
-    public static final int EXT_FIELD_NUMBER = 9;
-    private com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext ext_;
+    public static final int VALID_FIELD_NUMBER = 10;
+    private boolean valid_;
     /**
-     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     * <code>optional bool valid = 10;</code>
      */
-    public boolean hasExt() {
+    public boolean hasValid() {
       return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
-     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     * <code>optional bool valid = 10;</code>
+     */
+    public boolean getValid() {
+      return valid_;
+    }
+
+    public static final int EXT_FIELD_NUMBER = 11;
+    private com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext ext_;
+    /**
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
+     */
+    public boolean hasExt() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getExt() {
       return ext_;
     }
     /**
-     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+     * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
      */
     public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder getExtOrBuilder() {
       return ext_;
     }
 
-    public static final int URL_FIELD_NUMBER = 10;
+    public static final int URL_FIELD_NUMBER = 12;
     private java.lang.Object url_;
     /**
-     * <code>optional string url = 10;</code>
+     * <code>optional string url = 12;</code>
      */
     public boolean hasUrl() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
+      return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional string url = 10;</code>
+     * <code>optional string url = 12;</code>
      */
     public java.lang.String getUrl() {
       java.lang.Object ref = url_;
@@ -14214,7 +15052,7 @@ public final class PremiumMADDataModel {
       }
     }
     /**
-     * <code>optional string url = 10;</code>
+     * <code>optional string url = 12;</code>
      */
     public com.google.protobuf.ByteString
         getUrlBytes() {
@@ -14239,6 +15077,7 @@ public final class PremiumMADDataModel {
       mediaid_ = 0L;
       adspaceid_ = 0L;
       policyid_ = 0L;
+      valid_ = false;
       ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
       url_ = "";
     }
@@ -14280,10 +15119,13 @@ public final class PremiumMADDataModel {
         output.writeInt64(8, policyid_);
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeMessage(9, ext_);
+        output.writeBool(10, valid_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeBytes(10, getUrlBytes());
+        output.writeMessage(11, ext_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeBytes(12, getUrlBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -14328,11 +15170,15 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, ext_);
+          .computeBoolSize(10, valid_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(10, getUrlBytes());
+          .computeMessageSize(11, ext_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getUrlBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14468,14 +15314,16 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000040);
         policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
+        valid_ = false;
+        bitField0_ = (bitField0_ & ~0x00000100);
         if (extBuilder_ == null) {
           ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
         } else {
           extBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
-        url_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
+        url_ = "";
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -14539,13 +15387,17 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
           to_bitField0_ |= 0x00000100;
         }
+        result.valid_ = valid_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
         if (extBuilder_ == null) {
           result.ext_ = ext_;
         } else {
           result.ext_ = extBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
         }
         result.url_ = url_;
         result.bitField0_ = to_bitField0_;
@@ -14594,11 +15446,14 @@ public final class PremiumMADDataModel {
         if (other.hasPolicyid()) {
           setPolicyid(other.getPolicyid());
         }
+        if (other.hasValid()) {
+          setValid(other.getValid());
+        }
         if (other.hasExt()) {
           mergeExt(other.getExt());
         }
         if (other.hasUrl()) {
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000400;
           url_ = other.url_;
           onChanged();
         }
@@ -15017,17 +15872,49 @@ public final class PremiumMADDataModel {
         return this;
       }
 
+      private boolean valid_ ;
+      /**
+       * <code>optional bool valid = 10;</code>
+       */
+      public boolean hasValid() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional bool valid = 10;</code>
+       */
+      public boolean getValid() {
+        return valid_;
+      }
+      /**
+       * <code>optional bool valid = 10;</code>
+       */
+      public Builder setValid(boolean value) {
+        bitField0_ |= 0x00000100;
+        valid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool valid = 10;</code>
+       */
+      public Builder clearValid() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        valid_ = false;
+        onChanged();
+        return this;
+      }
+
       private com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext ext_ = com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder> extBuilder_;
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public boolean hasExt() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext getExt() {
         if (extBuilder_ == null) {
@@ -15037,7 +15924,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public Builder setExt(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext value) {
         if (extBuilder_ == null) {
@@ -15049,11 +15936,11 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public Builder setExt(
           com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder builderForValue) {
@@ -15063,15 +15950,15 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public Builder mergeExt(com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext value) {
         if (extBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               ext_ != com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.getDefaultInstance()) {
             ext_ =
               com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.newBuilder(ext_).mergeFrom(value).buildPartial();
@@ -15082,11 +15969,11 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public Builder clearExt() {
         if (extBuilder_ == null) {
@@ -15095,19 +15982,19 @@ public final class PremiumMADDataModel {
         } else {
           extBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder getExtBuilder() {
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getExtFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder getExtOrBuilder() {
         if (extBuilder_ != null) {
@@ -15117,7 +16004,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 9;</code>
+       * <code>optional .com.madhouse.ssp.ClickTrack.Ext ext = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.Ext.Builder, com.madhouse.ssp.PremiumMADDataModel.ClickTrack.ExtOrBuilder> 
@@ -15135,13 +16022,13 @@ public final class PremiumMADDataModel {
 
       private java.lang.Object url_ = "";
       /**
-       * <code>optional string url = 10;</code>
+       * <code>optional string url = 12;</code>
        */
       public boolean hasUrl() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
+        return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional string url = 10;</code>
+       * <code>optional string url = 12;</code>
        */
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
@@ -15158,7 +16045,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string url = 10;</code>
+       * <code>optional string url = 12;</code>
        */
       public com.google.protobuf.ByteString
           getUrlBytes() {
@@ -15174,36 +16061,36 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string url = 10;</code>
+       * <code>optional string url = 12;</code>
        */
       public Builder setUrl(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         url_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string url = 10;</code>
+       * <code>optional string url = 12;</code>
        */
       public Builder clearUrl() {
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         url_ = getDefaultInstance().getUrl();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string url = 10;</code>
+       * <code>optional string url = 12;</code>
        */
       public Builder setUrlBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
         url_ = value;
         onChanged();
         return this;
@@ -15243,31 +16130,63 @@ public final class PremiumMADDataModel {
     long getDspid();
 
     /**
-     * <code>optional int64 policyid = 3;</code>
+     * <code>optional string impid = 3;</code>
+     */
+    boolean hasImpid();
+    /**
+     * <code>optional string impid = 3;</code>
+     */
+    java.lang.String getImpid();
+    /**
+     * <code>optional string impid = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getImpidBytes();
+
+    /**
+     * <code>optional int64 policyid = 4;</code>
      */
     boolean hasPolicyid();
     /**
-     * <code>optional int64 policyid = 3;</code>
+     * <code>optional int64 policyid = 4;</code>
      */
     long getPolicyid();
 
     /**
-     * <code>optional int32 deliverytype = 4;</code>
+     * <code>optional int32 deliverytype = 5;</code>
      */
     boolean hasDeliverytype();
     /**
-     * <code>optional int32 deliverytype = 4;</code>
+     * <code>optional int32 deliverytype = 5;</code>
      */
     int getDeliverytype();
 
     /**
-     * <code>optional int32 status = 5;</code>
+     * <code>optional int32 bidtype = 6;</code>
+     */
+    boolean hasBidtype();
+    /**
+     * <code>optional int32 bidtype = 6;</code>
+     */
+    int getBidtype();
+
+    /**
+     * <code>optional int32 status = 7;</code>
      */
     boolean hasStatus();
     /**
-     * <code>optional int32 status = 5;</code>
+     * <code>optional int32 status = 7;</code>
      */
     int getStatus();
+
+    /**
+     * <code>optional int32 price = 8;</code>
+     */
+    boolean hasPrice();
+    /**
+     * <code>optional int32 price = 8;</code>
+     */
+    int getPrice();
 
     /**
      * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
@@ -15357,24 +16276,40 @@ public final class PremiumMADDataModel {
               dspid_ = input.readInt64();
               break;
             }
-            case 24: {
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              policyid_ = input.readInt64();
+              impid_ = bs;
               break;
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              deliverytype_ = input.readInt32();
+              policyid_ = input.readInt64();
               break;
             }
             case 40: {
               bitField0_ |= 0x00000010;
+              deliverytype_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              bidtype_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
               status_ = input.readInt32();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              price_ = input.readInt32();
               break;
             }
             case 90: {
               com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 subBuilder = request_.toBuilder();
               }
               request_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.PARSER, extensionRegistry);
@@ -15382,12 +16317,12 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(request_);
                 request_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000100;
               break;
             }
             case 98: {
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = response_.toBuilder();
               }
               response_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.PARSER, extensionRegistry);
@@ -15395,7 +16330,7 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(response_);
                 response_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000040;
+              bitField0_ |= 0x00000200;
               break;
             }
           }
@@ -15468,49 +16403,121 @@ public final class PremiumMADDataModel {
       return dspid_;
     }
 
-    public static final int POLICYID_FIELD_NUMBER = 3;
-    private long policyid_;
+    public static final int IMPID_FIELD_NUMBER = 3;
+    private java.lang.Object impid_;
     /**
-     * <code>optional int64 policyid = 3;</code>
+     * <code>optional string impid = 3;</code>
      */
-    public boolean hasPolicyid() {
+    public boolean hasImpid() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int64 policyid = 3;</code>
+     * <code>optional string impid = 3;</code>
+     */
+    public java.lang.String getImpid() {
+      java.lang.Object ref = impid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          impid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string impid = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getImpidBytes() {
+      java.lang.Object ref = impid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        impid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POLICYID_FIELD_NUMBER = 4;
+    private long policyid_;
+    /**
+     * <code>optional int64 policyid = 4;</code>
+     */
+    public boolean hasPolicyid() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int64 policyid = 4;</code>
      */
     public long getPolicyid() {
       return policyid_;
     }
 
-    public static final int DELIVERYTYPE_FIELD_NUMBER = 4;
+    public static final int DELIVERYTYPE_FIELD_NUMBER = 5;
     private int deliverytype_;
     /**
-     * <code>optional int32 deliverytype = 4;</code>
+     * <code>optional int32 deliverytype = 5;</code>
      */
     public boolean hasDeliverytype() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional int32 deliverytype = 4;</code>
+     * <code>optional int32 deliverytype = 5;</code>
      */
     public int getDeliverytype() {
       return deliverytype_;
     }
 
-    public static final int STATUS_FIELD_NUMBER = 5;
-    private int status_;
+    public static final int BIDTYPE_FIELD_NUMBER = 6;
+    private int bidtype_;
     /**
-     * <code>optional int32 status = 5;</code>
+     * <code>optional int32 bidtype = 6;</code>
      */
-    public boolean hasStatus() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+    public boolean hasBidtype() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional int32 status = 5;</code>
+     * <code>optional int32 bidtype = 6;</code>
+     */
+    public int getBidtype() {
+      return bidtype_;
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 7;
+    private int status_;
+    /**
+     * <code>optional int32 status = 7;</code>
+     */
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional int32 status = 7;</code>
      */
     public int getStatus() {
       return status_;
+    }
+
+    public static final int PRICE_FIELD_NUMBER = 8;
+    private int price_;
+    /**
+     * <code>optional int32 price = 8;</code>
+     */
+    public boolean hasPrice() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional int32 price = 8;</code>
+     */
+    public int getPrice() {
+      return price_;
     }
 
     public static final int REQUEST_FIELD_NUMBER = 11;
@@ -15519,7 +16526,7 @@ public final class PremiumMADDataModel {
      * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
      */
     public boolean hasRequest() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
      * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
@@ -15540,7 +16547,7 @@ public final class PremiumMADDataModel {
      * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     public boolean hasResponse() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
      * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
@@ -15558,9 +16565,12 @@ public final class PremiumMADDataModel {
     private void initFields() {
       time_ = 0L;
       dspid_ = 0L;
+      impid_ = "";
       policyid_ = 0L;
       deliverytype_ = 0;
+      bidtype_ = 0;
       status_ = 0;
+      price_ = 0;
       request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
       response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
     }
@@ -15584,18 +16594,27 @@ public final class PremiumMADDataModel {
         output.writeInt64(2, dspid_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt64(3, policyid_);
+        output.writeBytes(3, getImpidBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, deliverytype_);
+        output.writeInt64(4, policyid_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, status_);
+        output.writeInt32(5, deliverytype_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(11, request_);
+        output.writeInt32(6, bidtype_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeInt32(7, status_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeInt32(8, price_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeMessage(11, request_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeMessage(12, response_);
       }
       getUnknownFields().writeTo(output);
@@ -15617,21 +16636,33 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, policyid_);
+          .computeBytesSize(3, getImpidBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, deliverytype_);
+          .computeInt64Size(4, policyid_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, status_);
+          .computeInt32Size(5, deliverytype_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, request_);
+          .computeInt32Size(6, bidtype_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, status_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, price_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, request_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, response_);
       }
@@ -15758,24 +16789,30 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000001);
         dspid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
-        policyid_ = 0L;
+        impid_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        deliverytype_ = 0;
+        policyid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
-        status_ = 0;
+        deliverytype_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        bidtype_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        status_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        price_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (requestBuilder_ == null) {
           request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000100);
         if (responseBuilder_ == null) {
           response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -15815,25 +16852,37 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.policyid_ = policyid_;
+        result.impid_ = impid_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.deliverytype_ = deliverytype_;
+        result.policyid_ = policyid_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.status_ = status_;
+        result.deliverytype_ = deliverytype_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
+        }
+        result.bidtype_ = bidtype_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.status_ = status_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.price_ = price_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
         }
         if (requestBuilder_ == null) {
           result.request_ = request_;
         } else {
           result.request_ = requestBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
         }
         if (responseBuilder_ == null) {
           result.response_ = response_;
@@ -15862,14 +16911,25 @@ public final class PremiumMADDataModel {
         if (other.hasDspid()) {
           setDspid(other.getDspid());
         }
+        if (other.hasImpid()) {
+          bitField0_ |= 0x00000004;
+          impid_ = other.impid_;
+          onChanged();
+        }
         if (other.hasPolicyid()) {
           setPolicyid(other.getPolicyid());
         }
         if (other.hasDeliverytype()) {
           setDeliverytype(other.getDeliverytype());
         }
+        if (other.hasBidtype()) {
+          setBidtype(other.getBidtype());
+        }
         if (other.hasStatus()) {
           setStatus(other.getStatus());
+        }
+        if (other.hasPrice()) {
+          setPrice(other.getPrice());
         }
         if (other.hasRequest()) {
           mergeRequest(other.getRequest());
@@ -15968,33 +17028,109 @@ public final class PremiumMADDataModel {
         return this;
       }
 
-      private long policyid_ ;
+      private java.lang.Object impid_ = "";
       /**
-       * <code>optional int64 policyid = 3;</code>
+       * <code>optional string impid = 3;</code>
        */
-      public boolean hasPolicyid() {
+      public boolean hasImpid() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int64 policyid = 3;</code>
+       * <code>optional string impid = 3;</code>
+       */
+      public java.lang.String getImpid() {
+        java.lang.Object ref = impid_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            impid_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getImpidBytes() {
+        java.lang.Object ref = impid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          impid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public Builder setImpid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        impid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public Builder clearImpid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        impid_ = getDefaultInstance().getImpid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public Builder setImpidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        impid_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long policyid_ ;
+      /**
+       * <code>optional int64 policyid = 4;</code>
+       */
+      public boolean hasPolicyid() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int64 policyid = 4;</code>
        */
       public long getPolicyid() {
         return policyid_;
       }
       /**
-       * <code>optional int64 policyid = 3;</code>
+       * <code>optional int64 policyid = 4;</code>
        */
       public Builder setPolicyid(long value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         policyid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 policyid = 3;</code>
+       * <code>optional int64 policyid = 4;</code>
        */
       public Builder clearPolicyid() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         policyid_ = 0L;
         onChanged();
         return this;
@@ -16002,64 +17138,128 @@ public final class PremiumMADDataModel {
 
       private int deliverytype_ ;
       /**
-       * <code>optional int32 deliverytype = 4;</code>
+       * <code>optional int32 deliverytype = 5;</code>
        */
       public boolean hasDeliverytype() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional int32 deliverytype = 4;</code>
+       * <code>optional int32 deliverytype = 5;</code>
        */
       public int getDeliverytype() {
         return deliverytype_;
       }
       /**
-       * <code>optional int32 deliverytype = 4;</code>
+       * <code>optional int32 deliverytype = 5;</code>
        */
       public Builder setDeliverytype(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         deliverytype_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 deliverytype = 4;</code>
+       * <code>optional int32 deliverytype = 5;</code>
        */
       public Builder clearDeliverytype() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         deliverytype_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int bidtype_ ;
+      /**
+       * <code>optional int32 bidtype = 6;</code>
+       */
+      public boolean hasBidtype() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int32 bidtype = 6;</code>
+       */
+      public int getBidtype() {
+        return bidtype_;
+      }
+      /**
+       * <code>optional int32 bidtype = 6;</code>
+       */
+      public Builder setBidtype(int value) {
+        bitField0_ |= 0x00000020;
+        bidtype_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 bidtype = 6;</code>
+       */
+      public Builder clearBidtype() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        bidtype_ = 0;
         onChanged();
         return this;
       }
 
       private int status_ ;
       /**
-       * <code>optional int32 status = 5;</code>
+       * <code>optional int32 status = 7;</code>
        */
       public boolean hasStatus() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional int32 status = 5;</code>
+       * <code>optional int32 status = 7;</code>
        */
       public int getStatus() {
         return status_;
       }
       /**
-       * <code>optional int32 status = 5;</code>
+       * <code>optional int32 status = 7;</code>
        */
       public Builder setStatus(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000040;
         status_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 status = 5;</code>
+       * <code>optional int32 status = 7;</code>
        */
       public Builder clearStatus() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000040);
         status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int price_ ;
+      /**
+       * <code>optional int32 price = 8;</code>
+       */
+      public boolean hasPrice() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int32 price = 8;</code>
+       */
+      public int getPrice() {
+        return price_;
+      }
+      /**
+       * <code>optional int32 price = 8;</code>
+       */
+      public Builder setPrice(int value) {
+        bitField0_ |= 0x00000080;
+        price_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 price = 8;</code>
+       */
+      public Builder clearPrice() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        price_ = 0;
         onChanged();
         return this;
       }
@@ -16071,7 +17271,7 @@ public final class PremiumMADDataModel {
        * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public boolean hasRequest() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
        * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
@@ -16096,7 +17296,7 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -16110,7 +17310,7 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -16118,7 +17318,7 @@ public final class PremiumMADDataModel {
        */
       public Builder mergeRequest(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest value) {
         if (requestBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
               request_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance()) {
             request_ =
               com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.newBuilder(request_).mergeFrom(value).buildPartial();
@@ -16129,7 +17329,7 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -16142,14 +17342,14 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       /**
        * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder getRequestBuilder() {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         onChanged();
         return getRequestFieldBuilder().getBuilder();
       }
@@ -16187,7 +17387,7 @@ public final class PremiumMADDataModel {
        * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public boolean hasResponse() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
        * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
@@ -16212,7 +17412,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -16226,7 +17426,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -16234,7 +17434,7 @@ public final class PremiumMADDataModel {
        */
       public Builder mergeResponse(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse value) {
         if (responseBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               response_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance()) {
             response_ =
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.newBuilder(response_).mergeFrom(value).buildPartial();
@@ -16245,7 +17445,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -16258,14 +17458,14 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
        * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder getResponseBuilder() {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
       }
@@ -16323,6 +17523,11 @@ public final class PremiumMADDataModel {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_madhouse_ssp_MediaBid_MediaResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_madhouse_ssp_WinNotice_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -16362,7 +17567,7 @@ public final class PremiumMADDataModel {
   static {
     java.lang.String[] descriptorData = {
       "\n\031PremiumMADDataModel.proto\022\020com.madhous" +
-      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\364\007\n\010M" +
+      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\316\010\n\010M" +
       "ediaBid\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030" +
       "\003 \001(\t\022\r\n\005impid\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\0228\n\007" +
       "request\030\013 \001(\0132\'.com.madhouse.ssp.MediaBi" +
@@ -16382,34 +17587,38 @@ public final class PremiumMADDataModel {
       "ke\030\035 \001(\t\022\r\n\005model\030\036 \001(\t\022\014\n\004cell\030\037 \001(\t\022\017\n" +
       "\007cellmd5\030  \001(\t\022\014\n\004tags\030! \003(\t\022\014\n\004test\030\" \001",
       "(\005\022\020\n\010bidfloor\030# \001(\005\022\017\n\007bidtype\030$ \001(\005\022\020\n" +
-      "\010location\030% \001(\t\032\347\001\n\rMediaResponse\022\r\n\005dsp" +
+      "\010location\030% \001(\t\032\301\002\n\rMediaResponse\022\r\n\005dsp" +
       "id\030\001 \001(\003\022\r\n\005admid\030\002 \001(\t\022\016\n\006layout\030\003 \001(\005\022" +
       "\014\n\004icon\030\004 \001(\t\022\r\n\005cover\030\005 \001(\t\022\r\n\005title\030\006 " +
       "\001(\t\022\014\n\004desc\030\007 \001(\t\022\020\n\010duration\030\010 \001(\005\022\013\n\003a" +
       "dm\030\t \003(\t\022\016\n\006lpgurl\030\n \001(\t\022\017\n\007acttype\030\013 \001(" +
-      "\005\022\016\n\006impurl\030\014 \003(\t\022\016\n\006clkurl\030\r \003(\t\022\016\n\006sec" +
-      "url\030\016 \003(\t\"z\n\tWinNotice\022\014\n\004time\030\001 \001(\003\022\016\n\006" +
-      "status\030\002 \001(\005\022\r\n\005dspid\030\003 \001(\003\022\r\n\005impid\030\004 \001" +
-      "(\t\022\017\n\007mediaid\030\005 \001(\003\022\021\n\tadspaceid\030\006 \001(\003\022\r",
-      "\n\005price\030\007 \001(\005\"\202\002\n\017ImpressionTrack\022\014\n\004tim" +
-      "e\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006statu" +
-      "s\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007mediaid\030\006 \001(\003\022" +
-      "\021\n\tadspaceid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\0222\n\003" +
-      "ext\030\t \001(\0132%.com.madhouse.ssp.ImpressionT" +
-      "rack.Ext\032@\n\003Ext\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013" +
-      " \001(\003\022\016\n\006income\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\205\002\n\nC" +
-      "lickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002i" +
-      "p\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017" +
-      "\n\007mediaid\030\006 \001(\003\022\021\n\tadspaceid\030\007 \001(\003\022\020\n\010po",
-      "licyid\030\010 \001(\003\022-\n\003ext\030\t \001(\0132 .com.madhouse" +
-      ".ssp.ClickTrack.Ext\022\013\n\003url\030\n \001(\t\032@\n\003Ext\022" +
+      "\005\022>\n\006impurl\030\014 \003(\0132..com.madhouse.ssp.Med" +
+      "iaBid.MediaResponse.Track\022\016\n\006clkurl\030\r \003(" +
+      "\t\022\016\n\006securl\030\016 \003(\t\032(\n\005Track\022\022\n\nstartdelay" +
+      "\030\001 \001(\005\022\013\n\003url\030\002 \001(\t\"z\n\tWinNotice\022\014\n\004time",
+      "\030\001 \001(\003\022\016\n\006status\030\002 \001(\005\022\r\n\005dspid\030\003 \001(\003\022\r\n" +
+      "\005impid\030\004 \001(\t\022\017\n\007mediaid\030\005 \001(\003\022\021\n\tadspace" +
+      "id\030\006 \001(\003\022\r\n\005price\030\007 \001(\005\"\221\002\n\017ImpressionTr" +
+      "ack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(" +
+      "\t\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007medi" +
+      "aid\030\006 \001(\003\022\021\n\tadspaceid\030\007 \001(\003\022\020\n\010policyid" +
+      "\030\010 \001(\003\022\r\n\005valid\030\t \001(\010\0222\n\003ext\030\n \001(\0132%.com" +
+      ".madhouse.ssp.ImpressionTrack.Ext\032@\n\003Ext" +
+      "\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030" +
+      "\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\224\002\n\nClickTrack\022\014\n\004ti",
+      "me\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006stat" +
+      "us\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007mediaid\030\006 \001(\003" +
+      "\022\021\n\tadspaceid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022\r\n" +
+      "\005valid\030\n \001(\010\022-\n\003ext\030\013 \001(\0132 .com.madhouse" +
+      ".ssp.ClickTrack.Ext\022\013\n\003url\030\014 \001(\t\032@\n\003Ext\022" +
       "\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014" +
-      " \001(\005\022\014\n\004cost\030\r \001(\005\"\275\001\n\006DSPBid\022\014\n\004time\030\001 " +
-      "\001(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010policyid\030\003 \001(\003\022\024\n\014" +
-      "deliverytype\030\004 \001(\005\022\016\n\006status\030\005 \001(\005\022-\n\007re" +
-      "quest\030\013 \001(\0132\034.com.madhouse.rtb.BidReques" +
-      "t\022/\n\010response\030\014 \001(\0132\035.com.madhouse.rtb.B" +
-      "idResponse"
+      " \001(\005\022\014\n\004cost\030\r \001(\005\"\354\001\n\006DSPBid\022\014\n\004time\030\001 " +
+      "\001(\003\022\r\n\005dspid\030\002 \001(\003\022\r\n\005impid\030\003 \001(\t\022\020\n\010pol" +
+      "icyid\030\004 \001(\003\022\024\n\014deliverytype\030\005 \001(\005\022\017\n\007bid" +
+      "type\030\006 \001(\005\022\016\n\006status\030\007 \001(\005\022\r\n\005price\030\010 \001(",
+      "\005\022-\n\007request\030\013 \001(\0132\034.com.madhouse.rtb.Bi" +
+      "dRequest\022/\n\010response\030\014 \001(\0132\035.com.madhous" +
+      "e.rtb.BidResponse"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16442,6 +17651,12 @@ public final class PremiumMADDataModel {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_MediaBid_MediaResponse_descriptor,
         new java.lang.String[] { "Dspid", "Admid", "Layout", "Icon", "Cover", "Title", "Desc", "Duration", "Adm", "Lpgurl", "Acttype", "Impurl", "Clkurl", "Securl", });
+    internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_descriptor =
+      internal_static_com_madhouse_ssp_MediaBid_MediaResponse_descriptor.getNestedTypes().get(0);
+    internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_madhouse_ssp_MediaBid_MediaResponse_Track_descriptor,
+        new java.lang.String[] { "Startdelay", "Url", });
     internal_static_com_madhouse_ssp_WinNotice_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_madhouse_ssp_WinNotice_fieldAccessorTable = new
@@ -16453,7 +17668,7 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_ImpressionTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_ImpressionTrack_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mediaid", "Adspaceid", "Policyid", "Ext", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mediaid", "Adspaceid", "Policyid", "Valid", "Ext", });
     internal_static_com_madhouse_ssp_ImpressionTrack_Ext_descriptor =
       internal_static_com_madhouse_ssp_ImpressionTrack_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_ssp_ImpressionTrack_Ext_fieldAccessorTable = new
@@ -16465,7 +17680,7 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_ClickTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_ClickTrack_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mediaid", "Adspaceid", "Policyid", "Ext", "Url", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Status", "Impid", "Mediaid", "Adspaceid", "Policyid", "Valid", "Ext", "Url", });
     internal_static_com_madhouse_ssp_ClickTrack_Ext_descriptor =
       internal_static_com_madhouse_ssp_ClickTrack_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_ssp_ClickTrack_Ext_fieldAccessorTable = new
@@ -16477,7 +17692,7 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_DSPBid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_DSPBid_descriptor,
-        new java.lang.String[] { "Time", "Dspid", "Policyid", "Deliverytype", "Status", "Request", "Response", });
+        new java.lang.String[] { "Time", "Dspid", "Impid", "Policyid", "Deliverytype", "Bidtype", "Status", "Price", "Request", "Response", });
     com.madhouse.rtb.PremiumMADRTBProtocol.getDescriptor();
   }
 
