@@ -2,6 +2,7 @@ package com.madhouse.media.baofeng;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,6 @@ import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.baofeng.BaoFengResponse.PV;
-import com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid;
-import com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.PremiumMADDataModel;
 import com.madhouse.util.ObjectUtils;
@@ -57,48 +56,37 @@ public class BaoFengHandler extends MediaBaseHandler {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
+
         // TODO 自动生成的方法存根
-        return super.parseMediaRequest(req, mediaBidMetaData, resp);
+        return true;
     }
-    
-    /**
-     * 
-     * TODO 广告返回
-     * 
-     * @param dspBidBuilder
-     *            dsp返回的参数
-     * @param resp
-     * @param mediaBidBuilder
-     *            这是我们请求的参数
-     * @return
-     */
+
     @Override
-    public boolean packageMediaResponse(com.madhouse.ssp.PremiumMADDataModel.DSPBid.Builder dspBidBuilder, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        if (dspBidBuilder != null && dspBidBuilder.getStatus() > 0) {
-            if (Constant.StatusCode.OK == dspBidBuilder.getStatus()) {
-                if (!dspBidBuilder.getResponse().hasNbr() && dspBidBuilder.getResponse().getNbr() <= 0) {
-                    BaoFengResponse baoFengResponse = conversionToBaoFengResponse(mediaBidMetaData, dspBidBuilder);
-                    try {
-                        resp.getOutputStream().write((baoFengResponse != null ? JSON.toJSONString(baoFengResponse) : "").getBytes());
+    public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
+
+        if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
+            PremiumMADDataModel.MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                try {
+                    BaoFengResponse baoFengResponse = conversionToBaoFengResponse(mediaBidMetaData);
+                    if (baoFengResponse != null) {
+                        resp.getOutputStream().write(JSON.toJSONString(baoFengResponse).getBytes("utf-8"));
+                        resp.setStatus(Constant.StatusCode.OK);
+                        return true;
                     }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                        resp.setStatus(Constant.StatusCode.NO_CONTENT);
-                    }
-                }
-                else {
+                } catch (Exception e) {
+                    e.printStackTrace();
                     resp.setStatus(Constant.StatusCode.NO_CONTENT);
+                    return false;
                 }
-            }
-            else {
-                resp.setStatus(Constant.StatusCode.NO_CONTENT);
             }
         }
-        // TODO 自动生成的方法存根
-        return super.packageMediaResponse(dspBidBuilder, mediaBidMetaData, resp);
+
+        resp.setStatus(Constant.StatusCode.NO_CONTENT);
+        return true;
     }
     
-    private BaoFengResponse conversionToBaoFengResponse(MediaBidMetaData mediaBidMetaData, com.madhouse.ssp.PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
+    private BaoFengResponse conversionToBaoFengResponse(MediaBidMetaData mediaBidMetaData) {
         BaoFengResponse baoFengResponse = new BaoFengResponse();
         
         // 广告高度
@@ -109,39 +97,33 @@ public class BaoFengHandler extends MediaBaseHandler {
         
         // 广告流水唯一标识
         String bid = mediaBidMetaData.getMediaBidBuilder().getRequest().getBid();
-        
-        Bid responseBid = dspBidBuilder.getResponse().getSeatbid(0).getBid(0);
+
+        PremiumMADDataModel.MediaBid.MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         
         // 点击url
-        baoFengResponse.setTarget(responseBid.getLpgurl());
+        baoFengResponse.setTarget(mediaResponse.getLpgurl());
         
         String imgurl = null;
-        if (responseBid.hasAdmNative()) {
-            for (Asset asset : responseBid.getAdmNative().getAssetsList()) {
-                if (asset.hasTitle() && null != asset.getTitle()) {
-                    // 广告标题
-                    baoFengResponse.setTitle(asset.getTitle().getText());
-                }
-                else if (asset.hasImage() && null != asset.getImage()) {
-                    if (Constant.NativeImageType.MAIN == asset.getImage().getType()) {
-                        imgurl = asset.getImage().getUrl(0);
-                    }
-                }
-                else if (asset.hasData() && null != asset.getData()) {
-                    // 广告描述
-                    baoFengResponse.setDesc(asset.getData().getValue());
-                    
-                }
-            }
+        if (mediaResponse.hasTitle()) {
+            baoFengResponse.setTitle(mediaResponse.getTitle());
         }
-        else {
-            imgurl = responseBid.getAdm(0);
+
+        if (mediaResponse.hasDesc()) {
+            baoFengResponse.setDesc(mediaResponse.getDesc());
         }
-        
+
+        if (mediaResponse.getAdmCount() > 0) {
+            imgurl = mediaResponse.getAdm(0);
+        }
+
         // 展示监播
-        List<String> imgtracking = responseBid.getMonitor().getImpurlList();
+        List<String> imgtracking = new LinkedList<>();
+        for (PremiumMADDataModel.MediaBid.MediaResponse.Track track : mediaResponse.getImpurlList()) {
+            imgtracking.add(track.getUrl());
+        }
+
         // 点击监播
-        List<String> thclkurl = responseBid.getMonitor().getClkurlList();
+        List<String> thclkurl = mediaResponse.getClkurlList();
         // 暴风没有区分第三方点击和
         ArrayList<BaoFengResponse.Img> imgList = new ArrayList<>();
         BaoFengResponse.Img img = baoFengResponse.new Img();

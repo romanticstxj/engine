@@ -15,12 +15,12 @@ import java.io.IOException;
  */
 public class PremiumMADHandler extends MediaBaseHandler {
     @Override
-    public boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        return super.packageMediaResponse(dspBidBuilder, mediaBidMetaData, resp);
+    public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
+        return true;
     }
 
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        return super.parseMediaRequest(req, mediaBidMetaData, resp);
+        return true;
     }
 }
