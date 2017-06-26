@@ -282,9 +282,8 @@ message BidResponse
                     {
                         optional int32 w = 1;
                         optional int32 h = 2;
-                        optional string cover = 3;
-                        optional string url = 4;
-                        optional int32 duration = 5;
+                        optional string url = 3;
+                        optional int32 duration = 4;
                     }
                     
                     message Data
