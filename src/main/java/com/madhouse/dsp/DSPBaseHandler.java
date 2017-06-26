@@ -23,4 +23,34 @@ public abstract class DSPBaseHandler {
     public abstract HttpRequestBase packageBidRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData);
     public abstract boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData);
     public abstract String getWinNoticeUrl(int price, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData);
+
+    protected boolean packageDSPRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
+
+        try {
+            PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+
+            PremiumMADDataModel.DSPBid.DSPRequest.Builder dspRequest = PremiumMADDataModel.DSPBid.DSPRequest.newBuilder()
+                    .setId(StringUtil.getUUID())
+                    .setImpid(mediaBidBuilder.getImpid())
+                    .setAdtype(plcmtMetaData.getType())
+                    .setLayout(plcmtMetaData.getLayout())
+                    .setTagid(plcmtMetaData.getAdspaceKey())
+                    .setDealid(policyMetaData.getDealid())
+                    .setTest(mediaRequest.getTest())
+                    .setBidfloor(policyMetaData.getBidfloor())
+                    .setBidtype(policyMetaData.getBidtype())
+                    .setTmax(mediaMetaData.getTimeout());
+
+            dspBidBuilder.setDspid(dspMetaData.getDspid())
+                    .setPolicyid(policyMetaData.getId())
+                    .setDeliverytype(policyMetaData.getDeliverytype())
+                    .setTime(System.currentTimeMillis())
+                    .setRequest(dspRequest);
+
+            return true;
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            return false;
+        }
+    }
 }
