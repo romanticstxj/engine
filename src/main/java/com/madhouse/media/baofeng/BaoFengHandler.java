@@ -27,34 +27,33 @@ public class BaoFengHandler extends MediaBaseHandler {
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         resp.setStatus(Constant.StatusCode.OK);
-        PremiumMADDataModel.MediaBid.MediaRequest premiumMADDataModel;
         boolean isSandbox = false;
+
         String env = req.getHeader("env");
         if (env != null && env.equals("sandbox")) {
             isSandbox = true;
         }
+
         try {
             req.setCharacterEncoding("UTF-8");
             String bytes = getRequestPostBytes(req);
-            BaoFengBidRequest parseObject = JSON.parseObject(bytes, BaoFengBidRequest.class);
-            BaoFengBidRequest BaoFengBidRequest = validateReuiredParam(parseObject, resp);
+            BaoFengBidRequest baoFengBidRequest = validateReuiredParam(JSON.parseObject(bytes, BaoFengBidRequest.class), resp);
+
             if (resp.getStatus() != Constant.StatusCode.OK) {
                 return false;
-            }
-            else {
-                premiumMADDataModel = conversionToPremiumMADDataModel(isSandbox, BaoFengBidRequest);
-                mediaBidMetaData.getMediaBidBuilder().setRequest(premiumMADDataModel);
-                mediaBidMetaData.setRequestObject(parseObject);
-                if (StringUtil.isEmpty(premiumMADDataModel.getAdspacekey())) {
+            } else {
+                PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
+                mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                mediaBidMetaData.setRequestObject(baoFengBidRequest);
+                if (StringUtil.isEmpty(mediaRequest.getAdspacekey())) {
                     resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
                 }
             }
-            
         }
         catch (Exception e) {
-            logger.error(e.toString()+"_Status_"+Constant.StatusCode.BAD_REQUEST);
+            logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
@@ -78,7 +77,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                         return true;
                     }
                 } catch (Exception e) {
-                    logger.error(e.toString()+"_Status_"+Constant.StatusCode.NO_CONTENT);
+                    logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
                     resp.setStatus(Constant.StatusCode.NO_CONTENT);
                     return false;
                 }
@@ -95,7 +94,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         Integer adheight = mediaBidMetaData.getMediaBidBuilder().getRequest().getH();
         
         // 广告位宽度
-        Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequest().getH();
+        Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequest().getW();
         
         // 广告流水唯一标识
         String bid = mediaBidMetaData.getMediaBidBuilder().getRequest().getBid();
@@ -263,13 +262,9 @@ public class BaoFengHandler extends MediaBaseHandler {
         String os = device.getOs();
         if ("ios".equalsIgnoreCase(os)) {
             mediaRequest.setOs(Constant.OSType.IOS);
-            mediaRequest.setDid(device.getDpid());
-        }
-        else if ("android".equalsIgnoreCase(os)) {
+        } else if ("android".equalsIgnoreCase(os)) {
             mediaRequest.setOs(Constant.OSType.ANDROID);
-            mediaRequest.setDpid(device.getDpid());
-        }
-        else {
+        } else {
             // 1 iphone 2 ipad 3 android
             switch (device.getDevicetype()) {
                 case 1:
@@ -286,16 +281,30 @@ public class BaoFengHandler extends MediaBaseHandler {
                     break;
             }
         }
+
+        switch (mediaRequest.getOs()) {
+            case Constant.OSType.IOS: {
+                mediaRequest.setIfa(device.getDpid());
+                break;
+            }
+
+            case Constant.OSType.ANDROID: {
+                mediaRequest.setDid(device.getDpid());
+                break;
+            }
+
+            default:
+                break;
+        }
+
         // 广告请求唯一id
         mediaRequest.setBid(baoFengBidRequest.getId());
         // 广告类型id 暴风所有的adtype都对应我们的Banner广告类型
         // 广告类型 4=频道页banner; 5=详情页banner; 6=焦点图 7=开屏
-        int pos = imp.getPos();
         // 通过pos和os/deviceType设置标准的宽和高 由于os和diviceType都是可选的，所以做了这样的判断
-        setWidthAndHeight(mediaRequest, device.getDevicetype() != 0 ? device.getDevicetype() : osToDeviceType(mediaRequest), pos);
+        setWidthAndHeight(mediaRequest, device.getDevicetype() != 0 ? device.getDevicetype() : osToDeviceType(mediaRequest), imp.getPos());
         // 这里2对应exchange的adtype 1=文字链 2=Banner 3=图形文字链 4=全屏 5=插页 6=开屏  
-        pos = 2;
-        mediaRequest.setAdtype(pos);
+        mediaRequest.setAdtype(2);
         // app名称，暴风没有提供app包名
         mediaRequest.setBundle(app.getName());
         mediaRequest.setName(app.getName());
@@ -331,13 +340,31 @@ public class BaoFengHandler extends MediaBaseHandler {
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
             if (plcmtMetaData != null) {
                 mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
-                mediaRequest.setMediaid(plcmtMetaData.getMediaId());
-                mediaRequest.setAdspaceid(plcmtMetaData.getId());
             }
         }
-        
+
         // 连接方式 0：unknow 1：wifi 2：2G/3G/4G
-        mediaRequest.setConnectiontype(device.getConnectiontype()==Constant.ConnectionType._2G ? Constant.ConnectionType.CELL:Constant.ConnectionType.UNKNOWN);
+        switch (device.getConnectiontype()) {
+            case 0: {
+                mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
+                break;
+            }
+
+            case 1: {
+                mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
+                break;
+            }
+
+            case 2: {
+                mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
+                break;
+            }
+
+            default:
+                mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
+                break;
+        }
+
         // 运行商 移动46000；联通46001；电信46003
         String carrier = device.getCarrier() != null ? device.getCarrier() : "";
         switch (carrier) {
@@ -354,10 +381,16 @@ public class BaoFengHandler extends MediaBaseHandler {
                 mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
                 break;
         }
+
         // 设备浏览器的User-Agent字符串
-        mediaRequest.setUa(device.getUa() != null ? device.getUa() : "");
+        if (StringUtil.isEmpty(device.getUa())) {
+            mediaRequest.setUa(device.getUa());
+        }
+
         // ip地址
-        mediaRequest.setIp(device.getIp() != null ? device.getIp() : "");
+        if (StringUtil.isEmpty(device.getIp())) {
+            mediaRequest.setIp(device.getIp());
+        }
         
         // 操作系统的版本
         mediaRequest.setOsv(device.getOsv() != null ? device.getOsv() : "");
