@@ -100,9 +100,14 @@ message MediaBid
 		repeated string adm = 9;
 		optional string lpgurl = 10;
 		optional int32 acttype = 11;
-		repeated string impurl = 12;
+		repeated Track impurl = 12;
 		repeated string clkurl = 13;
 		repeated string securl = 14;
+
+        message Track {
+            optional int32 startdelay = 1;
+            optional string url = 2;
+        }
 	}
 }
 
@@ -127,7 +132,8 @@ message ImpressionTrack
 	optional int64 mediaid = 6;
 	optional int64 adspaceid = 7;
 	optional int64 policyid = 8;
-	optional Ext ext = 9;
+    optional bool valid = 9;
+	optional Ext ext = 10;
 
 	message Ext {
 		optional string args = 1;
@@ -147,8 +153,9 @@ message ClickTrack
 	optional int64 mediaid = 6;
 	optional int64 adspaceid = 7;
 	optional int64 policyid = 8;
-	optional Ext ext = 9;
-	optional string url = 10;
+    optional bool valid = 10;
+	optional Ext ext = 11;
+	optional string url = 12;
 
 	message Ext {
 		optional string args = 1;
@@ -162,9 +169,12 @@ message DSPBid
 {
 	optional int64 time = 1;
 	optional int64 dspid = 2;
-	optional int64 policyid = 3;
-	optional int32 deliverytype = 4;
-	optional int32 status = 5;
+    optional string impid = 3;
+    optional int64 policyid = 4;
+	optional int32 deliverytype = 5;
+    optional int32 bidtype = 6;
+	optional int32 status = 7;
+    optional int32 price= 8;
 	optional com.madhouse.rtb.BidRequest request = 11;
 	optional com.madhouse.rtb.BidResponse response = 12;
 }

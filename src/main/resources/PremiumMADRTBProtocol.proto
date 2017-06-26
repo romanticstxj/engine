@@ -297,9 +297,15 @@ message BidResponse
             
             message Monitor
             {
-                repeated string impurl = 1;
+                repeated Track impurl = 1;
                 repeated string clkurl = 2;
                 repeated string securl = 3;
+
+                message Track
+                {
+                    optional int32 startdelay = 1;
+                    optional string url = 2;
+                }
             }
         }
     }
