@@ -174,12 +174,24 @@ message DSPBid
 {
 	optional int64 time = 1;
 	optional int64 dspid = 2;
-    optional string impid = 3;
+	optional string impid = 3;
     optional int64 policyid = 4;
 	optional int32 deliverytype = 5;
-    optional int32 bidtype = 6;
-	optional int32 status = 7;
-    optional int32 price= 8;
-	optional com.madhouse.rtb.BidRequest request = 11;
+	optional int32 status = 6;
+    optional int32 price = 7;
+	
+	optional DSPRequest request = 11;
 	optional com.madhouse.rtb.BidResponse response = 12;
+	
+	message DSPRequest
+	{
+		optional int32 adtype = 1;
+		optional int32 layout = 2;
+		optional string tagid = 3;
+		optional string dealid = 4;
+		optional int32 test = 5;
+		optional int32 bidfloor = 6;
+		optional int32 bidtype = 7;
+        optional int32 tmax = 8;
+	}
 }
