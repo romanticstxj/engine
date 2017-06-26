@@ -375,15 +375,19 @@ public class WorkThread {
                     mediaResponse.setLpgurl(bid.getLpgurl());
                     mediaResponse.setActtype(bid.getActtype());
                     PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor = bid.getMonitor();
+                    PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Builder monitorBuilder = PremiumMADDataModel.MediaBid.MediaResponse.Monitor.newBuilder();
+
                     for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : monitor.getImpurlList()) {
-                        PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder var1 = PremiumMADDataModel.MediaBid.MediaResponse.Track.newBuilder();
+                        PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Track.Builder var1 = PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Track.newBuilder();
                         var1.setStartdelay(track.getStartdelay());
                         var1.setUrl(track.getUrl());
-                        mediaResponse.addImpurl(var1);
+                        monitorBuilder.addImpurl(var1);
                     }
 
-                    mediaResponse.addAllClkurl(monitor.getClkurlList());
-                    mediaResponse.addAllSecurl(monitor.getSecurlList());
+                    monitorBuilder.addAllClkurl(monitor.getClkurlList());
+                    monitorBuilder.addAllSecurl(monitor.getSecurlList());
+                    mediaResponse.setMonitor(monitorBuilder);
+
                     mediaBidBuilder.setResponse(mediaResponse);
                     mediaBidBuilder.setStatus(Constant.StatusCode.OK);
 

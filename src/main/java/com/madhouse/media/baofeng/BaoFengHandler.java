@@ -118,12 +118,12 @@ public class BaoFengHandler extends MediaBaseHandler {
 
         // 展示监播
         List<String> imgtracking = new LinkedList<>();
-        for (PremiumMADDataModel.MediaBid.MediaResponse.Track track : mediaResponse.getImpurlList()) {
+        for (PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Track track : mediaResponse.getMonitor().getImpurlList()) {
             imgtracking.add(track.getUrl());
         }
 
         // 点击监播
-        List<String> thclkurl = mediaResponse.getClkurlList();
+        List<String> thclkurl = mediaResponse.getMonitor().getClkurlList();
         // 暴风没有区分第三方点击和
         ArrayList<BaoFengResponse.Img> imgList = new ArrayList<>();
         BaoFengResponse.Img img = baoFengResponse.new Img();

@@ -87,7 +87,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         bidRequest.setId(StringUtil.getUUID());
         bidRequest.setTmax(mediaMetaData.getTimeout());
         bidRequest.setTest(mediaBidBuilder.getRequestBuilder().getTest());
-        bidRequest.setAt(2);
+        bidRequest.setAt(Constant.BidAt.SECOND_PRICE);
 
         if (adBlockMetaData != null) {
             bidRequest.addAllBadv(adBlockMetaData.getBadv());
@@ -158,7 +158,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 BidRequest.Impression.PMP.Builder pmp = BidRequest.Impression.PMP.newBuilder();
                 pmp.setPrivateAuction(1);
                 BidRequest.Impression.PMP.Deal.Builder deal = BidRequest.Impression.PMP.Deal.newBuilder();
-                deal.setAt(3);
+                deal.setAt(Constant.BidAt.FIXED_PRICE);
                 deal.setBidfloor(0);
                 pmp.addDeals(deal);
                 impression.setPmp(pmp);
@@ -186,7 +186,6 @@ public class MADMaxHandler extends DSPBaseHandler {
                     nativeRequest.setLayout(plcmtMetaData.getLayout());
 
                     int id = 1;
-
                     if (plcmtMetaData.getIcon() > 0) {
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
