@@ -10,6 +10,7 @@ import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
 import com.madhouse.util.httpclient.MultiHttpClient;
 import com.madhouse.util.httpclient.HttpClient;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -49,7 +50,7 @@ public class WorkThread {
             String ext = req.getParameter("ext");
 
             //args check
-            if (StringUtil.isEmpty(impid) || StringUtil.isEmpty(mid) || StringUtil.isEmpty(plcmtid) || StringUtil.isEmpty(policyid) || StringUtil.isEmpty(ext)) {
+            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) || StringUtils.isEmpty(policyid) || StringUtils.isEmpty(ext)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -105,7 +106,7 @@ public class WorkThread {
             String ext = req.getParameter("ext");
 
             //args check
-            if (StringUtil.isEmpty(impid) || StringUtil.isEmpty(mid) || StringUtil.isEmpty(plcmtid) || StringUtil.isEmpty(policyid) || StringUtil.isEmpty(ext)) {
+            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) || StringUtils.isEmpty(policyid) || StringUtils.isEmpty(ext)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -384,18 +385,7 @@ public class WorkThread {
                     mediaResponse.setLpgurl(bid.getLpgurl());
                     mediaResponse.setActtype(bid.getActtype());
                     PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor = bid.getMonitor();
-                    PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Builder monitorBuilder = PremiumMADDataModel.MediaBid.MediaResponse.Monitor.newBuilder();
-
-                    for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : monitor.getImpurlList()) {
-                        PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Track.Builder var1 = PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Track.newBuilder();
-                        var1.setStartdelay(track.getStartdelay());
-                        var1.setUrl(track.getUrl());
-                        monitorBuilder.addImpurl(var1);
-                    }
-
-                    monitorBuilder.addAllClkurl(monitor.getClkurlList());
-                    monitorBuilder.addAllSecurl(monitor.getSecurlList());
-                    mediaResponse.setMonitor(monitorBuilder);
+                    mediaResponse.setMonitor(PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.newBuilder(monitor));
 
                     mediaBidBuilder.setResponse(mediaResponse);
                     mediaBidBuilder.setStatus(Constant.StatusCode.OK);

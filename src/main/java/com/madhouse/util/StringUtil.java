@@ -14,10 +14,6 @@ public class StringUtil {
         return UUID.randomUUID().toString();
     }
 
-    public static final boolean isEmpty(String str) {
-        return  (str == null || str.isEmpty());
-    }
-
     public static final String getString(String str) {
         return str == null ? "" : str;
     }

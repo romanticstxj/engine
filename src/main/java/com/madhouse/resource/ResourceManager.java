@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.alibaba.fastjson.JSON;
@@ -70,7 +71,7 @@ public class ResourceManager {
 
         for (Bid bid : premiummad.getWebapp().getBids())
         {
-			if (!StringUtil.isEmpty(bid.getApiClass())) {
+			if (!StringUtils.isEmpty(bid.getApiClass())) {
 				try {
 					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getApiClass()).newInstance());
 				} catch (Exception e) {

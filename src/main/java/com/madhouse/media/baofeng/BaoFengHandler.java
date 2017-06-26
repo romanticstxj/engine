@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.rtb.PremiumMADRTBProtocol;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -46,7 +47,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                 PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
                 mediaBidMetaData.setRequestObject(baoFengBidRequest);
-                if (StringUtil.isEmpty(mediaRequest.getAdspacekey())) {
+                if (StringUtils.isEmpty(mediaRequest.getAdspacekey())) {
                     resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
@@ -120,7 +121,7 @@ public class BaoFengHandler extends MediaBaseHandler {
 
         // 展示监播
         List<String> imgtracking = new LinkedList<>();
-        for (PremiumMADDataModel.MediaBid.MediaResponse.Monitor.Track track : mediaResponse.getMonitor().getImpurlList()) {
+        for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : mediaResponse.getMonitor().getImpurlList()) {
             imgtracking.add(track.getUrl());
         }
 
@@ -370,12 +371,12 @@ public class BaoFengHandler extends MediaBaseHandler {
         }
 
         // 设备浏览器的User-Agent字符串
-        if (StringUtil.isEmpty(device.getUa())) {
+        if (StringUtils.isEmpty(device.getUa())) {
             mediaRequest.setUa(device.getUa());
         }
 
         // ip地址
-        if (StringUtil.isEmpty(device.getIp())) {
+        if (StringUtils.isEmpty(device.getIp())) {
             mediaRequest.setIp(device.getIp());
         }
         
@@ -463,7 +464,7 @@ public class BaoFengHandler extends MediaBaseHandler {
     }
     
     private int osToDeviceType(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
-        if (StringUtil.isEmpty(Integer.toString(mediaRequest.getOs())))
+        if (StringUtils.isEmpty(Integer.toString(mediaRequest.getOs())))
             return 0;
         if (0 == mediaRequest.getOs()) {
             // android系统对应的deviceType是3
