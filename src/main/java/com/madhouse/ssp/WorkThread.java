@@ -321,6 +321,7 @@ public class WorkThread {
 
                     mediaResponse.setDspid(dspBidBuilder.getDspid());
                     mediaResponse.setAdmid(bid.getAdmid());
+                    mediaResponse.setLayout(dspBidBuilder.getRequest().getLayout());
 
                     if (bid.getAdmCount() > 0) {
                         mediaResponse.addAllAdm(bid.getAdmList());

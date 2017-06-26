@@ -76,15 +76,36 @@ public class MADMaxHandler extends DSPBaseHandler {
 
     @Override
     public HttpRequestBase packageBidRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
+
+        PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+
+        PremiumMADDataModel.DSPBid.DSPRequest.Builder dspRequest = PremiumMADDataModel.DSPBid.DSPRequest.newBuilder()
+                .setId(StringUtil.getUUID())
+                .setImpid(mediaBidBuilder.getImpid())
+                .setAdtype(plcmtMetaData.getType())
+                .setLayout(plcmtMetaData.getLayout())
+                .setTagid(plcmtMetaData.getAdspaceKey())
+                .setDealid(policyMetaData.getDealid())
+                .setTest(mediaRequest.getTest())
+                .setBidfloor(policyMetaData.getBidfloor())
+                .setBidtype(policyMetaData.getBidtype())
+                .setTmax(mediaMetaData.getTimeout());
+
+        dspBidMetaData.getDspBidBuilder()
+                .setDspid(dspMetaData.getDspid())
+                .setPolicyid(policyMetaData.getId())
+                .setDeliverytype(policyMetaData.getDeliverytype())
+                .setTime(System.currentTimeMillis())
+                .setRequest(dspRequest);
+
         HttpPost httpPost = new HttpPost(dspMetaData.getBidurl());
         httpPost.setHeader("Content-Type", "application/x-protobuf");
 
-        PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspMetaData.getDspid(), plcmtMetaData.getId());
 
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
-        bidRequest.setId(StringUtil.getUUID());
+        bidRequest.setId(dspRequest.getId());
         bidRequest.setTmax(mediaMetaData.getTimeout());
         bidRequest.setTest(mediaBidBuilder.getRequestBuilder().getTest());
         bidRequest.setAt(Constant.BidAt.SECOND_PRICE);
@@ -281,25 +302,6 @@ public class MADMaxHandler extends DSPBaseHandler {
         }
 
         try {
-            PremiumMADDataModel.DSPBid.DSPRequest.Builder dspRequest = PremiumMADDataModel.DSPBid.DSPRequest.newBuilder();
-
-            dspRequest.setAdtype(plcmtMetaData.getType());
-            dspRequest.setLayout(plcmtMetaData.getLayout());
-            dspRequest.setTagid(plcmtMetaData.getAdspaceKey());
-            dspRequest.setDealid(policyMetaData.getDealid());
-            dspRequest.setTest(mediaRequest.getTest());
-            dspRequest.setBidfloor(policyMetaData.getBidfloor());
-            dspRequest.setBidtype(policyMetaData.getBidtype());
-            dspRequest.setTmax(mediaMetaData.getTimeout());
-
-            PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
-
-            dspBidBuilder.setDspid(dspMetaData.getDspid());
-            dspBidBuilder.setPolicyid(policyMetaData.getId());
-            dspBidBuilder.setDeliverytype(policyMetaData.getDeliverytype());
-            dspBidBuilder.setTime(System.currentTimeMillis());
-            dspBidBuilder.setRequest(dspRequest);
-
             ByteArrayEntity entity = new ByteArrayEntity(bidRequest.build().toByteArray());
             httpPost.setEntity(entity);
         } catch (Exception ex) {
