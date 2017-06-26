@@ -26755,39 +26755,25 @@ public final class PremiumMADRTBProtocol {
               int getH();
 
               /**
-               * <code>optional string cover = 3;</code>
-               */
-              boolean hasCover();
-              /**
-               * <code>optional string cover = 3;</code>
-               */
-              java.lang.String getCover();
-              /**
-               * <code>optional string cover = 3;</code>
-               */
-              com.google.protobuf.ByteString
-                  getCoverBytes();
-
-              /**
-               * <code>optional string url = 4;</code>
+               * <code>optional string url = 3;</code>
                */
               boolean hasUrl();
               /**
-               * <code>optional string url = 4;</code>
+               * <code>optional string url = 3;</code>
                */
               java.lang.String getUrl();
               /**
-               * <code>optional string url = 4;</code>
+               * <code>optional string url = 3;</code>
                */
               com.google.protobuf.ByteString
                   getUrlBytes();
 
               /**
-               * <code>optional int32 duration = 5;</code>
+               * <code>optional int32 duration = 4;</code>
                */
               boolean hasDuration();
               /**
-               * <code>optional int32 duration = 5;</code>
+               * <code>optional int32 duration = 4;</code>
                */
               int getDuration();
             }
@@ -26856,17 +26842,11 @@ public final class PremiumMADRTBProtocol {
                       case 26: {
                         com.google.protobuf.ByteString bs = input.readBytes();
                         bitField0_ |= 0x00000004;
-                        cover_ = bs;
-                        break;
-                      }
-                      case 34: {
-                        com.google.protobuf.ByteString bs = input.readBytes();
-                        bitField0_ |= 0x00000008;
                         url_ = bs;
                         break;
                       }
-                      case 40: {
-                        bitField0_ |= 0x00000010;
+                      case 32: {
+                        bitField0_ |= 0x00000008;
                         duration_ = input.readInt32();
                         break;
                       }
@@ -26940,58 +26920,16 @@ public final class PremiumMADRTBProtocol {
                 return h_;
               }
 
-              public static final int COVER_FIELD_NUMBER = 3;
-              private java.lang.Object cover_;
+              public static final int URL_FIELD_NUMBER = 3;
+              private java.lang.Object url_;
               /**
-               * <code>optional string cover = 3;</code>
+               * <code>optional string url = 3;</code>
                */
-              public boolean hasCover() {
+              public boolean hasUrl() {
                 return ((bitField0_ & 0x00000004) == 0x00000004);
               }
               /**
-               * <code>optional string cover = 3;</code>
-               */
-              public java.lang.String getCover() {
-                java.lang.Object ref = cover_;
-                if (ref instanceof java.lang.String) {
-                  return (java.lang.String) ref;
-                } else {
-                  com.google.protobuf.ByteString bs = 
-                      (com.google.protobuf.ByteString) ref;
-                  java.lang.String s = bs.toStringUtf8();
-                  if (bs.isValidUtf8()) {
-                    cover_ = s;
-                  }
-                  return s;
-                }
-              }
-              /**
-               * <code>optional string cover = 3;</code>
-               */
-              public com.google.protobuf.ByteString
-                  getCoverBytes() {
-                java.lang.Object ref = cover_;
-                if (ref instanceof java.lang.String) {
-                  com.google.protobuf.ByteString b = 
-                      com.google.protobuf.ByteString.copyFromUtf8(
-                          (java.lang.String) ref);
-                  cover_ = b;
-                  return b;
-                } else {
-                  return (com.google.protobuf.ByteString) ref;
-                }
-              }
-
-              public static final int URL_FIELD_NUMBER = 4;
-              private java.lang.Object url_;
-              /**
-               * <code>optional string url = 4;</code>
-               */
-              public boolean hasUrl() {
-                return ((bitField0_ & 0x00000008) == 0x00000008);
-              }
-              /**
-               * <code>optional string url = 4;</code>
+               * <code>optional string url = 3;</code>
                */
               public java.lang.String getUrl() {
                 java.lang.Object ref = url_;
@@ -27008,7 +26946,7 @@ public final class PremiumMADRTBProtocol {
                 }
               }
               /**
-               * <code>optional string url = 4;</code>
+               * <code>optional string url = 3;</code>
                */
               public com.google.protobuf.ByteString
                   getUrlBytes() {
@@ -27024,16 +26962,16 @@ public final class PremiumMADRTBProtocol {
                 }
               }
 
-              public static final int DURATION_FIELD_NUMBER = 5;
+              public static final int DURATION_FIELD_NUMBER = 4;
               private int duration_;
               /**
-               * <code>optional int32 duration = 5;</code>
+               * <code>optional int32 duration = 4;</code>
                */
               public boolean hasDuration() {
-                return ((bitField0_ & 0x00000010) == 0x00000010);
+                return ((bitField0_ & 0x00000008) == 0x00000008);
               }
               /**
-               * <code>optional int32 duration = 5;</code>
+               * <code>optional int32 duration = 4;</code>
                */
               public int getDuration() {
                 return duration_;
@@ -27042,7 +26980,6 @@ public final class PremiumMADRTBProtocol {
               private void initFields() {
                 w_ = 0;
                 h_ = 0;
-                cover_ = "";
                 url_ = "";
                 duration_ = 0;
               }
@@ -27066,13 +27003,10 @@ public final class PremiumMADRTBProtocol {
                   output.writeInt32(2, h_);
                 }
                 if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                  output.writeBytes(3, getCoverBytes());
+                  output.writeBytes(3, getUrlBytes());
                 }
                 if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                  output.writeBytes(4, getUrlBytes());
-                }
-                if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                  output.writeInt32(5, duration_);
+                  output.writeInt32(4, duration_);
                 }
                 getUnknownFields().writeTo(output);
               }
@@ -27093,15 +27027,11 @@ public final class PremiumMADRTBProtocol {
                 }
                 if (((bitField0_ & 0x00000004) == 0x00000004)) {
                   size += com.google.protobuf.CodedOutputStream
-                    .computeBytesSize(3, getCoverBytes());
+                    .computeBytesSize(3, getUrlBytes());
                 }
                 if (((bitField0_ & 0x00000008) == 0x00000008)) {
                   size += com.google.protobuf.CodedOutputStream
-                    .computeBytesSize(4, getUrlBytes());
-                }
-                if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                  size += com.google.protobuf.CodedOutputStream
-                    .computeInt32Size(5, duration_);
+                    .computeInt32Size(4, duration_);
                 }
                 size += getUnknownFields().getSerializedSize();
                 memoizedSerializedSize = size;
@@ -27224,12 +27154,10 @@ public final class PremiumMADRTBProtocol {
                   bitField0_ = (bitField0_ & ~0x00000001);
                   h_ = 0;
                   bitField0_ = (bitField0_ & ~0x00000002);
-                  cover_ = "";
-                  bitField0_ = (bitField0_ & ~0x00000004);
                   url_ = "";
-                  bitField0_ = (bitField0_ & ~0x00000008);
+                  bitField0_ = (bitField0_ & ~0x00000004);
                   duration_ = 0;
-                  bitField0_ = (bitField0_ & ~0x00000010);
+                  bitField0_ = (bitField0_ & ~0x00000008);
                   return this;
                 }
 
@@ -27269,13 +27197,9 @@ public final class PremiumMADRTBProtocol {
                   if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
                   }
-                  result.cover_ = cover_;
+                  result.url_ = url_;
                   if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
                     to_bitField0_ |= 0x00000008;
-                  }
-                  result.url_ = url_;
-                  if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-                    to_bitField0_ |= 0x00000010;
                   }
                   result.duration_ = duration_;
                   result.bitField0_ = to_bitField0_;
@@ -27300,13 +27224,8 @@ public final class PremiumMADRTBProtocol {
                   if (other.hasH()) {
                     setH(other.getH());
                   }
-                  if (other.hasCover()) {
-                    bitField0_ |= 0x00000004;
-                    cover_ = other.cover_;
-                    onChanged();
-                  }
                   if (other.hasUrl()) {
-                    bitField0_ |= 0x00000008;
+                    bitField0_ |= 0x00000004;
                     url_ = other.url_;
                     onChanged();
                   }
@@ -27404,91 +27323,15 @@ public final class PremiumMADRTBProtocol {
                   return this;
                 }
 
-                private java.lang.Object cover_ = "";
+                private java.lang.Object url_ = "";
                 /**
-                 * <code>optional string cover = 3;</code>
+                 * <code>optional string url = 3;</code>
                  */
-                public boolean hasCover() {
+                public boolean hasUrl() {
                   return ((bitField0_ & 0x00000004) == 0x00000004);
                 }
                 /**
-                 * <code>optional string cover = 3;</code>
-                 */
-                public java.lang.String getCover() {
-                  java.lang.Object ref = cover_;
-                  if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                      cover_ = s;
-                    }
-                    return s;
-                  } else {
-                    return (java.lang.String) ref;
-                  }
-                }
-                /**
-                 * <code>optional string cover = 3;</code>
-                 */
-                public com.google.protobuf.ByteString
-                    getCoverBytes() {
-                  java.lang.Object ref = cover_;
-                  if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = 
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                            (java.lang.String) ref);
-                    cover_ = b;
-                    return b;
-                  } else {
-                    return (com.google.protobuf.ByteString) ref;
-                  }
-                }
-                /**
-                 * <code>optional string cover = 3;</code>
-                 */
-                public Builder setCover(
-                    java.lang.String value) {
-                  if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-                  cover_ = value;
-                  onChanged();
-                  return this;
-                }
-                /**
-                 * <code>optional string cover = 3;</code>
-                 */
-                public Builder clearCover() {
-                  bitField0_ = (bitField0_ & ~0x00000004);
-                  cover_ = getDefaultInstance().getCover();
-                  onChanged();
-                  return this;
-                }
-                /**
-                 * <code>optional string cover = 3;</code>
-                 */
-                public Builder setCoverBytes(
-                    com.google.protobuf.ByteString value) {
-                  if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-                  cover_ = value;
-                  onChanged();
-                  return this;
-                }
-
-                private java.lang.Object url_ = "";
-                /**
-                 * <code>optional string url = 4;</code>
-                 */
-                public boolean hasUrl() {
-                  return ((bitField0_ & 0x00000008) == 0x00000008);
-                }
-                /**
-                 * <code>optional string url = 4;</code>
+                 * <code>optional string url = 3;</code>
                  */
                 public java.lang.String getUrl() {
                   java.lang.Object ref = url_;
@@ -27505,7 +27348,7 @@ public final class PremiumMADRTBProtocol {
                   }
                 }
                 /**
-                 * <code>optional string url = 4;</code>
+                 * <code>optional string url = 3;</code>
                  */
                 public com.google.protobuf.ByteString
                     getUrlBytes() {
@@ -27521,36 +27364,36 @@ public final class PremiumMADRTBProtocol {
                   }
                 }
                 /**
-                 * <code>optional string url = 4;</code>
+                 * <code>optional string url = 3;</code>
                  */
                 public Builder setUrl(
                     java.lang.String value) {
                   if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
                   url_ = value;
                   onChanged();
                   return this;
                 }
                 /**
-                 * <code>optional string url = 4;</code>
+                 * <code>optional string url = 3;</code>
                  */
                 public Builder clearUrl() {
-                  bitField0_ = (bitField0_ & ~0x00000008);
+                  bitField0_ = (bitField0_ & ~0x00000004);
                   url_ = getDefaultInstance().getUrl();
                   onChanged();
                   return this;
                 }
                 /**
-                 * <code>optional string url = 4;</code>
+                 * <code>optional string url = 3;</code>
                  */
                 public Builder setUrlBytes(
                     com.google.protobuf.ByteString value) {
                   if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
                   url_ = value;
                   onChanged();
                   return this;
@@ -27558,31 +27401,31 @@ public final class PremiumMADRTBProtocol {
 
                 private int duration_ ;
                 /**
-                 * <code>optional int32 duration = 5;</code>
+                 * <code>optional int32 duration = 4;</code>
                  */
                 public boolean hasDuration() {
-                  return ((bitField0_ & 0x00000010) == 0x00000010);
+                  return ((bitField0_ & 0x00000008) == 0x00000008);
                 }
                 /**
-                 * <code>optional int32 duration = 5;</code>
+                 * <code>optional int32 duration = 4;</code>
                  */
                 public int getDuration() {
                   return duration_;
                 }
                 /**
-                 * <code>optional int32 duration = 5;</code>
+                 * <code>optional int32 duration = 4;</code>
                  */
                 public Builder setDuration(int value) {
-                  bitField0_ |= 0x00000010;
+                  bitField0_ |= 0x00000008;
                   duration_ = value;
                   onChanged();
                   return this;
                 }
                 /**
-                 * <code>optional int32 duration = 5;</code>
+                 * <code>optional int32 duration = 4;</code>
                  */
                 public Builder clearDuration() {
-                  bitField0_ = (bitField0_ & ~0x00000010);
+                  bitField0_ = (bitField0_ & ~0x00000008);
                   duration_ = 0;
                   onChanged();
                   return this;
@@ -35437,11 +35280,11 @@ public final class PremiumMADRTBProtocol {
       "\001(\0132$.com.madhouse.rtb.BidRequest.Conten" +
       "t\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022" +
       "\020\n\010keywords\030\003 \003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nM" +
-      "ediaOneof\"\355\n\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
+      "ediaOneof\"\336\n\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
       "\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 \003(\0132%.com.madh" +
       "ouse.rtb.BidResponse.SeatBid\022\013\n\003nbr\030\004 \001(" +
-      "\005\032\375\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
-      "e.rtb.BidResponse.SeatBid.Bid\032\271\t\n\003Bid\022\n\n" +
+      "\005\032\356\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
+      "e.rtb.BidResponse.SeatBid.Bid\032\252\t\n\003Bid\022\n\n" +
       "\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022" +
       "\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004crid\030\006 \001(\t" +
       "\022\020\n\010duration\030\007 \001(\005\022\013\n\003adm\030\010 \003(\t\022L\n\nadm_n" +
@@ -35450,10 +35293,10 @@ public final class PremiumMADRTBProtocol {
       " \001(\t\022\016\n\006dealid\030\013 \001(\t\022\014\n\004nurl\030\014 \001(\t\022\016\n\006lp",
       "gurl\030\r \001(\t\022\017\n\007acttype\030\016 \001(\005\022B\n\007monitor\030\017" +
       " \001(\01321.com.madhouse.rtb.BidResponse.Seat" +
-      "Bid.Bid.Monitor\032\300\005\n\016NativeResponse\022\013\n\003ve" +
+      "Bid.Bid.Monitor\032\261\005\n\016NativeResponse\022\013\n\003ve" +
       "r\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>.com.madhouse.r" +
       "tb.BidResponse.SeatBid.Bid.NativeRespons" +
-      "e.Asset\032\320\004\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010require" +
+      "e.Asset\032\301\004\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010require" +
       "d\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D.com.madhouse.rt" +
       "b.BidResponse.SeatBid.Bid.NativeResponse" +
       ".Asset.TitleH\000\022U\n\005image\030\004 \001(\0132D.com.madh" +
@@ -35464,15 +35307,14 @@ public final class PremiumMADRTBProtocol {
       "(\0132C.com.madhouse.rtb.BidResponse.SeatBi" +
       "d.Bid.NativeResponse.Asset.DataH\000\032\025\n\005Tit" +
       "le\022\014\n\004text\030\001 \001(\t\0328\n\005Image\022\014\n\004type\030\001 \001(\005\022" +
-      "\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003(\t\032K\n\005Vi" +
-      "deo\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\r\n\005cover\030\003 \001(\t" +
-      "\022\013\n\003url\030\004 \001(\t\022\020\n\010duration\030\005 \001(\005\032#\n\004Data\022" +
-      "\014\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOne",
-      "of\032\234\001\n\007Monitor\022G\n\006impurl\030\001 \003(\01327.com.mad" +
-      "house.rtb.BidResponse.SeatBid.Bid.Monito" +
-      "r.Track\022\016\n\006clkurl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\032" +
-      "(\n\005Track\022\022\n\nstartdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(" +
-      "\t"
+      "\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003(\t\032<\n\005Vi" +
+      "deo\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url\030\003 \001(\t\022\020" +
+      "\n\010duration\030\004 \001(\005\032#\n\004Data\022\014\n\004type\030\001 \001(\005\022\r" +
+      "\n\005value\030\002 \001(\tB\014\n\nAssetOneof\032\234\001\n\007Monitor\022",
+      "G\n\006impurl\030\001 \003(\01327.com.madhouse.rtb.BidRe" +
+      "sponse.SeatBid.Bid.Monitor.Track\022\016\n\006clku" +
+      "rl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\032(\n\005Track\022\022\n\nsta" +
+      "rtdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -35653,7 +35495,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Video_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Video_descriptor,
-        new java.lang.String[] { "W", "H", "Cover", "Url", "Duration", });
+        new java.lang.String[] { "W", "H", "Url", "Duration", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Data_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_descriptor.getNestedTypes().get(3);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Data_fieldAccessorTable = new
