@@ -1,9 +1,11 @@
 package com.madhouse.ssp;
 
 import com.madhouse.cache.*;
+import com.madhouse.configuration.Bid;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
+import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
@@ -293,22 +295,117 @@ public class WorkThread {
                 Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = this.selectWinner(plcmtMetaData, policyMetaData, dspMetaDataList);
                 if (winner != null) {
                     DSPBidMetaData dspBidMetaData = winner.getRight().getLeft();
-                    mediaBaseHandler.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp);
-                    if (policyMetaData.getDeliverytype() == Constant.DeliveryType.RTB) {
-                        String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), winner.getLeft(), dspBidMetaData);
-                        final HttpGet httpGet = new HttpGet(url);
-                        final HttpClient httpClient = this.winNoticeHttpClient;
-                        this.winNoticeService.submit(new Runnable() {
-                            public void run() {
-                                httpClient.execute(httpGet, 150);
-                                httpGet.releaseConnection();
-                            }
-                        });
+                    if (this.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
+                        mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
+                        if (policyMetaData.getDeliverytype() == Constant.DeliveryType.RTB) {
+                            String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), winner.getLeft(), dspBidMetaData);
+                            final HttpGet httpGet = new HttpGet(url);
+                            final HttpClient httpClient = this.winNoticeHttpClient;
+                            this.winNoticeService.submit(new Runnable() {
+                                public void run() {
+                                    httpClient.execute(httpGet, 150);
+                                    httpGet.releaseConnection();
+                                }
+                            });
+                        }
                     }
-
                 }
             }
         }
+    }
+
+    private boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
+        mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
+
+        if (dspBidBuilder != null && dspBidBuilder.getStatus() == Constant.StatusCode.OK && dspBidBuilder.getResponseBuilder() != null) {
+            PremiumMADRTBProtocol.BidResponse.Builder bidResponse = dspBidBuilder.getResponseBuilder();
+            if (bidResponse.hasNbr() && bidResponse.getNbr() >= 0) {
+                return false;
+            }
+
+            if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
+                try {
+                    PremiumMADRTBProtocol.BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
+                    PremiumMADDataModel.MediaBid.MediaResponse.Builder mediaResponse = PremiumMADDataModel.MediaBid.MediaResponse.newBuilder();
+
+                    mediaResponse.setDspid(dspBidBuilder.getDspid());
+                    mediaResponse.setAdmid(bid.getAdmid());
+
+                    if (bid.getAdmCount() > 0) {
+                        mediaResponse.addAllAdm(bid.getAdmList());
+                    } else {
+                        for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
+                            if (asset.hasTitle()) {
+                                mediaResponse.setTitle(asset.getTitle().getText());
+                                continue;
+                            }
+
+                            if (asset.hasData()) {
+                                mediaResponse.setDesc(asset.getData().getValue());
+                                continue;
+                            }
+
+                            if (asset.hasImage()) {
+                                if (asset.getImage().hasType()) {
+                                    switch (asset.getImage().getType()) {
+                                        case Constant.NativeImageType.MAIN: {
+                                            mediaResponse.addAllAdm(asset.getImage().getUrlList());
+                                            break;
+                                        }
+
+                                        case Constant.NativeImageType.ICON: {
+                                            mediaResponse.setIcon(asset.getImage().getUrl(0));
+                                            break;
+                                        }
+
+                                        case Constant.NativeImageType.COVER: {
+                                            mediaResponse.setCover(asset.getImage().getUrl(0));
+                                            break;
+                                        }
+
+                                        default: {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    mediaResponse.addAllAdm(asset.getImage().getUrlList());
+                                }
+
+                                continue;
+                            }
+
+                            if (asset.hasVideo()) {
+                                mediaResponse.addAdm(asset.getVideo().getUrl());
+                                mediaResponse.setDuration(asset.getVideo().getDuration());
+                            }
+                        }
+                    }
+
+                    mediaResponse.setLpgurl(bid.getLpgurl());
+                    mediaResponse.setActtype(bid.getActtype());
+                    PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor = bid.getMonitor();
+                    for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : monitor.getImpurlList()) {
+                        PremiumMADDataModel.MediaBid.MediaResponse.Track.Builder var1 = PremiumMADDataModel.MediaBid.MediaResponse.Track.newBuilder();
+                        var1.setStartdelay(track.getStartdelay());
+                        var1.setUrl(track.getUrl());
+                        mediaResponse.addImpurl(var1);
+                    }
+
+                    mediaResponse.addAllClkurl(monitor.getClkurlList());
+                    mediaResponse.addAllSecurl(monitor.getSecurlList());
+                    mediaBidBuilder.setResponse(mediaResponse);
+                    mediaBidBuilder.setStatus(Constant.StatusCode.OK);
+
+                    return true;
+
+                } catch (Exception ex) {
+                    System.err.println(ex.toString());
+                    return false;
+                }
+            }
+        }
+
+        return false;
     }
 
     private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.MediaRequest mediaRequest) {
