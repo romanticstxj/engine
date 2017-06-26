@@ -37,9 +37,10 @@ public class BaoFengHandler extends MediaBaseHandler {
         try {
             req.setCharacterEncoding("UTF-8");
             String bytes = getRequestPostBytes(req);
-            BaoFengBidRequest baoFengBidRequest = validateReuiredParam(JSON.parseObject(bytes, BaoFengBidRequest.class), resp);
-
-            if (resp.getStatus() != Constant.StatusCode.OK) {
+            BaoFengBidRequest baoFengBidRequest = JSON.parseObject(bytes, BaoFengBidRequest.class);
+            int status = validateRequiredParam(baoFengBidRequest, resp);
+            if (status != Constant.StatusCode.OK) {
+                resp.setStatus(status);
                 return false;
             } else {
                 PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
@@ -69,7 +70,7 @@ public class BaoFengHandler extends MediaBaseHandler {
             PremiumMADDataModel.MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 try {
-                    BaoFengResponse baoFengResponse = conversionToBaoFengResponse(mediaBidMetaData);
+                    BaoFengResponse baoFengResponse = convertToBaofengResponse(mediaBidMetaData);
                     if (baoFengResponse != null) {
                         resp.getOutputStream().write(JSON.toJSONString(baoFengResponse).getBytes("utf-8"));
                         resp.setStatus(Constant.StatusCode.OK);
@@ -87,7 +88,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         return true;
     }
     
-    private BaoFengResponse conversionToBaoFengResponse(MediaBidMetaData mediaBidMetaData) {
+    private BaoFengResponse convertToBaofengResponse(MediaBidMetaData mediaBidMetaData) {
         BaoFengResponse baoFengResponse = new BaoFengResponse();
         
         // 广告高度
@@ -187,68 +188,54 @@ public class BaoFengHandler extends MediaBaseHandler {
         return new String(buffer);
     }
     
-    private BaoFengBidRequest validateReuiredParam(BaoFengBidRequest baoFengBidRequest, HttpServletResponse resp) {
+    private int validateRequiredParam(BaoFengBidRequest baoFengBidRequest, HttpServletResponse resp) {
         if (ObjectUtils.isNotEmpty(baoFengBidRequest)) {
             if (StringUtils.isNotEmpty(baoFengBidRequest.getId())) {
-                
                 // 验证app
                 BaoFengBidRequest.App app = baoFengBidRequest.getApp();
-                
                 if (ObjectUtils.isEmpty(app)) {
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
+
                 if (StringUtils.isEmpty(app.getId())) {
                     logger.debug("app or appid is null");
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 
                 // 验证Impression对象
-                
                 BaoFengBidRequest.Impression imp = baoFengBidRequest.getImp();
                 if (ObjectUtils.isEmpty(imp)) {
                     logger.debug("imp or impid,H,W is null");
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (StringUtils.isEmpty(imp.getId())) {
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (0 == imp.getW()) {
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (0 == imp.getH()) {
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 
                 // 验证Device对象
                 BaoFengBidRequest.Device device = baoFengBidRequest.getDevice();
                 if (ObjectUtils.isEmpty(device)) {
                     logger.debug("device or deviceid,dpid is null");
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (StringUtils.isEmpty(device.getId())) {
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (StringUtils.isEmpty(device.getDpid())) {
-                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                    return baoFengBidRequest;
+                    return Constant.StatusCode.BAD_REQUEST;
                 }
                 
-                return baoFengBidRequest;
+                return Constant.StatusCode.OK;
             }
         }
-        else {
-            baoFengBidRequest = new BaoFengBidRequest();
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-        }
-        return baoFengBidRequest;
+
+        return Constant.StatusCode.BAD_REQUEST;
     }
     
     private PremiumMADDataModel.MediaBid.MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
@@ -326,14 +313,14 @@ public class BaoFengHandler extends MediaBaseHandler {
         
         // 广告位ID
         String adspaceKey = null;
-        if (isSandbox) {// sandbox环境
+        if (isSandbox) {
+            // sandbox环境
             adspaceKey = "sandbox:BF:" + mediaRequest.getW() + ":" + mediaRequest.getH();
-            //竞价
-            mediaRequest.setTest(Constant.Test.REAL_BIDDING);
-        }
-        else {
+            //模拟竞价，不计费
+            mediaRequest.setTest(Constant.Test.SIMULATION);
+        } else {
             adspaceKey = "BF:" + mediaRequest.getW() + ":" + mediaRequest.getH();
-            mediaRequest.setTest(Constant.Test.SIMULATED_BIDDING);
+            mediaRequest.setTest(Constant.Test.REAL);
         }
         
         if (adspaceKey != null) {
@@ -428,7 +415,6 @@ public class BaoFengHandler extends MediaBaseHandler {
                         mediaRequest.setH(110);
                         break;
                     default:
-                        setDefaultWH(mediaRequest);
                         break;
                 }
                 break;
@@ -448,7 +434,6 @@ public class BaoFengHandler extends MediaBaseHandler {
                         mediaRequest.setH(110);
                         break;
                     default:
-                        setDefaultWH(mediaRequest);
                         break;
                 }
                 break;
@@ -464,20 +449,17 @@ public class BaoFengHandler extends MediaBaseHandler {
                         mediaRequest.setH(504);
                         break;
                     default:
-                        setDefaultWH(mediaRequest);
                         break;
                 }
                 break;
             default:
-                setDefaultWH(mediaRequest);
                 break;
         }
-        
-    }
-    
-    private void setDefaultWH(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
-        mediaRequest.setW(0);
-        mediaRequest.setH(0);
+
+        if (!mediaRequest.hasW() || !mediaRequest.hasH()) {
+            mediaRequest.setW(0);
+            mediaRequest.setH(0);
+        }
     }
     
     private int osToDeviceType(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
