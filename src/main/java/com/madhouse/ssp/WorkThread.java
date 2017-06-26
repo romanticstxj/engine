@@ -1,7 +1,6 @@
 package com.madhouse.ssp;
 
 import com.madhouse.cache.*;
-import com.madhouse.configuration.Bid;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
@@ -168,6 +167,7 @@ public class WorkThread {
             return;
         }
 
+        MediaBidMetaData mediaBidMetaData = new MediaBidMetaData();
         PremiumMADDataModel.MediaBid.Builder mediaBidBuilder = PremiumMADDataModel.MediaBid.newBuilder();
 
         //init mediaBid object
@@ -177,11 +177,9 @@ public class WorkThread {
         mediaBidBuilder.setTime(System.currentTimeMillis());
         mediaBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
 
-        MediaBidMetaData mediaBidMetaData = new MediaBidMetaData();
         mediaBidMetaData.setMediaBidBuilder(mediaBidBuilder);
 
         //parse media request
-        //MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaHandler(mediaApiType);
         if (mediaBaseHandler != null) {
             if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -190,11 +188,10 @@ public class WorkThread {
         }
 
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
-
-        PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequestBuilder = mediaBidBuilder.getRequestBuilder();
+        PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
         //get placement metadata
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequestBuilder.getAdspacekey());
+        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
         if (plcmtMetaData == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -207,28 +204,22 @@ public class WorkThread {
         }
 
         //init user ip
-        if (!mediaRequestBuilder.hasIp()) {
-            mediaRequestBuilder.setIp(mediaBidBuilder.getIp());
+        if (!mediaRequest.hasIp()) {
+            mediaRequest.setIp(mediaBidBuilder.getIp());
         }
 
         //init location
-        String location = ResourceManager.getInstance().getLocation(mediaRequestBuilder.getIp());
+        String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
         if (location == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
         }
 
-        mediaRequestBuilder.setLocation(location);
+        mediaRequest.setLocation(location);
 
-        //init adtype, bidfloor, bidtype
-        mediaRequestBuilder.setAdtype(plcmtMetaData.getType());
-        mediaRequestBuilder.setBidfloor(plcmtMetaData.getBidfloor());
-        mediaRequestBuilder.setBidtype(plcmtMetaData.getBidtype());
-
-        if (!mediaRequestBuilder.hasW() || !mediaRequestBuilder.hasH()) {
-            mediaRequestBuilder.setW(plcmtMetaData.getW());
-            mediaRequestBuilder.setH(plcmtMetaData.getH());
-        }
+        //bidfloor, bidtype
+        mediaRequest.setBidfloor(plcmtMetaData.getBidfloor());
+        mediaRequest.setBidtype(plcmtMetaData.getBidtype());
 
         //get block metadata
         long blockid = plcmtMetaData.getBlockid();
@@ -241,7 +232,7 @@ public class WorkThread {
             }
         }
 
-        List<Long> policyList = this.policyTargeting(mediaRequestBuilder.build());
+        List<Long> policyList = this.policyTargeting(mediaRequest.build());
         if (policyList == null || policyList.isEmpty()) {
             this.internalError(resp, mediaBidBuilder, Constant.StatusCode.NO_CONTENT);
             return;
@@ -400,6 +391,7 @@ public class WorkThread {
 
                 } catch (Exception ex) {
                     System.err.println(ex.toString());
+                    mediaBidBuilder.setStatus(Constant.StatusCode.INTERNAL_ERROR);
                     return false;
                 }
             }
