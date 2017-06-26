@@ -16667,44 +16667,35 @@ public final class PremiumMADDataModel {
     int getDeliverytype();
 
     /**
-     * <code>optional int32 bidtype = 6;</code>
-     */
-    boolean hasBidtype();
-    /**
-     * <code>optional int32 bidtype = 6;</code>
-     */
-    int getBidtype();
-
-    /**
-     * <code>optional int32 status = 7;</code>
+     * <code>optional int32 status = 6;</code>
      */
     boolean hasStatus();
     /**
-     * <code>optional int32 status = 7;</code>
+     * <code>optional int32 status = 6;</code>
      */
     int getStatus();
 
     /**
-     * <code>optional int32 price = 8;</code>
+     * <code>optional int32 price = 7;</code>
      */
     boolean hasPrice();
     /**
-     * <code>optional int32 price = 8;</code>
+     * <code>optional int32 price = 7;</code>
      */
     int getPrice();
 
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
      */
     boolean hasRequest();
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
      */
-    com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest getRequest();
+    com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest getRequest();
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
      */
-    com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder getRequestOrBuilder();
+    com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder getRequestOrBuilder();
 
     /**
      * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
@@ -16799,35 +16790,30 @@ public final class PremiumMADDataModel {
             }
             case 48: {
               bitField0_ |= 0x00000020;
-              bidtype_ = input.readInt32();
+              status_ = input.readInt32();
               break;
             }
             case 56: {
               bitField0_ |= 0x00000040;
-              status_ = input.readInt32();
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000080;
               price_ = input.readInt32();
               break;
             }
             case 90: {
-              com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000100) == 0x00000100)) {
+              com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000080) == 0x00000080)) {
                 subBuilder = request_.toBuilder();
               }
-              request_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.PARSER, extensionRegistry);
+              request_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(request_);
                 request_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000080;
               break;
             }
             case 98: {
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000200) == 0x00000200)) {
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 subBuilder = response_.toBuilder();
               }
               response_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.PARSER, extensionRegistry);
@@ -16835,7 +16821,7 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(response_);
                 response_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000100;
               break;
             }
           }
@@ -16875,6 +16861,1107 @@ public final class PremiumMADDataModel {
     @java.lang.Override
     public com.google.protobuf.Parser<DSPBid> getParserForType() {
       return PARSER;
+    }
+
+    public interface DSPRequestOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:com.madhouse.ssp.DSPBid.DSPRequest)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>optional int32 adtype = 1;</code>
+       */
+      boolean hasAdtype();
+      /**
+       * <code>optional int32 adtype = 1;</code>
+       */
+      int getAdtype();
+
+      /**
+       * <code>optional int32 layout = 2;</code>
+       */
+      boolean hasLayout();
+      /**
+       * <code>optional int32 layout = 2;</code>
+       */
+      int getLayout();
+
+      /**
+       * <code>optional string tagid = 3;</code>
+       */
+      boolean hasTagid();
+      /**
+       * <code>optional string tagid = 3;</code>
+       */
+      java.lang.String getTagid();
+      /**
+       * <code>optional string tagid = 3;</code>
+       */
+      com.google.protobuf.ByteString
+          getTagidBytes();
+
+      /**
+       * <code>optional string dealid = 4;</code>
+       */
+      boolean hasDealid();
+      /**
+       * <code>optional string dealid = 4;</code>
+       */
+      java.lang.String getDealid();
+      /**
+       * <code>optional string dealid = 4;</code>
+       */
+      com.google.protobuf.ByteString
+          getDealidBytes();
+
+      /**
+       * <code>optional int32 test = 5;</code>
+       */
+      boolean hasTest();
+      /**
+       * <code>optional int32 test = 5;</code>
+       */
+      int getTest();
+
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      boolean hasBidfloor();
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      int getBidfloor();
+
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      boolean hasBidtype();
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      int getBidtype();
+
+      /**
+       * <code>optional int32 tmax = 8;</code>
+       */
+      boolean hasTmax();
+      /**
+       * <code>optional int32 tmax = 8;</code>
+       */
+      int getTmax();
+    }
+    /**
+     * Protobuf type {@code com.madhouse.ssp.DSPBid.DSPRequest}
+     */
+    public static final class DSPRequest extends
+        com.google.protobuf.GeneratedMessage implements
+        // @@protoc_insertion_point(message_implements:com.madhouse.ssp.DSPBid.DSPRequest)
+        DSPRequestOrBuilder {
+      // Use DSPRequest.newBuilder() to construct.
+      private DSPRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
+        this.unknownFields = builder.getUnknownFields();
+      }
+      private DSPRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+      private static final DSPRequest defaultInstance;
+      public static DSPRequest getDefaultInstance() {
+        return defaultInstance;
+      }
+
+      public DSPRequest getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+
+      private final com.google.protobuf.UnknownFieldSet unknownFields;
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+          getUnknownFields() {
+        return this.unknownFields;
+      }
+      private DSPRequest(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        initFields();
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 8: {
+                bitField0_ |= 0x00000001;
+                adtype_ = input.readInt32();
+                break;
+              }
+              case 16: {
+                bitField0_ |= 0x00000002;
+                layout_ = input.readInt32();
+                break;
+              }
+              case 26: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000004;
+                tagid_ = bs;
+                break;
+              }
+              case 34: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000008;
+                dealid_ = bs;
+                break;
+              }
+              case 40: {
+                bitField0_ |= 0x00000010;
+                test_ = input.readInt32();
+                break;
+              }
+              case 48: {
+                bitField0_ |= 0x00000020;
+                bidfloor_ = input.readInt32();
+                break;
+              }
+              case 56: {
+                bitField0_ |= 0x00000040;
+                bidtype_ = input.readInt32();
+                break;
+              }
+              case 64: {
+                bitField0_ |= 0x00000080;
+                tmax_ = input.readInt32();
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e.getMessage()).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.class, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder.class);
+      }
+
+      public static com.google.protobuf.Parser<DSPRequest> PARSER =
+          new com.google.protobuf.AbstractParser<DSPRequest>() {
+        public DSPRequest parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new DSPRequest(input, extensionRegistry);
+        }
+      };
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<DSPRequest> getParserForType() {
+        return PARSER;
+      }
+
+      private int bitField0_;
+      public static final int ADTYPE_FIELD_NUMBER = 1;
+      private int adtype_;
+      /**
+       * <code>optional int32 adtype = 1;</code>
+       */
+      public boolean hasAdtype() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional int32 adtype = 1;</code>
+       */
+      public int getAdtype() {
+        return adtype_;
+      }
+
+      public static final int LAYOUT_FIELD_NUMBER = 2;
+      private int layout_;
+      /**
+       * <code>optional int32 layout = 2;</code>
+       */
+      public boolean hasLayout() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 layout = 2;</code>
+       */
+      public int getLayout() {
+        return layout_;
+      }
+
+      public static final int TAGID_FIELD_NUMBER = 3;
+      private java.lang.Object tagid_;
+      /**
+       * <code>optional string tagid = 3;</code>
+       */
+      public boolean hasTagid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string tagid = 3;</code>
+       */
+      public java.lang.String getTagid() {
+        java.lang.Object ref = tagid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            tagid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string tagid = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTagidBytes() {
+        java.lang.Object ref = tagid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          tagid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int DEALID_FIELD_NUMBER = 4;
+      private java.lang.Object dealid_;
+      /**
+       * <code>optional string dealid = 4;</code>
+       */
+      public boolean hasDealid() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string dealid = 4;</code>
+       */
+      public java.lang.String getDealid() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            dealid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string dealid = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDealidBytes() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          dealid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TEST_FIELD_NUMBER = 5;
+      private int test_;
+      /**
+       * <code>optional int32 test = 5;</code>
+       */
+      public boolean hasTest() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional int32 test = 5;</code>
+       */
+      public int getTest() {
+        return test_;
+      }
+
+      public static final int BIDFLOOR_FIELD_NUMBER = 6;
+      private int bidfloor_;
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      public boolean hasBidfloor() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      public int getBidfloor() {
+        return bidfloor_;
+      }
+
+      public static final int BIDTYPE_FIELD_NUMBER = 7;
+      private int bidtype_;
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      public boolean hasBidtype() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      public int getBidtype() {
+        return bidtype_;
+      }
+
+      public static final int TMAX_FIELD_NUMBER = 8;
+      private int tmax_;
+      /**
+       * <code>optional int32 tmax = 8;</code>
+       */
+      public boolean hasTmax() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int32 tmax = 8;</code>
+       */
+      public int getTmax() {
+        return tmax_;
+      }
+
+      private void initFields() {
+        adtype_ = 0;
+        layout_ = 0;
+        tagid_ = "";
+        dealid_ = "";
+        test_ = 0;
+        bidfloor_ = 0;
+        bidtype_ = 0;
+        tmax_ = 0;
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeInt32(1, adtype_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeInt32(2, layout_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          output.writeBytes(3, getTagidBytes());
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          output.writeBytes(4, getDealidBytes());
+        }
+        if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          output.writeInt32(5, test_);
+        }
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          output.writeInt32(6, bidfloor_);
+        }
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          output.writeInt32(7, bidtype_);
+        }
+        if (((bitField0_ & 0x00000080) == 0x00000080)) {
+          output.writeInt32(8, tmax_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, adtype_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(2, layout_);
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(3, getTagidBytes());
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(4, getDealidBytes());
+        }
+        if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(5, test_);
+        }
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(6, bidfloor_);
+        }
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(7, bidtype_);
+        }
+        if (((bitField0_ & 0x00000080) == 0x00000080)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(8, tmax_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code com.madhouse.ssp.DSPBid.DSPRequest}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:com.madhouse.ssp.DSPBid.DSPRequest)
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPRequest_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.class, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder.class);
+        }
+
+        // Construct using com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+
+        public Builder clear() {
+          super.clear();
+          adtype_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          layout_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          tagid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000004);
+          dealid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000008);
+          test_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000010);
+          bidfloor_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000020);
+          bidtype_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000040);
+          tmax_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000080);
+          return this;
+        }
+
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest getDefaultInstanceForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance();
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest build() {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest buildPartial() {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest result = new com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.adtype_ = adtype_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.layout_ = layout_;
+          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+            to_bitField0_ |= 0x00000004;
+          }
+          result.tagid_ = tagid_;
+          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+            to_bitField0_ |= 0x00000008;
+          }
+          result.dealid_ = dealid_;
+          if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+            to_bitField0_ |= 0x00000010;
+          }
+          result.test_ = test_;
+          if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+            to_bitField0_ |= 0x00000020;
+          }
+          result.bidfloor_ = bidfloor_;
+          if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+            to_bitField0_ |= 0x00000040;
+          }
+          result.bidtype_ = bidtype_;
+          if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+            to_bitField0_ |= 0x00000080;
+          }
+          result.tmax_ = tmax_;
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest) {
+            return mergeFrom((com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest other) {
+          if (other == com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance()) return this;
+          if (other.hasAdtype()) {
+            setAdtype(other.getAdtype());
+          }
+          if (other.hasLayout()) {
+            setLayout(other.getLayout());
+          }
+          if (other.hasTagid()) {
+            bitField0_ |= 0x00000004;
+            tagid_ = other.tagid_;
+            onChanged();
+          }
+          if (other.hasDealid()) {
+            bitField0_ |= 0x00000008;
+            dealid_ = other.dealid_;
+            onChanged();
+          }
+          if (other.hasTest()) {
+            setTest(other.getTest());
+          }
+          if (other.hasBidfloor()) {
+            setBidfloor(other.getBidfloor());
+          }
+          if (other.hasBidtype()) {
+            setBidtype(other.getBidtype());
+          }
+          if (other.hasTmax()) {
+            setTmax(other.getTmax());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest) e.getUnfinishedMessage();
+            throw e;
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private int adtype_ ;
+        /**
+         * <code>optional int32 adtype = 1;</code>
+         */
+        public boolean hasAdtype() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional int32 adtype = 1;</code>
+         */
+        public int getAdtype() {
+          return adtype_;
+        }
+        /**
+         * <code>optional int32 adtype = 1;</code>
+         */
+        public Builder setAdtype(int value) {
+          bitField0_ |= 0x00000001;
+          adtype_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 adtype = 1;</code>
+         */
+        public Builder clearAdtype() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          adtype_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int layout_ ;
+        /**
+         * <code>optional int32 layout = 2;</code>
+         */
+        public boolean hasLayout() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional int32 layout = 2;</code>
+         */
+        public int getLayout() {
+          return layout_;
+        }
+        /**
+         * <code>optional int32 layout = 2;</code>
+         */
+        public Builder setLayout(int value) {
+          bitField0_ |= 0x00000002;
+          layout_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 layout = 2;</code>
+         */
+        public Builder clearLayout() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          layout_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object tagid_ = "";
+        /**
+         * <code>optional string tagid = 3;</code>
+         */
+        public boolean hasTagid() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        /**
+         * <code>optional string tagid = 3;</code>
+         */
+        public java.lang.String getTagid() {
+          java.lang.Object ref = tagid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              tagid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string tagid = 3;</code>
+         */
+        public com.google.protobuf.ByteString
+            getTagidBytes() {
+          java.lang.Object ref = tagid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            tagid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string tagid = 3;</code>
+         */
+        public Builder setTagid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+          tagid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string tagid = 3;</code>
+         */
+        public Builder clearTagid() {
+          bitField0_ = (bitField0_ & ~0x00000004);
+          tagid_ = getDefaultInstance().getTagid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string tagid = 3;</code>
+         */
+        public Builder setTagidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+          tagid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object dealid_ = "";
+        /**
+         * <code>optional string dealid = 4;</code>
+         */
+        public boolean hasDealid() {
+          return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+        /**
+         * <code>optional string dealid = 4;</code>
+         */
+        public java.lang.String getDealid() {
+          java.lang.Object ref = dealid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              dealid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 4;</code>
+         */
+        public com.google.protobuf.ByteString
+            getDealidBytes() {
+          java.lang.Object ref = dealid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            dealid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 4;</code>
+         */
+        public Builder setDealid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 4;</code>
+         */
+        public Builder clearDealid() {
+          bitField0_ = (bitField0_ & ~0x00000008);
+          dealid_ = getDefaultInstance().getDealid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 4;</code>
+         */
+        public Builder setDealidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private int test_ ;
+        /**
+         * <code>optional int32 test = 5;</code>
+         */
+        public boolean hasTest() {
+          return ((bitField0_ & 0x00000010) == 0x00000010);
+        }
+        /**
+         * <code>optional int32 test = 5;</code>
+         */
+        public int getTest() {
+          return test_;
+        }
+        /**
+         * <code>optional int32 test = 5;</code>
+         */
+        public Builder setTest(int value) {
+          bitField0_ |= 0x00000010;
+          test_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 test = 5;</code>
+         */
+        public Builder clearTest() {
+          bitField0_ = (bitField0_ & ~0x00000010);
+          test_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int bidfloor_ ;
+        /**
+         * <code>optional int32 bidfloor = 6;</code>
+         */
+        public boolean hasBidfloor() {
+          return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+        /**
+         * <code>optional int32 bidfloor = 6;</code>
+         */
+        public int getBidfloor() {
+          return bidfloor_;
+        }
+        /**
+         * <code>optional int32 bidfloor = 6;</code>
+         */
+        public Builder setBidfloor(int value) {
+          bitField0_ |= 0x00000020;
+          bidfloor_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 bidfloor = 6;</code>
+         */
+        public Builder clearBidfloor() {
+          bitField0_ = (bitField0_ & ~0x00000020);
+          bidfloor_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int bidtype_ ;
+        /**
+         * <code>optional int32 bidtype = 7;</code>
+         */
+        public boolean hasBidtype() {
+          return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+        /**
+         * <code>optional int32 bidtype = 7;</code>
+         */
+        public int getBidtype() {
+          return bidtype_;
+        }
+        /**
+         * <code>optional int32 bidtype = 7;</code>
+         */
+        public Builder setBidtype(int value) {
+          bitField0_ |= 0x00000040;
+          bidtype_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 bidtype = 7;</code>
+         */
+        public Builder clearBidtype() {
+          bitField0_ = (bitField0_ & ~0x00000040);
+          bidtype_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int tmax_ ;
+        /**
+         * <code>optional int32 tmax = 8;</code>
+         */
+        public boolean hasTmax() {
+          return ((bitField0_ & 0x00000080) == 0x00000080);
+        }
+        /**
+         * <code>optional int32 tmax = 8;</code>
+         */
+        public int getTmax() {
+          return tmax_;
+        }
+        /**
+         * <code>optional int32 tmax = 8;</code>
+         */
+        public Builder setTmax(int value) {
+          bitField0_ |= 0x00000080;
+          tmax_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 tmax = 8;</code>
+         */
+        public Builder clearTmax() {
+          bitField0_ = (bitField0_ & ~0x00000080);
+          tmax_ = 0;
+          onChanged();
+          return this;
+        }
+
+        // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.DSPBid.DSPRequest)
+      }
+
+      static {
+        defaultInstance = new DSPRequest(true);
+        defaultInstance.initFields();
+      }
+
+      // @@protoc_insertion_point(class_scope:com.madhouse.ssp.DSPBid.DSPRequest)
     }
 
     private int bitField0_;
@@ -16980,69 +18067,54 @@ public final class PremiumMADDataModel {
       return deliverytype_;
     }
 
-    public static final int BIDTYPE_FIELD_NUMBER = 6;
-    private int bidtype_;
+    public static final int STATUS_FIELD_NUMBER = 6;
+    private int status_;
     /**
-     * <code>optional int32 bidtype = 6;</code>
+     * <code>optional int32 status = 6;</code>
      */
-    public boolean hasBidtype() {
+    public boolean hasStatus() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional int32 bidtype = 6;</code>
-     */
-    public int getBidtype() {
-      return bidtype_;
-    }
-
-    public static final int STATUS_FIELD_NUMBER = 7;
-    private int status_;
-    /**
-     * <code>optional int32 status = 7;</code>
-     */
-    public boolean hasStatus() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional int32 status = 7;</code>
+     * <code>optional int32 status = 6;</code>
      */
     public int getStatus() {
       return status_;
     }
 
-    public static final int PRICE_FIELD_NUMBER = 8;
+    public static final int PRICE_FIELD_NUMBER = 7;
     private int price_;
     /**
-     * <code>optional int32 price = 8;</code>
+     * <code>optional int32 price = 7;</code>
      */
     public boolean hasPrice() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional int32 price = 8;</code>
+     * <code>optional int32 price = 7;</code>
      */
     public int getPrice() {
       return price_;
     }
 
     public static final int REQUEST_FIELD_NUMBER = 11;
-    private com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest request_;
+    private com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest request_;
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
      */
     public boolean hasRequest() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
+      return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
      */
-    public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest getRequest() {
+    public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest getRequest() {
       return request_;
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
      */
-    public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder getRequestOrBuilder() {
+    public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder getRequestOrBuilder() {
       return request_;
     }
 
@@ -17052,7 +18124,7 @@ public final class PremiumMADDataModel {
      * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
      */
     public boolean hasResponse() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
      * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
@@ -17073,10 +18145,9 @@ public final class PremiumMADDataModel {
       impid_ = "";
       policyid_ = 0L;
       deliverytype_ = 0;
-      bidtype_ = 0;
       status_ = 0;
       price_ = 0;
-      request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
+      request_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance();
       response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -17108,18 +18179,15 @@ public final class PremiumMADDataModel {
         output.writeInt32(5, deliverytype_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, bidtype_);
+        output.writeInt32(6, status_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, status_);
+        output.writeInt32(7, price_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt32(8, price_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeMessage(11, request_);
       }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
         output.writeMessage(12, response_);
       }
       getUnknownFields().writeTo(output);
@@ -17153,21 +18221,17 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, bidtype_);
+          .computeInt32Size(6, status_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, status_);
+          .computeInt32Size(7, price_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, price_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(11, request_);
       }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, response_);
       }
@@ -17300,24 +18364,22 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000008);
         deliverytype_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        bidtype_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         status_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000020);
         price_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000040);
         if (requestBuilder_ == null) {
-          request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
+          request_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance();
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (responseBuilder_ == null) {
           response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -17369,25 +18431,21 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.bidtype_ = bidtype_;
+        result.status_ = status_;
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.status_ = status_;
+        result.price_ = price_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
-        }
-        result.price_ = price_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
         }
         if (requestBuilder_ == null) {
           result.request_ = request_;
         } else {
           result.request_ = requestBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
         }
         if (responseBuilder_ == null) {
           result.response_ = response_;
@@ -17426,9 +18484,6 @@ public final class PremiumMADDataModel {
         }
         if (other.hasDeliverytype()) {
           setDeliverytype(other.getDeliverytype());
-        }
-        if (other.hasBidtype()) {
-          setBidtype(other.getBidtype());
         }
         if (other.hasStatus()) {
           setStatus(other.getStatus());
@@ -17673,65 +18728,33 @@ public final class PremiumMADDataModel {
         return this;
       }
 
-      private int bidtype_ ;
+      private int status_ ;
       /**
-       * <code>optional int32 bidtype = 6;</code>
+       * <code>optional int32 status = 6;</code>
        */
-      public boolean hasBidtype() {
+      public boolean hasStatus() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional int32 bidtype = 6;</code>
-       */
-      public int getBidtype() {
-        return bidtype_;
-      }
-      /**
-       * <code>optional int32 bidtype = 6;</code>
-       */
-      public Builder setBidtype(int value) {
-        bitField0_ |= 0x00000020;
-        bidtype_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 bidtype = 6;</code>
-       */
-      public Builder clearBidtype() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        bidtype_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int status_ ;
-      /**
-       * <code>optional int32 status = 7;</code>
-       */
-      public boolean hasStatus() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional int32 status = 7;</code>
+       * <code>optional int32 status = 6;</code>
        */
       public int getStatus() {
         return status_;
       }
       /**
-       * <code>optional int32 status = 7;</code>
+       * <code>optional int32 status = 6;</code>
        */
       public Builder setStatus(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000020;
         status_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 status = 7;</code>
+       * <code>optional int32 status = 6;</code>
        */
       public Builder clearStatus() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000020);
         status_ = 0;
         onChanged();
         return this;
@@ -17739,49 +18762,49 @@ public final class PremiumMADDataModel {
 
       private int price_ ;
       /**
-       * <code>optional int32 price = 8;</code>
+       * <code>optional int32 price = 7;</code>
        */
       public boolean hasPrice() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional int32 price = 8;</code>
+       * <code>optional int32 price = 7;</code>
        */
       public int getPrice() {
         return price_;
       }
       /**
-       * <code>optional int32 price = 8;</code>
+       * <code>optional int32 price = 7;</code>
        */
       public Builder setPrice(int value) {
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000040;
         price_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 price = 8;</code>
+       * <code>optional int32 price = 7;</code>
        */
       public Builder clearPrice() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000040);
         price_ = 0;
         onChanged();
         return this;
       }
 
-      private com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
+      private com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest request_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder> requestBuilder_;
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder> requestBuilder_;
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
       public boolean hasRequest() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
-      public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest getRequest() {
+      public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest getRequest() {
         if (requestBuilder_ == null) {
           return request_;
         } else {
@@ -17789,9 +18812,9 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
-      public Builder setRequest(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest value) {
+      public Builder setRequest(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest value) {
         if (requestBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -17801,32 +18824,32 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
       public Builder setRequest(
-          com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder builderForValue) {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder builderForValue) {
         if (requestBuilder_ == null) {
           request_ = builderForValue.build();
           onChanged();
         } else {
           requestBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
-      public Builder mergeRequest(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest value) {
+      public Builder mergeRequest(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest value) {
         if (requestBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) == 0x00000100) &&
-              request_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance()) {
+          if (((bitField0_ & 0x00000080) == 0x00000080) &&
+              request_ != com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance()) {
             request_ =
-              com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.newBuilder(request_).mergeFrom(value).buildPartial();
+              com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.newBuilder(request_).mergeFrom(value).buildPartial();
           } else {
             request_ = value;
           }
@@ -17834,34 +18857,34 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000080;
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
       public Builder clearRequest() {
         if (requestBuilder_ == null) {
-          request_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.getDefaultInstance();
+          request_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance();
           onChanged();
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
-      public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder getRequestBuilder() {
-        bitField0_ |= 0x00000100;
+      public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder getRequestBuilder() {
+        bitField0_ |= 0x00000080;
         onChanged();
         return getRequestFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
-      public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder getRequestOrBuilder() {
+      public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder getRequestOrBuilder() {
         if (requestBuilder_ != null) {
           return requestBuilder_.getMessageOrBuilder();
         } else {
@@ -17869,14 +18892,14 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidRequest request = 11;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPRequest request = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder> 
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder> 
           getRequestFieldBuilder() {
         if (requestBuilder_ == null) {
           requestBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequestOrBuilder>(
+              com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.Builder, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder>(
                   getRequest(),
                   getParentForChildren(),
                   isClean());
@@ -17892,7 +18915,7 @@ public final class PremiumMADDataModel {
        * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public boolean hasResponse() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
        * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
@@ -17917,7 +18940,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -17931,7 +18954,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -17939,7 +18962,7 @@ public final class PremiumMADDataModel {
        */
       public Builder mergeResponse(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse value) {
         if (responseBuilder_ == null) {
-          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
               response_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance()) {
             response_ =
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.newBuilder(response_).mergeFrom(value).buildPartial();
@@ -17950,7 +18973,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -17963,14 +18986,14 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       /**
        * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder getResponseBuilder() {
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000100;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
       }
@@ -18067,6 +19090,11 @@ public final class PremiumMADDataModel {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_madhouse_ssp_DSPBid_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_madhouse_ssp_DSPBid_DSPRequest_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -18124,13 +19152,16 @@ public final class PremiumMADDataModel {
       " \001(\003\022\r\n\005valid\030\n \001(\010\022-\n\003ext\030\013 \001(\0132 .com.m" +
       "adhouse.ssp.ClickTrack.Ext\022\013\n\003url\030\014 \001(\t\032" +
       "@\n\003Ext\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006i" +
-      "ncome\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\354\001\n\006DSPBid\022\014\n\004" +
+      "ncome\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\357\002\n\006DSPBid\022\014\n\004" +
       "time\030\001 \001(\003\022\r\n\005dspid\030\002 \001(\003\022\r\n\005impid\030\003 \001(\t",
       "\022\020\n\010policyid\030\004 \001(\003\022\024\n\014deliverytype\030\005 \001(\005" +
-      "\022\017\n\007bidtype\030\006 \001(\005\022\016\n\006status\030\007 \001(\005\022\r\n\005pri" +
-      "ce\030\010 \001(\005\022-\n\007request\030\013 \001(\0132\034.com.madhouse" +
-      ".rtb.BidRequest\022/\n\010response\030\014 \001(\0132\035.com." +
-      "madhouse.rtb.BidResponse"
+      "\022\016\n\006status\030\006 \001(\005\022\r\n\005price\030\007 \001(\005\0224\n\007reque" +
+      "st\030\013 \001(\0132#.com.madhouse.ssp.DSPBid.DSPRe" +
+      "quest\022/\n\010response\030\014 \001(\0132\035.com.madhouse.r" +
+      "tb.BidResponse\032\212\001\n\nDSPRequest\022\016\n\006adtype\030" +
+      "\001 \001(\005\022\016\n\006layout\030\002 \001(\005\022\r\n\005tagid\030\003 \001(\t\022\016\n\006" +
+      "dealid\030\004 \001(\t\022\014\n\004test\030\005 \001(\005\022\020\n\010bidfloor\030\006" +
+      " \001(\005\022\017\n\007bidtype\030\007 \001(\005\022\014\n\004tmax\030\010 \001(\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18210,7 +19241,13 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_DSPBid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_DSPBid_descriptor,
-        new java.lang.String[] { "Time", "Dspid", "Impid", "Policyid", "Deliverytype", "Bidtype", "Status", "Price", "Request", "Response", });
+        new java.lang.String[] { "Time", "Dspid", "Impid", "Policyid", "Deliverytype", "Status", "Price", "Request", "Response", });
+    internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor =
+      internal_static_com_madhouse_ssp_DSPBid_descriptor.getNestedTypes().get(0);
+    internal_static_com_madhouse_ssp_DSPBid_DSPRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor,
+        new java.lang.String[] { "Adtype", "Layout", "Tagid", "Dealid", "Test", "Bidfloor", "Bidtype", "Tmax", });
     com.madhouse.rtb.PremiumMADRTBProtocol.getDescriptor();
   }
 

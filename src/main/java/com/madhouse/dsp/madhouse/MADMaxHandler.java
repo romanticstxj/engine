@@ -30,7 +30,7 @@ public class MADMaxHandler extends DSPBaseHandler {
             PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
             if (httpResponse != null) {
                 int status = httpResponse.getStatusLine().getStatusCode();
-                if (status != 200) {
+                if (status != Constant.StatusCode.OK) {
                     dspBidBuilder.setStatus(status);
                     return false;
                 }
@@ -281,12 +281,24 @@ public class MADMaxHandler extends DSPBaseHandler {
         }
 
         try {
+            PremiumMADDataModel.DSPBid.DSPRequest.Builder dspRequest = PremiumMADDataModel.DSPBid.DSPRequest.newBuilder();
+
+            dspRequest.setAdtype(plcmtMetaData.getType());
+            dspRequest.setLayout(plcmtMetaData.getLayout());
+            dspRequest.setTagid(plcmtMetaData.getAdspaceKey());
+            dspRequest.setDealid(policyMetaData.getDealid());
+            dspRequest.setTest(mediaRequest.getTest());
+            dspRequest.setBidfloor(policyMetaData.getBidfloor());
+            dspRequest.setBidtype(policyMetaData.getBidtype());
+            dspRequest.setTmax(mediaMetaData.getTimeout());
+
             PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
+
             dspBidBuilder.setDspid(dspMetaData.getDspid());
             dspBidBuilder.setPolicyid(policyMetaData.getId());
             dspBidBuilder.setDeliverytype(policyMetaData.getDeliverytype());
             dspBidBuilder.setTime(System.currentTimeMillis());
-            dspBidBuilder.setRequest(bidRequest);
+            dspBidBuilder.setRequest(dspRequest);
 
             ByteArrayEntity entity = new ByteArrayEntity(bidRequest.build().toByteArray());
             httpPost.setEntity(entity);
