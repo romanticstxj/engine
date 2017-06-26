@@ -100,19 +100,7 @@ message MediaBid
 		repeated string adm = 9;
 		optional string lpgurl = 10;
 		optional int32 acttype = 11;
-		optional Monitor monitor = 12;
-		
-		message Monitor
-		{
-			repeated Track impurl = 1;
-			repeated string clkurl = 2;
-			repeated string securl = 3;
-
-			message Track {
-				optional int32 startdelay = 1;
-				optional string url = 2;
-			}
-		}
+		optional com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;
 	}
 }
 
