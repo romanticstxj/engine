@@ -32,10 +32,10 @@ public abstract class DSPBaseHandler {
         PremiumMADDataModel.DSPBid.DSPRequest dspRequest = dspBidMetaData.getDspBidBuilder().getRequest();
         PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
-        HttpPost httpPost = new HttpPost(dspMetaData.getBidurl());
+        HttpPost httpPost = new HttpPost(dspMetaData.getBidUrl());
         httpPost.setHeader("Content-Type", "application/x-protobuf");
 
-        DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspMetaData.getDspid(), plcmtMetaData.getId());
+        DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspMetaData.getId(), plcmtMetaData.getId());
 
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
@@ -95,7 +95,7 @@ public abstract class DSPBaseHandler {
             BidRequest.Impression.Builder impression = BidRequest.Impression.newBuilder();
             impression.setId(mediaBidBuilder.getImpid());
 
-            if (policyMetaData.getDeliverytype() == Constant.DeliveryType.RTB) {
+            if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                 impression.setBidfloor(plcmtMetaData.getBidfloor());
                 impression.setBidtype(plcmtMetaData.getBidtype());
             } else {
@@ -109,7 +109,7 @@ public abstract class DSPBaseHandler {
                 impression.setTagid(plcmtMetaData.getAdspaceKey());
             }
 
-            if (policyMetaData.getDeliverytype() != Constant.DeliveryType.RTB) {
+            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
                 BidRequest.Impression.PMP.Builder pmp = BidRequest.Impression.PMP.newBuilder();
                 pmp.setPrivateAuction(1);
                 BidRequest.Impression.PMP.Deal.Builder deal = BidRequest.Impression.PMP.Deal.newBuilder();
@@ -328,15 +328,15 @@ public abstract class DSPBaseHandler {
                     .setAdtype(plcmtMetaData.getType())
                     .setLayout(plcmtMetaData.getLayout())
                     .setTagid(plcmtMetaData.getAdspaceKey())
-                    .setDealid(policyMetaData.getDealid())
+                    .setDealid(policyMetaData.getDealId())
                     .setTest(mediaRequest.getTest())
-                    .setBidfloor(policyMetaData.getBidfloor())
-                    .setBidtype(policyMetaData.getBidtype())
+                    .setBidfloor(policyMetaData.getBidFloor())
+                    .setBidtype(policyMetaData.getBidType())
                     .setTmax(mediaMetaData.getTimeout());
 
-            dspBidBuilder.setDspid(dspMetaData.getDspid())
+            dspBidBuilder.setDspid(dspMetaData.getId())
                     .setPolicyid(policyMetaData.getId())
-                    .setDeliverytype(policyMetaData.getDeliverytype())
+                    .setDeliverytype(policyMetaData.getDeliveryType())
                     .setTime(System.currentTimeMillis())
                     .setRequest(dspRequest);
 

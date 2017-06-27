@@ -7,20 +7,45 @@ import com.madhouse.util.httpclient.HttpClient;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class DSPMetaData {
-    private long dspid;
-    private String bidurl;
-    private boolean enable;
-    private int weights;
-    private int floating;
+    private long id;
+    private String bidUrl;
+    private String wnUrl;
+    private int maxQPS;
     private String token;
-    private int apitype;
+    private int apiType;
+    private int status;
+    private HttpClient httpClient = new HttpClient();
 
-    public int getApitype() {
-        return apitype;
+    public long getId() {
+        return id;
     }
 
-    public void setApitype(int apitype) {
-        this.apitype = apitype;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getBidUrl() {
+        return bidUrl;
+    }
+
+    public void setBidUrl(String bidUrl) {
+        this.bidUrl = bidUrl;
+    }
+
+    public String getWnUrl() {
+        return wnUrl;
+    }
+
+    public void setWnUrl(String wnUrl) {
+        this.wnUrl = wnUrl;
+    }
+
+    public int getMaxQPS() {
+        return maxQPS;
+    }
+
+    public void setMaxQPS(int maxQPS) {
+        this.maxQPS = maxQPS;
     }
 
     public String getToken() {
@@ -31,46 +56,20 @@ public class DSPMetaData {
         this.token = token;
     }
 
-    public int getWeights() {
-        return weights;
+    public int getApiType() {
+        return apiType;
     }
 
-    public void setWeights(int weights) {
-        this.weights = weights;
+    public void setApiType(int apiType) {
+        this.apiType = apiType;
     }
 
-    public int getFloating() {
-        return floating;
+    public int getStatus() {
+        return status;
     }
 
-    public void setFloating(int floating) {
-        this.floating = floating;
-    }
-
-    private HttpClient httpClient = new HttpClient();
-
-    public long getDspid() {
-        return dspid;
-    }
-
-    public void setDspid(long dspid) {
-        this.dspid = dspid;
-    }
-
-    public boolean isEnable() {
-        return enable;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
-
-    public String getBidurl() {
-        return bidurl;
-    }
-
-    public void setBidurl(String bidurl) {
-        this.bidurl = bidurl;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public HttpClient getHttpClient() {

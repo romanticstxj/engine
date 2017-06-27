@@ -10,50 +10,28 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/6/12.
  */
 public class PolicyMetaData {
-    private int deliverytype;
     private long id;
+    private int deliveryType;
     private int weight;
-    private String dealid;
-    private int bidfloor;
-    private int bidtype;
+    private String dealId;
 
-    //targeting info
     private String startdate;
     private String enddate;
+
+    //targeting info
     private Map<Integer, List<Integer>> weekday;
-    private List<Integer> ostype;
-    private List<Integer> connectiontype;
+    private List<String> location;
+    private List<Integer> os;
+    private List<Integer> connectionType;
 
-    private List<Long> plcmtlist;
+    private List<Long> adspaceList;
     //dspid, weight
-    private Map<Long, Integer> dsplist;
+    private Map<Long, Integer> dspList;
+    private int controlType;
+    private int maxCount;
 
-    private int controltype;
-    private int maxcount;
-
-    public int getDeliverytype() {
-        return deliverytype;
-    }
-
-    public void setDeliverytype(int deliverytype) {
-        this.deliverytype = deliverytype;
-    }
-
-    public int getControltype() {
-        return controltype;
-    }
-
-    public void setControltype(int controltype) {
-        this.controltype = controltype;
-    }
-
-    public int getMaxcount() {
-        return maxcount;
-    }
-
-    public void setMaxcount(int maxcount) {
-        this.maxcount = maxcount;
-    }
+    private int bidFloor;
+    private int bidType;
 
     public long getId() {
         return id;
@@ -61,6 +39,14 @@ public class PolicyMetaData {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(int deliveryType) {
+        this.deliveryType = deliveryType;
     }
 
     public int getWeight() {
@@ -71,28 +57,12 @@ public class PolicyMetaData {
         this.weight = weight;
     }
 
-    public String getDealid() {
-        return dealid;
+    public String getDealId() {
+        return dealId;
     }
 
-    public void setDealid(String dealid) {
-        this.dealid = dealid;
-    }
-
-    public int getBidfloor() {
-        return bidfloor;
-    }
-
-    public void setBidfloor(int bidfloor) {
-        this.bidfloor = bidfloor;
-    }
-
-    public int getBidtype() {
-        return bidtype;
-    }
-
-    public void setBidtype(int bidtype) {
-        this.bidtype = bidtype;
+    public void setDealId(String dealId) {
+        this.dealId = dealId;
     }
 
     public String getStartdate() {
@@ -119,35 +89,75 @@ public class PolicyMetaData {
         this.weekday = weekday;
     }
 
-    public List<Integer> getOstype() {
-        return ostype;
+    public List<String> getLocation() {
+        return location;
     }
 
-    public void setOstype(List<Integer> ostype) {
-        this.ostype = ostype;
+    public void setLocation(List<String> location) {
+        this.location = location;
     }
 
-    public List<Integer> getConnectiontype() {
-        return connectiontype;
+    public List<Integer> getOs() {
+        return os;
     }
 
-    public void setConnectiontype(List<Integer> connectiontype) {
-        this.connectiontype = connectiontype;
+    public void setOs(List<Integer> os) {
+        this.os = os;
     }
 
-    public List<Long> getPlcmtlist() {
-        return plcmtlist;
+    public List<Integer> getConnectionType() {
+        return connectionType;
     }
 
-    public void setPlcmtlist(List<Long> plcmtlist) {
-        this.plcmtlist = plcmtlist;
+    public void setConnectionType(List<Integer> connectionType) {
+        this.connectionType = connectionType;
     }
 
-    public Map<Long, Integer> getDsplist() {
-        return dsplist;
+    public List<Long> getAdspaceList() {
+        return adspaceList;
     }
 
-    public void setDsplist(Map<Long, Integer> dsplist) {
-        this.dsplist = dsplist;
+    public void setAdspaceList(List<Long> adspaceList) {
+        this.adspaceList = adspaceList;
+    }
+
+    public Map<Long, Integer> getDspList() {
+        return dspList;
+    }
+
+    public void setDspList(Map<Long, Integer> dspList) {
+        this.dspList = dspList;
+    }
+
+    public int getControlType() {
+        return controlType;
+    }
+
+    public void setControlType(int controlType) {
+        this.controlType = controlType;
+    }
+
+    public int getMaxCount() {
+        return maxCount;
+    }
+
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
+    }
+
+    public int getBidFloor() {
+        return bidFloor;
+    }
+
+    public void setBidFloor(int bidFloor) {
+        this.bidFloor = bidFloor;
+    }
+
+    public int getBidType() {
+        return bidType;
+    }
+
+    public void setBidType(int bidType) {
+        this.bidType = bidType;
     }
 }
