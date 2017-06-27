@@ -15,6 +15,7 @@ public class DSPBidMetaData {
     private String admid;
     private String winurl;
     private int price;
+    private DSPMetaData dspMetaData;
     private PremiumMADDataModel.DSPBid.Builder dspBidBuilder;
     private DSPBaseHandler dspBaseHandler;
     private HttpRequestBase httpRequestBase;
@@ -97,5 +98,13 @@ public class DSPBidMetaData {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public DSPMetaData getDspMetaData() {
+        return dspMetaData;
+    }
+
+    public void setDspMetaData(DSPMetaData dspMetaData) {
+        this.dspMetaData = dspMetaData;
     }
 }

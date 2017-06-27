@@ -61,14 +61,16 @@ public class WorkThread {
                 return;
             }
 
-            //bid redis check
-            String key = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (key.isEmpty()) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                return;
-            }
-
             PremiumMADDataModel.ImpressionTrack.Builder impressionTrack = PremiumMADDataModel.ImpressionTrack.newBuilder();
+
+            //bid redis check
+            this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+            String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
+            if (this.redisSlave.exists(recordKey)) {
+                impressionTrack.setValid(true);
+            } else {
+                impressionTrack.setValid(false);
+            }
 
             impressionTrack.setTime(System.currentTimeMillis());
             impressionTrack.setIp(HttpUtil.getRealIp(req));
@@ -117,14 +119,16 @@ public class WorkThread {
                 return;
             }
 
-            //bid redis check
-            String key = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (key.isEmpty()) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                return;
-            }
-
             PremiumMADDataModel.ClickTrack.Builder clickTrack = PremiumMADDataModel.ClickTrack.newBuilder();
+
+            //bid redis check
+            this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+            String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
+            if (this.redisSlave.exists(recordKey)) {
+                clickTrack.setValid(true);
+            } else {
+                clickTrack.setValid(false);
+            }
 
             clickTrack.setTime(System.currentTimeMillis());
             clickTrack.setIp(HttpUtil.getRealIp(req));
@@ -273,10 +277,10 @@ public class WorkThread {
         while ((policyMetaData = Utility.randomWithWeights(selectedPolicys)) != null) {
             this.multiHttpClient.reset();
 
-            Map<Long, Pair<DSPMetaData, DSPBidMetaData>> selectedDspList = new HashMap<>();
+            Map<Long, DSPBidMetaData> selectedDspList = new HashMap<>();
             for (PolicyMetaData.DSPInfo dspInfo : policyMetaData.getDspInfoList()) {
                 DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspInfo.getId());
-                if (dspInfo.getStatus() > 0 && dspMetaData.getStatus() > 0) {
+                if (dspInfo.getStatus() > 0 && dspMetaData != null && dspMetaData.getStatus() > 0) {
 
                     //QPS Contorl
                     String qpsKey = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
@@ -288,6 +292,7 @@ public class WorkThread {
                     }
 
                     DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
+                    dspBidMetaData.setDspMetaData(dspMetaData);
 
                     PremiumMADDataModel.DSPBid.Builder dspBidBuilder = PremiumMADDataModel.DSPBid.newBuilder();
                     dspBidMetaData.setDspBidBuilder(dspBidBuilder);
@@ -301,7 +306,7 @@ public class WorkThread {
                         httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
                         this.multiHttpClient.addHttpClient(httpClient);
                         dspBidMetaData.setHttpRequestBase(httpRequestBase);
-                        selectedDspList.put(dspInfo.getId(), Pair.of(dspMetaData, dspBidMetaData));
+                        selectedDspList.put(dspInfo.getId(), dspBidMetaData);
                     }
                 }
             }
@@ -324,17 +329,16 @@ public class WorkThread {
                     }
                 }
 
-                List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList = new LinkedList<Pair<DSPMetaData, DSPBidMetaData>>();
+                List<DSPBidMetaData> bidDspList = new LinkedList<DSPBidMetaData>();
                 for (Map.Entry entry : selectedDspList.entrySet()) {
-                    Pair<DSPMetaData, DSPBidMetaData> dspInfo = (Pair<DSPMetaData, DSPBidMetaData>)entry.getValue();
-                    DSPMetaData dspMetaData = dspInfo.getLeft();
-                    DSPBidMetaData dspBidMetaData = dspInfo.getRight();
+                    DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
+                    DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
                     DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
                     HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
                     if (httpResponse != null) {
                         if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
                             if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidFloor()) {
-                                bidDspList.add(Pair.of(dspMetaData, dspBidMetaData));
+                                bidDspList.add(dspBidMetaData);
                             }
                         }
                     } else {
@@ -345,13 +349,17 @@ public class WorkThread {
                 }
 
                 if (!bidDspList.isEmpty()) {
-                    Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = this.selectWinner(plcmtMetaData, policyMetaData, bidDspList);
+                    Pair<DSPBidMetaData, Integer> winner = this.selectWinner(plcmtMetaData, policyMetaData, bidDspList);
                     if (winner != null) {
-                        DSPBidMetaData dspBidMetaData = winner.getRight().getLeft();
+                        DSPBidMetaData dspBidMetaData = winner.getLeft();
+
+                        String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBidBuilder.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
+                        this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "nx", "ex", 86400);
+
                         if (this.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
                             mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
                             if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                                String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), winner.getLeft(), dspBidMetaData);
+                                String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), dspBidMetaData.getDspMetaData(), dspBidMetaData);
                                 final HttpGet httpGet = new HttpGet(url);
                                 final HttpClient httpClient = this.winNoticeHttpClient;
                                 this.winNoticeService.submit(new Runnable() {
@@ -573,41 +581,42 @@ public class WorkThread {
         return selectedPolicys;
     }
 
-    private Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> selectWinner(PlcmtMetaData plcmtMetaData,
+    private Pair<DSPBidMetaData, Integer> selectWinner(PlcmtMetaData plcmtMetaData,
                                                                    PolicyMetaData policyMetaData,
-                                                                   List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList) {
-        Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = null;
+                                                                   List<DSPBidMetaData> bidDspList) {
+        Pair<DSPBidMetaData, Integer> winner = null;
 
         if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
-            List<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>> selectedDspList = new LinkedList<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>>();
+            List<Pair<DSPBidMetaData, Integer>> selectedDspList = new LinkedList<Pair<DSPBidMetaData, Integer>>();
             Map<Long, PolicyMetaData.DSPInfo> dspInfoMap = policyMetaData.getDspInfoMap();
 
-            for (Pair<DSPMetaData, DSPBidMetaData> entry : bidDspList) {
-                DSPMetaData dspMetaData = (DSPMetaData)entry.getLeft();
+            for (DSPBidMetaData dspBidMetaData : bidDspList) {
+                DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
                 int weight = dspInfoMap.get(dspMetaData.getId()).getWeight();
                 if (weight > 0) {
-                    selectedDspList.add(Pair.of(Pair.of(dspMetaData, entry.getRight()), weight));
+                    selectedDspList.add(Pair.of(dspBidMetaData, weight));
                 }
             }
 
             if (!selectedDspList.isEmpty()) {
-                Pair<DSPMetaData, DSPBidMetaData> selected = Utility.randomWithWeights(selectedDspList);
-                winner = Pair.of(selected.getLeft(), Pair.of(selected.getRight(), 0));
+                DSPBidMetaData dspBidMetaData = Utility.randomWithWeights(selectedDspList);
+                winner = Pair.of(dspBidMetaData, policyMetaData.getBidFloor());
             }
         } else {
-            bidDspList.sort(new Comparator<Pair<DSPMetaData, DSPBidMetaData>>() {
-                public int compare(Pair<DSPMetaData, DSPBidMetaData> o1, Pair<DSPMetaData, DSPBidMetaData> o2) {
-                    return o1.getRight().getPrice() > o2.getRight().getPrice() ? 1 : -1;
+            bidDspList.sort(new Comparator<DSPBidMetaData>() {
+                @Override
+                public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
+                    return o1.getPrice() > o2.getPrice() ? 1 : -1;
                 }
             });
 
             int price = plcmtMetaData.getBidFloor();
             if (bidDspList.size() >= 2) {
-                DSPBidMetaData dspBidMetaData = bidDspList.get(1).getRight();
+                DSPBidMetaData dspBidMetaData = bidDspList.get(1);
                 price = dspBidMetaData.getPrice();
             }
 
-            winner = Pair.of(bidDspList.get(0).getLeft(), Pair.of(bidDspList.get(0).getRight(), price + 1));
+            winner = Pair.of(bidDspList.get(0), price + 1);
         }
 
         return winner;
