@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.rtb.PremiumMADRTBProtocol;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -18,10 +19,9 @@ import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.baofeng.BaoFengResponse.PV;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.ssp.PremiumMADDataModel;
+import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest;
 import com.madhouse.util.ObjectUtils;
-import com.madhouse.util.StringUtil;
 
 public class BaoFengHandler extends MediaBaseHandler {
     
@@ -153,8 +153,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         if (StringUtils.isEmpty(baoFengResponse.getTarget()) || StringUtils.isEmpty(baoFengResponse.getImg().getSrc()) || ObjectUtils.isEmpty(baoFengResponse.getClick())
             || ObjectUtils.isEmpty(baoFengResponse.getPv()))
             return null;
-        // logger.debug("BaoFeng request params is : {}",
-        // JSON.toJSONString(dto));
+        logger.debug("BaoFeng request params is : {}", JSON.toJSONString(baoFengResponse));
         return baoFengResponse;
         
     }
@@ -416,6 +415,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                         mediaRequest.setH(110);
                         break;
                     default:
+                        setDefaultWH(mediaRequest);
                         break;
                 }
                 break;
@@ -435,6 +435,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                         mediaRequest.setH(110);
                         break;
                     default:
+                        setDefaultWH(mediaRequest);
                         break;
                 }
                 break;
@@ -450,29 +451,29 @@ public class BaoFengHandler extends MediaBaseHandler {
                         mediaRequest.setH(504);
                         break;
                     default:
+                        setDefaultWH(mediaRequest);
                         break;
                 }
                 break;
             default:
+                setDefaultWH(mediaRequest);
                 break;
         }
 
-        if (!mediaRequest.hasW() || !mediaRequest.hasH()) {
-            mediaRequest.setW(0);
-            mediaRequest.setH(0);
-        }
+        
+    }
+    private void setDefaultWH(MediaRequest.Builder mediaRequest) {
+        mediaRequest.setW(0);
+        mediaRequest.setH(0);
     }
     
     private int osToDeviceType(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
-        if (StringUtils.isEmpty(Integer.toString(mediaRequest.getOs())))
-            return 0;
-        if (0 == mediaRequest.getOs()) {
+        if (Constant.OSType.ANDROID == mediaRequest.getOs()) {
             // android系统对应的deviceType是3
             return 3;
-        }
-        else {
+        } else {
             // ios系统对应的deviceType是1（这里默认使用1表示iphone，ios系统细分了iphone和ipad）
-            return -1;
+            return 1;
         }
     }
     
