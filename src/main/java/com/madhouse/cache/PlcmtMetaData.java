@@ -8,48 +8,174 @@ import java.util.List;
  * Created by WUJUNFENG on 2017/6/9.
  */
 public class PlcmtMetaData {
-    private long mediaId;
     private long id;
+    private long mediaId;
     private int w;
     private int h;
-    private int type;
-    private int icon;
-    private int cover;
-    private int title;
-    private int desc;
-    private int maxduration;
-    private int minduration;
-    private int linearity;
-    private int startdelay;
-    private List<String> mimes;
-    private int blockid;
-    private int bidtype;
-    private int bidfloor;
+    private int adType;
     private int layout;
+    private long blockId;
+
+    private Image banner;
+    private Video video;
+    private Native natives;
+
+    private int bidFloor;
+    private int bidType;
+
     private String adspaceKey;
 
-    public String getAdspaceKey() {
-        return adspaceKey;
+    public class Image {
+        private int w;
+        private int h;
+        private List<String> mimes;
+
+        public int getW() {
+            return w;
+        }
+
+        public void setW(int w) {
+            this.w = w;
+        }
+
+        public int getH() {
+            return h;
+        }
+
+        public void setH(int h) {
+            this.h = h;
+        }
+
+        public List<String> getMimes() {
+            return mimes;
+        }
+
+        public void setMimes(List<String> mimes) {
+            this.mimes = mimes;
+        }
     }
 
-    public void setAdspaceKey(String adspaceKey) {
-        this.adspaceKey = adspaceKey;
+    public class Video {
+        private int w;
+        private int h;
+        private int minDuraion;
+        private int maxDuration;
+        private int linearity;
+        private int startDelay;
+        private List<String> mimes;
+
+        public int getW() {
+            return w;
+        }
+
+        public void setW(int w) {
+            this.w = w;
+        }
+
+        public int getH() {
+            return h;
+        }
+
+        public void setH(int h) {
+            this.h = h;
+        }
+
+        public int getMinDuraion() {
+            return minDuraion;
+        }
+
+        public void setMinDuraion(int minDuraion) {
+            this.minDuraion = minDuraion;
+        }
+
+        public int getMaxDuration() {
+            return maxDuration;
+        }
+
+        public void setMaxDuration(int maxDuration) {
+            this.maxDuration = maxDuration;
+        }
+
+        public int getLinearity() {
+            return linearity;
+        }
+
+        public void setLinearity(int linearity) {
+            this.linearity = linearity;
+        }
+
+        public int getStartDelay() {
+            return startDelay;
+        }
+
+        public void setStartDelay(int startDelay) {
+            this.startDelay = startDelay;
+        }
+
+        public List<String> getMimes() {
+            return mimes;
+        }
+
+        public void setMimes(List<String> mimes) {
+            this.mimes = mimes;
+        }
     }
 
-    public long getMediaId() {
-        return mediaId;
-    }
+    public class Native {
+        private Image icon;
+        private Image cover;
+        private Image image;
+        private Video video;
+        private int title;
+        private int desc;
 
-    public void setMediaId(long mediaId) {
-        this.mediaId = mediaId;
-    }
+        public Image getIcon() {
+            return icon;
+        }
 
-    public int getLayout() {
-        return layout;
-    }
+        public void setIcon(Image icon) {
+            this.icon = icon;
+        }
 
-    public void setLayout(int layout) {
-        this.layout = layout;
+        public Image getCover() {
+            return cover;
+        }
+
+        public void setCover(Image cover) {
+            this.cover = cover;
+        }
+
+        public Image getImage() {
+            return image;
+        }
+
+        public void setImage(Image image) {
+            this.image = image;
+        }
+
+        public Video getVideo() {
+            return video;
+        }
+
+        public void setVideo(Video video) {
+            this.video = video;
+        }
+
+        public int getTitle() {
+            return title;
+        }
+
+        public void setTitle(int title) {
+            this.title = title;
+        }
+
+        public int getDesc() {
+            return desc;
+        }
+
+        public void setDesc(int desc) {
+            this.desc = desc;
+        }
     }
 
     public long getId() {
@@ -58,6 +184,14 @@ public class PlcmtMetaData {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
     }
 
     public int getW() {
@@ -76,107 +210,75 @@ public class PlcmtMetaData {
         this.h = h;
     }
 
-    public int getType() {
-        return type;
+    public int getAdType() {
+        return adType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setAdType(int adType) {
+        this.adType = adType;
     }
 
-    public int getIcon() {
-        return icon;
+    public int getLayout() {
+        return layout;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
+    public void setLayout(int layout) {
+        this.layout = layout;
     }
 
-    public int getCover() {
-        return cover;
+    public Image getBanner() {
+        return banner;
     }
 
-    public void setCover(int cover) {
-        this.cover = cover;
+    public void setBanner(Image banner) {
+        this.banner = banner;
     }
 
-    public int getTitle() {
-        return title;
+    public Video getVideo() {
+        return video;
     }
 
-    public void setTitle(int title) {
-        this.title = title;
+    public void setVideo(Video video) {
+        this.video = video;
     }
 
-    public int getDesc() {
-        return desc;
+    public Native getNatives() {
+        return natives;
     }
 
-    public void setDesc(int desc) {
-        this.desc = desc;
+    public void setNatives(Native natives) {
+        this.natives = natives;
     }
 
-    public int getMaxduration() {
-        return maxduration;
+    public int getBidFloor() {
+        return bidFloor;
     }
 
-    public void setMaxduration(int maxduration) {
-        this.maxduration = maxduration;
+    public void setBidFloor(int bidFloor) {
+        this.bidFloor = bidFloor;
     }
 
-    public int getMinduration() {
-        return minduration;
+    public int getBidType() {
+        return bidType;
     }
 
-    public void setMinduration(int minduration) {
-        this.minduration = minduration;
+    public void setBidType(int bidType) {
+        this.bidType = bidType;
     }
 
-    public List<String> getMimes() {
-        return mimes;
+    public long getBlockId() {
+        return blockId;
     }
 
-    public void setMimes(List<String> mimes) {
-        this.mimes = mimes;
+    public void setBlockId(long blockId) {
+        this.blockId = blockId;
     }
 
-    public int getBlockid() {
-        return blockid;
+    public String getAdspaceKey() {
+        return adspaceKey;
     }
 
-    public void setBlockid(int blockid) {
-        this.blockid = blockid;
-    }
-
-    public int getBidtype() {
-        return bidtype;
-    }
-
-    public void setBidtype(int bidtype) {
-        this.bidtype = bidtype;
-    }
-
-    public int getBidfloor() {
-        return bidfloor;
-    }
-
-    public void setBidfloor(int bidfloor) {
-        this.bidfloor = bidfloor;
-    }
-
-    public int getLinearity() {
-        return linearity;
-    }
-
-    public void setLinearity(int linearity) {
-        this.linearity = linearity;
-    }
-
-    public int getStartdelay() {
-        return startdelay;
-    }
-
-    public void setStartdelay(int startdelay) {
-        this.startdelay = startdelay;
+    public void setAdspaceKey(String adspaceKey) {
+        this.adspaceKey = adspaceKey;
     }
 }

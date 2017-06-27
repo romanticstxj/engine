@@ -96,8 +96,8 @@ public abstract class DSPBaseHandler {
             impression.setId(mediaBidBuilder.getImpid());
 
             if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                impression.setBidfloor(plcmtMetaData.getBidfloor());
-                impression.setBidtype(plcmtMetaData.getBidtype());
+                impression.setBidfloor(plcmtMetaData.getBidFloor());
+                impression.setBidtype(plcmtMetaData.getBidType());
             } else {
                 impression.setBidfloor(0);
                 impression.setBidtype(Constant.BidType.CPM);
@@ -119,115 +119,125 @@ public abstract class DSPBaseHandler {
                 impression.setPmp(pmp);
             }
 
-            switch (plcmtMetaData.getType()) {
+            switch (plcmtMetaData.getAdType()) {
+                case Constant.PlcmtType.BANNER: {
+                    PlcmtMetaData.Image var = plcmtMetaData.getBanner();
+                    BidRequest.Impression.Banner.Builder banner = BidRequest.Impression.Banner.newBuilder();
+                    banner.setLayout(plcmtMetaData.getLayout());
+                    banner.setW(var.getW());
+                    banner.setH(var.getH());
+                    banner.addAllMimes(var.getMimes());
+                    impression.setBanner(banner);
+                    break;
+                }
+
                 case Constant.PlcmtType.VIDEO: {
+                    PlcmtMetaData.Video var = plcmtMetaData.getVideo();
                     BidRequest.Impression.Video.Builder video = BidRequest.Impression.Video.newBuilder();
-                    video.setW(plcmtMetaData.getW());
-                    video.setH(plcmtMetaData.getH());
-                    video.setLinearity(plcmtMetaData.getLinearity());
-                    video.setStartdelay(plcmtMetaData.getStartdelay());
-                    video.setMinduration(plcmtMetaData.getMinduration());
-                    video.setMaxduration(plcmtMetaData.getMaxduration());
-                    video.addAllMimes(plcmtMetaData.getMimes());
+                    video.setW(var.getW());
+                    video.setH(var.getH());
+                    video.setLinearity(var.getLinearity());
+                    video.setStartdelay(var.getStartDelay());
+                    video.setMinduration(var.getMinDuraion());
+                    video.setMaxduration(var.getMaxDuration());
+                    video.addAllMimes(var.getMimes());
                     impression.setVideo(video);
                     break;
                 }
 
                 case Constant.PlcmtType.NATIVE: {
-                    BidRequest.Impression.Native.Builder vnative =BidRequest.Impression.Native.newBuilder();
-                    vnative.setVer("1.1");
+                    BidRequest.Impression.Native.Builder natives =BidRequest.Impression.Native.newBuilder();
+                    natives.setVer("1.1");
                     BidRequest.Impression.Native.NativeRequest.Builder nativeRequest = BidRequest.Impression.Native.NativeRequest.newBuilder();
                     nativeRequest.setPlcmtcnt(1);
                     nativeRequest.setLayout(plcmtMetaData.getLayout());
 
                     int id = 1;
-                    if (plcmtMetaData.getIcon() > 0) {
+                    PlcmtMetaData.Native var1 = plcmtMetaData.getNatives();
+                    if (var1.getIcon() != null) {
+                        PlcmtMetaData.Image icon = var1.getIcon();
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.ICON);
-                        image.setW(128);
-                        image.setH(128);
-                        image.addMimes("image/png");
-                        image.addMimes("image/jpeg");
+                        image.setW(icon.getW());
+                        image.setH(icon.getH());
+                        image.addAllMimes(icon.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setRequired(true);
                         asset.setImage(image);
                         nativeRequest.addAssets(asset);
                     }
 
-                    if (plcmtMetaData.getTitle() >= 0) {
+                    if (var1.getCover() != null) {
+                        PlcmtMetaData.Image cover = var1.getCover();
+                        BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
+                        BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
+                        image.setType(Constant.NativeImageType.COVER);
+                        image.setW(cover.getW());
+                        image.setH(cover.getH());
+                        image.addAllMimes(cover.getMimes());
+                        asset.setId(Integer.toString(id++));
+                        asset.setRequired(true);
+                        asset.setImage(image);
+                        nativeRequest.addAssets(asset);
+                    }
+
+                    if (var1.getTitle() >= 0) {
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         BidRequest.Impression.Native.NativeRequest.Asset.Title.Builder title = BidRequest.Impression.Native.NativeRequest.Asset.Title.newBuilder();
-                        title.setLen(plcmtMetaData.getTitle());
+                        title.setLen(var1.getTitle());
                         asset.setId(Integer.toString(id++));
                         asset.setRequired(true);
                         asset.setTitle(title);
                         nativeRequest.addAssets(asset);
                     }
 
-                    if (plcmtMetaData.getDesc() >= 0) {
+                    if (var1.getDesc() >= 0) {
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder data = BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
                         data.setType(Constant.NativeDescType.DESC);
-                        data.setLen(plcmtMetaData.getDesc());
+                        data.setLen(var1.getDesc());
                         asset.setId(Integer.toString(id++));
                         asset.setRequired(true);
                         asset.setData(data);
                         nativeRequest.addAssets(asset);
                     }
 
-                    if (plcmtMetaData.getCover() > 0) {
-                        BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
-                        BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
-                        image.setType(Constant.NativeImageType.COVER);
-                        image.setW(plcmtMetaData.getW());
-                        image.setH(plcmtMetaData.getH());
-                        image.addMimes("image/png");
-                        image.addMimes("image/jpeg");
-                        asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
-                        asset.setImage(image);
-                        nativeRequest.addAssets(asset);
-                    }
+
 
                     if (plcmtMetaData.getLayout() == Constant.NativeLayout.VIDEO) {
+                        PlcmtMetaData.Video var2 = var1.getVideo();
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         BidRequest.Impression.Native.NativeRequest.Asset.Video.Builder video = BidRequest.Impression.Native.NativeRequest.Asset.Video.newBuilder();
-                        video.setW(plcmtMetaData.getW());
-                        video.setH(plcmtMetaData.getH());
-                        video.addMimes("video/mp4");
-                        video.addMimes("video/x-flv");
-                        video.setMinduration(plcmtMetaData.getMinduration());
-                        video.setMaxduration(plcmtMetaData.getMaxduration());
+                        video.setW(var2.getW());
+                        video.setH(var2.getH());
+                        video.addAllMimes(var2.getMimes());
+                        video.setMinduration(var2.getMinDuraion());
+                        video.setMaxduration(var2.getMaxDuration());
                         asset.setId(Integer.toString(id++));
                         asset.setRequired(true);
                         asset.setVideo(video);
                         nativeRequest.addAssets(asset);
                     } else {
+                        PlcmtMetaData.Image var2 = var1.getImage();
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.MAIN);
-                        image.setW(plcmtMetaData.getW());
-                        image.setH(plcmtMetaData.getH());
-                        image.addAllMimes(plcmtMetaData.getMimes());
+                        image.setW(var2.getW());
+                        image.setH(var2.getH());
+                        image.addAllMimes(var2.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setRequired(true);
                         asset.setImage(image);
                         nativeRequest.addAssets(asset);
                     }
 
-                    vnative.setRequest(nativeRequest);
-                    impression.setNative(vnative);
+                    natives.setRequest(nativeRequest);
+                    impression.setNative(natives);
                     break;
                 }
 
                 default: {
-                    BidRequest.Impression.Banner.Builder banner = BidRequest.Impression.Banner.newBuilder();
-                    banner.setLayout(plcmtMetaData.getLayout());
-                    banner.setW(plcmtMetaData.getW());
-                    banner.setH(plcmtMetaData.getH());
-                    banner.addAllMimes(plcmtMetaData.getMimes());
-                    impression.setBanner(banner);
                     break;
                 }
             }
@@ -325,7 +335,7 @@ public abstract class DSPBaseHandler {
             PremiumMADDataModel.DSPBid.DSPRequest.Builder dspRequest = PremiumMADDataModel.DSPBid.DSPRequest.newBuilder()
                     .setId(StringUtil.getUUID())
                     .setImpid(mediaBidBuilder.getImpid())
-                    .setAdtype(plcmtMetaData.getType())
+                    .setAdtype(plcmtMetaData.getAdType())
                     .setLayout(plcmtMetaData.getLayout())
                     .setTagid(plcmtMetaData.getAdspaceKey())
                     .setDealid(policyMetaData.getDealId())

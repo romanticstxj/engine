@@ -229,11 +229,11 @@ public class WorkThread {
         mediaRequest.setLocation(location);
 
         //bidfloor, bidtype
-        mediaRequest.setBidfloor(plcmtMetaData.getBidfloor());
-        mediaRequest.setBidtype(plcmtMetaData.getBidtype());
+        mediaRequest.setBidfloor(plcmtMetaData.getBidFloor());
+        mediaRequest.setBidtype(plcmtMetaData.getBidType());
 
         //get block metadata
-        long blockid = plcmtMetaData.getBlockid();
+        long blockid = plcmtMetaData.getBlockId();
         AdBlockMetaData adBlockMetaData = null;
         if (blockid > 0) {
             adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(blockid);
@@ -295,7 +295,7 @@ public class WorkThread {
                     HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
                     if (httpResponse != null) {
                         if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
-                            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
+                            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidFloor()) {
                                 bidDspList.add(Pair.of(dspMetaData, dspBidMetaData));
                             }
                         }
@@ -545,7 +545,7 @@ public class WorkThread {
                 }
             });
 
-            int price = plcmtMetaData.getBidfloor();
+            int price = plcmtMetaData.getBidFloor();
             if (bidDspList.size() >= 2) {
                 DSPBidMetaData dspBidMetaData = bidDspList.get(1).getRight();
                 price = dspBidMetaData.getPrice();
