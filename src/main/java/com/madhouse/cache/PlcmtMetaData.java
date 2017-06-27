@@ -24,6 +24,7 @@ public class PlcmtMetaData {
     private int bidType;
 
     private String adspaceKey;
+    private int status;
 
     public class Image {
         private int w;
@@ -280,5 +281,13 @@ public class PlcmtMetaData {
 
     public void setAdspaceKey(String adspaceKey) {
         this.adspaceKey = adspaceKey;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

@@ -205,6 +205,11 @@ public class WorkThread {
             return;
         }
 
+        if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
+            resp.setStatus(Constant.StatusCode.NO_CONTENT);
+            return;
+        }
+
         //init mediaid, adspaceid
         mediaRequest.setMediaid(mediaMetaData.getId());
         mediaRequest.setAdspaceid(plcmtMetaData.getId());
