@@ -9,9 +9,23 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 
 public final class Constant {
 
-    public static final class RedisKey {
+    public static final class CommonKey {
         public static final String BID_RECORD = "str:%s:%s:%s:%s:bidrecord";
+
         public static final String TARGET_KEY = "set:%d:%s:policys";
+
+        public static final String MEDIA_META_DATA = "str:media_meta_data";
+        public static final String PLACEMENT_META_DATA = "str:plcmt_meta_data";
+        public static final String ADBLOCK_META_DATA = "str:adblock_meta_data";
+        public static final String POLICY_META_DATA = "str:policy_meta_data";
+        public static final String DSP_META_DATA = "str:dsp_meta_data";
+        public static final String MEDIA_MAPPING_DATA = "str:media_mapping_data";
+        public static final String DSP_MAPPING_DATA = "str:dsp_mapping_data";
+
+        public static final String POLICY_CONTORL_TOTAL = "str:%d:policy_total";
+        public static final String POLICY_CONTORL_DAY = "str:%d:%s:policy_day";
+
+        public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
     }
 
     public static final class StatusCode {
@@ -164,9 +178,15 @@ public final class Constant {
 
     public static final class TargetType {
         public static final int PLACEMENT = 1;
-        public static final int WEEK_TIME = 2;
+        public static final int WEEK_HOUR = 2;
         public static final int LOCATION = 4;
         public static final int OS = 8;
         public static final int CONNECTION_TYPE = 16;
+    }
+
+    public static final class PolicyControlType {
+        public static final int NULL = 0;
+        public static final int TOTAL = 1;
+        public static final int DAY = 2;
     }
 }

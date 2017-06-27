@@ -15,11 +15,11 @@ public class PolicyMetaData {
     private int weight;
     private String dealId;
 
-    private String startdate;
-    private String enddate;
+    private String startDate;
+    private String endDate;
 
     //targeting info
-    private Map<Integer, List<Integer>> weekday;
+    private Map<Integer, List<Integer>> weekHours;
     private List<String> location;
     private List<Integer> os;
     private List<Integer> connectionType;
@@ -33,6 +33,8 @@ public class PolicyMetaData {
 
     private int bidFloor;
     private int bidType;
+
+    private int status;
 
     public class PlcmtInfo {
         private long id;
@@ -118,28 +120,28 @@ public class PolicyMetaData {
         this.dealId = dealId;
     }
 
-    public String getStartdate() {
-        return startdate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStartdate(String startdate) {
-        this.startdate = startdate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public String getEnddate() {
-        return enddate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setEnddate(String enddate) {
-        this.enddate = enddate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public Map<Integer, List<Integer>> getWeekday() {
-        return weekday;
+    public Map<Integer, List<Integer>> getWeekHours() {
+        return weekHours;
     }
 
-    public void setWeekday(Map<Integer, List<Integer>> weekday) {
-        this.weekday = weekday;
+    public void setWeekHours(Map<Integer, List<Integer>> weekHours) {
+        this.weekHours = weekHours;
     }
 
     public List<String> getLocation() {
@@ -221,5 +223,13 @@ public class PolicyMetaData {
 
     public void setDspInfoMap(Map<Long, DSPInfo> dspInfoMap) {
         this.dspInfoMap = dspInfoMap;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

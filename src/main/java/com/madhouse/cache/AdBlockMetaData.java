@@ -9,6 +9,7 @@ public class AdBlockMetaData {
     private long id;
     private List<String> badv;
     private List<String> bcat;
+    private int status;
 
     public List<String> getBadv() {
         return badv;
@@ -24,5 +25,21 @@ public class AdBlockMetaData {
 
     public void setBcat(List<String> bcat) {
         this.bcat = bcat;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

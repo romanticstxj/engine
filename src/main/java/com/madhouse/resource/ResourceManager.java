@@ -18,25 +18,31 @@ import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
-import com.madhouse.util.StringUtil;
+import redis.clients.jedis.JedisPool;
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class ResourceManager {
     private KafkaProducer kafkaProducer;
+    private JedisPool jedisPoolMaster;
+    private JedisPool jedisPoolSlave;
+
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
+
     private final ArrayList<Pair<Long, String>> iptables = this.loadLocations();
     private final Premiummad premiummad = JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
+
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
     public static ResourceManager getInstance() {
         return resourceManager;
     }
+
     public ArrayList loadLocations() {
         try {
-            ArrayList<Pair<Long, String>> iptables = new ArrayList<>();
+            ArrayList<Pair<Long, String>> iptables = new ArrayList<Pair<Long, String>>();
             File file = new File(ResourceManager.class.getClassLoader().getResource("locations.dat").getPath());
 
             if (file.isFile() && file.exists()) {
@@ -68,7 +74,6 @@ public class ResourceManager {
     public boolean init()
     {
         this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);
-
         for (Bid bid : premiummad.getWebapp().getBids())
         {
 			if (!StringUtils.isEmpty(bid.getApiClass())) {
@@ -113,14 +118,35 @@ public class ResourceManager {
         return null;
     }
 
-    public Premiummad getPremiummad()
-    {
+    public Premiummad getPremiummad() {
         return this.premiummad;
     }
+
     public DSPBaseHandler getDSPHandler(int apiType) {
         return this.dspBaseHandlerMap.get(apiType);
     }
+
     public MediaBaseHandler getMediaApiType(String url) {
         return this.mediaApiType.get(url);
+    }
+
+    public JedisPool getJedisPoolMaster() {
+        return jedisPoolMaster;
+    }
+
+    public void setJedisPoolMaster(JedisPool jedisPoolMaster) {
+        this.jedisPoolMaster = jedisPoolMaster;
+    }
+
+    public JedisPool getJedisPoolSlave() {
+        return jedisPoolSlave;
+    }
+
+    public void setJedisPoolSlave(JedisPool jedisPoolSlave) {
+        this.jedisPoolSlave = jedisPoolSlave;
+    }
+
+    public void setKafkaProducer(KafkaProducer kafkaProducer) {
+        this.kafkaProducer = kafkaProducer;
     }
 }

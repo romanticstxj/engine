@@ -16,10 +16,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -30,6 +32,8 @@ import java.util.concurrent.Executors;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class WorkThread {
+    private Jedis redisMaster = null;
+    private Jedis redisSlave = null;
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
     private HttpClient winNoticeHttpClient = new HttpClient();
     private ExecutorService winNoticeService = Executors.newCachedThreadPool();
@@ -58,7 +62,7 @@ public class WorkThread {
             }
 
             //bid redis check
-            String key = String.format(Constant.RedisKey.BID_RECORD, impid, mid, plcmtid, policyid);
+            String key = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
             if (key.isEmpty()) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
@@ -114,7 +118,7 @@ public class WorkThread {
             }
 
             //bid redis check
-            String key = String.format(Constant.RedisKey.BID_RECORD, impid, mid, plcmtid, policyid);
+            String key = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
             if (key.isEmpty()) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
@@ -163,6 +167,8 @@ public class WorkThread {
     }
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
+        this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+        this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
         MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
         if (mediaBaseHandler == null) {
@@ -271,6 +277,16 @@ public class WorkThread {
             for (PolicyMetaData.DSPInfo dspInfo : policyMetaData.getDspInfoList()) {
                 DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspInfo.getId());
                 if (dspInfo.getStatus() > 0 && dspMetaData.getStatus() > 0) {
+
+                    //QPS Contorl
+                    String qpsKey = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
+
+                    this.redisMaster.set(qpsKey, "0", "NX", "EX", 3);
+                    long totalCount = this.redisMaster.incrBy(qpsKey, 1);
+                    if (totalCount >= dspMetaData.getMaxQPS()) {
+                        continue;
+                    }
+
                     DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
 
                     PremiumMADDataModel.DSPBid.Builder dspBidBuilder = PremiumMADDataModel.DSPBid.newBuilder();
@@ -290,7 +306,24 @@ public class WorkThread {
                 }
             }
 
-            if (this.multiHttpClient.execute()) {
+            if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
+                if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {
+                    if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                        long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
+                        if (count >= policyMetaData.getMaxCount()) {
+                            CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                        }
+                    } else {
+                        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAY, policyMetaData.getId(), currentDate));
+                        long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
+                        if (count >= policyMetaData.getMaxCount()) {
+                            CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                        }
+                    }
+                }
+
                 List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList = new LinkedList<Pair<DSPMetaData, DSPBidMetaData>>();
                 for (Map.Entry entry : selectedDspList.entrySet()) {
                     Pair<DSPMetaData, DSPBidMetaData> dspInfo = (Pair<DSPMetaData, DSPBidMetaData>)entry.getValue();
@@ -328,11 +361,11 @@ public class WorkThread {
                                     }
                                 });
                             }
-
-                            return;
                         }
                     }
                 }
+
+                break;
             }
 
             selectedPolicys.remove(policyMetaData);
@@ -446,7 +479,7 @@ public class WorkThread {
             int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
             info.add(String.format("%d%02d", weekday, hour));
-            targetInfo.add(Pair.of(Constant.TargetType.WEEK_TIME, info));
+            targetInfo.add(Pair.of(Constant.TargetType.WEEK_HOUR, info));
         }
 
         //location
@@ -476,13 +509,13 @@ public class WorkThread {
         for (Pair<Integer, List<String>> info : targetInfo) {
             List<Set<Long>> policys = new LinkedList<>();
 
-            Set<Long> policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.RedisKey.TARGET_KEY, info.getLeft(), ""));
+            Set<Long> policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.CommonKey.TARGET_KEY, info.getLeft(), ""));
             if (policy != null) {
                 policys.add(policy);
             }
 
             for (String key : info.getRight()) {
-                policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.RedisKey.TARGET_KEY, info.getLeft(), key));
+                policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.CommonKey.TARGET_KEY, info.getLeft(), key));
                 if (policy != null) {
                     policys.add(policy);
                 }
@@ -491,7 +524,7 @@ public class WorkThread {
             targetPolicy.add(SetUtil.multiSetUnion(policys));
         }
 
-        return new LinkedList<>(SetUtil.multiSetInter(targetPolicy));
+        return new LinkedList<>(SetUtil.setDiff(SetUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
     }
 
     private void internalError(HttpServletResponse resp, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, int statusCode) {
