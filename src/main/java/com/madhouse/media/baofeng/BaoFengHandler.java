@@ -24,7 +24,7 @@ import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest;
 import com.madhouse.util.ObjectUtils;
 
 public class BaoFengHandler extends MediaBaseHandler {
-    
+    // TODO
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         resp.setStatus(Constant.StatusCode.OK);
@@ -53,17 +53,15 @@ public class BaoFengHandler extends MediaBaseHandler {
                     return false;
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
 
-        // TODO 自动生成的方法存根
         return true;
     }
-
+    // TODO
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
 
@@ -153,7 +151,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         if (StringUtils.isEmpty(baoFengResponse.getTarget()) || StringUtils.isEmpty(baoFengResponse.getImg().getSrc()) || ObjectUtils.isEmpty(baoFengResponse.getClick())
             || ObjectUtils.isEmpty(baoFengResponse.getPv()))
             return null;
-        logger.debug("BaoFeng request params is : {}", JSON.toJSONString(baoFengResponse));
+        logger.info("BaoFeng Response params is : {}", JSON.toJSONString(baoFengResponse));
         return baoFengResponse;
         
     }
@@ -385,7 +383,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         mediaRequest.setModel(device.getModel() != null ? device.getModel() : "");
         // mac地址
         mediaRequest.setMac(device.getMac() != null ? device.getMac() : "");
-        
+        logger.info("BaoFeng request params is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();
         
     }
