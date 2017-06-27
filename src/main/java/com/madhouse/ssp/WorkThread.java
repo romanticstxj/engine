@@ -262,7 +262,7 @@ public class WorkThread {
         while ((policyMetaData = Utility.randomWithWeights(selectedPolicys)) != null) {
             this.multiHttpClient.reset();
 
-            Map<Long, Pair<DSPMetaData, DSPBidMetaData>> selectedDSPList = new HashMap<>();
+            Map<Long, Pair<DSPMetaData, DSPBidMetaData>> selectedDspList = new HashMap<>();
             for (PolicyMetaData.DSPInfo dspInfo : policyMetaData.getDspInfoList()) {
                 DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspInfo.getId());
                 if (dspInfo.getStatus() > 0 && dspMetaData.getStatus() > 0) {
@@ -280,14 +280,14 @@ public class WorkThread {
                         httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
                         this.multiHttpClient.addHttpClient(httpClient);
                         dspBidMetaData.setHttpRequestBase(httpRequestBase);
-                        selectedDSPList.put(dspInfo.getId(), Pair.of(dspMetaData, dspBidMetaData));
+                        selectedDspList.put(dspInfo.getId(), Pair.of(dspMetaData, dspBidMetaData));
                     }
                 }
             }
 
             if (this.multiHttpClient.execute()) {
                 List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList = new LinkedList<Pair<DSPMetaData, DSPBidMetaData>>();
-                for (Map.Entry entry : selectedDSPList.entrySet()) {
+                for (Map.Entry entry : selectedDspList.entrySet()) {
                     Pair<DSPMetaData, DSPBidMetaData> dspInfo = (Pair<DSPMetaData, DSPBidMetaData>)entry.getValue();
                     DSPMetaData dspMetaData = dspInfo.getLeft();
                     DSPBidMetaData dspBidMetaData = dspInfo.getRight();
@@ -538,7 +538,23 @@ public class WorkThread {
                                                                    List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList) {
         Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = null;
 
-        if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
+        if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
+            List<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>> selectedDspList = new LinkedList<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>>();
+            Map<Long, PolicyMetaData.DSPInfo> dspInfoMap = policyMetaData.getDspInfoMap();
+
+            for (Pair<DSPMetaData, DSPBidMetaData> entry : bidDspList) {
+                DSPMetaData dspMetaData = (DSPMetaData)entry.getLeft();
+                int weight = dspInfoMap.get(dspMetaData.getId()).getWeight();
+                if (weight > 0) {
+                    selectedDspList.add(Pair.of(Pair.of(dspMetaData, entry.getRight()), weight));
+                }
+            }
+
+            if (!selectedDspList.isEmpty()) {
+                Pair<DSPMetaData, DSPBidMetaData> selected = Utility.randomWithWeights(selectedDspList);
+                winner = Pair.of(selected.getLeft(), Pair.of(selected.getRight(), 0));
+            }
+        } else {
             bidDspList.sort(new Comparator<Pair<DSPMetaData, DSPBidMetaData>>() {
                 public int compare(Pair<DSPMetaData, DSPBidMetaData> o1, Pair<DSPMetaData, DSPBidMetaData> o2) {
                     return o1.getRight().getPrice() > o2.getRight().getPrice() ? 1 : -1;
@@ -552,21 +568,6 @@ public class WorkThread {
             }
 
             winner = Pair.of(bidDspList.get(0).getLeft(), Pair.of(bidDspList.get(0).getRight(), price + 1));
-        } else {
-            List<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>> selectedDSP = new LinkedList<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>>();
-            Map<Long, PolicyMetaData.DSPInfo> dspInfoMap = policyMetaData.getDspInfoMap();
-            for (Pair<DSPMetaData, DSPBidMetaData> entry : bidDspList) {
-                DSPMetaData dspMetaData = (DSPMetaData)entry.getLeft();
-                int weight = dspInfoMap.get(dspMetaData.getId()).getWeight();
-                if (weight > 0) {
-                    selectedDSP.add(Pair.of(Pair.of(dspMetaData, entry.getRight()), weight));
-                }
-            }
-
-            if (!selectedDSP.isEmpty()) {
-                Pair<DSPMetaData, DSPBidMetaData> selected = Utility.randomWithWeights(selectedDSP);
-                winner = Pair.of(selected.getLeft(), Pair.of(selected.getRight(), 0));
-            }
         }
 
         return winner;
