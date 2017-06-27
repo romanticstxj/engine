@@ -32,48 +32,57 @@ public class SetUtil {
         return result;
     }
 
-    public static Set<Long> multiSetInter(List<Set<Long>> var1) {
+    public static Set<Long> multiSetInter(List<Set<Long>> list) {
         Set<Long> result = null;
-        if (!var1.isEmpty()) {
-            for (Set<Long> var2 : var1) {
+
+        if (!list.isEmpty()) {
+            for (Set<Long> var : list) {
                 if (result != null) {
-                    result = SetUtil.setInter(result, var2);
+                    result = SetUtil.setInter(result, var);
                 } else {
-                    result = var2;
+                    result = var;
                 }
             }
+        } else {
+            result = new HashSet<>();
         }
 
-        return null;
+        return result;
     }
 
-    public static Set<Long> multiSetUnion(List<Set<Long>> var1) {
+    public static Set<Long> multiSetUnion(List<Set<Long>> list) {
         Set<Long> result = null;
-        if (!var1.isEmpty()) {
-            for (Set<Long> var2 : var1) {
+
+        if (!list.isEmpty()) {
+            for (Set<Long> var : list) {
                 if (result != null) {
-                    result = SetUtil.setUnion(result, var2);
+                    result = SetUtil.setUnion(result, var);
                 } else {
-                    result = var2;
+                    result = var;
                 }
             }
+        } else {
+            result = new HashSet<>();
         }
 
-        return null;
+        return result;
     }
 
-    public static Set<Long> multiSetDiff(List<Set<Long>> var1) {
+    public static Set<Long> multiSetDiff(List<Set<Long>> list) {
         Set<Long> result = null;
-        if (!var1.isEmpty()) {
-            for (Set<Long> var2 : var1) {
+
+        if (!list.isEmpty()) {
+            for (Set<Long> var : list) {
                 if (result != null) {
-                    result = SetUtil.setDiff(result, var2);
+                    result = SetUtil.setDiff(result, var);
                 } else {
-                    result = var2;
+                    result = var;
                 }
             }
+        } else {
+            result = new HashSet<>();
         }
 
-        return null;
+        return result;
     }
 }

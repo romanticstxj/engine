@@ -1,5 +1,8 @@
 package com.madhouse.cache;
 
+import org.eclipse.jetty.util.ConcurrentHashSet;
+
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -16,8 +19,8 @@ public class CacheManager implements Runnable {
     //dspid, <adspaceId, DSPMappingMetaData>
     private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
 
-    
-    
+    private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<>();
+
     private CacheManager(){};
     private static CacheManager cacheManager = new CacheManager();
     public static CacheManager getInstance() {
@@ -25,10 +28,19 @@ public class CacheManager implements Runnable {
     }
 
     public boolean init() {
-       
-       
-
         return true;
+    }
+
+    public HashSet<Long> getPolicyTargetInfo(String key) {
+        return policyTargetMap.get(key);
+    }
+
+    public ConcurrentHashMap<String, HashSet<Long>> getPolicyTargetMap() {
+        return policyTargetMap;
+    }
+
+    public void setPolicyTargetMap(ConcurrentHashMap<String, HashSet<Long>> policyTargetMap) {
+        this.policyTargetMap = policyTargetMap;
     }
 
     public MediaMappingMetaData getMediaMapping(long adspaceId) {

@@ -6,6 +6,7 @@ import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.util.HttpUtil;
+import com.madhouse.util.SetUtil;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
 import com.madhouse.util.httpclient.MultiHttpClient;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -404,8 +406,69 @@ public class WorkThread {
     }
 
     private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.MediaRequest mediaRequest) {
-        List<Long> policyList = new LinkedList<Long>();
-        return policyList;
+        List<Pair<Integer, List<String>>> targetInfo = new LinkedList<>();
+
+        //placement
+        {
+            List<String> info = new LinkedList<>();
+            info.add(Long.toString(mediaRequest.getAdspaceid()));
+            targetInfo.add(Pair.of(Constant.TargetType.PLACEMENT, info));
+        }
+
+        //week time
+        {
+            List<String> info = new LinkedList<>();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            info.add(String.format("%d%02d", weekday, hour));
+            targetInfo.add(Pair.of(Constant.TargetType.WEEK_TIME, info));
+        }
+
+        //location
+        {
+            List<String> info = new LinkedList<>();
+            info.add(mediaRequest.getLocation().substring(0, 4) + "*");
+            info.add(mediaRequest.getLocation().substring(0, 6) + "*");
+            info.add(mediaRequest.getLocation());
+            targetInfo.add(Pair.of(Constant.TargetType.LOCATION, info));
+        }
+
+        //os
+        {
+            List<String> info = new LinkedList<>();
+            info.add(Integer.toString(mediaRequest.getOs()));
+            targetInfo.add(Pair.of(Constant.TargetType.OS, info));
+        }
+
+        //connection type
+        {
+            List<String> info = new LinkedList<>();
+            info.add(Integer.toString(mediaRequest.getConnectiontype()));
+            targetInfo.add(Pair.of(Constant.TargetType.CONNECTION_TYPE, info));
+        }
+
+        List<Set<Long>> targetPolicy = new LinkedList<>();
+        for (Pair<Integer, List<String>> info : targetInfo) {
+            List<Set<Long>> policys = new LinkedList<>();
+
+            Set<Long> policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.RedisKey.TARGET_KEY, info.getLeft(), ""));
+            if (policy != null) {
+                policys.add(policy);
+            }
+
+            for (String key : info.getRight()) {
+                policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.RedisKey.TARGET_KEY, info.getLeft(), key));
+                if (policy != null) {
+                    policys.add(policy);
+                }
+            }
+
+            targetPolicy.add(SetUtil.multiSetUnion(policys));
+        }
+
+        return new LinkedList<>(SetUtil.multiSetInter(targetPolicy));
     }
 
     private void internalError(HttpServletResponse resp, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, int statusCode) {

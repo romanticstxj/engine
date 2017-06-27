@@ -10,7 +10,8 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 public final class Constant {
 
     public static final class RedisKey {
-        public static final String BID_RECORD = "bid:%s:%s:%s:%s:record";
+        public static final String BID_RECORD = "str:%s:%s:%s:%s:bidrecord";
+        public static final String TARGET_KEY = "set:%d:%s:policys";
     }
 
     public static final class StatusCode {
@@ -40,7 +41,8 @@ public final class Constant {
     public static final class DeliveryType {
         public static final int PDB = 1;
         public static final int PD = 2;
-        public static final int RTB = 4;
+        public static final int PMP = 4;
+        public static final int RTB = 8;
     }
 
     public static final class MediaType {
@@ -158,5 +160,13 @@ public final class Constant {
         public static final String WINNOTICE = "winnotice";
         public static final String IMPRESSION = "impression";
         public static final String CLICK = "click";
+    }
+
+    public static final class TargetType {
+        public static final int PLACEMENT = 1;
+        public static final int WEEK_TIME = 2;
+        public static final int LOCATION = 4;
+        public static final int OS = 8;
+        public static final int CONNECTION_TYPE = 16;
     }
 }
