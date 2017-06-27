@@ -24,7 +24,7 @@ public class PolicyMetaData {
     private List<Integer> os;
     private List<Integer> connectionType;
 
-    private List<Long> adspaceList;
+    private List<PlcmtInfo> adspaceList;
     private List<DSPInfo> dspInfoList;
     private Map<Long, DSPInfo> dspInfoMap;
 
@@ -33,6 +33,27 @@ public class PolicyMetaData {
 
     private int bidFloor;
     private int bidType;
+
+    public class PlcmtInfo {
+        private long id;
+        private int status;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+    }
 
     public class DSPInfo {
         private long id;
@@ -145,11 +166,11 @@ public class PolicyMetaData {
         this.connectionType = connectionType;
     }
 
-    public List<Long> getAdspaceList() {
+    public List<PlcmtInfo> getAdspaceList() {
         return adspaceList;
     }
 
-    public void setAdspaceList(List<Long> adspaceList) {
+    public void setAdspaceList(List<PlcmtInfo> adspaceList) {
         this.adspaceList = adspaceList;
     }
 

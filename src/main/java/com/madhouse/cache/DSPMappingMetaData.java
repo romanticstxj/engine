@@ -8,7 +8,7 @@ public class DSPMappingMetaData {
     private long dspId;
     private String mappingKey;
     private String dspMediaId;
-    private int osType;
+    private int os;
 
     public long getAdspaceId() {
         return adspaceId;
@@ -42,11 +42,11 @@ public class DSPMappingMetaData {
         this.dspMediaId = dspMediaId;
     }
 
-    public int getOsType() {
-        return osType;
+    public int getOs() {
+        return os;
     }
 
-    public void setOsType(int osType) {
-        this.osType = osType;
+    public void setOs(int os) {
+        this.os = os;
     }
 }

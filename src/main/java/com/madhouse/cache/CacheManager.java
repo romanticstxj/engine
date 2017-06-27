@@ -9,23 +9,25 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class CacheManager implements Runnable {
-    private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
-    private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
-    private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
-    private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
-    private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
-    //adspaceId, MediaMappingMetaData
-    private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
-    //dspid, <adspaceId, DSPMappingMetaData>
-    private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
-
-    private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<>();
-
     private CacheManager(){};
     private static CacheManager cacheManager = new CacheManager();
     public static CacheManager getInstance() {
         return cacheManager;
     }
+
+    //metadata
+    private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
+    private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
+    private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
+    private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
+    private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
+
+    //adspaceId, mediaMappingMetaData
+    private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
+    //dspid, <adspaceId, dspMappingMetaData>
+    private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
+    //targeting index
+    private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<>();
 
     public boolean init() {
         return true;
@@ -76,9 +78,6 @@ public class CacheManager implements Runnable {
         return this.policyMetaDataMap.get(id);
     }
 
-    public String getLocation(String ip) {
-        return "";
-    }
     public void run() {
 
     }
