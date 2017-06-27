@@ -243,76 +243,92 @@ public class WorkThread {
             }
         }
 
-        List<Long> policyList = this.policyTargeting(mediaRequest.build());
+        //policy targeting
+        List<Long> policyList = this.policyTargeting(mediaRequest);
         if (policyList == null || policyList.isEmpty()) {
             this.internalError(resp, mediaBidBuilder, Constant.StatusCode.NO_CONTENT);
             return;
         }
 
-        this.multiHttpClient.reset();
-        PolicyMetaData policyMetaData = this.selectPolicy(policyList);
-        Map<Long, Pair<DSPMetaData, DSPBidMetaData>> selectedDSPList = new HashMap<>();
-        for (Map.Entry entry : policyMetaData.getDspList().entrySet()) {
-            long dspid = (Long)entry.getKey();
-            DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspid);
-            if (dspMetaData.getStatus() > 0) {
-                DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
-                PremiumMADDataModel.DSPBid.Builder dspBidBuilder = PremiumMADDataModel.DSPBid.newBuilder();
-                dspBidMetaData.setDspBidBuilder(dspBidBuilder);
-                DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
-                dspBidMetaData.setDspBaseHandler(dspBaseHandler);
-                HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData);
-                if (httpRequestBase != null) {
-                    HttpClient httpClient = dspMetaData.getHttpClient();
-                    httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
-                    this.multiHttpClient.addHttpClient(httpClient);
-                    dspBidMetaData.setHttpRequestBase(httpRequestBase);
-                    selectedDSPList.put(dspid, Pair.of(dspMetaData, dspBidMetaData));
-                }
-            }
+        //get policy detail
+        List<PolicyMetaData> policyMetaDatas = this.getPolicyMetaData(policyList);
+        if (policyMetaDatas == null || policyMetaDatas.isEmpty()) {
+            return;
         }
 
-        if (this.multiHttpClient.execute()) {
-            List<Pair<DSPMetaData, DSPBidMetaData>> bidDSPList = new LinkedList<Pair<DSPMetaData, DSPBidMetaData>>();
-            for (Map.Entry entry : selectedDSPList.entrySet()) {
-                Pair<DSPMetaData, DSPBidMetaData> dspInfo = (Pair<DSPMetaData, DSPBidMetaData>)entry.getValue();
-                DSPMetaData dspMetaData = dspInfo.getLeft();
-                DSPBidMetaData dspBidMetaData = dspInfo.getRight();
-                DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
-                HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
-                if (httpResponse != null) {
-                    if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
-                        if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
-                            bidDSPList.add(Pair.of(dspMetaData, dspBidMetaData));
-                        }
-                    }
-                } else {
-                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
-                }
+        PolicyMetaData policyMetaData = null;
+        List<Pair<PolicyMetaData, Integer>> selectedPolicys = this.selectPolicy(policyMetaDatas);
 
-                dspBidMetaData.getHttpRequestBase().releaseConnection();
-            }
+        while ((policyMetaData = Utility.randomWithWeights(selectedPolicys)) != null) {
+            this.multiHttpClient.reset();
 
-            if (!bidDSPList.isEmpty()) {
-                Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = this.selectWinner(plcmtMetaData, policyMetaData, bidDSPList);
-                if (winner != null) {
-                    DSPBidMetaData dspBidMetaData = winner.getRight().getLeft();
-                    if (this.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
-                        mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
-                        if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                            String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), winner.getLeft(), dspBidMetaData);
-                            final HttpGet httpGet = new HttpGet(url);
-                            final HttpClient httpClient = this.winNoticeHttpClient;
-                            this.winNoticeService.submit(new Runnable() {
-                                public void run() {
-                                    httpClient.execute(httpGet, 150);
-                                    httpGet.releaseConnection();
-                                }
-                            });
-                        }
+            Map<Long, Pair<DSPMetaData, DSPBidMetaData>> selectedDSPList = new HashMap<>();
+            for (PolicyMetaData.DSPInfo dspInfo : policyMetaData.getDspInfoList()) {
+                DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspInfo.getId());
+                if (dspInfo.getStatus() > 0 && dspMetaData.getStatus() > 0) {
+                    DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
+
+                    PremiumMADDataModel.DSPBid.Builder dspBidBuilder = PremiumMADDataModel.DSPBid.newBuilder();
+                    dspBidMetaData.setDspBidBuilder(dspBidBuilder);
+
+                    DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
+                    dspBidMetaData.setDspBaseHandler(dspBaseHandler);
+
+                    HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData);
+                    if (httpRequestBase != null) {
+                        HttpClient httpClient = dspMetaData.getHttpClient();
+                        httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
+                        this.multiHttpClient.addHttpClient(httpClient);
+                        dspBidMetaData.setHttpRequestBase(httpRequestBase);
+                        selectedDSPList.put(dspInfo.getId(), Pair.of(dspMetaData, dspBidMetaData));
                     }
                 }
             }
+
+            if (this.multiHttpClient.execute()) {
+                List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList = new LinkedList<Pair<DSPMetaData, DSPBidMetaData>>();
+                for (Map.Entry entry : selectedDSPList.entrySet()) {
+                    Pair<DSPMetaData, DSPBidMetaData> dspInfo = (Pair<DSPMetaData, DSPBidMetaData>)entry.getValue();
+                    DSPMetaData dspMetaData = dspInfo.getLeft();
+                    DSPBidMetaData dspBidMetaData = dspInfo.getRight();
+                    DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
+                    HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
+                    if (httpResponse != null) {
+                        if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
+                            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidfloor()) {
+                                bidDspList.add(Pair.of(dspMetaData, dspBidMetaData));
+                            }
+                        }
+                    } else {
+                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
+                    }
+
+                    dspBidMetaData.getHttpRequestBase().releaseConnection();
+                }
+
+                if (!bidDspList.isEmpty()) {
+                    Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = this.selectWinner(plcmtMetaData, policyMetaData, bidDspList);
+                    if (winner != null) {
+                        DSPBidMetaData dspBidMetaData = winner.getRight().getLeft();
+                        if (this.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
+                            mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
+                            if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
+                                String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), winner.getLeft(), dspBidMetaData);
+                                final HttpGet httpGet = new HttpGet(url);
+                                final HttpClient httpClient = this.winNoticeHttpClient;
+                                this.winNoticeService.submit(new Runnable() {
+                                    public void run() {
+                                        httpClient.execute(httpGet, 150);
+                                        httpGet.releaseConnection();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            selectedPolicys.remove(policyMetaData);
         }
     }
 
@@ -405,7 +421,7 @@ public class WorkThread {
         return false;
     }
 
-    private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.MediaRequest mediaRequest) {
+    private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
         List<Pair<Integer, List<String>>> targetInfo = new LinkedList<>();
 
         //placement
@@ -481,7 +497,7 @@ public class WorkThread {
         }
     }
 
-    private PolicyMetaData selectPolicy(List<Long> policyList) {
+    private List<PolicyMetaData> getPolicyMetaData(List<Long> policyList) {
 
         List<PolicyMetaData> policyMetaDatas = new LinkedList<PolicyMetaData>();
         for (long policyId : policyList) {
@@ -497,51 +513,58 @@ public class WorkThread {
             }
         });
 
+        return policyMetaDatas;
+    }
+
+    private List<Pair<PolicyMetaData, Integer>> selectPolicy(List<PolicyMetaData> policyMetaDatas) {
+
         int selectType = -1;
-        List<Pair<PolicyMetaData, Integer>> policyMetaList = new LinkedList<Pair<PolicyMetaData, Integer>>();
+        List<Pair<PolicyMetaData, Integer>> selectedPolicys = new LinkedList<>();
         for (PolicyMetaData policyMetaData : policyMetaDatas) {
             if (selectType > 0 && selectType != policyMetaData.getDeliveryType()) {
                 break;
             } else {
-                policyMetaList.add(Pair.of(policyMetaData, policyMetaData.getWeight()));
+                selectType = policyMetaData.getDeliveryType();
+                selectedPolicys.add(Pair.of(policyMetaData, policyMetaData.getWeight()));
+                policyMetaDatas.remove(policyMetaData);
             }
         }
 
-        return (Utility.randomWithWeights(policyMetaList));
+        return selectedPolicys;
     }
 
     private Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> selectWinner(PlcmtMetaData plcmtMetaData,
                                                                    PolicyMetaData policyMetaData,
-                                                                   List<Pair<DSPMetaData, DSPBidMetaData>> bidDSPList) {
+                                                                   List<Pair<DSPMetaData, DSPBidMetaData>> bidDspList) {
         Pair<DSPMetaData, Pair<DSPBidMetaData, Integer>> winner = null;
 
         if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-            bidDSPList.sort(new Comparator<Pair<DSPMetaData, DSPBidMetaData>>() {
+            bidDspList.sort(new Comparator<Pair<DSPMetaData, DSPBidMetaData>>() {
                 public int compare(Pair<DSPMetaData, DSPBidMetaData> o1, Pair<DSPMetaData, DSPBidMetaData> o2) {
                     return o1.getRight().getPrice() > o2.getRight().getPrice() ? 1 : -1;
                 }
             });
 
             int price = plcmtMetaData.getBidfloor();
-            if (bidDSPList.size() >= 2) {
-                DSPBidMetaData dspBidMetaData = bidDSPList.get(1).getRight();
+            if (bidDspList.size() >= 2) {
+                DSPBidMetaData dspBidMetaData = bidDspList.get(1).getRight();
                 price = dspBidMetaData.getPrice();
             }
 
-            winner = Pair.of(bidDSPList.get(0).getLeft(), Pair.of(bidDSPList.get(0).getRight(), price + 1));
+            winner = Pair.of(bidDspList.get(0).getLeft(), Pair.of(bidDspList.get(0).getRight(), price + 1));
         } else {
-            List<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>> dspList = new LinkedList<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>>();
-            Map<Long, Integer> dsplist = policyMetaData.getDspList();
-            for (Pair<DSPMetaData, DSPBidMetaData> entry : bidDSPList) {
+            List<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>> selectedDSP = new LinkedList<Pair<Pair<DSPMetaData, DSPBidMetaData>, Integer>>();
+            Map<Long, PolicyMetaData.DSPInfo> dspInfoMap = policyMetaData.getDspInfoMap();
+            for (Pair<DSPMetaData, DSPBidMetaData> entry : bidDspList) {
                 DSPMetaData dspMetaData = (DSPMetaData)entry.getLeft();
-                int weight = dsplist.get(dspMetaData.getId());
+                int weight = dspInfoMap.get(dspMetaData.getId()).getWeight();
                 if (weight > 0) {
-                    dspList.add(Pair.of(Pair.of(dspMetaData, entry.getRight()), weight));
+                    selectedDSP.add(Pair.of(Pair.of(dspMetaData, entry.getRight()), weight));
                 }
             }
 
-            if (!dspList.isEmpty()) {
-                Pair<DSPMetaData, DSPBidMetaData> selected = Utility.randomWithWeights(dspList);
+            if (!selectedDSP.isEmpty()) {
+                Pair<DSPMetaData, DSPBidMetaData> selected = Utility.randomWithWeights(selectedDSP);
                 winner = Pair.of(selected.getLeft(), Pair.of(selected.getRight(), 0));
             }
         }

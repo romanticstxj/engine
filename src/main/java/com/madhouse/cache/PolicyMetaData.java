@@ -25,13 +25,45 @@ public class PolicyMetaData {
     private List<Integer> connectionType;
 
     private List<Long> adspaceList;
-    //dspid, weight
-    private Map<Long, Integer> dspList;
+    private List<DSPInfo> dspInfoList;
+    private Map<Long, DSPInfo> dspInfoMap;
+
     private int controlType;
     private int maxCount;
 
     private int bidFloor;
     private int bidType;
+
+    public class DSPInfo {
+        private long id;
+        private int weight;
+        private int status;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public void setWeight(int weight) {
+            this.weight = weight;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+    }
+
 
     public long getId() {
         return id;
@@ -121,14 +153,6 @@ public class PolicyMetaData {
         this.adspaceList = adspaceList;
     }
 
-    public Map<Long, Integer> getDspList() {
-        return dspList;
-    }
-
-    public void setDspList(Map<Long, Integer> dspList) {
-        this.dspList = dspList;
-    }
-
     public int getControlType() {
         return controlType;
     }
@@ -159,5 +183,22 @@ public class PolicyMetaData {
 
     public void setBidType(int bidType) {
         this.bidType = bidType;
+    }
+
+
+    public List<DSPInfo> getDspInfoList() {
+        return dspInfoList;
+    }
+
+    public void setDspInfoList(List<DSPInfo> dspInfoList) {
+        this.dspInfoList = dspInfoList;
+    }
+
+    public Map<Long, DSPInfo> getDspInfoMap() {
+        return dspInfoMap;
+    }
+
+    public void setDspInfoMap(Map<Long, DSPInfo> dspInfoMap) {
+        this.dspInfoMap = dspInfoMap;
     }
 }
