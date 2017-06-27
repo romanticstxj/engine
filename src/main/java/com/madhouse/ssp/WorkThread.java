@@ -323,6 +323,8 @@ public class WorkThread {
                                     }
                                 });
                             }
+
+                            return;
                         }
                     }
                 }
