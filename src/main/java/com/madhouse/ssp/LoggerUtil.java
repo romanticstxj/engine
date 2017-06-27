@@ -3,6 +3,7 @@ package com.madhouse.ssp;
 import com.alibaba.fastjson.JSON;
 import com.google.protobuf.GeneratedMessage;
 import com.madhouse.configuration.Topic;
+import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.kafkaclient.util.KafkaCallback;
 import com.madhouse.kafkaclient.util.KafkaMessage;
@@ -15,6 +16,8 @@ import java.util.List;
 
 
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +27,15 @@ import org.apache.logging.log4j.Logger;
 public class LoggerUtil extends KafkaCallback {
     private static final LoggerUtil logger = new LoggerUtil();
     
-
+    private static final Logger premiumMadLogger = LogManager.getLogger("premiummad");
+    
+    private static ConcurrentHashMap<String, Logger> loggerBaseMap = new ConcurrentHashMap<String, Logger>();
+    static{
+        List<Topic> list=  ResourceManager.getInstance().getPremiummad().getKafka().getTopics();
+        for (Topic topic : list) {
+            loggerBaseMap.put(topic.getType(),LogManager.getLogger(topic.getType()));
+        }
+    }
     private LoggerUtil() {
     }
 
@@ -58,13 +69,15 @@ public class LoggerUtil extends KafkaCallback {
 
         }
     }
-    public Logger getBaseLogger(String type) {
-        List<Topic> list=  ResourceManager.getInstance().getPremiummad().getKafka().getTopics();
-        for (Topic topic : list) {
-            if(type.equals(topic.getType())){
-                return LogManager.getLogger(type);
-            }
-        }
-        return null;
+    
+    public static Logger getPremiummadlogger() {
+        return premiumMadLogger;
     }
+
+    public Logger getBaseLogger(String type) {
+        return loggerBaseMap.get(type);
+    }
+
+    
+    
 }

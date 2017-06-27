@@ -2,6 +2,7 @@ package com.madhouse.media;
 
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.rtb.PremiumMADRTBProtocol.*;
+import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.ssp.PremiumMADDataModel;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,8 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public abstract class MediaBaseHandler {
-    public static final Logger logger = LogManager.getLogger("premiummad");
+    @SuppressWarnings("static-access")
+    public static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     public abstract boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp);
     public abstract boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp);
 }
