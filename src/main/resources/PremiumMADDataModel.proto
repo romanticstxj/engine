@@ -98,9 +98,10 @@ message MediaBid
 		optional string desc = 7;
 		optional int32 duration = 8;
 		repeated string adm = 9;
-		optional string lpgurl = 10;
-		optional int32 acttype = 11;
-		optional com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;
+		optional string dealid = 10;
+		optional string lpgurl = 11;
+		optional int32 acttype = 12;
+		optional com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;
 	}
 }
 
@@ -168,7 +169,7 @@ message DSPBid
     optional int32 price = 6;
 	
 	optional DSPRequest request = 11;
-	optional com.madhouse.rtb.BidResponse response = 12;
+	optional DSPResponse response = 12;
 	
 	message DSPRequest
 	{
@@ -182,5 +183,28 @@ message DSPBid
 		optional int32 bidfloor = 8;
 		optional int32 bidtype = 9;
         optional int32 tmax = 10;
+	}
+
+	message DSPResponse
+	{
+		optional string id = 1;
+		optional string bidid = 2;
+		optional string impid = 3;
+		optional string adid = 4;
+		optional string cid = 5;
+		optional string crid = 6;
+		optional int32 price = 7;
+		optional string nurl = 8;
+		optional string admid = 9;
+		optional string icon = 10;
+		optional string cover = 11;
+		optional string title = 12;
+		optional string desc = 13;
+		optional int32 duration = 14;
+		repeated string adm = 15;
+		optional string dealid = 16;
+		optional string lpgurl = 17;
+		optional int32 acttype = 18;
+		optional com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;
 	}
 }
