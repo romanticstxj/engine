@@ -6688,38 +6688,52 @@ public final class PremiumMADDataModel {
           getAdmBytes(int index);
 
       /**
-       * <code>optional string lpgurl = 10;</code>
+       * <code>optional string dealid = 10;</code>
+       */
+      boolean hasDealid();
+      /**
+       * <code>optional string dealid = 10;</code>
+       */
+      java.lang.String getDealid();
+      /**
+       * <code>optional string dealid = 10;</code>
+       */
+      com.google.protobuf.ByteString
+          getDealidBytes();
+
+      /**
+       * <code>optional string lpgurl = 11;</code>
        */
       boolean hasLpgurl();
       /**
-       * <code>optional string lpgurl = 10;</code>
+       * <code>optional string lpgurl = 11;</code>
        */
       java.lang.String getLpgurl();
       /**
-       * <code>optional string lpgurl = 10;</code>
+       * <code>optional string lpgurl = 11;</code>
        */
       com.google.protobuf.ByteString
           getLpgurlBytes();
 
       /**
-       * <code>optional int32 acttype = 11;</code>
+       * <code>optional int32 acttype = 12;</code>
        */
       boolean hasActtype();
       /**
-       * <code>optional int32 acttype = 11;</code>
+       * <code>optional int32 acttype = 12;</code>
        */
       int getActtype();
 
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
        */
       boolean hasMonitor();
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
        */
       com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor getMonitor();
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
        */
       com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder getMonitorOrBuilder();
     }
@@ -6832,17 +6846,23 @@ public final class PremiumMADDataModel {
               case 82: {
                 com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000100;
+                dealid_ = bs;
+                break;
+              }
+              case 90: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000200;
                 lpgurl_ = bs;
                 break;
               }
-              case 88: {
-                bitField0_ |= 0x00000200;
+              case 96: {
+                bitField0_ |= 0x00000400;
                 acttype_ = input.readInt32();
                 break;
               }
-              case 98: {
+              case 810: {
                 com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder subBuilder = null;
-                if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                if (((bitField0_ & 0x00000800) == 0x00000800)) {
                   subBuilder = monitor_.toBuilder();
                 }
                 monitor_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.PARSER, extensionRegistry);
@@ -6850,7 +6870,7 @@ public final class PremiumMADDataModel {
                   subBuilder.mergeFrom(monitor_);
                   monitor_ = subBuilder.buildPartial();
                 }
-                bitField0_ |= 0x00000400;
+                bitField0_ |= 0x00000800;
                 break;
               }
             }
@@ -7180,16 +7200,58 @@ public final class PremiumMADDataModel {
         return adm_.getByteString(index);
       }
 
-      public static final int LPGURL_FIELD_NUMBER = 10;
-      private java.lang.Object lpgurl_;
+      public static final int DEALID_FIELD_NUMBER = 10;
+      private java.lang.Object dealid_;
       /**
-       * <code>optional string lpgurl = 10;</code>
+       * <code>optional string dealid = 10;</code>
        */
-      public boolean hasLpgurl() {
+      public boolean hasDealid() {
         return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
-       * <code>optional string lpgurl = 10;</code>
+       * <code>optional string dealid = 10;</code>
+       */
+      public java.lang.String getDealid() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            dealid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string dealid = 10;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDealidBytes() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          dealid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int LPGURL_FIELD_NUMBER = 11;
+      private java.lang.Object lpgurl_;
+      /**
+       * <code>optional string lpgurl = 11;</code>
+       */
+      public boolean hasLpgurl() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string lpgurl = 11;</code>
        */
       public java.lang.String getLpgurl() {
         java.lang.Object ref = lpgurl_;
@@ -7206,7 +7268,7 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional string lpgurl = 10;</code>
+       * <code>optional string lpgurl = 11;</code>
        */
       public com.google.protobuf.ByteString
           getLpgurlBytes() {
@@ -7222,37 +7284,37 @@ public final class PremiumMADDataModel {
         }
       }
 
-      public static final int ACTTYPE_FIELD_NUMBER = 11;
+      public static final int ACTTYPE_FIELD_NUMBER = 12;
       private int acttype_;
       /**
-       * <code>optional int32 acttype = 11;</code>
+       * <code>optional int32 acttype = 12;</code>
        */
       public boolean hasActtype() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
+        return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional int32 acttype = 11;</code>
+       * <code>optional int32 acttype = 12;</code>
        */
       public int getActtype() {
         return acttype_;
       }
 
-      public static final int MONITOR_FIELD_NUMBER = 12;
+      public static final int MONITOR_FIELD_NUMBER = 101;
       private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor_;
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
        */
       public boolean hasMonitor() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
+        return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor getMonitor() {
         return monitor_;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
        */
       public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder getMonitorOrBuilder() {
         return monitor_;
@@ -7268,6 +7330,7 @@ public final class PremiumMADDataModel {
         desc_ = "";
         duration_ = 0;
         adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        dealid_ = "";
         lpgurl_ = "";
         acttype_ = 0;
         monitor_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance();
@@ -7313,13 +7376,16 @@ public final class PremiumMADDataModel {
           output.writeBytes(9, adm_.getByteString(i));
         }
         if (((bitField0_ & 0x00000100) == 0x00000100)) {
-          output.writeBytes(10, getLpgurlBytes());
+          output.writeBytes(10, getDealidBytes());
         }
         if (((bitField0_ & 0x00000200) == 0x00000200)) {
-          output.writeInt32(11, acttype_);
+          output.writeBytes(11, getLpgurlBytes());
         }
         if (((bitField0_ & 0x00000400) == 0x00000400)) {
-          output.writeMessage(12, monitor_);
+          output.writeInt32(12, acttype_);
+        }
+        if (((bitField0_ & 0x00000800) == 0x00000800)) {
+          output.writeMessage(101, monitor_);
         }
         getUnknownFields().writeTo(output);
       }
@@ -7373,15 +7439,19 @@ public final class PremiumMADDataModel {
         }
         if (((bitField0_ & 0x00000100) == 0x00000100)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(10, getLpgurlBytes());
+            .computeBytesSize(10, getDealidBytes());
         }
         if (((bitField0_ & 0x00000200) == 0x00000200)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(11, acttype_);
+            .computeBytesSize(11, getLpgurlBytes());
         }
         if (((bitField0_ & 0x00000400) == 0x00000400)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(12, monitor_);
+            .computeInt32Size(12, acttype_);
+        }
+        if (((bitField0_ & 0x00000800) == 0x00000800)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(101, monitor_);
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -7519,16 +7589,18 @@ public final class PremiumMADDataModel {
           bitField0_ = (bitField0_ & ~0x00000080);
           adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           bitField0_ = (bitField0_ & ~0x00000100);
-          lpgurl_ = "";
+          dealid_ = "";
           bitField0_ = (bitField0_ & ~0x00000200);
-          acttype_ = 0;
+          lpgurl_ = "";
           bitField0_ = (bitField0_ & ~0x00000400);
+          acttype_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000800);
           if (monitorBuilder_ == null) {
             monitor_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance();
           } else {
             monitorBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x00000800);
+          bitField0_ = (bitField0_ & ~0x00001000);
           return this;
         }
 
@@ -7597,13 +7669,17 @@ public final class PremiumMADDataModel {
           if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
             to_bitField0_ |= 0x00000100;
           }
-          result.lpgurl_ = lpgurl_;
+          result.dealid_ = dealid_;
           if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
             to_bitField0_ |= 0x00000200;
           }
-          result.acttype_ = acttype_;
+          result.lpgurl_ = lpgurl_;
           if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
             to_bitField0_ |= 0x00000400;
+          }
+          result.acttype_ = acttype_;
+          if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+            to_bitField0_ |= 0x00000800;
           }
           if (monitorBuilder_ == null) {
             result.monitor_ = monitor_;
@@ -7670,8 +7746,13 @@ public final class PremiumMADDataModel {
             }
             onChanged();
           }
-          if (other.hasLpgurl()) {
+          if (other.hasDealid()) {
             bitField0_ |= 0x00000200;
+            dealid_ = other.dealid_;
+            onChanged();
+          }
+          if (other.hasLpgurl()) {
+            bitField0_ |= 0x00000400;
             lpgurl_ = other.lpgurl_;
             onChanged();
           }
@@ -8277,15 +8358,91 @@ public final class PremiumMADDataModel {
           return this;
         }
 
-        private java.lang.Object lpgurl_ = "";
+        private java.lang.Object dealid_ = "";
         /**
-         * <code>optional string lpgurl = 10;</code>
+         * <code>optional string dealid = 10;</code>
          */
-        public boolean hasLpgurl() {
+        public boolean hasDealid() {
           return ((bitField0_ & 0x00000200) == 0x00000200);
         }
         /**
-         * <code>optional string lpgurl = 10;</code>
+         * <code>optional string dealid = 10;</code>
+         */
+        public java.lang.String getDealid() {
+          java.lang.Object ref = dealid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              dealid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 10;</code>
+         */
+        public com.google.protobuf.ByteString
+            getDealidBytes() {
+          java.lang.Object ref = dealid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            dealid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 10;</code>
+         */
+        public Builder setDealid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 10;</code>
+         */
+        public Builder clearDealid() {
+          bitField0_ = (bitField0_ & ~0x00000200);
+          dealid_ = getDefaultInstance().getDealid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 10;</code>
+         */
+        public Builder setDealidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object lpgurl_ = "";
+        /**
+         * <code>optional string lpgurl = 11;</code>
+         */
+        public boolean hasLpgurl() {
+          return ((bitField0_ & 0x00000400) == 0x00000400);
+        }
+        /**
+         * <code>optional string lpgurl = 11;</code>
          */
         public java.lang.String getLpgurl() {
           java.lang.Object ref = lpgurl_;
@@ -8302,7 +8459,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string lpgurl = 10;</code>
+         * <code>optional string lpgurl = 11;</code>
          */
         public com.google.protobuf.ByteString
             getLpgurlBytes() {
@@ -8318,36 +8475,36 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional string lpgurl = 10;</code>
+         * <code>optional string lpgurl = 11;</code>
          */
         public Builder setLpgurl(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
           lpgurl_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string lpgurl = 10;</code>
+         * <code>optional string lpgurl = 11;</code>
          */
         public Builder clearLpgurl() {
-          bitField0_ = (bitField0_ & ~0x00000200);
+          bitField0_ = (bitField0_ & ~0x00000400);
           lpgurl_ = getDefaultInstance().getLpgurl();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string lpgurl = 10;</code>
+         * <code>optional string lpgurl = 11;</code>
          */
         public Builder setLpgurlBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000200;
+  bitField0_ |= 0x00000400;
           lpgurl_ = value;
           onChanged();
           return this;
@@ -8355,31 +8512,31 @@ public final class PremiumMADDataModel {
 
         private int acttype_ ;
         /**
-         * <code>optional int32 acttype = 11;</code>
+         * <code>optional int32 acttype = 12;</code>
          */
         public boolean hasActtype() {
-          return ((bitField0_ & 0x00000400) == 0x00000400);
+          return ((bitField0_ & 0x00000800) == 0x00000800);
         }
         /**
-         * <code>optional int32 acttype = 11;</code>
+         * <code>optional int32 acttype = 12;</code>
          */
         public int getActtype() {
           return acttype_;
         }
         /**
-         * <code>optional int32 acttype = 11;</code>
+         * <code>optional int32 acttype = 12;</code>
          */
         public Builder setActtype(int value) {
-          bitField0_ |= 0x00000400;
+          bitField0_ |= 0x00000800;
           acttype_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional int32 acttype = 11;</code>
+         * <code>optional int32 acttype = 12;</code>
          */
         public Builder clearActtype() {
-          bitField0_ = (bitField0_ & ~0x00000400);
+          bitField0_ = (bitField0_ & ~0x00000800);
           acttype_ = 0;
           onChanged();
           return this;
@@ -8389,13 +8546,13 @@ public final class PremiumMADDataModel {
         private com.google.protobuf.SingleFieldBuilder<
             com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder> monitorBuilder_;
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public boolean hasMonitor() {
-          return ((bitField0_ & 0x00000800) == 0x00000800);
+          return ((bitField0_ & 0x00001000) == 0x00001000);
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor getMonitor() {
           if (monitorBuilder_ == null) {
@@ -8405,7 +8562,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public Builder setMonitor(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor value) {
           if (monitorBuilder_ == null) {
@@ -8417,11 +8574,11 @@ public final class PremiumMADDataModel {
           } else {
             monitorBuilder_.setMessage(value);
           }
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           return this;
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public Builder setMonitor(
             com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder builderForValue) {
@@ -8431,15 +8588,15 @@ public final class PremiumMADDataModel {
           } else {
             monitorBuilder_.setMessage(builderForValue.build());
           }
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           return this;
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public Builder mergeMonitor(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor value) {
           if (monitorBuilder_ == null) {
-            if (((bitField0_ & 0x00000800) == 0x00000800) &&
+            if (((bitField0_ & 0x00001000) == 0x00001000) &&
                 monitor_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance()) {
               monitor_ =
                 com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.newBuilder(monitor_).mergeFrom(value).buildPartial();
@@ -8450,11 +8607,11 @@ public final class PremiumMADDataModel {
           } else {
             monitorBuilder_.mergeFrom(value);
           }
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           return this;
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public Builder clearMonitor() {
           if (monitorBuilder_ == null) {
@@ -8463,19 +8620,19 @@ public final class PremiumMADDataModel {
           } else {
             monitorBuilder_.clear();
           }
-          bitField0_ = (bitField0_ & ~0x00000800);
+          bitField0_ = (bitField0_ & ~0x00001000);
           return this;
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder getMonitorBuilder() {
-          bitField0_ |= 0x00000800;
+          bitField0_ |= 0x00001000;
           onChanged();
           return getMonitorFieldBuilder().getBuilder();
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder getMonitorOrBuilder() {
           if (monitorBuilder_ != null) {
@@ -8485,7 +8642,7 @@ public final class PremiumMADDataModel {
           }
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 12;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
          */
         private com.google.protobuf.SingleFieldBuilder<
             com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder> 
@@ -15088,17 +15245,17 @@ public final class PremiumMADDataModel {
     com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequestOrBuilder getRequestOrBuilder();
 
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
      */
     boolean hasResponse();
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
      */
-    com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse getResponse();
+    com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse getResponse();
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
      */
-    com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder getResponseOrBuilder();
+    com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder getResponseOrBuilder();
   }
   /**
    * Protobuf type {@code com.madhouse.ssp.DSPBid}
@@ -15196,11 +15353,11 @@ public final class PremiumMADDataModel {
               break;
             }
             case 98: {
-              com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder subBuilder = null;
+              com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder subBuilder = null;
               if (((bitField0_ & 0x00000080) == 0x00000080)) {
                 subBuilder = response_.toBuilder();
               }
-              response_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.PARSER, extensionRegistry);
+              response_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(response_);
                 response_ = subBuilder.buildPartial();
@@ -16662,6 +16819,3129 @@ public final class PremiumMADDataModel {
       // @@protoc_insertion_point(class_scope:com.madhouse.ssp.DSPBid.DSPRequest)
     }
 
+    public interface DSPResponseOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:com.madhouse.ssp.DSPBid.DSPResponse)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>optional string id = 1;</code>
+       */
+      boolean hasId();
+      /**
+       * <code>optional string id = 1;</code>
+       */
+      java.lang.String getId();
+      /**
+       * <code>optional string id = 1;</code>
+       */
+      com.google.protobuf.ByteString
+          getIdBytes();
+
+      /**
+       * <code>optional string bidid = 2;</code>
+       */
+      boolean hasBidid();
+      /**
+       * <code>optional string bidid = 2;</code>
+       */
+      java.lang.String getBidid();
+      /**
+       * <code>optional string bidid = 2;</code>
+       */
+      com.google.protobuf.ByteString
+          getBididBytes();
+
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      boolean hasImpid();
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      java.lang.String getImpid();
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      com.google.protobuf.ByteString
+          getImpidBytes();
+
+      /**
+       * <code>optional string adid = 4;</code>
+       */
+      boolean hasAdid();
+      /**
+       * <code>optional string adid = 4;</code>
+       */
+      java.lang.String getAdid();
+      /**
+       * <code>optional string adid = 4;</code>
+       */
+      com.google.protobuf.ByteString
+          getAdidBytes();
+
+      /**
+       * <code>optional string cid = 5;</code>
+       */
+      boolean hasCid();
+      /**
+       * <code>optional string cid = 5;</code>
+       */
+      java.lang.String getCid();
+      /**
+       * <code>optional string cid = 5;</code>
+       */
+      com.google.protobuf.ByteString
+          getCidBytes();
+
+      /**
+       * <code>optional string crid = 6;</code>
+       */
+      boolean hasCrid();
+      /**
+       * <code>optional string crid = 6;</code>
+       */
+      java.lang.String getCrid();
+      /**
+       * <code>optional string crid = 6;</code>
+       */
+      com.google.protobuf.ByteString
+          getCridBytes();
+
+      /**
+       * <code>optional int32 price = 7;</code>
+       */
+      boolean hasPrice();
+      /**
+       * <code>optional int32 price = 7;</code>
+       */
+      int getPrice();
+
+      /**
+       * <code>optional string nurl = 8;</code>
+       */
+      boolean hasNurl();
+      /**
+       * <code>optional string nurl = 8;</code>
+       */
+      java.lang.String getNurl();
+      /**
+       * <code>optional string nurl = 8;</code>
+       */
+      com.google.protobuf.ByteString
+          getNurlBytes();
+
+      /**
+       * <code>optional string admid = 9;</code>
+       */
+      boolean hasAdmid();
+      /**
+       * <code>optional string admid = 9;</code>
+       */
+      java.lang.String getAdmid();
+      /**
+       * <code>optional string admid = 9;</code>
+       */
+      com.google.protobuf.ByteString
+          getAdmidBytes();
+
+      /**
+       * <code>optional string icon = 10;</code>
+       */
+      boolean hasIcon();
+      /**
+       * <code>optional string icon = 10;</code>
+       */
+      java.lang.String getIcon();
+      /**
+       * <code>optional string icon = 10;</code>
+       */
+      com.google.protobuf.ByteString
+          getIconBytes();
+
+      /**
+       * <code>optional string cover = 11;</code>
+       */
+      boolean hasCover();
+      /**
+       * <code>optional string cover = 11;</code>
+       */
+      java.lang.String getCover();
+      /**
+       * <code>optional string cover = 11;</code>
+       */
+      com.google.protobuf.ByteString
+          getCoverBytes();
+
+      /**
+       * <code>optional string title = 12;</code>
+       */
+      boolean hasTitle();
+      /**
+       * <code>optional string title = 12;</code>
+       */
+      java.lang.String getTitle();
+      /**
+       * <code>optional string title = 12;</code>
+       */
+      com.google.protobuf.ByteString
+          getTitleBytes();
+
+      /**
+       * <code>optional string desc = 13;</code>
+       */
+      boolean hasDesc();
+      /**
+       * <code>optional string desc = 13;</code>
+       */
+      java.lang.String getDesc();
+      /**
+       * <code>optional string desc = 13;</code>
+       */
+      com.google.protobuf.ByteString
+          getDescBytes();
+
+      /**
+       * <code>optional int32 duration = 14;</code>
+       */
+      boolean hasDuration();
+      /**
+       * <code>optional int32 duration = 14;</code>
+       */
+      int getDuration();
+
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      com.google.protobuf.ProtocolStringList
+          getAdmList();
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      int getAdmCount();
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      java.lang.String getAdm(int index);
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      com.google.protobuf.ByteString
+          getAdmBytes(int index);
+
+      /**
+       * <code>optional string dealid = 16;</code>
+       */
+      boolean hasDealid();
+      /**
+       * <code>optional string dealid = 16;</code>
+       */
+      java.lang.String getDealid();
+      /**
+       * <code>optional string dealid = 16;</code>
+       */
+      com.google.protobuf.ByteString
+          getDealidBytes();
+
+      /**
+       * <code>optional string lpgurl = 17;</code>
+       */
+      boolean hasLpgurl();
+      /**
+       * <code>optional string lpgurl = 17;</code>
+       */
+      java.lang.String getLpgurl();
+      /**
+       * <code>optional string lpgurl = 17;</code>
+       */
+      com.google.protobuf.ByteString
+          getLpgurlBytes();
+
+      /**
+       * <code>optional int32 acttype = 18;</code>
+       */
+      boolean hasActtype();
+      /**
+       * <code>optional int32 acttype = 18;</code>
+       */
+      int getActtype();
+
+      /**
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+       */
+      boolean hasMonitor();
+      /**
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+       */
+      com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor getMonitor();
+      /**
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+       */
+      com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder getMonitorOrBuilder();
+    }
+    /**
+     * Protobuf type {@code com.madhouse.ssp.DSPBid.DSPResponse}
+     */
+    public static final class DSPResponse extends
+        com.google.protobuf.GeneratedMessage implements
+        // @@protoc_insertion_point(message_implements:com.madhouse.ssp.DSPBid.DSPResponse)
+        DSPResponseOrBuilder {
+      // Use DSPResponse.newBuilder() to construct.
+      private DSPResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
+        this.unknownFields = builder.getUnknownFields();
+      }
+      private DSPResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+      private static final DSPResponse defaultInstance;
+      public static DSPResponse getDefaultInstance() {
+        return defaultInstance;
+      }
+
+      public DSPResponse getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+
+      private final com.google.protobuf.UnknownFieldSet unknownFields;
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+          getUnknownFields() {
+        return this.unknownFields;
+      }
+      private DSPResponse(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        initFields();
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 10: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000001;
+                id_ = bs;
+                break;
+              }
+              case 18: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000002;
+                bidid_ = bs;
+                break;
+              }
+              case 26: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000004;
+                impid_ = bs;
+                break;
+              }
+              case 34: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000008;
+                adid_ = bs;
+                break;
+              }
+              case 42: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000010;
+                cid_ = bs;
+                break;
+              }
+              case 50: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000020;
+                crid_ = bs;
+                break;
+              }
+              case 56: {
+                bitField0_ |= 0x00000040;
+                price_ = input.readInt32();
+                break;
+              }
+              case 66: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000080;
+                nurl_ = bs;
+                break;
+              }
+              case 74: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000100;
+                admid_ = bs;
+                break;
+              }
+              case 82: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000200;
+                icon_ = bs;
+                break;
+              }
+              case 90: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000400;
+                cover_ = bs;
+                break;
+              }
+              case 98: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00000800;
+                title_ = bs;
+                break;
+              }
+              case 106: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00001000;
+                desc_ = bs;
+                break;
+              }
+              case 112: {
+                bitField0_ |= 0x00002000;
+                duration_ = input.readInt32();
+                break;
+              }
+              case 122: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                if (!((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
+                  adm_ = new com.google.protobuf.LazyStringArrayList();
+                  mutable_bitField0_ |= 0x00004000;
+                }
+                adm_.add(bs);
+                break;
+              }
+              case 130: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00004000;
+                dealid_ = bs;
+                break;
+              }
+              case 138: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00008000;
+                lpgurl_ = bs;
+                break;
+              }
+              case 144: {
+                bitField0_ |= 0x00010000;
+                acttype_ = input.readInt32();
+                break;
+              }
+              case 810: {
+                com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder subBuilder = null;
+                if (((bitField0_ & 0x00020000) == 0x00020000)) {
+                  subBuilder = monitor_.toBuilder();
+                }
+                monitor_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.PARSER, extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(monitor_);
+                  monitor_ = subBuilder.buildPartial();
+                }
+                bitField0_ |= 0x00020000;
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e.getMessage()).setUnfinishedMessage(this);
+        } finally {
+          if (((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
+            adm_ = adm_.getUnmodifiableView();
+          }
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.class, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder.class);
+      }
+
+      public static com.google.protobuf.Parser<DSPResponse> PARSER =
+          new com.google.protobuf.AbstractParser<DSPResponse>() {
+        public DSPResponse parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new DSPResponse(input, extensionRegistry);
+        }
+      };
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<DSPResponse> getParserForType() {
+        return PARSER;
+      }
+
+      private int bitField0_;
+      public static final int ID_FIELD_NUMBER = 1;
+      private java.lang.Object id_;
+      /**
+       * <code>optional string id = 1;</code>
+       */
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string id = 1;</code>
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            id_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int BIDID_FIELD_NUMBER = 2;
+      private java.lang.Object bidid_;
+      /**
+       * <code>optional string bidid = 2;</code>
+       */
+      public boolean hasBidid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string bidid = 2;</code>
+       */
+      public java.lang.String getBidid() {
+        java.lang.Object ref = bidid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bidid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string bidid = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBididBytes() {
+        java.lang.Object ref = bidid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bidid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int IMPID_FIELD_NUMBER = 3;
+      private java.lang.Object impid_;
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public boolean hasImpid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public java.lang.String getImpid() {
+        java.lang.Object ref = impid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            impid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string impid = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getImpidBytes() {
+        java.lang.Object ref = impid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          impid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ADID_FIELD_NUMBER = 4;
+      private java.lang.Object adid_;
+      /**
+       * <code>optional string adid = 4;</code>
+       */
+      public boolean hasAdid() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string adid = 4;</code>
+       */
+      public java.lang.String getAdid() {
+        java.lang.Object ref = adid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            adid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string adid = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAdidBytes() {
+        java.lang.Object ref = adid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          adid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int CID_FIELD_NUMBER = 5;
+      private java.lang.Object cid_;
+      /**
+       * <code>optional string cid = 5;</code>
+       */
+      public boolean hasCid() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string cid = 5;</code>
+       */
+      public java.lang.String getCid() {
+        java.lang.Object ref = cid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            cid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string cid = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCidBytes() {
+        java.lang.Object ref = cid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          cid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int CRID_FIELD_NUMBER = 6;
+      private java.lang.Object crid_;
+      /**
+       * <code>optional string crid = 6;</code>
+       */
+      public boolean hasCrid() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string crid = 6;</code>
+       */
+      public java.lang.String getCrid() {
+        java.lang.Object ref = crid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            crid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string crid = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCridBytes() {
+        java.lang.Object ref = crid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          crid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int PRICE_FIELD_NUMBER = 7;
+      private int price_;
+      /**
+       * <code>optional int32 price = 7;</code>
+       */
+      public boolean hasPrice() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional int32 price = 7;</code>
+       */
+      public int getPrice() {
+        return price_;
+      }
+
+      public static final int NURL_FIELD_NUMBER = 8;
+      private java.lang.Object nurl_;
+      /**
+       * <code>optional string nurl = 8;</code>
+       */
+      public boolean hasNurl() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string nurl = 8;</code>
+       */
+      public java.lang.String getNurl() {
+        java.lang.Object ref = nurl_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nurl_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string nurl = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNurlBytes() {
+        java.lang.Object ref = nurl_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nurl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ADMID_FIELD_NUMBER = 9;
+      private java.lang.Object admid_;
+      /**
+       * <code>optional string admid = 9;</code>
+       */
+      public boolean hasAdmid() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string admid = 9;</code>
+       */
+      public java.lang.String getAdmid() {
+        java.lang.Object ref = admid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            admid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string admid = 9;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAdmidBytes() {
+        java.lang.Object ref = admid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          admid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ICON_FIELD_NUMBER = 10;
+      private java.lang.Object icon_;
+      /**
+       * <code>optional string icon = 10;</code>
+       */
+      public boolean hasIcon() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string icon = 10;</code>
+       */
+      public java.lang.String getIcon() {
+        java.lang.Object ref = icon_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            icon_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string icon = 10;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIconBytes() {
+        java.lang.Object ref = icon_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          icon_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int COVER_FIELD_NUMBER = 11;
+      private java.lang.Object cover_;
+      /**
+       * <code>optional string cover = 11;</code>
+       */
+      public boolean hasCover() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional string cover = 11;</code>
+       */
+      public java.lang.String getCover() {
+        java.lang.Object ref = cover_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            cover_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string cover = 11;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCoverBytes() {
+        java.lang.Object ref = cover_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          cover_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int TITLE_FIELD_NUMBER = 12;
+      private java.lang.Object title_;
+      /**
+       * <code>optional string title = 12;</code>
+       */
+      public boolean hasTitle() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional string title = 12;</code>
+       */
+      public java.lang.String getTitle() {
+        java.lang.Object ref = title_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            title_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string title = 12;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTitleBytes() {
+        java.lang.Object ref = title_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          title_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int DESC_FIELD_NUMBER = 13;
+      private java.lang.Object desc_;
+      /**
+       * <code>optional string desc = 13;</code>
+       */
+      public boolean hasDesc() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional string desc = 13;</code>
+       */
+      public java.lang.String getDesc() {
+        java.lang.Object ref = desc_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            desc_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string desc = 13;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDescBytes() {
+        java.lang.Object ref = desc_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          desc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int DURATION_FIELD_NUMBER = 14;
+      private int duration_;
+      /**
+       * <code>optional int32 duration = 14;</code>
+       */
+      public boolean hasDuration() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional int32 duration = 14;</code>
+       */
+      public int getDuration() {
+        return duration_;
+      }
+
+      public static final int ADM_FIELD_NUMBER = 15;
+      private com.google.protobuf.LazyStringList adm_;
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getAdmList() {
+        return adm_;
+      }
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      public int getAdmCount() {
+        return adm_.size();
+      }
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      public java.lang.String getAdm(int index) {
+        return adm_.get(index);
+      }
+      /**
+       * <code>repeated string adm = 15;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAdmBytes(int index) {
+        return adm_.getByteString(index);
+      }
+
+      public static final int DEALID_FIELD_NUMBER = 16;
+      private java.lang.Object dealid_;
+      /**
+       * <code>optional string dealid = 16;</code>
+       */
+      public boolean hasDealid() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional string dealid = 16;</code>
+       */
+      public java.lang.String getDealid() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            dealid_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string dealid = 16;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDealidBytes() {
+        java.lang.Object ref = dealid_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          dealid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int LPGURL_FIELD_NUMBER = 17;
+      private java.lang.Object lpgurl_;
+      /**
+       * <code>optional string lpgurl = 17;</code>
+       */
+      public boolean hasLpgurl() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional string lpgurl = 17;</code>
+       */
+      public java.lang.String getLpgurl() {
+        java.lang.Object ref = lpgurl_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            lpgurl_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string lpgurl = 17;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLpgurlBytes() {
+        java.lang.Object ref = lpgurl_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          lpgurl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ACTTYPE_FIELD_NUMBER = 18;
+      private int acttype_;
+      /**
+       * <code>optional int32 acttype = 18;</code>
+       */
+      public boolean hasActtype() {
+        return ((bitField0_ & 0x00010000) == 0x00010000);
+      }
+      /**
+       * <code>optional int32 acttype = 18;</code>
+       */
+      public int getActtype() {
+        return acttype_;
+      }
+
+      public static final int MONITOR_FIELD_NUMBER = 101;
+      private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor_;
+      /**
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+       */
+      public boolean hasMonitor() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+       */
+      public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor getMonitor() {
+        return monitor_;
+      }
+      /**
+       * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+       */
+      public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder getMonitorOrBuilder() {
+        return monitor_;
+      }
+
+      private void initFields() {
+        id_ = "";
+        bidid_ = "";
+        impid_ = "";
+        adid_ = "";
+        cid_ = "";
+        crid_ = "";
+        price_ = 0;
+        nurl_ = "";
+        admid_ = "";
+        icon_ = "";
+        cover_ = "";
+        title_ = "";
+        desc_ = "";
+        duration_ = 0;
+        adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        dealid_ = "";
+        lpgurl_ = "";
+        acttype_ = 0;
+        monitor_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance();
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeBytes(1, getIdBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeBytes(2, getBididBytes());
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          output.writeBytes(3, getImpidBytes());
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          output.writeBytes(4, getAdidBytes());
+        }
+        if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          output.writeBytes(5, getCidBytes());
+        }
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          output.writeBytes(6, getCridBytes());
+        }
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          output.writeInt32(7, price_);
+        }
+        if (((bitField0_ & 0x00000080) == 0x00000080)) {
+          output.writeBytes(8, getNurlBytes());
+        }
+        if (((bitField0_ & 0x00000100) == 0x00000100)) {
+          output.writeBytes(9, getAdmidBytes());
+        }
+        if (((bitField0_ & 0x00000200) == 0x00000200)) {
+          output.writeBytes(10, getIconBytes());
+        }
+        if (((bitField0_ & 0x00000400) == 0x00000400)) {
+          output.writeBytes(11, getCoverBytes());
+        }
+        if (((bitField0_ & 0x00000800) == 0x00000800)) {
+          output.writeBytes(12, getTitleBytes());
+        }
+        if (((bitField0_ & 0x00001000) == 0x00001000)) {
+          output.writeBytes(13, getDescBytes());
+        }
+        if (((bitField0_ & 0x00002000) == 0x00002000)) {
+          output.writeInt32(14, duration_);
+        }
+        for (int i = 0; i < adm_.size(); i++) {
+          output.writeBytes(15, adm_.getByteString(i));
+        }
+        if (((bitField0_ & 0x00004000) == 0x00004000)) {
+          output.writeBytes(16, getDealidBytes());
+        }
+        if (((bitField0_ & 0x00008000) == 0x00008000)) {
+          output.writeBytes(17, getLpgurlBytes());
+        }
+        if (((bitField0_ & 0x00010000) == 0x00010000)) {
+          output.writeInt32(18, acttype_);
+        }
+        if (((bitField0_ & 0x00020000) == 0x00020000)) {
+          output.writeMessage(101, monitor_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(1, getIdBytes());
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(2, getBididBytes());
+        }
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(3, getImpidBytes());
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(4, getAdidBytes());
+        }
+        if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(5, getCidBytes());
+        }
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(6, getCridBytes());
+        }
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(7, price_);
+        }
+        if (((bitField0_ & 0x00000080) == 0x00000080)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(8, getNurlBytes());
+        }
+        if (((bitField0_ & 0x00000100) == 0x00000100)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(9, getAdmidBytes());
+        }
+        if (((bitField0_ & 0x00000200) == 0x00000200)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(10, getIconBytes());
+        }
+        if (((bitField0_ & 0x00000400) == 0x00000400)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(11, getCoverBytes());
+        }
+        if (((bitField0_ & 0x00000800) == 0x00000800)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(12, getTitleBytes());
+        }
+        if (((bitField0_ & 0x00001000) == 0x00001000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(13, getDescBytes());
+        }
+        if (((bitField0_ & 0x00002000) == 0x00002000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(14, duration_);
+        }
+        {
+          int dataSize = 0;
+          for (int i = 0; i < adm_.size(); i++) {
+            dataSize += com.google.protobuf.CodedOutputStream
+              .computeBytesSizeNoTag(adm_.getByteString(i));
+          }
+          size += dataSize;
+          size += 1 * getAdmList().size();
+        }
+        if (((bitField0_ & 0x00004000) == 0x00004000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(16, getDealidBytes());
+        }
+        if (((bitField0_ & 0x00008000) == 0x00008000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(17, getLpgurlBytes());
+        }
+        if (((bitField0_ & 0x00010000) == 0x00010000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(18, acttype_);
+        }
+        if (((bitField0_ & 0x00020000) == 0x00020000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(101, monitor_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code com.madhouse.ssp.DSPBid.DSPResponse}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:com.madhouse.ssp.DSPBid.DSPResponse)
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPResponse_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPResponse_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.class, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder.class);
+        }
+
+        // Construct using com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getMonitorFieldBuilder();
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+
+        public Builder clear() {
+          super.clear();
+          id_ = "";
+          bitField0_ = (bitField0_ & ~0x00000001);
+          bidid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000002);
+          impid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000004);
+          adid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000008);
+          cid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000010);
+          crid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000020);
+          price_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000040);
+          nurl_ = "";
+          bitField0_ = (bitField0_ & ~0x00000080);
+          admid_ = "";
+          bitField0_ = (bitField0_ & ~0x00000100);
+          icon_ = "";
+          bitField0_ = (bitField0_ & ~0x00000200);
+          cover_ = "";
+          bitField0_ = (bitField0_ & ~0x00000400);
+          title_ = "";
+          bitField0_ = (bitField0_ & ~0x00000800);
+          desc_ = "";
+          bitField0_ = (bitField0_ & ~0x00001000);
+          duration_ = 0;
+          bitField0_ = (bitField0_ & ~0x00002000);
+          adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x00004000);
+          dealid_ = "";
+          bitField0_ = (bitField0_ & ~0x00008000);
+          lpgurl_ = "";
+          bitField0_ = (bitField0_ & ~0x00010000);
+          acttype_ = 0;
+          bitField0_ = (bitField0_ & ~0x00020000);
+          if (monitorBuilder_ == null) {
+            monitor_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance();
+          } else {
+            monitorBuilder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00040000);
+          return this;
+        }
+
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.internal_static_com_madhouse_ssp_DSPBid_DSPResponse_descriptor;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse getDefaultInstanceForType() {
+          return com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance();
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse build() {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse buildPartial() {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse result = new com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.id_ = id_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          result.bidid_ = bidid_;
+          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+            to_bitField0_ |= 0x00000004;
+          }
+          result.impid_ = impid_;
+          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+            to_bitField0_ |= 0x00000008;
+          }
+          result.adid_ = adid_;
+          if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+            to_bitField0_ |= 0x00000010;
+          }
+          result.cid_ = cid_;
+          if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+            to_bitField0_ |= 0x00000020;
+          }
+          result.crid_ = crid_;
+          if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+            to_bitField0_ |= 0x00000040;
+          }
+          result.price_ = price_;
+          if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+            to_bitField0_ |= 0x00000080;
+          }
+          result.nurl_ = nurl_;
+          if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+            to_bitField0_ |= 0x00000100;
+          }
+          result.admid_ = admid_;
+          if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+            to_bitField0_ |= 0x00000200;
+          }
+          result.icon_ = icon_;
+          if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+            to_bitField0_ |= 0x00000400;
+          }
+          result.cover_ = cover_;
+          if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+            to_bitField0_ |= 0x00000800;
+          }
+          result.title_ = title_;
+          if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+            to_bitField0_ |= 0x00001000;
+          }
+          result.desc_ = desc_;
+          if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+            to_bitField0_ |= 0x00002000;
+          }
+          result.duration_ = duration_;
+          if (((bitField0_ & 0x00004000) == 0x00004000)) {
+            adm_ = adm_.getUnmodifiableView();
+            bitField0_ = (bitField0_ & ~0x00004000);
+          }
+          result.adm_ = adm_;
+          if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+            to_bitField0_ |= 0x00004000;
+          }
+          result.dealid_ = dealid_;
+          if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+            to_bitField0_ |= 0x00008000;
+          }
+          result.lpgurl_ = lpgurl_;
+          if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+            to_bitField0_ |= 0x00010000;
+          }
+          result.acttype_ = acttype_;
+          if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+            to_bitField0_ |= 0x00020000;
+          }
+          if (monitorBuilder_ == null) {
+            result.monitor_ = monitor_;
+          } else {
+            result.monitor_ = monitorBuilder_.build();
+          }
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse) {
+            return mergeFrom((com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse other) {
+          if (other == com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance()) return this;
+          if (other.hasId()) {
+            bitField0_ |= 0x00000001;
+            id_ = other.id_;
+            onChanged();
+          }
+          if (other.hasBidid()) {
+            bitField0_ |= 0x00000002;
+            bidid_ = other.bidid_;
+            onChanged();
+          }
+          if (other.hasImpid()) {
+            bitField0_ |= 0x00000004;
+            impid_ = other.impid_;
+            onChanged();
+          }
+          if (other.hasAdid()) {
+            bitField0_ |= 0x00000008;
+            adid_ = other.adid_;
+            onChanged();
+          }
+          if (other.hasCid()) {
+            bitField0_ |= 0x00000010;
+            cid_ = other.cid_;
+            onChanged();
+          }
+          if (other.hasCrid()) {
+            bitField0_ |= 0x00000020;
+            crid_ = other.crid_;
+            onChanged();
+          }
+          if (other.hasPrice()) {
+            setPrice(other.getPrice());
+          }
+          if (other.hasNurl()) {
+            bitField0_ |= 0x00000080;
+            nurl_ = other.nurl_;
+            onChanged();
+          }
+          if (other.hasAdmid()) {
+            bitField0_ |= 0x00000100;
+            admid_ = other.admid_;
+            onChanged();
+          }
+          if (other.hasIcon()) {
+            bitField0_ |= 0x00000200;
+            icon_ = other.icon_;
+            onChanged();
+          }
+          if (other.hasCover()) {
+            bitField0_ |= 0x00000400;
+            cover_ = other.cover_;
+            onChanged();
+          }
+          if (other.hasTitle()) {
+            bitField0_ |= 0x00000800;
+            title_ = other.title_;
+            onChanged();
+          }
+          if (other.hasDesc()) {
+            bitField0_ |= 0x00001000;
+            desc_ = other.desc_;
+            onChanged();
+          }
+          if (other.hasDuration()) {
+            setDuration(other.getDuration());
+          }
+          if (!other.adm_.isEmpty()) {
+            if (adm_.isEmpty()) {
+              adm_ = other.adm_;
+              bitField0_ = (bitField0_ & ~0x00004000);
+            } else {
+              ensureAdmIsMutable();
+              adm_.addAll(other.adm_);
+            }
+            onChanged();
+          }
+          if (other.hasDealid()) {
+            bitField0_ |= 0x00008000;
+            dealid_ = other.dealid_;
+            onChanged();
+          }
+          if (other.hasLpgurl()) {
+            bitField0_ |= 0x00010000;
+            lpgurl_ = other.lpgurl_;
+            onChanged();
+          }
+          if (other.hasActtype()) {
+            setActtype(other.getActtype());
+          }
+          if (other.hasMonitor()) {
+            mergeMonitor(other.getMonitor());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse) e.getUnfinishedMessage();
+            throw e;
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private java.lang.Object id_ = "";
+        /**
+         * <code>optional string id = 1;</code>
+         */
+        public boolean hasId() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional string id = 1;</code>
+         */
+        public java.lang.String getId() {
+          java.lang.Object ref = id_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              id_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string id = 1;</code>
+         */
+        public com.google.protobuf.ByteString
+            getIdBytes() {
+          java.lang.Object ref = id_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            id_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string id = 1;</code>
+         */
+        public Builder setId(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          id_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string id = 1;</code>
+         */
+        public Builder clearId() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          id_ = getDefaultInstance().getId();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string id = 1;</code>
+         */
+        public Builder setIdBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+          id_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object bidid_ = "";
+        /**
+         * <code>optional string bidid = 2;</code>
+         */
+        public boolean hasBidid() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional string bidid = 2;</code>
+         */
+        public java.lang.String getBidid() {
+          java.lang.Object ref = bidid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              bidid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string bidid = 2;</code>
+         */
+        public com.google.protobuf.ByteString
+            getBididBytes() {
+          java.lang.Object ref = bidid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            bidid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string bidid = 2;</code>
+         */
+        public Builder setBidid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+          bidid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string bidid = 2;</code>
+         */
+        public Builder clearBidid() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          bidid_ = getDefaultInstance().getBidid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string bidid = 2;</code>
+         */
+        public Builder setBididBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+          bidid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object impid_ = "";
+        /**
+         * <code>optional string impid = 3;</code>
+         */
+        public boolean hasImpid() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        /**
+         * <code>optional string impid = 3;</code>
+         */
+        public java.lang.String getImpid() {
+          java.lang.Object ref = impid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              impid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string impid = 3;</code>
+         */
+        public com.google.protobuf.ByteString
+            getImpidBytes() {
+          java.lang.Object ref = impid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            impid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string impid = 3;</code>
+         */
+        public Builder setImpid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+          impid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string impid = 3;</code>
+         */
+        public Builder clearImpid() {
+          bitField0_ = (bitField0_ & ~0x00000004);
+          impid_ = getDefaultInstance().getImpid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string impid = 3;</code>
+         */
+        public Builder setImpidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+          impid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object adid_ = "";
+        /**
+         * <code>optional string adid = 4;</code>
+         */
+        public boolean hasAdid() {
+          return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+        /**
+         * <code>optional string adid = 4;</code>
+         */
+        public java.lang.String getAdid() {
+          java.lang.Object ref = adid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              adid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string adid = 4;</code>
+         */
+        public com.google.protobuf.ByteString
+            getAdidBytes() {
+          java.lang.Object ref = adid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            adid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string adid = 4;</code>
+         */
+        public Builder setAdid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+          adid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string adid = 4;</code>
+         */
+        public Builder clearAdid() {
+          bitField0_ = (bitField0_ & ~0x00000008);
+          adid_ = getDefaultInstance().getAdid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string adid = 4;</code>
+         */
+        public Builder setAdidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+          adid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object cid_ = "";
+        /**
+         * <code>optional string cid = 5;</code>
+         */
+        public boolean hasCid() {
+          return ((bitField0_ & 0x00000010) == 0x00000010);
+        }
+        /**
+         * <code>optional string cid = 5;</code>
+         */
+        public java.lang.String getCid() {
+          java.lang.Object ref = cid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              cid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string cid = 5;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCidBytes() {
+          java.lang.Object ref = cid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            cid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string cid = 5;</code>
+         */
+        public Builder setCid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+          cid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string cid = 5;</code>
+         */
+        public Builder clearCid() {
+          bitField0_ = (bitField0_ & ~0x00000010);
+          cid_ = getDefaultInstance().getCid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string cid = 5;</code>
+         */
+        public Builder setCidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+          cid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object crid_ = "";
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public boolean hasCrid() {
+          return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public java.lang.String getCrid() {
+          java.lang.Object ref = crid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              crid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCridBytes() {
+          java.lang.Object ref = crid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            crid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public Builder setCrid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+          crid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public Builder clearCrid() {
+          bitField0_ = (bitField0_ & ~0x00000020);
+          crid_ = getDefaultInstance().getCrid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public Builder setCridBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+          crid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private int price_ ;
+        /**
+         * <code>optional int32 price = 7;</code>
+         */
+        public boolean hasPrice() {
+          return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+        /**
+         * <code>optional int32 price = 7;</code>
+         */
+        public int getPrice() {
+          return price_;
+        }
+        /**
+         * <code>optional int32 price = 7;</code>
+         */
+        public Builder setPrice(int value) {
+          bitField0_ |= 0x00000040;
+          price_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 price = 7;</code>
+         */
+        public Builder clearPrice() {
+          bitField0_ = (bitField0_ & ~0x00000040);
+          price_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object nurl_ = "";
+        /**
+         * <code>optional string nurl = 8;</code>
+         */
+        public boolean hasNurl() {
+          return ((bitField0_ & 0x00000080) == 0x00000080);
+        }
+        /**
+         * <code>optional string nurl = 8;</code>
+         */
+        public java.lang.String getNurl() {
+          java.lang.Object ref = nurl_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              nurl_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string nurl = 8;</code>
+         */
+        public com.google.protobuf.ByteString
+            getNurlBytes() {
+          java.lang.Object ref = nurl_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            nurl_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string nurl = 8;</code>
+         */
+        public Builder setNurl(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+          nurl_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string nurl = 8;</code>
+         */
+        public Builder clearNurl() {
+          bitField0_ = (bitField0_ & ~0x00000080);
+          nurl_ = getDefaultInstance().getNurl();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string nurl = 8;</code>
+         */
+        public Builder setNurlBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+          nurl_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object admid_ = "";
+        /**
+         * <code>optional string admid = 9;</code>
+         */
+        public boolean hasAdmid() {
+          return ((bitField0_ & 0x00000100) == 0x00000100);
+        }
+        /**
+         * <code>optional string admid = 9;</code>
+         */
+        public java.lang.String getAdmid() {
+          java.lang.Object ref = admid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              admid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string admid = 9;</code>
+         */
+        public com.google.protobuf.ByteString
+            getAdmidBytes() {
+          java.lang.Object ref = admid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            admid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string admid = 9;</code>
+         */
+        public Builder setAdmid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+          admid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string admid = 9;</code>
+         */
+        public Builder clearAdmid() {
+          bitField0_ = (bitField0_ & ~0x00000100);
+          admid_ = getDefaultInstance().getAdmid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string admid = 9;</code>
+         */
+        public Builder setAdmidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+          admid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object icon_ = "";
+        /**
+         * <code>optional string icon = 10;</code>
+         */
+        public boolean hasIcon() {
+          return ((bitField0_ & 0x00000200) == 0x00000200);
+        }
+        /**
+         * <code>optional string icon = 10;</code>
+         */
+        public java.lang.String getIcon() {
+          java.lang.Object ref = icon_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              icon_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string icon = 10;</code>
+         */
+        public com.google.protobuf.ByteString
+            getIconBytes() {
+          java.lang.Object ref = icon_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            icon_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string icon = 10;</code>
+         */
+        public Builder setIcon(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+          icon_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string icon = 10;</code>
+         */
+        public Builder clearIcon() {
+          bitField0_ = (bitField0_ & ~0x00000200);
+          icon_ = getDefaultInstance().getIcon();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string icon = 10;</code>
+         */
+        public Builder setIconBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+          icon_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object cover_ = "";
+        /**
+         * <code>optional string cover = 11;</code>
+         */
+        public boolean hasCover() {
+          return ((bitField0_ & 0x00000400) == 0x00000400);
+        }
+        /**
+         * <code>optional string cover = 11;</code>
+         */
+        public java.lang.String getCover() {
+          java.lang.Object ref = cover_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              cover_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string cover = 11;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCoverBytes() {
+          java.lang.Object ref = cover_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            cover_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string cover = 11;</code>
+         */
+        public Builder setCover(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+          cover_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string cover = 11;</code>
+         */
+        public Builder clearCover() {
+          bitField0_ = (bitField0_ & ~0x00000400);
+          cover_ = getDefaultInstance().getCover();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string cover = 11;</code>
+         */
+        public Builder setCoverBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+          cover_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object title_ = "";
+        /**
+         * <code>optional string title = 12;</code>
+         */
+        public boolean hasTitle() {
+          return ((bitField0_ & 0x00000800) == 0x00000800);
+        }
+        /**
+         * <code>optional string title = 12;</code>
+         */
+        public java.lang.String getTitle() {
+          java.lang.Object ref = title_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              title_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string title = 12;</code>
+         */
+        public com.google.protobuf.ByteString
+            getTitleBytes() {
+          java.lang.Object ref = title_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            title_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string title = 12;</code>
+         */
+        public Builder setTitle(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+          title_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string title = 12;</code>
+         */
+        public Builder clearTitle() {
+          bitField0_ = (bitField0_ & ~0x00000800);
+          title_ = getDefaultInstance().getTitle();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string title = 12;</code>
+         */
+        public Builder setTitleBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+          title_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object desc_ = "";
+        /**
+         * <code>optional string desc = 13;</code>
+         */
+        public boolean hasDesc() {
+          return ((bitField0_ & 0x00001000) == 0x00001000);
+        }
+        /**
+         * <code>optional string desc = 13;</code>
+         */
+        public java.lang.String getDesc() {
+          java.lang.Object ref = desc_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              desc_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string desc = 13;</code>
+         */
+        public com.google.protobuf.ByteString
+            getDescBytes() {
+          java.lang.Object ref = desc_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            desc_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string desc = 13;</code>
+         */
+        public Builder setDesc(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+          desc_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string desc = 13;</code>
+         */
+        public Builder clearDesc() {
+          bitField0_ = (bitField0_ & ~0x00001000);
+          desc_ = getDefaultInstance().getDesc();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string desc = 13;</code>
+         */
+        public Builder setDescBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00001000;
+          desc_ = value;
+          onChanged();
+          return this;
+        }
+
+        private int duration_ ;
+        /**
+         * <code>optional int32 duration = 14;</code>
+         */
+        public boolean hasDuration() {
+          return ((bitField0_ & 0x00002000) == 0x00002000);
+        }
+        /**
+         * <code>optional int32 duration = 14;</code>
+         */
+        public int getDuration() {
+          return duration_;
+        }
+        /**
+         * <code>optional int32 duration = 14;</code>
+         */
+        public Builder setDuration(int value) {
+          bitField0_ |= 0x00002000;
+          duration_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 duration = 14;</code>
+         */
+        public Builder clearDuration() {
+          bitField0_ = (bitField0_ & ~0x00002000);
+          duration_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private com.google.protobuf.LazyStringList adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private void ensureAdmIsMutable() {
+          if (!((bitField0_ & 0x00004000) == 0x00004000)) {
+            adm_ = new com.google.protobuf.LazyStringArrayList(adm_);
+            bitField0_ |= 0x00004000;
+           }
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public com.google.protobuf.ProtocolStringList
+            getAdmList() {
+          return adm_.getUnmodifiableView();
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public int getAdmCount() {
+          return adm_.size();
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public java.lang.String getAdm(int index) {
+          return adm_.get(index);
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public com.google.protobuf.ByteString
+            getAdmBytes(int index) {
+          return adm_.getByteString(index);
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public Builder setAdm(
+            int index, java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAdmIsMutable();
+          adm_.set(index, value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public Builder addAdm(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAdmIsMutable();
+          adm_.add(value);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public Builder addAllAdm(
+            java.lang.Iterable<java.lang.String> values) {
+          ensureAdmIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, adm_);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public Builder clearAdm() {
+          adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          bitField0_ = (bitField0_ & ~0x00004000);
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>repeated string adm = 15;</code>
+         */
+        public Builder addAdmBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAdmIsMutable();
+          adm_.add(value);
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object dealid_ = "";
+        /**
+         * <code>optional string dealid = 16;</code>
+         */
+        public boolean hasDealid() {
+          return ((bitField0_ & 0x00008000) == 0x00008000);
+        }
+        /**
+         * <code>optional string dealid = 16;</code>
+         */
+        public java.lang.String getDealid() {
+          java.lang.Object ref = dealid_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              dealid_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 16;</code>
+         */
+        public com.google.protobuf.ByteString
+            getDealidBytes() {
+          java.lang.Object ref = dealid_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            dealid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string dealid = 16;</code>
+         */
+        public Builder setDealid(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 16;</code>
+         */
+        public Builder clearDealid() {
+          bitField0_ = (bitField0_ & ~0x00008000);
+          dealid_ = getDefaultInstance().getDealid();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string dealid = 16;</code>
+         */
+        public Builder setDealidBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00008000;
+          dealid_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object lpgurl_ = "";
+        /**
+         * <code>optional string lpgurl = 17;</code>
+         */
+        public boolean hasLpgurl() {
+          return ((bitField0_ & 0x00010000) == 0x00010000);
+        }
+        /**
+         * <code>optional string lpgurl = 17;</code>
+         */
+        public java.lang.String getLpgurl() {
+          java.lang.Object ref = lpgurl_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              lpgurl_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string lpgurl = 17;</code>
+         */
+        public com.google.protobuf.ByteString
+            getLpgurlBytes() {
+          java.lang.Object ref = lpgurl_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            lpgurl_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string lpgurl = 17;</code>
+         */
+        public Builder setLpgurl(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00010000;
+          lpgurl_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string lpgurl = 17;</code>
+         */
+        public Builder clearLpgurl() {
+          bitField0_ = (bitField0_ & ~0x00010000);
+          lpgurl_ = getDefaultInstance().getLpgurl();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string lpgurl = 17;</code>
+         */
+        public Builder setLpgurlBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00010000;
+          lpgurl_ = value;
+          onChanged();
+          return this;
+        }
+
+        private int acttype_ ;
+        /**
+         * <code>optional int32 acttype = 18;</code>
+         */
+        public boolean hasActtype() {
+          return ((bitField0_ & 0x00020000) == 0x00020000);
+        }
+        /**
+         * <code>optional int32 acttype = 18;</code>
+         */
+        public int getActtype() {
+          return acttype_;
+        }
+        /**
+         * <code>optional int32 acttype = 18;</code>
+         */
+        public Builder setActtype(int value) {
+          bitField0_ |= 0x00020000;
+          acttype_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional int32 acttype = 18;</code>
+         */
+        public Builder clearActtype() {
+          bitField0_ = (bitField0_ & ~0x00020000);
+          acttype_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance();
+        private com.google.protobuf.SingleFieldBuilder<
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder> monitorBuilder_;
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public boolean hasMonitor() {
+          return ((bitField0_ & 0x00040000) == 0x00040000);
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor getMonitor() {
+          if (monitorBuilder_ == null) {
+            return monitor_;
+          } else {
+            return monitorBuilder_.getMessage();
+          }
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public Builder setMonitor(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor value) {
+          if (monitorBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            monitor_ = value;
+            onChanged();
+          } else {
+            monitorBuilder_.setMessage(value);
+          }
+          bitField0_ |= 0x00040000;
+          return this;
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public Builder setMonitor(
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder builderForValue) {
+          if (monitorBuilder_ == null) {
+            monitor_ = builderForValue.build();
+            onChanged();
+          } else {
+            monitorBuilder_.setMessage(builderForValue.build());
+          }
+          bitField0_ |= 0x00040000;
+          return this;
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public Builder mergeMonitor(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor value) {
+          if (monitorBuilder_ == null) {
+            if (((bitField0_ & 0x00040000) == 0x00040000) &&
+                monitor_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance()) {
+              monitor_ =
+                com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.newBuilder(monitor_).mergeFrom(value).buildPartial();
+            } else {
+              monitor_ = value;
+            }
+            onChanged();
+          } else {
+            monitorBuilder_.mergeFrom(value);
+          }
+          bitField0_ |= 0x00040000;
+          return this;
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public Builder clearMonitor() {
+          if (monitorBuilder_ == null) {
+            monitor_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.getDefaultInstance();
+            onChanged();
+          } else {
+            monitorBuilder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00040000);
+          return this;
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder getMonitorBuilder() {
+          bitField0_ |= 0x00040000;
+          onChanged();
+          return getMonitorFieldBuilder().getBuilder();
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder getMonitorOrBuilder() {
+          if (monitorBuilder_ != null) {
+            return monitorBuilder_.getMessageOrBuilder();
+          } else {
+            return monitor_;
+          }
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilder<
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder> 
+            getMonitorFieldBuilder() {
+          if (monitorBuilder_ == null) {
+            monitorBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.MonitorOrBuilder>(
+                    getMonitor(),
+                    getParentForChildren(),
+                    isClean());
+            monitor_ = null;
+          }
+          return monitorBuilder_;
+        }
+
+        // @@protoc_insertion_point(builder_scope:com.madhouse.ssp.DSPBid.DSPResponse)
+      }
+
+      static {
+        defaultInstance = new DSPResponse(true);
+        defaultInstance.initFields();
+      }
+
+      // @@protoc_insertion_point(class_scope:com.madhouse.ssp.DSPBid.DSPResponse)
+    }
+
     private int bitField0_;
     public static final int TIME_FIELD_NUMBER = 1;
     private long time_;
@@ -16775,23 +20055,23 @@ public final class PremiumMADDataModel {
     }
 
     public static final int RESPONSE_FIELD_NUMBER = 12;
-    private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse response_;
+    private com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse response_;
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
      */
     public boolean hasResponse() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
      */
-    public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse getResponse() {
+    public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse getResponse() {
       return response_;
     }
     /**
-     * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+     * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
      */
-    public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder getResponseOrBuilder() {
+    public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder getResponseOrBuilder() {
       return response_;
     }
 
@@ -16803,7 +20083,7 @@ public final class PremiumMADDataModel {
       status_ = 0;
       price_ = 0;
       request_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPRequest.getDefaultInstance();
-      response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
+      response_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -17021,7 +20301,7 @@ public final class PremiumMADDataModel {
         }
         bitField0_ = (bitField0_ & ~0x00000040);
         if (responseBuilder_ == null) {
-          response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
+          response_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
@@ -17469,19 +20749,19 @@ public final class PremiumMADDataModel {
         return requestBuilder_;
       }
 
-      private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
+      private com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse response_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder> responseBuilder_;
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder> responseBuilder_;
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
       public boolean hasResponse() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
-      public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse getResponse() {
+      public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse getResponse() {
         if (responseBuilder_ == null) {
           return response_;
         } else {
@@ -17489,9 +20769,9 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
-      public Builder setResponse(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse value) {
+      public Builder setResponse(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse value) {
         if (responseBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -17505,10 +20785,10 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
       public Builder setResponse(
-          com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder builderForValue) {
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder builderForValue) {
         if (responseBuilder_ == null) {
           response_ = builderForValue.build();
           onChanged();
@@ -17519,14 +20799,14 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
-      public Builder mergeResponse(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse value) {
+      public Builder mergeResponse(com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse value) {
         if (responseBuilder_ == null) {
           if (((bitField0_ & 0x00000080) == 0x00000080) &&
-              response_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance()) {
+              response_ != com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance()) {
             response_ =
-              com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.newBuilder(response_).mergeFrom(value).buildPartial();
+              com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.newBuilder(response_).mergeFrom(value).buildPartial();
           } else {
             response_ = value;
           }
@@ -17538,11 +20818,11 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
-          response_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.getDefaultInstance();
+          response_ = com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.getDefaultInstance();
           onChanged();
         } else {
           responseBuilder_.clear();
@@ -17551,17 +20831,17 @@ public final class PremiumMADDataModel {
         return this;
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
-      public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder getResponseBuilder() {
+      public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder getResponseBuilder() {
         bitField0_ |= 0x00000080;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
-      public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder getResponseOrBuilder() {
+      public com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
           return responseBuilder_.getMessageOrBuilder();
         } else {
@@ -17569,14 +20849,14 @@ public final class PremiumMADDataModel {
         }
       }
       /**
-       * <code>optional .com.madhouse.rtb.BidResponse response = 12;</code>
+       * <code>optional .com.madhouse.ssp.DSPBid.DSPResponse response = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder> 
+          com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder> 
           getResponseFieldBuilder() {
         if (responseBuilder_ == null) {
           responseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponseOrBuilder>(
+              com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponse.Builder, com.madhouse.ssp.PremiumMADDataModel.DSPBid.DSPResponseOrBuilder>(
                   getResponse(),
                   getParentForChildren(),
                   isClean());
@@ -17646,6 +20926,11 @@ public final class PremiumMADDataModel {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_madhouse_ssp_DSPBid_DSPRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_madhouse_ssp_DSPBid_DSPResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_madhouse_ssp_DSPBid_DSPResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -17656,7 +20941,7 @@ public final class PremiumMADDataModel {
   static {
     java.lang.String[] descriptorData = {
       "\n\031PremiumMADDataModel.proto\022\020com.madhous" +
-      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\210\010\n\010M" +
+      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\230\010\n\010M" +
       "ediaBid\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030" +
       "\003 \001(\t\022\r\n\005impid\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\0228\n\007" +
       "request\030\013 \001(\0132\'.com.madhouse.ssp.MediaBi" +
@@ -17676,40 +20961,49 @@ public final class PremiumMADDataModel {
       "ke\030\035 \001(\t\022\r\n\005model\030\036 \001(\t\022\014\n\004cell\030\037 \001(\t\022\017\n" +
       "\007cellmd5\030  \001(\t\022\014\n\004tags\030! \003(\t\022\014\n\004test\030\" \001",
       "(\005\022\020\n\010bidfloor\030# \001(\005\022\017\n\007bidtype\030$ \001(\005\022\020\n" +
-      "\010location\030% \001(\t\032\373\001\n\rMediaResponse\022\r\n\005dsp" +
+      "\010location\030% \001(\t\032\213\002\n\rMediaResponse\022\r\n\005dsp" +
       "id\030\001 \001(\003\022\r\n\005admid\030\002 \001(\t\022\016\n\006layout\030\003 \001(\005\022" +
       "\014\n\004icon\030\004 \001(\t\022\r\n\005cover\030\005 \001(\t\022\r\n\005title\030\006 " +
       "\001(\t\022\014\n\004desc\030\007 \001(\t\022\020\n\010duration\030\010 \001(\005\022\013\n\003a" +
-      "dm\030\t \003(\t\022\016\n\006lpgurl\030\n \001(\t\022\017\n\007acttype\030\013 \001(" +
-      "\005\022B\n\007monitor\030\014 \001(\01321.com.madhouse.rtb.Bi" +
-      "dResponse.SeatBid.Bid.Monitor\"z\n\tWinNoti" +
-      "ce\022\014\n\004time\030\001 \001(\003\022\016\n\006status\030\002 \001(\005\022\r\n\005dspi" +
-      "d\030\003 \001(\003\022\r\n\005impid\030\004 \001(\t\022\017\n\007mediaid\030\005 \001(\003\022",
-      "\021\n\tadspaceid\030\006 \001(\003\022\r\n\005price\030\007 \001(\005\"\221\002\n\017Im" +
-      "pressionTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022" +
-      "\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001" +
-      "(\t\022\017\n\007mediaid\030\006 \001(\003\022\021\n\tadspaceid\030\007 \001(\003\022\020" +
-      "\n\010policyid\030\010 \001(\003\022\r\n\005valid\030\t \001(\010\0222\n\003ext\030\n" +
-      " \001(\0132%.com.madhouse.ssp.ImpressionTrack." +
-      "Ext\032@\n\003Ext\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022" +
-      "\016\n\006income\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\224\002\n\nClickT" +
-      "rack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001" +
-      "(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007med",
-      "iaid\030\006 \001(\003\022\021\n\tadspaceid\030\007 \001(\003\022\020\n\010policyi" +
-      "d\030\010 \001(\003\022\r\n\005valid\030\n \001(\010\022-\n\003ext\030\013 \001(\0132 .co" +
-      "m.madhouse.ssp.ClickTrack.Ext\022\013\n\003url\030\014 \001" +
-      "(\t\032@\n\003Ext\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016" +
-      "\n\006income\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\373\002\n\006DSPBid\022" +
-      "\014\n\004time\030\001 \001(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010policyid" +
-      "\030\003 \001(\003\022\024\n\014deliverytype\030\004 \001(\005\022\016\n\006status\030\005" +
-      " \001(\005\022\r\n\005price\030\006 \001(\005\0224\n\007request\030\013 \001(\0132#.c" +
-      "om.madhouse.ssp.DSPBid.DSPRequest\022/\n\010res" +
-      "ponse\030\014 \001(\0132\035.com.madhouse.rtb.BidRespon",
-      "se\032\245\001\n\nDSPRequest\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002" +
-      " \001(\t\022\016\n\006adtype\030\003 \001(\005\022\016\n\006layout\030\004 \001(\005\022\r\n\005" +
-      "tagid\030\005 \001(\t\022\016\n\006dealid\030\006 \001(\t\022\014\n\004test\030\007 \001(" +
-      "\005\022\020\n\010bidfloor\030\010 \001(\005\022\017\n\007bidtype\030\t \001(\005\022\014\n\004" +
-      "tmax\030\n \001(\005"
+      "dm\030\t \003(\t\022\016\n\006dealid\030\n \001(\t\022\016\n\006lpgurl\030\013 \001(\t" +
+      "\022\017\n\007acttype\030\014 \001(\005\022B\n\007monitor\030e \001(\01321.com" +
+      ".madhouse.rtb.BidResponse.SeatBid.Bid.Mo" +
+      "nitor\"z\n\tWinNotice\022\014\n\004time\030\001 \001(\003\022\016\n\006stat" +
+      "us\030\002 \001(\005\022\r\n\005dspid\030\003 \001(\003\022\r\n\005impid\030\004 \001(\t\022\017",
+      "\n\007mediaid\030\005 \001(\003\022\021\n\tadspaceid\030\006 \001(\003\022\r\n\005pr" +
+      "ice\030\007 \001(\005\"\221\002\n\017ImpressionTrack\022\014\n\004time\030\001 " +
+      "\001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 " +
+      "\001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007mediaid\030\006 \001(\003\022\021\n\ta" +
+      "dspaceid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022\r\n\005vali" +
+      "d\030\t \001(\010\0222\n\003ext\030\n \001(\0132%.com.madhouse.ssp." +
+      "ImpressionTrack.Ext\032@\n\003Ext\022\014\n\004args\030\001 \001(\t" +
+      "\022\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014 \001(\005\022\014\n\004cost\030" +
+      "\r \001(\005\"\224\002\n\nClickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua" +
+      "\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005im",
+      "pid\030\005 \001(\t\022\017\n\007mediaid\030\006 \001(\003\022\021\n\tadspaceid\030" +
+      "\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022\r\n\005valid\030\n \001(\010\022-" +
+      "\n\003ext\030\013 \001(\0132 .com.madhouse.ssp.ClickTrac" +
+      "k.Ext\022\013\n\003url\030\014 \001(\t\032@\n\003Ext\022\014\n\004args\030\001 \001(\t\022" +
+      "\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014 \001(\005\022\014\n\004cost\030\r" +
+      " \001(\005\"\337\005\n\006DSPBid\022\014\n\004time\030\001 \001(\003\022\r\n\005dspid\030\002" +
+      " \001(\003\022\020\n\010policyid\030\003 \001(\003\022\024\n\014deliverytype\030\004" +
+      " \001(\005\022\016\n\006status\030\005 \001(\005\022\r\n\005price\030\006 \001(\005\0224\n\007r" +
+      "equest\030\013 \001(\0132#.com.madhouse.ssp.DSPBid.D" +
+      "SPRequest\0226\n\010response\030\014 \001(\0132$.com.madhou",
+      "se.ssp.DSPBid.DSPResponse\032\245\001\n\nDSPRequest" +
+      "\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\016\n\006adtype\030\003 " +
+      "\001(\005\022\016\n\006layout\030\004 \001(\005\022\r\n\005tagid\030\005 \001(\t\022\016\n\006de" +
+      "alid\030\006 \001(\t\022\014\n\004test\030\007 \001(\005\022\020\n\010bidfloor\030\010 \001" +
+      "(\005\022\017\n\007bidtype\030\t \001(\005\022\014\n\004tmax\030\n \001(\005\032\332\002\n\013DS" +
+      "PResponse\022\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\022\r\n\005" +
+      "impid\030\003 \001(\t\022\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014" +
+      "\n\004crid\030\006 \001(\t\022\r\n\005price\030\007 \001(\005\022\014\n\004nurl\030\010 \001(" +
+      "\t\022\r\n\005admid\030\t \001(\t\022\014\n\004icon\030\n \001(\t\022\r\n\005cover\030" +
+      "\013 \001(\t\022\r\n\005title\030\014 \001(\t\022\014\n\004desc\030\r \001(\t\022\020\n\010du",
+      "ration\030\016 \001(\005\022\013\n\003adm\030\017 \003(\t\022\016\n\006dealid\030\020 \001(" +
+      "\t\022\016\n\006lpgurl\030\021 \001(\t\022\017\n\007acttype\030\022 \001(\005\022B\n\007mo" +
+      "nitor\030e \001(\01321.com.madhouse.rtb.BidRespon" +
+      "se.SeatBid.Bid.Monitor"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -17741,7 +21035,7 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_MediaBid_MediaResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_MediaBid_MediaResponse_descriptor,
-        new java.lang.String[] { "Dspid", "Admid", "Layout", "Icon", "Cover", "Title", "Desc", "Duration", "Adm", "Lpgurl", "Acttype", "Monitor", });
+        new java.lang.String[] { "Dspid", "Admid", "Layout", "Icon", "Cover", "Title", "Desc", "Duration", "Adm", "Dealid", "Lpgurl", "Acttype", "Monitor", });
     internal_static_com_madhouse_ssp_WinNotice_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_madhouse_ssp_WinNotice_fieldAccessorTable = new
@@ -17784,6 +21078,12 @@ public final class PremiumMADDataModel {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_DSPBid_DSPRequest_descriptor,
         new java.lang.String[] { "Id", "Impid", "Adtype", "Layout", "Tagid", "Dealid", "Test", "Bidfloor", "Bidtype", "Tmax", });
+    internal_static_com_madhouse_ssp_DSPBid_DSPResponse_descriptor =
+      internal_static_com_madhouse_ssp_DSPBid_descriptor.getNestedTypes().get(1);
+    internal_static_com_madhouse_ssp_DSPBid_DSPResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_madhouse_ssp_DSPBid_DSPResponse_descriptor,
+        new java.lang.String[] { "Id", "Bidid", "Impid", "Adid", "Cid", "Crid", "Price", "Nurl", "Admid", "Icon", "Cover", "Title", "Desc", "Duration", "Adm", "Dealid", "Lpgurl", "Acttype", "Monitor", });
     com.madhouse.rtb.PremiumMADRTBProtocol.getDescriptor();
   }
 

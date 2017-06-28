@@ -321,7 +321,7 @@ public class WorkThread {
                         }
                     } else {
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAY, policyMetaData.getId(), currentDate));
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
                         long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
                         if (count >= policyMetaData.getMaxCount()) {
                             CacheManager.getInstance().blockPolicy(policyMetaData.getId());
@@ -337,7 +337,7 @@ public class WorkThread {
                     HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
                     if (httpResponse != null) {
                         if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
-                            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getPrice() >= plcmtMetaData.getBidFloor()) {
+                            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {
                                 bidDspList.add(dspBidMetaData);
                             }
                         }
@@ -352,6 +352,7 @@ public class WorkThread {
                     Pair<DSPBidMetaData, Integer> winner = this.selectWinner(plcmtMetaData, policyMetaData, bidDspList);
                     if (winner != null) {
                         DSPBidMetaData dspBidMetaData = winner.getLeft();
+                        dspBidMetaData.getDspBidBuilder().setPrice(winner.getRight());
 
                         String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBidBuilder.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                         this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "nx", "ex", 86400);
@@ -359,7 +360,7 @@ public class WorkThread {
                         if (this.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
                             mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
                             if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                                String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData.getPrice(), dspBidMetaData.getDspMetaData(), dspBidMetaData);
+                                String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
                                 final HttpGet httpGet = new HttpGet(url);
                                 final HttpClient httpClient = this.winNoticeHttpClient;
                                 this.winNoticeService.submit(new Runnable() {
@@ -383,87 +384,38 @@ public class WorkThread {
     private boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
 
-        if (dspBidBuilder != null && dspBidBuilder.getStatus() == Constant.StatusCode.OK && dspBidBuilder.getResponseBuilder() != null) {
-            PremiumMADRTBProtocol.BidResponse.Builder bidResponse = dspBidBuilder.getResponseBuilder();
-            if (bidResponse.hasNbr() && bidResponse.getNbr() >= 0) {
-                return false;
+        if (dspBidBuilder != null && dspBidBuilder.getStatus() == Constant.StatusCode.OK && dspBidBuilder.getResponse() != null) {
+            PremiumMADDataModel.DSPBid.DSPResponse dspResponse = dspBidBuilder.getResponse();
+
+            try {
+                PremiumMADDataModel.MediaBid.MediaResponse.Builder mediaResponse = PremiumMADDataModel.MediaBid.MediaResponse.newBuilder();
+
+                mediaResponse.setDspid(dspBidBuilder.getDspid());
+                mediaResponse.setAdmid(dspResponse.getAdmid());
+                mediaResponse.setLayout(dspBidBuilder.getRequest().getLayout());
+                mediaResponse.addAllAdm(dspResponse.getAdmList());
+                mediaResponse.setTitle(dspResponse.getTitle());
+                mediaResponse.setDesc(dspResponse.getDesc());
+                mediaResponse.setIcon(dspResponse.getIcon());
+                mediaResponse.setCover(dspResponse.getCover());
+                mediaResponse.addAllAdm(dspResponse.getAdmList());
+                mediaResponse.setDealid(dspResponse.getDealid());
+                mediaResponse.setDuration(dspResponse.getDuration());
+                mediaResponse.setLpgurl(dspResponse.getLpgurl());
+                mediaResponse.setActtype(dspResponse.getActtype());
+                mediaResponse.setMonitor(PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.newBuilder(dspResponse.getMonitor()));
+
+                mediaBidBuilder.setResponse(mediaResponse);
+                mediaBidBuilder.setStatus(Constant.StatusCode.OK);
+
+                return true;
+
+            } catch (Exception ex) {
+                System.err.println(ex.toString());
+                mediaBidBuilder.setStatus(Constant.StatusCode.INTERNAL_ERROR);
             }
-
-            if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
-                try {
-                    PremiumMADRTBProtocol.BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
-                    PremiumMADDataModel.MediaBid.MediaResponse.Builder mediaResponse = PremiumMADDataModel.MediaBid.MediaResponse.newBuilder();
-
-                    mediaResponse.setDspid(dspBidBuilder.getDspid());
-                    mediaResponse.setAdmid(bid.getAdmid());
-                    mediaResponse.setLayout(dspBidBuilder.getRequest().getLayout());
-
-                    if (bid.getAdmCount() > 0) {
-                        mediaResponse.addAllAdm(bid.getAdmList());
-                    } else {
-                        for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
-                            if (asset.hasTitle()) {
-                                mediaResponse.setTitle(asset.getTitle().getText());
-                                continue;
-                            }
-
-                            if (asset.hasData()) {
-                                mediaResponse.setDesc(asset.getData().getValue());
-                                continue;
-                            }
-
-                            if (asset.hasImage()) {
-                                if (asset.getImage().hasType()) {
-                                    switch (asset.getImage().getType()) {
-                                        case Constant.NativeImageType.MAIN: {
-                                            mediaResponse.addAllAdm(asset.getImage().getUrlList());
-                                            break;
-                                        }
-
-                                        case Constant.NativeImageType.ICON: {
-                                            mediaResponse.setIcon(asset.getImage().getUrl(0));
-                                            break;
-                                        }
-
-                                        case Constant.NativeImageType.COVER: {
-                                            mediaResponse.setCover(asset.getImage().getUrl(0));
-                                            break;
-                                        }
-
-                                        default: {
-                                            break;
-                                        }
-                                    }
-                                } else {
-                                    mediaResponse.addAllAdm(asset.getImage().getUrlList());
-                                }
-
-                                continue;
-                            }
-
-                            if (asset.hasVideo()) {
-                                mediaResponse.addAdm(asset.getVideo().getUrl());
-                                mediaResponse.setDuration(asset.getVideo().getDuration());
-                            }
-                        }
-                    }
-
-                    mediaResponse.setLpgurl(bid.getLpgurl());
-                    mediaResponse.setActtype(bid.getActtype());
-                    PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor monitor = bid.getMonitor();
-                    mediaResponse.setMonitor(PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.newBuilder(monitor));
-
-                    mediaBidBuilder.setResponse(mediaResponse);
-                    mediaBidBuilder.setStatus(Constant.StatusCode.OK);
-
-                    return true;
-
-                } catch (Exception ex) {
-                    System.err.println(ex.toString());
-                    mediaBidBuilder.setStatus(Constant.StatusCode.INTERNAL_ERROR);
-                    return false;
-                }
-            }
+        } else {
+            mediaBidBuilder.setStatus(Constant.StatusCode.INTERNAL_ERROR);
         }
 
         return false;
@@ -606,14 +558,14 @@ public class WorkThread {
             bidDspList.sort(new Comparator<DSPBidMetaData>() {
                 @Override
                 public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
-                    return o1.getPrice() > o2.getPrice() ? 1 : -1;
+                    return o1.getDspBidBuilder().getResponse().getPrice() > o2.getDspBidBuilder().getResponse().getPrice() ? 1 : -1;
                 }
             });
 
             int price = plcmtMetaData.getBidFloor();
             if (bidDspList.size() >= 2) {
                 DSPBidMetaData dspBidMetaData = bidDspList.get(1);
-                price = dspBidMetaData.getPrice();
+                price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
             }
 
             winner = Pair.of(bidDspList.get(0), price + 1);

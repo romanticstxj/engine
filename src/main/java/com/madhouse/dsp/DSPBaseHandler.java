@@ -259,6 +259,7 @@ public abstract class DSPBaseHandler {
     public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         try {
             PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
+
             if (httpResponse != null) {
                 int status = httpResponse.getStatusLine().getStatusCode();
                 if (status != Constant.StatusCode.OK) {
@@ -269,8 +270,6 @@ public abstract class DSPBaseHandler {
                 HttpEntity entity = httpResponse.getEntity();
                 BidResponse bidResponse = BidResponse.parseFrom(EntityUtils.toByteArray(entity));
                 if (bidResponse != null) {
-                    dspBidBuilder.setResponse(bidResponse);
-
                     if (bidResponse.hasNbr() && bidResponse.getNbr() >= 0) {
                         dspBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
                         return false;
@@ -278,19 +277,69 @@ public abstract class DSPBaseHandler {
 
                     if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
                         BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
+                        PremiumMADDataModel.DSPBid.DSPResponse.Builder dspResponse = PremiumMADDataModel.DSPBid.DSPResponse.newBuilder();
+                        dspResponse.setId(dspBidBuilder.getRequest().getId());
+                        dspResponse.setBidid(bid.getId());
+                        dspResponse.setImpid(dspBidBuilder.getRequest().getImpid());
+                        dspResponse.setAdid(bid.getAdid());
+                        dspResponse.setCid(bid.getCid());
+                        dspResponse.setCrid(bid.getCrid());
+                        dspResponse.setPrice(bid.getPrice());
+                        dspResponse.setNurl(bid.getNurl());
+                        dspResponse.setAdmid(bid.getAdmid());
+                        dspResponse.setDuration(bid.getDuration());
+                        dspResponse.setDealid(bid.getDealid());
+                        dspResponse.setLpgurl(bid.getLpgurl());
+                        dspResponse.setActtype(bid.getActtype());
+                        dspResponse.setMonitor(BidResponse.SeatBid.Bid.Monitor.newBuilder(bid.getMonitor()));
 
-                        dspBidMetaData.setId(bidResponse.hasId() ? bidResponse.getId() : "");
-                        dspBidMetaData.setImpid(bid.hasImpid() ? bid.getImpid() : "");;
-                        dspBidMetaData.setBidid(bid.hasId() ? bid.getId() : "");
-                        dspBidMetaData.setAdid(bid.hasAdid() ? bid.getAdid() : "");
-                        dspBidMetaData.setAdmid(bid.hasAdmid() ? bid.getAdmid() : "");
-                        dspBidMetaData.setPrice(bid.hasPrice() ? bid.getPrice() : 0);
+                        if (bid.getAdmCount() > 0) {
+                            dspResponse.addAllAdm(bid.getAdmList());
+                        } else {
+                            for (BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
+                                if (asset.hasTitle()) {
+                                    dspResponse.setTitle(asset.getTitle().getText());
+                                    continue;
+                                }
 
+                                if (asset.hasData()) {
+                                    dspResponse.setDesc(asset.getData().getValue());
+                                    continue;
+                                }
+
+                                if (asset.hasVideo()) {
+                                    dspResponse.addAdm(asset.getVideo().getUrl());
+                                    dspResponse.setDuration(asset.getVideo().getDuration());
+                                    continue;
+                                }
+
+                                if (asset.hasImage()) {
+                                    switch (asset.getImage().getType()) {
+                                        case Constant.NativeImageType.ICON: {
+                                            dspResponse.setIcon(asset.getImage().getUrl(0));
+                                            break;
+                                        }
+
+                                        case Constant.NativeImageType.COVER: {
+                                            dspResponse.setCover(asset.getImage().getUrl(0));
+                                            break;
+                                        }
+
+                                        default: {
+                                            dspResponse.addAllAdm(asset.getImage().getUrlList());
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        dspBidBuilder.setResponse(dspResponse);
+                        dspBidBuilder.setStatus(Constant.StatusCode.OK);
                         return true;
                     } else {
                         dspBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
                     }
-
                 } else {
                     dspBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
                 }
@@ -305,17 +354,18 @@ public abstract class DSPBaseHandler {
         return false;
     }
 
-    public String getWinNoticeUrl(int price, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
+    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
         try {
-            String url = dspBidMetaData.getWinurl();
-            url = url.replace("${AUCTION_ID}", dspBidMetaData.getId())
-                    .replace("${AUCTION_IMP_ID}", dspBidMetaData.getImpid())
-                    .replace("${AUCTION_BID_ID}", dspBidMetaData.getBidid())
-                    .replace("${AUCTION_AD_ID}", dspBidMetaData.getAdid());
+            PremiumMADDataModel.DSPBid.DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
+            String url = dspResponse.getNurl();
+            url = url.replace("${AUCTION_ID}", dspResponse.getId())
+                    .replace("${AUCTION_IMP_ID}", dspResponse.getImpid())
+                    .replace("${AUCTION_BID_ID}", dspResponse.getBidid())
+                    .replace("${AUCTION_AD_ID}", dspResponse.getAdid());
 
             if (url.contains("${AUCTION_PRICE")) {
-                String text = String.format("%d_%d", price, System.currentTimeMillis() / 1000);
-                byte[] key = StringUtil.hex2Bytes(dspMetaData.getToken());
+                String text = String.format("%d_%d", dspBidMetaData.getDspBidBuilder().getPrice(), System.currentTimeMillis() / 1000);
+                byte[] key = StringUtil.hex2Bytes(dspBidMetaData.getDspMetaData().getToken());
                 byte[] data = AESUtil.encryptECB(text.getBytes("utf-8"), key, AESUtil.Algorithm.AES);
                 return url.replace("${AUCTION_PRICE}", StringUtil.urlSafeBase64Encode(data));
             }
@@ -323,7 +373,7 @@ public abstract class DSPBaseHandler {
             return url;
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return dspBidMetaData.getWinurl();
+            return dspBidMetaData.getDspBidBuilder().getResponse().getNurl();
         }
     }
 
