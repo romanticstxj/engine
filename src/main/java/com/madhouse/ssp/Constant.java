@@ -23,7 +23,7 @@ public final class Constant {
         public static final String DSP_MAPPING_DATA = "str:dsp_mapping_data";
 
         public static final String POLICY_CONTORL_TOTAL = "str:%d:policy_total";
-        public static final String POLICY_CONTORL_DAY = "str:%d:%s:policy_day";
+        public static final String POLICY_CONTORL_DAILY = "str:%d:%s:policy_daily";
 
         public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
     }

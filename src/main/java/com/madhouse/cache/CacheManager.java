@@ -100,13 +100,22 @@ public class CacheManager implements Runnable {
         this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
         this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
-        this.mediaMetaDataMap = this.loadMediaMetaData();
-        this.plcmtMetaDataMap = this.loadPlcmtMetaData();
-        this.adBlockMetaDataMap = this.loadAdBlockMetaData();
-        this.policyMetaDataMap = this.loadPolicyMetaData();
-        this.dspMetaDataMap = this.loadDSPMetaData();
-        this.mediaMappingMetaDataMap = this.loadMediaMappingData();
-        this.dspMappingMetaDataMap = this.loadDSPMappingData();
+        Object mediaMetaData = this.loadMediaMetaData();
+        Object plcmtMetaData = this.loadPlcmtMetaData();
+        Object adBlockMetaData = this.loadAdBlockMetaData();
+        Object policyMetaData = this.loadPolicyMetaData();
+        Object dspMetaData = this.loadDSPMetaData();
+        Object mediaMappingData = this.loadMediaMappingData();
+        Object dspMappingData = this.loadDSPMappingData();
+
+        this.mediaMetaDataMap = (ConcurrentHashMap<Long, MediaMetaData>)mediaMetaData;
+        this.plcmtMetaDataMap = (ConcurrentHashMap<String, PlcmtMetaData>)plcmtMetaData;
+        this.adBlockMetaDataMap = (ConcurrentHashMap<Long, AdBlockMetaData>)adBlockMetaData;
+        this.policyMetaDataMap = (ConcurrentHashMap<Long, PolicyMetaData>)policyMetaData;
+        this.dspMetaDataMap = (ConcurrentHashMap<Long, DSPMetaData>)dspMetaData;
+        this.mediaMappingMetaDataMap = (ConcurrentHashMap<Long, MediaMappingMetaData>)mediaMappingData;
+        this.dspMappingMetaDataMap = (ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>)dspMappingData;
+
         this.policyTargetMap = this.updatePolicyTargetInfo();
     }
 
@@ -240,7 +249,7 @@ public class CacheManager implements Runnable {
                         continue;
                     }
                 } else {
-                    String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAY, policyMetaData.getId(), currentDate));
+                    String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
                     long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
                     if (count >= policyMetaData.getMaxCount()) {
                         continue;
@@ -253,7 +262,7 @@ public class CacheManager implements Runnable {
                 if (policyMetaData.getAdspaceList() != null && !policyMetaData.getAdspaceList().isEmpty()) {
                     for (PolicyMetaData.PlcmtInfo plcmtInfo : policyMetaData.getAdspaceList()) {
                         if (plcmtInfo.getStatus() > 0) {
-                            String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.LOCATION, Long.toString(plcmtInfo.getId()));
+                            String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.PLACEMENT, Long.toString(plcmtInfo.getId()));
                             HashSet<Long> var2 = var.get(key);
                             if (var2 == null) {
                                 var2 = new HashSet<>();
