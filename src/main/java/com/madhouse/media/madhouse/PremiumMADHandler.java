@@ -337,7 +337,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey().toString());
             premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid().toString());
-            //premiumMADResponse.setCid(mediaResponse.get);
+            premiumMADResponse.setCid(mediaResponse.getCid().toString());
             premiumMADResponse.setAdwidth(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getW()));
             premiumMADResponse.setAdheight(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getH()));
             
@@ -358,32 +358,27 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 premiumMADResponse.setImgurl( mediaResponse.getAdm().get(0).toString());
             }
 
-            List<String> adms = new LinkedList<>();
+            premiumMADResponse.setAdm(new LinkedList<>());
             for (CharSequence adm : mediaResponse.getAdm()) {
-                adms.add(adm.toString());
+                premiumMADResponse.getAdm().add(adm.toString());
             }
-            premiumMADResponse.setAdm(adms);
 
             premiumMADResponse.setClickurl(mediaResponse.getLpgurl().toString());
             // 点击监播
-            List<String> list = new ArrayList<String>();
+            premiumMADResponse.setImgtracking(new LinkedList<>());
             for (Track track : mediaResponse.getMonitor().getImpurl()) {
-                list.add(track.getUrl().toString());
+                premiumMADResponse.getImgtracking().add(track.getUrl().toString());
             }
-            premiumMADResponse.setImgtracking(list);
             //点击监播地址
-            List<String> clkurls = new LinkedList<>();
+            premiumMADResponse.setThclkurl(new LinkedList<>());
             for (CharSequence url : mediaResponse.getMonitor().getClkurl()) {
-                clkurls.add(url.toString());
+                premiumMADResponse.getThclkurl().add(url.toString());
             }
-            premiumMADResponse.setThclkurl(clkurls);
-
             //品牌安全监测
-            List<String> securls = new LinkedList<>();
+            premiumMADResponse.setSecurl(new LinkedList<>());
             for (CharSequence url : mediaResponse.getMonitor().getSecurl()) {
-                securls.add(url.toString());
+                premiumMADResponse.getSecurl().add(url.toString());
             }
-            premiumMADResponse.setSecurl(securls);
         } else {
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey().toString());
             premiumMADResponse.setReturncode(String.valueOf(status));
