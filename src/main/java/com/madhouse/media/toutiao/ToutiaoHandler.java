@@ -200,7 +200,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             //纬度
             mediaRequest.setLat((float)geo.getLat());
         }
-        logger.info("Toutiao Request params is : {}", JSON.toJSONString(mediaRequest));
+        logger.info("Toutiao Request params is : {}", mediaRequest.toString());
         return mediaRequest.build();
     }
     /**
