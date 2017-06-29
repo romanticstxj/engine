@@ -15,60 +15,49 @@ public class ObjectUtils {
             return false;
         }
         if (obj instanceof Collection) {
-            if (((Collection) obj).size() < 1) {
+            if (((Collection)obj).size() < 1) {
                 return false;
             }
         }
         if (obj instanceof Map) {
-            if (((Map) obj).size() < 1) {
+            if (((Map)obj).size() < 1) {
                 return false;
             }
         }
         if (obj instanceof String) {
-            if (StringUtils.isEmpty((String) obj)) {
+            if (StringUtils.isEmpty((String)obj)) {
                 return false;
             }
         }
         return true;
     }
-
+    
     public static boolean isEmpty(Object obj) {
         return !isNotEmpty(obj);
     }
-
-    public static String ReadFile(String path)
-    {
+    
+    public static String ReadFile(String path) {
         File file = new File(path);
         BufferedReader reader = null;
         String laststr = "";
-        try
-        {
+        try {
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
-            while ((tempString = reader.readLine()) != null)
-            {
+            while ((tempString = reader.readLine()) != null) {
                 laststr += tempString;
             }
             reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            if (reader != null)
-            {
-                try
-                {
+        } finally {
+            if (reader != null) {
+                try {
                     reader.close();
-                }
-                catch (IOException e1)
-                {
+                } catch (IOException e1) {
                 }
             }
         }
         return laststr;
     }
-
+    
 }

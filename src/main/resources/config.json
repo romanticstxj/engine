@@ -32,9 +32,15 @@
             "apiClass": ""
         }, {
             "path": "/adcall/toutiao/bidrequest",
+            "apiClass": "com.madhouse.media.toutiao.ToutiaoHandler"
+        }, {
+            "path": "/adcall/vam/bidrequest",
             "apiClass": ""
         }, {
-            "path": "/adcall/toutiao/bidrequest",
+            "path": "/adcall/sohu/bidrequest",
+            "apiClass": ""
+        }, {
+            "path": "/adcall/tencent/bidrequest",
             "apiClass": ""
         }
         ],
