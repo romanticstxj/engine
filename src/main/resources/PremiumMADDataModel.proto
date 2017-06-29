@@ -12,8 +12,8 @@ message MediaBid
 	optional int32 bidfloor = 6;
 	optional int32 bidtype = 7;
 	optional string location = 8;
-	optional MediaRequest request = 11;
-	optional MediaResponse response = 12;
+	optional MediaRequest request = 101;
+	optional MediaResponse response = 102;
 	
 	message MediaRequest
 	{
@@ -92,17 +92,19 @@ message MediaBid
 	message MediaResponse
 	{
 		optional int64 dspid = 1;
-		optional string admid = 2;
-        optional int32 layout = 3;
-		optional string icon = 4;
-		optional string cover = 5;
-		optional string title = 6;
-		optional string desc = 7;
-		optional int32 duration = 8;
-		repeated string adm = 9;
-		optional string dealid = 10;
-		optional string lpgurl = 11;
-		optional int32 acttype = 12;
+		optional string cid = 2;
+		optional string crid = 3;
+		optional string admid = 4;
+        optional int32 layout = 5;
+		optional string icon = 6;
+		optional string cover = 7;
+		optional string title = 8;
+		optional string desc = 9;
+		optional int32 duration = 10;
+		repeated string adm = 11;
+		optional string dealid = 12;
+		optional string lpgurl = 13;
+		optional int32 acttype = 14;
 		optional com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor monitor = 101;
 	}
 }
@@ -165,13 +167,15 @@ message DSPBid
 {
 	optional int64 time = 1;
 	optional int64 dspid = 2;
-    optional int64 policyid = 3;
-	optional int32 deliverytype = 4;
-	optional int32 status = 5;
-    optional int32 price = 6;
+    optional int64 mediaid = 3;
+    optional int64 adspaceid = 4;
+    optional int64 policyid = 5;
+	optional int32 deliverytype = 6;
+	optional int32 status = 7;
+    optional int32 price = 8;
 	
-	optional DSPRequest request = 11;
-	optional DSPResponse response = 12;
+	optional DSPRequest request = 101;
+	optional DSPResponse response = 102;
 	
 	message DSPRequest
 	{

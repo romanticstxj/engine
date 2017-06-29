@@ -2,27 +2,6 @@
 {
 	"namespace": "com.madhouse.ssp.avro",
 	"type": "record",
-	"name": "TrackExt",
-	"fields": [{
-			"type": ["null", "string"],
-			"name": "args",
-			"default": null
-		}, {
-			"type": "long",
-			"name": "dspid"
-		}, {
-			"type": "int",
-			"name": "income"
-		}, {
-			"type": "int",
-			"name": "cost"
-		}
-	]
-}
-,
-{
-	"namespace": "com.madhouse.ssp.avro",
-	"type": "record",
 	"name": "Monitor",
 	"fields": [{
 			"type": {
@@ -364,8 +343,18 @@
 			"type": "boolean",
 			"name": "valid"
 		}, {
+			"type": ["null", "string"],
 			"name": "ext",
-			"type": "TrackExt"
+			"default": null
+		}, {
+			"type": "long",
+			"name": "dspid"
+		}, {
+			"type": "int",
+			"name": "income"
+		}, {
+			"type": "int",
+			"name": "cost"
 		}
 	]
 }
@@ -407,8 +396,18 @@
 			"name": "url",
 			"default": null
 		}, {
+			"type": ["null", "string"],
 			"name": "ext",
-			"type": "TrackExt"
+			"default": null
+		}, {
+			"type": "long",
+			"name": "dspid"
+		}, {
+			"type": "int",
+			"name": "income"
+		}, {
+			"type": "int",
+			"name": "cost"
 		}
 	]
 }
