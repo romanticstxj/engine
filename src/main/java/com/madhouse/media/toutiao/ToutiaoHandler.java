@@ -43,6 +43,9 @@ public class ToutiaoHandler extends MediaBaseHandler {
             logger.info("ToutiaoHandler params is {} "+bidRequest.toString());
             int status =  validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK != status){
+                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                TOUTIAOAds.BidResponse.Builder builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
+                return outputStreamWrite(builder, resp);
             } else {
                 MediaRequest request = conversionToPremiumMADDataModel(isSandbox,bidRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(request);
@@ -54,7 +57,6 @@ public class ToutiaoHandler extends MediaBaseHandler {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
-        return false;
     }
     private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
@@ -297,7 +299,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 logger.debug("{}:App is missing",bidRequest.getRequestId());
                 return Constant.StatusCode.BAD_REQUEST;
             }
-
+            return Constant.StatusCode.OK;
         }
         return Constant.StatusCode.BAD_REQUEST;
     }
@@ -346,7 +348,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         } else {
             bidResposeBuilder.setErrorCode(code);
         }
-        logger.info("Toutiao Response params is : {}", JSON.toJSONString(bidResposeBuilder));
+        logger.info("Toutiao Response params is : {}", bidResposeBuilder.toString());
         return bidResposeBuilder;
     }
     private SeatBid getSeatBid(BidRequest bidRequest, MediaRequest mediaRequest,MediaBidMetaData mediaBidMetaData) {
