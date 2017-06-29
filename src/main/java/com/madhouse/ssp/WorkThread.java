@@ -241,11 +241,11 @@ public class WorkThread {
             return;
         }
 
-        mediaRequest.setLocation(location);
+        mediaBidBuilder.setLocation(location);
 
         //bidfloor, bidtype
-        mediaRequest.setBidfloor(plcmtMetaData.getBidFloor());
-        mediaRequest.setBidtype(plcmtMetaData.getBidType());
+        mediaBidBuilder.setBidfloor(plcmtMetaData.getBidFloor());
+        mediaBidBuilder.setBidtype(plcmtMetaData.getBidType());
 
         //get block metadata
         long blockid = plcmtMetaData.getBlockId();
@@ -259,7 +259,7 @@ public class WorkThread {
         }
 
         //policy targeting
-        List<Long> policyList = this.policyTargeting(mediaRequest);
+        List<Long> policyList = this.policyTargeting(mediaBidBuilder);
         if (policyList == null || policyList.isEmpty()) {
             this.internalError(resp, mediaBidBuilder, Constant.StatusCode.NO_CONTENT);
             return;
@@ -421,8 +421,10 @@ public class WorkThread {
         return false;
     }
 
-    private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
+    private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
         List<Pair<Integer, List<String>>> targetInfo = new LinkedList<>();
+
+        PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
         //placement
         {
@@ -445,9 +447,9 @@ public class WorkThread {
         //location
         {
             List<String> info = new LinkedList<>();
-            info.add(mediaRequest.getLocation().substring(0, 4) + "*");
-            info.add(mediaRequest.getLocation().substring(0, 6) + "*");
-            info.add(mediaRequest.getLocation());
+            info.add(mediaBidBuilder.getLocation().substring(0, 4) + "*");
+            info.add(mediaBidBuilder.getLocation().substring(0, 6) + "*");
+            info.add(mediaBidBuilder.getLocation());
             targetInfo.add(Pair.of(Constant.TargetType.LOCATION, info));
         }
 

@@ -73,6 +73,38 @@ public final class PremiumMADDataModel {
     int getStatus();
 
     /**
+     * <code>optional int32 bidfloor = 6;</code>
+     */
+    boolean hasBidfloor();
+    /**
+     * <code>optional int32 bidfloor = 6;</code>
+     */
+    int getBidfloor();
+
+    /**
+     * <code>optional int32 bidtype = 7;</code>
+     */
+    boolean hasBidtype();
+    /**
+     * <code>optional int32 bidtype = 7;</code>
+     */
+    int getBidtype();
+
+    /**
+     * <code>optional string location = 8;</code>
+     */
+    boolean hasLocation();
+    /**
+     * <code>optional string location = 8;</code>
+     */
+    java.lang.String getLocation();
+    /**
+     * <code>optional string location = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getLocationBytes();
+
+    /**
      * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     boolean hasRequest();
@@ -178,9 +210,25 @@ public final class PremiumMADDataModel {
               status_ = input.readInt32();
               break;
             }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              bidfloor_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              bidtype_ = input.readInt32();
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              location_ = bs;
+              break;
+            }
             case 90: {
               com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+              if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 subBuilder = request_.toBuilder();
               }
               request_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.PARSER, extensionRegistry);
@@ -188,12 +236,12 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(request_);
                 request_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000100;
               break;
             }
             case 98: {
               com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000040) == 0x00000040)) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
                 subBuilder = response_.toBuilder();
               }
               response_ = input.readMessage(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.PARSER, extensionRegistry);
@@ -201,7 +249,7 @@ public final class PremiumMADDataModel {
                 subBuilder.mergeFrom(response_);
                 response_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000040;
+              bitField0_ |= 0x00000200;
               break;
             }
           }
@@ -1016,35 +1064,20 @@ public final class PremiumMADDataModel {
 
       /**
        * <code>optional int32 bidfloor = 35;</code>
+       *
+       * <pre>
+       *request basic_price
+       * </pre>
        */
       boolean hasBidfloor();
       /**
        * <code>optional int32 bidfloor = 35;</code>
+       *
+       * <pre>
+       *request basic_price
+       * </pre>
        */
       int getBidfloor();
-
-      /**
-       * <code>optional int32 bidtype = 36;</code>
-       */
-      boolean hasBidtype();
-      /**
-       * <code>optional int32 bidtype = 36;</code>
-       */
-      int getBidtype();
-
-      /**
-       * <code>optional string location = 37;</code>
-       */
-      boolean hasLocation();
-      /**
-       * <code>optional string location = 37;</code>
-       */
-      java.lang.String getLocation();
-      /**
-       * <code>optional string location = 37;</code>
-       */
-      com.google.protobuf.ByteString
-          getLocationBytes();
     }
     /**
      * Protobuf type {@code com.madhouse.ssp.MediaBid.MediaRequest}
@@ -1295,17 +1328,6 @@ public final class PremiumMADDataModel {
               case 280: {
                 bitField1_ |= 0x00000002;
                 bidfloor_ = input.readInt32();
-                break;
-              }
-              case 288: {
-                bitField1_ |= 0x00000004;
-                bidtype_ = input.readInt32();
-                break;
-              }
-              case 298: {
-                com.google.protobuf.ByteString bs = input.readBytes();
-                bitField1_ |= 0x00000008;
-                location_ = bs;
                 break;
               }
             }
@@ -2749,72 +2771,23 @@ public final class PremiumMADDataModel {
       private int bidfloor_;
       /**
        * <code>optional int32 bidfloor = 35;</code>
+       *
+       * <pre>
+       *request basic_price
+       * </pre>
        */
       public boolean hasBidfloor() {
         return ((bitField1_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>optional int32 bidfloor = 35;</code>
+       *
+       * <pre>
+       *request basic_price
+       * </pre>
        */
       public int getBidfloor() {
         return bidfloor_;
-      }
-
-      public static final int BIDTYPE_FIELD_NUMBER = 36;
-      private int bidtype_;
-      /**
-       * <code>optional int32 bidtype = 36;</code>
-       */
-      public boolean hasBidtype() {
-        return ((bitField1_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional int32 bidtype = 36;</code>
-       */
-      public int getBidtype() {
-        return bidtype_;
-      }
-
-      public static final int LOCATION_FIELD_NUMBER = 37;
-      private java.lang.Object location_;
-      /**
-       * <code>optional string location = 37;</code>
-       */
-      public boolean hasLocation() {
-        return ((bitField1_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string location = 37;</code>
-       */
-      public java.lang.String getLocation() {
-        java.lang.Object ref = location_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            location_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string location = 37;</code>
-       */
-      public com.google.protobuf.ByteString
-          getLocationBytes() {
-        java.lang.Object ref = location_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          location_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
       }
 
       private void initFields() {
@@ -2853,8 +2826,6 @@ public final class PremiumMADDataModel {
         tags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         test_ = 0;
         bidfloor_ = 0;
-        bidtype_ = 0;
-        location_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -2973,12 +2944,6 @@ public final class PremiumMADDataModel {
         }
         if (((bitField1_ & 0x00000002) == 0x00000002)) {
           output.writeInt32(35, bidfloor_);
-        }
-        if (((bitField1_ & 0x00000004) == 0x00000004)) {
-          output.writeInt32(36, bidtype_);
-        }
-        if (((bitField1_ & 0x00000008) == 0x00000008)) {
-          output.writeBytes(37, getLocationBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -3133,14 +3098,6 @@ public final class PremiumMADDataModel {
         if (((bitField1_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
             .computeInt32Size(35, bidfloor_);
-        }
-        if (((bitField1_ & 0x00000004) == 0x00000004)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(36, bidtype_);
-        }
-        if (((bitField1_ & 0x00000008) == 0x00000008)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(37, getLocationBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -3329,10 +3286,6 @@ public final class PremiumMADDataModel {
           bitField1_ = (bitField1_ & ~0x00000002);
           bidfloor_ = 0;
           bitField1_ = (bitField1_ & ~0x00000004);
-          bidtype_ = 0;
-          bitField1_ = (bitField1_ & ~0x00000008);
-          location_ = "";
-          bitField1_ = (bitField1_ & ~0x00000010);
           return this;
         }
 
@@ -3504,14 +3457,6 @@ public final class PremiumMADDataModel {
             to_bitField1_ |= 0x00000002;
           }
           result.bidfloor_ = bidfloor_;
-          if (((from_bitField1_ & 0x00000008) == 0x00000008)) {
-            to_bitField1_ |= 0x00000004;
-          }
-          result.bidtype_ = bidtype_;
-          if (((from_bitField1_ & 0x00000010) == 0x00000010)) {
-            to_bitField1_ |= 0x00000008;
-          }
-          result.location_ = location_;
           result.bitField0_ = to_bitField0_;
           result.bitField1_ = to_bitField1_;
           onBuilt();
@@ -3678,14 +3623,6 @@ public final class PremiumMADDataModel {
           }
           if (other.hasBidfloor()) {
             setBidfloor(other.getBidfloor());
-          }
-          if (other.hasBidtype()) {
-            setBidtype(other.getBidtype());
-          }
-          if (other.hasLocation()) {
-            bitField1_ |= 0x00000010;
-            location_ = other.location_;
-            onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -6419,18 +6356,30 @@ public final class PremiumMADDataModel {
         private int bidfloor_ ;
         /**
          * <code>optional int32 bidfloor = 35;</code>
+         *
+         * <pre>
+         *request basic_price
+         * </pre>
          */
         public boolean hasBidfloor() {
           return ((bitField1_ & 0x00000004) == 0x00000004);
         }
         /**
          * <code>optional int32 bidfloor = 35;</code>
+         *
+         * <pre>
+         *request basic_price
+         * </pre>
          */
         public int getBidfloor() {
           return bidfloor_;
         }
         /**
          * <code>optional int32 bidfloor = 35;</code>
+         *
+         * <pre>
+         *request basic_price
+         * </pre>
          */
         public Builder setBidfloor(int value) {
           bitField1_ |= 0x00000004;
@@ -6440,118 +6389,14 @@ public final class PremiumMADDataModel {
         }
         /**
          * <code>optional int32 bidfloor = 35;</code>
+         *
+         * <pre>
+         *request basic_price
+         * </pre>
          */
         public Builder clearBidfloor() {
           bitField1_ = (bitField1_ & ~0x00000004);
           bidfloor_ = 0;
-          onChanged();
-          return this;
-        }
-
-        private int bidtype_ ;
-        /**
-         * <code>optional int32 bidtype = 36;</code>
-         */
-        public boolean hasBidtype() {
-          return ((bitField1_ & 0x00000008) == 0x00000008);
-        }
-        /**
-         * <code>optional int32 bidtype = 36;</code>
-         */
-        public int getBidtype() {
-          return bidtype_;
-        }
-        /**
-         * <code>optional int32 bidtype = 36;</code>
-         */
-        public Builder setBidtype(int value) {
-          bitField1_ |= 0x00000008;
-          bidtype_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional int32 bidtype = 36;</code>
-         */
-        public Builder clearBidtype() {
-          bitField1_ = (bitField1_ & ~0x00000008);
-          bidtype_ = 0;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object location_ = "";
-        /**
-         * <code>optional string location = 37;</code>
-         */
-        public boolean hasLocation() {
-          return ((bitField1_ & 0x00000010) == 0x00000010);
-        }
-        /**
-         * <code>optional string location = 37;</code>
-         */
-        public java.lang.String getLocation() {
-          java.lang.Object ref = location_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              location_ = s;
-            }
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string location = 37;</code>
-         */
-        public com.google.protobuf.ByteString
-            getLocationBytes() {
-          java.lang.Object ref = location_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            location_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string location = 37;</code>
-         */
-        public Builder setLocation(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField1_ |= 0x00000010;
-          location_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string location = 37;</code>
-         */
-        public Builder clearLocation() {
-          bitField1_ = (bitField1_ & ~0x00000010);
-          location_ = getDefaultInstance().getLocation();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string location = 37;</code>
-         */
-        public Builder setLocationBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField1_ |= 0x00000010;
-          location_ = value;
           onChanged();
           return this;
         }
@@ -8826,13 +8671,85 @@ public final class PremiumMADDataModel {
       return status_;
     }
 
+    public static final int BIDFLOOR_FIELD_NUMBER = 6;
+    private int bidfloor_;
+    /**
+     * <code>optional int32 bidfloor = 6;</code>
+     */
+    public boolean hasBidfloor() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional int32 bidfloor = 6;</code>
+     */
+    public int getBidfloor() {
+      return bidfloor_;
+    }
+
+    public static final int BIDTYPE_FIELD_NUMBER = 7;
+    private int bidtype_;
+    /**
+     * <code>optional int32 bidtype = 7;</code>
+     */
+    public boolean hasBidtype() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional int32 bidtype = 7;</code>
+     */
+    public int getBidtype() {
+      return bidtype_;
+    }
+
+    public static final int LOCATION_FIELD_NUMBER = 8;
+    private java.lang.Object location_;
+    /**
+     * <code>optional string location = 8;</code>
+     */
+    public boolean hasLocation() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string location = 8;</code>
+     */
+    public java.lang.String getLocation() {
+      java.lang.Object ref = location_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          location_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string location = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLocationBytes() {
+      java.lang.Object ref = location_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        location_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     public static final int REQUEST_FIELD_NUMBER = 11;
     private com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest request_;
     /**
      * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
      */
     public boolean hasRequest() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     /**
      * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
@@ -8853,7 +8770,7 @@ public final class PremiumMADDataModel {
      * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
      */
     public boolean hasResponse() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
      * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
@@ -8874,6 +8791,9 @@ public final class PremiumMADDataModel {
       ip_ = "";
       impid_ = "";
       status_ = 0;
+      bidfloor_ = 0;
+      bidtype_ = 0;
+      location_ = "";
       request_ = com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.getDefaultInstance();
       response_ = com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.getDefaultInstance();
     }
@@ -8906,9 +8826,18 @@ public final class PremiumMADDataModel {
         output.writeInt32(5, status_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(11, request_);
+        output.writeInt32(6, bidfloor_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeInt32(7, bidtype_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getLocationBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeMessage(11, request_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeMessage(12, response_);
       }
       getUnknownFields().writeTo(output);
@@ -8942,9 +8871,21 @@ public final class PremiumMADDataModel {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, request_);
+          .computeInt32Size(6, bidfloor_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, bidtype_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getLocationBytes());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, request_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, response_);
       }
@@ -9077,18 +9018,24 @@ public final class PremiumMADDataModel {
         bitField0_ = (bitField0_ & ~0x00000008);
         status_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        bidfloor_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        bidtype_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        location_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (requestBuilder_ == null) {
           request_ = com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.getDefaultInstance();
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000100);
         if (responseBuilder_ == null) {
           response_ = com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -9140,13 +9087,25 @@ public final class PremiumMADDataModel {
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
+        result.bidfloor_ = bidfloor_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.bidtype_ = bidtype_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.location_ = location_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
         if (requestBuilder_ == null) {
           result.request_ = request_;
         } else {
           result.request_ = requestBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
         }
         if (responseBuilder_ == null) {
           result.response_ = response_;
@@ -9189,6 +9148,17 @@ public final class PremiumMADDataModel {
         }
         if (other.hasStatus()) {
           setStatus(other.getStatus());
+        }
+        if (other.hasBidfloor()) {
+          setBidfloor(other.getBidfloor());
+        }
+        if (other.hasBidtype()) {
+          setBidtype(other.getBidtype());
+        }
+        if (other.hasLocation()) {
+          bitField0_ |= 0x00000080;
+          location_ = other.location_;
+          onChanged();
         }
         if (other.hasRequest()) {
           mergeRequest(other.getRequest());
@@ -9515,6 +9485,146 @@ public final class PremiumMADDataModel {
         return this;
       }
 
+      private int bidfloor_ ;
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      public boolean hasBidfloor() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      public int getBidfloor() {
+        return bidfloor_;
+      }
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      public Builder setBidfloor(int value) {
+        bitField0_ |= 0x00000020;
+        bidfloor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 bidfloor = 6;</code>
+       */
+      public Builder clearBidfloor() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        bidfloor_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int bidtype_ ;
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      public boolean hasBidtype() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      public int getBidtype() {
+        return bidtype_;
+      }
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      public Builder setBidtype(int value) {
+        bitField0_ |= 0x00000040;
+        bidtype_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 bidtype = 7;</code>
+       */
+      public Builder clearBidtype() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        bidtype_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object location_ = "";
+      /**
+       * <code>optional string location = 8;</code>
+       */
+      public boolean hasLocation() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string location = 8;</code>
+       */
+      public java.lang.String getLocation() {
+        java.lang.Object ref = location_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            location_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string location = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLocationBytes() {
+        java.lang.Object ref = location_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          location_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string location = 8;</code>
+       */
+      public Builder setLocation(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        location_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string location = 8;</code>
+       */
+      public Builder clearLocation() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        location_ = getDefaultInstance().getLocation();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string location = 8;</code>
+       */
+      public Builder setLocationBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        location_ = value;
+        onChanged();
+        return this;
+      }
+
       private com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest request_ = com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder, com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequestOrBuilder> requestBuilder_;
@@ -9522,7 +9632,7 @@ public final class PremiumMADDataModel {
        * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public boolean hasRequest() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       /**
        * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
@@ -9547,7 +9657,7 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -9561,7 +9671,7 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -9569,7 +9679,7 @@ public final class PremiumMADDataModel {
        */
       public Builder mergeRequest(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest value) {
         if (requestBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+          if (((bitField0_ & 0x00000100) == 0x00000100) &&
               request_ != com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.getDefaultInstance()) {
             request_ =
               com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.newBuilder(request_).mergeFrom(value).buildPartial();
@@ -9580,7 +9690,7 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         return this;
       }
       /**
@@ -9593,14 +9703,14 @@ public final class PremiumMADDataModel {
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       /**
        * <code>optional .com.madhouse.ssp.MediaBid.MediaRequest request = 11;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder getRequestBuilder() {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000100;
         onChanged();
         return getRequestFieldBuilder().getBuilder();
       }
@@ -9638,7 +9748,7 @@ public final class PremiumMADDataModel {
        * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public boolean hasResponse() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
        * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
@@ -9663,7 +9773,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -9677,7 +9787,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -9685,7 +9795,7 @@ public final class PremiumMADDataModel {
        */
       public Builder mergeResponse(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse value) {
         if (responseBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               response_ != com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.getDefaultInstance()) {
             response_ =
               com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.newBuilder(response_).mergeFrom(value).buildPartial();
@@ -9696,7 +9806,7 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -9709,14 +9819,14 @@ public final class PremiumMADDataModel {
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
        * <code>optional .com.madhouse.ssp.MediaBid.MediaResponse response = 12;</code>
        */
       public com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse.Builder getResponseBuilder() {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
       }
@@ -20941,69 +21051,69 @@ public final class PremiumMADDataModel {
   static {
     java.lang.String[] descriptorData = {
       "\n\031PremiumMADDataModel.proto\022\020com.madhous" +
-      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\230\010\n\010M" +
+      "e.ssp\032\033PremiumMADRTBProtocol.proto\"\252\010\n\010M" +
       "ediaBid\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030" +
-      "\003 \001(\t\022\r\n\005impid\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\0228\n\007" +
-      "request\030\013 \001(\0132\'.com.madhouse.ssp.MediaBi" +
-      "d.MediaRequest\022:\n\010response\030\014 \001(\0132(.com.m" +
-      "adhouse.ssp.MediaBid.MediaResponse\032\302\004\n\014M" +
-      "ediaRequest\022\013\n\003bid\030\001 \001(\t\022\017\n\007mediaid\030\002 \001(" +
-      "\003\022\020\n\010category\030\003 \001(\005\022\014\n\004type\030\004 \001(\005\022\016\n\006bun" +
-      "dle\030\005 \001(\t\022\014\n\004name\030\006 \001(\t\022\021\n\tadspaceid\030\007 \001",
-      "(\003\022\022\n\nadspacekey\030\010 \001(\t\022\016\n\006adtype\030\t \001(\005\022\t" +
-      "\n\001w\030\n \001(\005\022\t\n\001h\030\013 \001(\005\022\013\n\003did\030\014 \001(\t\022\016\n\006did" +
-      "md5\030\r \001(\t\022\014\n\004dpid\030\016 \001(\t\022\017\n\007dpidmd5\030\017 \001(\t" +
-      "\022\013\n\003mac\030\020 \001(\t\022\016\n\006macmd5\030\021 \001(\t\022\013\n\003ifa\030\022 \001" +
-      "(\t\022\017\n\007carrier\030\023 \001(\005\022\026\n\016connectiontype\030\024 " +
-      "\001(\005\022\022\n\ndevicetype\030\025 \001(\005\022\016\n\006dealid\030\026 \001(\t\022" +
-      "\013\n\003lon\030\027 \001(\002\022\013\n\003lat\030\030 \001(\002\022\n\n\002os\030\031 \001(\005\022\013\n" +
-      "\003osv\030\032 \001(\t\022\n\n\002ip\030\033 \001(\t\022\n\n\002ua\030\034 \001(\t\022\014\n\004ma" +
-      "ke\030\035 \001(\t\022\r\n\005model\030\036 \001(\t\022\014\n\004cell\030\037 \001(\t\022\017\n" +
-      "\007cellmd5\030  \001(\t\022\014\n\004tags\030! \003(\t\022\014\n\004test\030\" \001",
-      "(\005\022\020\n\010bidfloor\030# \001(\005\022\017\n\007bidtype\030$ \001(\005\022\020\n" +
-      "\010location\030% \001(\t\032\213\002\n\rMediaResponse\022\r\n\005dsp" +
-      "id\030\001 \001(\003\022\r\n\005admid\030\002 \001(\t\022\016\n\006layout\030\003 \001(\005\022" +
-      "\014\n\004icon\030\004 \001(\t\022\r\n\005cover\030\005 \001(\t\022\r\n\005title\030\006 " +
-      "\001(\t\022\014\n\004desc\030\007 \001(\t\022\020\n\010duration\030\010 \001(\005\022\013\n\003a" +
-      "dm\030\t \003(\t\022\016\n\006dealid\030\n \001(\t\022\016\n\006lpgurl\030\013 \001(\t" +
-      "\022\017\n\007acttype\030\014 \001(\005\022B\n\007monitor\030e \001(\01321.com" +
-      ".madhouse.rtb.BidResponse.SeatBid.Bid.Mo" +
-      "nitor\"z\n\tWinNotice\022\014\n\004time\030\001 \001(\003\022\016\n\006stat" +
-      "us\030\002 \001(\005\022\r\n\005dspid\030\003 \001(\003\022\r\n\005impid\030\004 \001(\t\022\017",
-      "\n\007mediaid\030\005 \001(\003\022\021\n\tadspaceid\030\006 \001(\003\022\r\n\005pr" +
-      "ice\030\007 \001(\005\"\221\002\n\017ImpressionTrack\022\014\n\004time\030\001 " +
-      "\001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 " +
-      "\001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007mediaid\030\006 \001(\003\022\021\n\ta" +
-      "dspaceid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022\r\n\005vali" +
-      "d\030\t \001(\010\0222\n\003ext\030\n \001(\0132%.com.madhouse.ssp." +
-      "ImpressionTrack.Ext\032@\n\003Ext\022\014\n\004args\030\001 \001(\t" +
-      "\022\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014 \001(\005\022\014\n\004cost\030" +
-      "\r \001(\005\"\224\002\n\nClickTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua" +
-      "\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005im",
-      "pid\030\005 \001(\t\022\017\n\007mediaid\030\006 \001(\003\022\021\n\tadspaceid\030" +
-      "\007 \001(\003\022\020\n\010policyid\030\010 \001(\003\022\r\n\005valid\030\n \001(\010\022-" +
-      "\n\003ext\030\013 \001(\0132 .com.madhouse.ssp.ClickTrac" +
-      "k.Ext\022\013\n\003url\030\014 \001(\t\032@\n\003Ext\022\014\n\004args\030\001 \001(\t\022" +
-      "\r\n\005dspid\030\013 \001(\003\022\016\n\006income\030\014 \001(\005\022\014\n\004cost\030\r" +
-      " \001(\005\"\337\005\n\006DSPBid\022\014\n\004time\030\001 \001(\003\022\r\n\005dspid\030\002" +
-      " \001(\003\022\020\n\010policyid\030\003 \001(\003\022\024\n\014deliverytype\030\004" +
-      " \001(\005\022\016\n\006status\030\005 \001(\005\022\r\n\005price\030\006 \001(\005\0224\n\007r" +
-      "equest\030\013 \001(\0132#.com.madhouse.ssp.DSPBid.D" +
-      "SPRequest\0226\n\010response\030\014 \001(\0132$.com.madhou",
-      "se.ssp.DSPBid.DSPResponse\032\245\001\n\nDSPRequest" +
-      "\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\016\n\006adtype\030\003 " +
-      "\001(\005\022\016\n\006layout\030\004 \001(\005\022\r\n\005tagid\030\005 \001(\t\022\016\n\006de" +
-      "alid\030\006 \001(\t\022\014\n\004test\030\007 \001(\005\022\020\n\010bidfloor\030\010 \001" +
-      "(\005\022\017\n\007bidtype\030\t \001(\005\022\014\n\004tmax\030\n \001(\005\032\332\002\n\013DS" +
-      "PResponse\022\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\022\r\n\005" +
-      "impid\030\003 \001(\t\022\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014" +
-      "\n\004crid\030\006 \001(\t\022\r\n\005price\030\007 \001(\005\022\014\n\004nurl\030\010 \001(" +
-      "\t\022\r\n\005admid\030\t \001(\t\022\014\n\004icon\030\n \001(\t\022\r\n\005cover\030" +
-      "\013 \001(\t\022\r\n\005title\030\014 \001(\t\022\014\n\004desc\030\r \001(\t\022\020\n\010du",
-      "ration\030\016 \001(\005\022\013\n\003adm\030\017 \003(\t\022\016\n\006dealid\030\020 \001(" +
-      "\t\022\016\n\006lpgurl\030\021 \001(\t\022\017\n\007acttype\030\022 \001(\005\022B\n\007mo" +
-      "nitor\030e \001(\01321.com.madhouse.rtb.BidRespon" +
-      "se.SeatBid.Bid.Monitor"
+      "\003 \001(\t\022\r\n\005impid\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\022\020\n\010" +
+      "bidfloor\030\006 \001(\005\022\017\n\007bidtype\030\007 \001(\005\022\020\n\010locat" +
+      "ion\030\010 \001(\t\0228\n\007request\030\013 \001(\0132\'.com.madhous" +
+      "e.ssp.MediaBid.MediaRequest\022:\n\010response\030" +
+      "\014 \001(\0132(.com.madhouse.ssp.MediaBid.MediaR" +
+      "esponse\032\237\004\n\014MediaRequest\022\013\n\003bid\030\001 \001(\t\022\017\n" +
+      "\007mediaid\030\002 \001(\003\022\020\n\010category\030\003 \001(\005\022\014\n\004type",
+      "\030\004 \001(\005\022\016\n\006bundle\030\005 \001(\t\022\014\n\004name\030\006 \001(\t\022\021\n\t" +
+      "adspaceid\030\007 \001(\003\022\022\n\nadspacekey\030\010 \001(\t\022\016\n\006a" +
+      "dtype\030\t \001(\005\022\t\n\001w\030\n \001(\005\022\t\n\001h\030\013 \001(\005\022\013\n\003did" +
+      "\030\014 \001(\t\022\016\n\006didmd5\030\r \001(\t\022\014\n\004dpid\030\016 \001(\t\022\017\n\007" +
+      "dpidmd5\030\017 \001(\t\022\013\n\003mac\030\020 \001(\t\022\016\n\006macmd5\030\021 \001" +
+      "(\t\022\013\n\003ifa\030\022 \001(\t\022\017\n\007carrier\030\023 \001(\005\022\026\n\016conn" +
+      "ectiontype\030\024 \001(\005\022\022\n\ndevicetype\030\025 \001(\005\022\016\n\006" +
+      "dealid\030\026 \001(\t\022\013\n\003lon\030\027 \001(\002\022\013\n\003lat\030\030 \001(\002\022\n" +
+      "\n\002os\030\031 \001(\005\022\013\n\003osv\030\032 \001(\t\022\n\n\002ip\030\033 \001(\t\022\n\n\002u" +
+      "a\030\034 \001(\t\022\014\n\004make\030\035 \001(\t\022\r\n\005model\030\036 \001(\t\022\014\n\004",
+      "cell\030\037 \001(\t\022\017\n\007cellmd5\030  \001(\t\022\014\n\004tags\030! \003(" +
+      "\t\022\014\n\004test\030\" \001(\005\022\020\n\010bidfloor\030# \001(\005\032\213\002\n\rMe" +
+      "diaResponse\022\r\n\005dspid\030\001 \001(\003\022\r\n\005admid\030\002 \001(" +
+      "\t\022\016\n\006layout\030\003 \001(\005\022\014\n\004icon\030\004 \001(\t\022\r\n\005cover" +
+      "\030\005 \001(\t\022\r\n\005title\030\006 \001(\t\022\014\n\004desc\030\007 \001(\t\022\020\n\010d" +
+      "uration\030\010 \001(\005\022\013\n\003adm\030\t \003(\t\022\016\n\006dealid\030\n \001" +
+      "(\t\022\016\n\006lpgurl\030\013 \001(\t\022\017\n\007acttype\030\014 \001(\005\022B\n\007m" +
+      "onitor\030e \001(\01321.com.madhouse.rtb.BidRespo" +
+      "nse.SeatBid.Bid.Monitor\"z\n\tWinNotice\022\014\n\004" +
+      "time\030\001 \001(\003\022\016\n\006status\030\002 \001(\005\022\r\n\005dspid\030\003 \001(",
+      "\003\022\r\n\005impid\030\004 \001(\t\022\017\n\007mediaid\030\005 \001(\003\022\021\n\tads" +
+      "paceid\030\006 \001(\003\022\r\n\005price\030\007 \001(\005\"\221\002\n\017Impressi" +
+      "onTrack\022\014\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030" +
+      "\003 \001(\t\022\016\n\006status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007" +
+      "mediaid\030\006 \001(\003\022\021\n\tadspaceid\030\007 \001(\003\022\020\n\010poli" +
+      "cyid\030\010 \001(\003\022\r\n\005valid\030\t \001(\010\0222\n\003ext\030\n \001(\0132%" +
+      ".com.madhouse.ssp.ImpressionTrack.Ext\032@\n" +
+      "\003Ext\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006inc" +
+      "ome\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\224\002\n\nClickTrack\022\014" +
+      "\n\004time\030\001 \001(\003\022\n\n\002ua\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\016\n\006",
+      "status\030\004 \001(\005\022\r\n\005impid\030\005 \001(\t\022\017\n\007mediaid\030\006" +
+      " \001(\003\022\021\n\tadspaceid\030\007 \001(\003\022\020\n\010policyid\030\010 \001(" +
+      "\003\022\r\n\005valid\030\n \001(\010\022-\n\003ext\030\013 \001(\0132 .com.madh" +
+      "ouse.ssp.ClickTrack.Ext\022\013\n\003url\030\014 \001(\t\032@\n\003" +
+      "Ext\022\014\n\004args\030\001 \001(\t\022\r\n\005dspid\030\013 \001(\003\022\016\n\006inco" +
+      "me\030\014 \001(\005\022\014\n\004cost\030\r \001(\005\"\337\005\n\006DSPBid\022\014\n\004tim" +
+      "e\030\001 \001(\003\022\r\n\005dspid\030\002 \001(\003\022\020\n\010policyid\030\003 \001(\003" +
+      "\022\024\n\014deliverytype\030\004 \001(\005\022\016\n\006status\030\005 \001(\005\022\r" +
+      "\n\005price\030\006 \001(\005\0224\n\007request\030\013 \001(\0132#.com.mad" +
+      "house.ssp.DSPBid.DSPRequest\0226\n\010response\030",
+      "\014 \001(\0132$.com.madhouse.ssp.DSPBid.DSPRespo" +
+      "nse\032\245\001\n\nDSPRequest\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030" +
+      "\002 \001(\t\022\016\n\006adtype\030\003 \001(\005\022\016\n\006layout\030\004 \001(\005\022\r\n" +
+      "\005tagid\030\005 \001(\t\022\016\n\006dealid\030\006 \001(\t\022\014\n\004test\030\007 \001" +
+      "(\005\022\020\n\010bidfloor\030\010 \001(\005\022\017\n\007bidtype\030\t \001(\005\022\014\n" +
+      "\004tmax\030\n \001(\005\032\332\002\n\013DSPResponse\022\n\n\002id\030\001 \001(\t\022" +
+      "\r\n\005bidid\030\002 \001(\t\022\r\n\005impid\030\003 \001(\t\022\014\n\004adid\030\004 " +
+      "\001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004crid\030\006 \001(\t\022\r\n\005price\030" +
+      "\007 \001(\005\022\014\n\004nurl\030\010 \001(\t\022\r\n\005admid\030\t \001(\t\022\014\n\004ic" +
+      "on\030\n \001(\t\022\r\n\005cover\030\013 \001(\t\022\r\n\005title\030\014 \001(\t\022\014",
+      "\n\004desc\030\r \001(\t\022\020\n\010duration\030\016 \001(\005\022\013\n\003adm\030\017 " +
+      "\003(\t\022\016\n\006dealid\030\020 \001(\t\022\016\n\006lpgurl\030\021 \001(\t\022\017\n\007a" +
+      "cttype\030\022 \001(\005\022B\n\007monitor\030e \001(\01321.com.madh" +
+      "ouse.rtb.BidResponse.SeatBid.Bid.Monitor"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -21023,13 +21133,13 @@ public final class PremiumMADDataModel {
     internal_static_com_madhouse_ssp_MediaBid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_MediaBid_descriptor,
-        new java.lang.String[] { "Time", "Ua", "Ip", "Impid", "Status", "Request", "Response", });
+        new java.lang.String[] { "Time", "Ua", "Ip", "Impid", "Status", "Bidfloor", "Bidtype", "Location", "Request", "Response", });
     internal_static_com_madhouse_ssp_MediaBid_MediaRequest_descriptor =
       internal_static_com_madhouse_ssp_MediaBid_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_ssp_MediaBid_MediaRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_ssp_MediaBid_MediaRequest_descriptor,
-        new java.lang.String[] { "Bid", "Mediaid", "Category", "Type", "Bundle", "Name", "Adspaceid", "Adspacekey", "Adtype", "W", "H", "Did", "Didmd5", "Dpid", "Dpidmd5", "Mac", "Macmd5", "Ifa", "Carrier", "Connectiontype", "Devicetype", "Dealid", "Lon", "Lat", "Os", "Osv", "Ip", "Ua", "Make", "Model", "Cell", "Cellmd5", "Tags", "Test", "Bidfloor", "Bidtype", "Location", });
+        new java.lang.String[] { "Bid", "Mediaid", "Category", "Type", "Bundle", "Name", "Adspaceid", "Adspacekey", "Adtype", "W", "H", "Did", "Didmd5", "Dpid", "Dpidmd5", "Mac", "Macmd5", "Ifa", "Carrier", "Connectiontype", "Devicetype", "Dealid", "Lon", "Lat", "Os", "Osv", "Ip", "Ua", "Make", "Model", "Cell", "Cellmd5", "Tags", "Test", "Bidfloor", });
     internal_static_com_madhouse_ssp_MediaBid_MediaResponse_descriptor =
       internal_static_com_madhouse_ssp_MediaBid_descriptor.getNestedTypes().get(1);
     internal_static_com_madhouse_ssp_MediaBid_MediaResponse_fieldAccessorTable = new
