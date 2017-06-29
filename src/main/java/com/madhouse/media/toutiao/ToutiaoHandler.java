@@ -22,9 +22,9 @@ import com.madhouse.media.toutiao.TOUTIAOAds.MaterialMeta;
 import com.madhouse.media.toutiao.TOUTIAOAds.SeatBid;
 import com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.PremiumMADDataModel;
-import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest;
-import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse;
+import com.madhouse.ssp.avro.MediaBid;
+import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
@@ -44,7 +44,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             int status =  validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK != status){
             } else {
-                PremiumMADDataModel.MediaBid.MediaRequest request = conversionToPremiumMADDataModel(isSandbox,bidRequest);
+                MediaRequest request = conversionToPremiumMADDataModel(isSandbox,bidRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(request);
                 mediaBidMetaData.setRequestObject(bidRequest);
                 return true;
@@ -56,14 +56,8 @@ public class ToutiaoHandler extends MediaBaseHandler {
         }
         return false;
     }
-    /** 
-    * TODO (这里用一句话描述这个方法的作用)
-    * @param isSandbox
-    * @param bidRequest
-    * @return
-    */
     private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) {
-        PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest = PremiumMADDataModel.MediaBid.MediaRequest.newBuilder();
+        MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         
         TOUTIAOAds.AdSlot adSlot = bidRequest.getAdslots(0);
@@ -313,7 +307,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         resp.setContentType("application/octet-stream;charset=UTF-8");
         TOUTIAOAds.BidRequest bidRequest = (TOUTIAOAds.BidRequest) mediaBidMetaData.getRequestObject();
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            PremiumMADDataModel.MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 if(!StringUtils.isEmpty(mediaBidMetaData.getMediaBidBuilder().getResponse().getAdmid())){
                     resp.setStatus(Constant.StatusCode.OK);
@@ -360,11 +354,11 @@ public class ToutiaoHandler extends MediaBaseHandler {
         TOUTIAOAds.MaterialMeta.Builder materialMetaBuilder = TOUTIAOAds.MaterialMeta.newBuilder();
         TOUTIAOAds.MaterialMeta.ExternalMeta.Builder externalMetaBuilder = TOUTIAOAds.MaterialMeta.ExternalMeta.newBuilder();
         TOUTIAOAds.MaterialMeta.ImageMeta.Builder imageMetaBuilder = TOUTIAOAds.MaterialMeta.ImageMeta.newBuilder();
-        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         TOUTIAOAds.Bid.Builder bidBuilder = TOUTIAOAds.Bid.newBuilder();
         Long id = Math.round(Math.random() * 89999999 + 10000000);
         bidBuilder.setId(String.valueOf(id)); 
-        bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid()));
+        bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid().toString()));
         bidBuilder.setAdslotId(bidRequest.getAdslots(0).getId());
         bidBuilder.setPrice( mediaRequest.getBidfloor());
         
@@ -375,28 +369,21 @@ public class ToutiaoHandler extends MediaBaseHandler {
         }
         imageMetaBuilder.setHeight(mediaRequest.getH());
         imageMetaBuilder.setWidth(mediaRequest.getW());
-        imageMetaBuilder.setUrl(mediaResponse.getAdm(0));
+        imageMetaBuilder.setUrl(mediaResponse.getAdm().get(0).toString());
         materialMetaBuilder.setImageBanner(imageMetaBuilder);
 
         //win的竞价成功通知
         materialMetaBuilder.setNurl(ToutiaoStatusCode.Url.URL.replace("{adspaceid}", mediaRequest.getAdspacekey()));
-
-        /**
-         * 落地页广告、信息流和详情页必填项
-         * Displaytitle对应头条的source，Displaytext对应头条的title
-         */
-        
         //信息流落地页广告和详情页图文为必须返回
-        
-        materialMetaBuilder.setSource(StringUtils.isEmpty(mediaResponse.getDesc()) ? "" : mediaResponse.getDesc());
-        materialMetaBuilder.setTitle(StringUtils.isEmpty(mediaResponse.getTitle()) ? "" : mediaResponse.getTitle());
-        externalMetaBuilder.setUrl(mediaResponse.getLpgurl());
+        materialMetaBuilder.setSource(StringUtils.isEmpty(mediaResponse.getDesc()) ? "" : mediaResponse.getDesc().toString());
+        materialMetaBuilder.setTitle(StringUtils.isEmpty(mediaResponse.getTitle()) ? "" : mediaResponse.getTitle().toString());
+        externalMetaBuilder.setUrl(mediaResponse.getLpgurl().toString());
         materialMetaBuilder.setExternal(externalMetaBuilder);        
-        for (String clk : mediaResponse.getMonitor().getClkurlList()) {
-            materialMetaBuilder.addClickUrl(clk);
+        for (CharSequence clk : mediaResponse.getMonitor().getClkurl()) {
+            materialMetaBuilder.addClickUrl(clk.toString());
         }
-        for (Track imp : mediaResponse.getMonitor().getImpurlList()) {
-            materialMetaBuilder.addShowUrl(imp.getUrl());
+        for (com.madhouse.ssp.avro.Track imp : mediaResponse.getMonitor().getImpurl()) {
+            materialMetaBuilder.addShowUrl(imp.getUrl().toString());
         }
         bidBuilder.setCreative(materialMetaBuilder);
         seatBidBuilder.addAds(bidBuilder);

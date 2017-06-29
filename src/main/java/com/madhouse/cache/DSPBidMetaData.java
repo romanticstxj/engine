@@ -1,7 +1,7 @@
 package com.madhouse.cache;
 
 import com.madhouse.dsp.DSPBaseHandler;
-import com.madhouse.ssp.PremiumMADDataModel;
+import com.madhouse.ssp.avro.*;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
@@ -9,7 +9,7 @@ import org.apache.http.client.methods.HttpRequestBase;
  */
 public class DSPBidMetaData {
     private DSPMetaData dspMetaData;
-    private PremiumMADDataModel.DSPBid.Builder dspBidBuilder;
+    private DSPBid.Builder dspBidBuilder;
     private DSPBaseHandler dspBaseHandler;
     private HttpRequestBase httpRequestBase;
 
@@ -21,11 +21,11 @@ public class DSPBidMetaData {
         this.httpRequestBase = httpRequestBase;
     }
 
-    public PremiumMADDataModel.DSPBid.Builder getDspBidBuilder() {
+    public DSPBid.Builder getDspBidBuilder() {
         return dspBidBuilder;
     }
 
-    public void setDspBidBuilder(PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
+    public void setDspBidBuilder(DSPBid.Builder dspBidBuilder) {
         this.dspBidBuilder = dspBidBuilder;
     }
 

@@ -1,9 +1,8 @@
 package com.madhouse.media;
 
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.rtb.PremiumMADRTBProtocol.*;
+
 import com.madhouse.ssp.LoggerUtil;
-import com.madhouse.ssp.PremiumMADDataModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

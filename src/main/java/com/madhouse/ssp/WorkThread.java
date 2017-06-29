@@ -5,6 +5,7 @@ import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
+import com.madhouse.ssp.avro.*;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.SetUtil;
 import com.madhouse.util.StringUtil;
@@ -61,7 +62,7 @@ public class WorkThread {
                 return;
             }
 
-            PremiumMADDataModel.ImpressionTrack.Builder impressionTrack = PremiumMADDataModel.ImpressionTrack.newBuilder();
+            ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
 
             //bid redis check
             this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
@@ -82,12 +83,10 @@ public class WorkThread {
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
-                PremiumMADDataModel.ImpressionTrack.Ext.Builder var1 = PremiumMADDataModel.ImpressionTrack.Ext.newBuilder();
-                var1.setArgs(ext);
-                var1.setDspid(Long.parseLong(exts[0]));
-                var1.setIncome(Integer.parseInt(exts[1]));
-                var1.setCost(Integer.parseInt(exts[2]));
-                impressionTrack.setExt(var1);
+                impressionTrack.setExt(ext);
+                impressionTrack.setDspid(Long.parseLong(exts[0]));
+                impressionTrack.setIncome(Integer.parseInt(exts[1]));
+                impressionTrack.setCost(Integer.parseInt(exts[2]));
 
                 impressionTrack.setStatus(Constant.StatusCode.OK);
                 LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack.build());
@@ -119,7 +118,7 @@ public class WorkThread {
                 return;
             }
 
-            PremiumMADDataModel.ClickTrack.Builder clickTrack = PremiumMADDataModel.ClickTrack.newBuilder();
+            ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
 
             //bid redis check
             this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
@@ -140,11 +139,10 @@ public class WorkThread {
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
-                PremiumMADDataModel.ClickTrack.Ext.Builder var1 = PremiumMADDataModel.ClickTrack.Ext.newBuilder();
-                var1.setDspid(Long.parseLong(exts[0]));
-                var1.setIncome(Integer.parseInt(exts[1]));
-                var1.setCost(Integer.parseInt(exts[2]));
-                clickTrack.setExt(var1);
+                clickTrack.setExt(ext);
+                clickTrack.setDspid(Long.parseLong(exts[0]));
+                clickTrack.setIncome(Integer.parseInt(exts[1]));
+                clickTrack.setCost(Integer.parseInt(exts[2]));
 
                 String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
 
@@ -181,7 +179,7 @@ public class WorkThread {
         }
 
         MediaBidMetaData mediaBidMetaData = new MediaBidMetaData();
-        PremiumMADDataModel.MediaBid.Builder mediaBidBuilder = PremiumMADDataModel.MediaBid.newBuilder();
+        MediaBid.Builder mediaBidBuilder = MediaBid.newBuilder();
 
         //init mediaBid object
         mediaBidBuilder.setImpid(StringUtil.getUUID());
@@ -200,10 +198,10 @@ public class WorkThread {
         }
 
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
-        PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
+        MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
         //get placement metadata
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
+        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey().toString());
         if (plcmtMetaData == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -235,7 +233,7 @@ public class WorkThread {
         }
 
         //init location
-        String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
+        String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp().toString());
         if (location == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return;
@@ -294,7 +292,7 @@ public class WorkThread {
                     DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
                     dspBidMetaData.setDspMetaData(dspMetaData);
 
-                    PremiumMADDataModel.DSPBid.Builder dspBidBuilder = PremiumMADDataModel.DSPBid.newBuilder();
+                    DSPBid.Builder dspBidBuilder = DSPBid.newBuilder();
                     dspBidMetaData.setDspBidBuilder(dspBidBuilder);
 
                     DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
@@ -381,31 +379,30 @@ public class WorkThread {
         }
     }
 
-    private boolean packageMediaResponse(PremiumMADDataModel.DSPBid.Builder dspBidBuilder, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
+    private boolean packageMediaResponse(DSPBid.Builder dspBidBuilder, MediaBid.Builder mediaBidBuilder) {
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
 
         if (dspBidBuilder != null && dspBidBuilder.getStatus() == Constant.StatusCode.OK && dspBidBuilder.getResponse() != null) {
-            PremiumMADDataModel.DSPBid.DSPResponse dspResponse = dspBidBuilder.getResponse();
+            DSPResponse dspResponse = dspBidBuilder.getResponse();
 
             try {
-                PremiumMADDataModel.MediaBid.MediaResponse.Builder mediaResponse = PremiumMADDataModel.MediaBid.MediaResponse.newBuilder();
+                MediaResponse.Builder mediaResponse = MediaResponse.newBuilder();
 
                 mediaResponse.setDspid(dspBidBuilder.getDspid());
                 mediaResponse.setAdmid(dspResponse.getAdmid());
                 mediaResponse.setLayout(dspBidBuilder.getRequest().getLayout());
-                mediaResponse.addAllAdm(dspResponse.getAdmList());
                 mediaResponse.setTitle(dspResponse.getTitle());
                 mediaResponse.setDesc(dspResponse.getDesc());
                 mediaResponse.setIcon(dspResponse.getIcon());
                 mediaResponse.setCover(dspResponse.getCover());
-                mediaResponse.addAllAdm(dspResponse.getAdmList());
+                mediaResponse.setAdm(dspResponse.getAdm());
                 mediaResponse.setDealid(dspResponse.getDealid());
                 mediaResponse.setDuration(dspResponse.getDuration());
                 mediaResponse.setLpgurl(dspResponse.getLpgurl());
                 mediaResponse.setActtype(dspResponse.getActtype());
-                mediaResponse.setMonitor(PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.newBuilder(dspResponse.getMonitor()));
+                mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitor()));
 
-                mediaBidBuilder.setResponse(mediaResponse);
+                mediaBidBuilder.setResponseBuilder(mediaResponse);
                 mediaBidBuilder.setStatus(Constant.StatusCode.OK);
 
                 return true;
@@ -421,10 +418,10 @@ public class WorkThread {
         return false;
     }
 
-    private List<Long> policyTargeting(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder) {
+    private List<Long> policyTargeting(MediaBid.Builder mediaBidBuilder) {
         List<Pair<Integer, List<String>>> targetInfo = new LinkedList<>();
 
-        PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+        MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
         //placement
         {
@@ -447,9 +444,9 @@ public class WorkThread {
         //location
         {
             List<String> info = new LinkedList<>();
-            info.add(mediaBidBuilder.getLocation().substring(0, 4) + "*");
-            info.add(mediaBidBuilder.getLocation().substring(0, 6) + "*");
-            info.add(mediaBidBuilder.getLocation());
+            info.add(mediaBidBuilder.getLocation().subSequence(0, 4) + "*");
+            info.add(mediaBidBuilder.getLocation().subSequence(0, 6) + "*");
+            info.add(mediaBidBuilder.getLocation().toString());
             targetInfo.add(Pair.of(Constant.TargetType.LOCATION, info));
         }
 
@@ -489,7 +486,7 @@ public class WorkThread {
         return new LinkedList<>(SetUtil.setDiff(SetUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
     }
 
-    private void internalError(HttpServletResponse resp, PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, int statusCode) {
+    private void internalError(HttpServletResponse resp, MediaBid.Builder mediaBidBuilder, int statusCode) {
         try {
             resp.setStatus(statusCode);
             mediaBidBuilder.setStatus(statusCode);

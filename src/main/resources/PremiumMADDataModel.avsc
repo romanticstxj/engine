@@ -1,0 +1,575 @@
+[
+{
+	"namespace": "com.madhouse.ssp.avro",
+	"type": "record",
+	"name": "Monitor",
+	"fields": [{
+			"type": {
+				"type": "array",
+				"items": {
+					"type": "record",
+					"name": "Track",
+					"fields": [{
+							"type": "int",
+							"name": "startdelay",
+							"default": 0
+						}, {
+							"type": "string",
+							"name": "url"
+						}
+					]
+				}
+			},
+			"name": "impurl"
+		}, {
+			"type": {
+				"type": "array",
+				"items": "string"
+			},
+			"name": "clkurl"
+		}, {
+			"type": {
+				"type": "array",
+				"items": "string"
+			},
+			"name": "securl"
+		}
+	]
+}
+,
+{
+	"namespace": "com.madhouse.ssp.avro",
+	"type": "record",
+	"name": "MediaBid",
+	"fields": [{
+			"type": "long",
+			"name": "time"
+		}, {
+			"type": ["null", "string"],
+			"name": "ua",
+			"default": null
+		}, {
+			"type": "string",
+			"name": "ip"
+		}, {
+			"type": "string",
+			"name": "impid"
+		}, {
+			"type": "int",
+			"name": "status"
+		}, {
+			"type": "int",
+			"name": "bidfloor"
+		}, {
+			"type": "int",
+			"name": "bidtype"
+		}, {
+			"type": ["null", "string"],
+			"name": "location",
+			"default": null
+		}, {
+			"name": "request",
+			"type": {
+				"type": "record",
+				"name": "MediaRequest",
+				"fields": [{
+						"type": ["null", "string"],
+						"name": "bid",
+						"default": null
+					}, {
+						"type": "long",
+						"name": "mediaid"
+					}, {
+						"type": "int",
+						"name": "category"
+					}, {
+						"type": "int",
+						"name": "type"
+					}, {
+						"type": ["null", "string"],
+						"name": "bundle",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "name",
+						"default": null
+					}, {
+						"type": "long",
+						"name": "adspaceid"
+					}, {
+						"type": "string",
+						"name": "adspacekey"
+					}, {
+						"type": "int",
+						"name": "adtype"
+					}, {
+						"type": "int",
+						"name": "w"
+					}, {
+						"type": "int",
+						"name": "h"
+					}, {
+						"type": ["null", "string"],
+						"name": "did",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "didmd5",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "dpid",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "dpidmd5",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "mac",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "macmd5",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "ifa",
+						"default": null
+					}, {
+						"type": "int",
+						"name": "carrier",
+						"default": 0
+					}, {
+						"type": "int",
+						"name": "connectiontype",
+						"default": 0
+					}, {
+						"type": "int",
+						"name": "devicetype",
+						"default": 0
+					}, {
+						"type": ["null", "string"],
+						"name": "dealid",
+						"default": null
+					}, {
+						"type": "float",
+						"name": "lon",
+						"default": 0
+					}, {
+						"type": "float",
+						"name": "lat",
+						"default": 0
+					}, {
+						"type": "int",
+						"name": "os",
+						"default": 0
+					}, {
+						"type": ["null", "string"],
+						"name": "osv",
+						"default": null
+					}, {
+						"type": "string",
+						"name": "ip"
+					}, {
+						"type": ["null", "string"],
+						"name": "ua",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "make",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "model",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "cell",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "cellmd5",
+						"default": null
+					}, {
+						"type": {
+							"type": "array",
+							"items": "string"
+						},
+						"name": "tags"
+					}, {
+						"type": "int",
+						"name": "test",
+						"default": 0
+					}, {
+						"type": "int",
+						"name": "bidfloor",
+						"default": 0
+					}
+				]
+			}
+		}, {
+			"name": "response",
+			"default": null,
+			"type": {
+				"type": "record",
+				"name": "MediaResponse",
+				"fields": [{
+						"type": "long",
+						"name": "dspid"
+					}, {
+						"type": ["null", "string"],
+						"name": "cid",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "crid",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "admid",
+						"default": null
+					}, {
+						"type": "int",
+						"name": "layout",
+						"default": 0
+					}, {
+						"type": ["null", "string"],
+						"name": "icon",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "cover",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "title",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "desc",
+						"default": null
+					}, {
+						"type": "int",
+						"name": "duration",
+						"default": 0
+					}, {
+						"type": {
+							"type": "array",
+							"items": "string"
+						},
+						"name": "adm"
+					}, {
+						"type": ["null", "string"],
+						"name": "dealid",
+						"default": null
+					}, {
+						"type": ["null", "string"],
+						"name": "lpgurl",
+						"default": null
+					}, {
+						"type": "int",
+						"name": "acttype",
+						"default": 1
+					}, {
+						"name": "monitor",
+						"type": "Monitor"
+					}
+				]
+			}
+		}
+	]
+}
+,
+{
+	"namespace": "com.madhouse.ssp.avro",
+	"type" : "record",
+	"name" : "WinNotice",
+	"fields" : [{
+			"type" : "long",
+			"name" : "time"
+		}, {
+			"type" : "int",
+			"name" : "status"
+		}, {
+			"type" : "long",
+			"name" : "dspid"
+		}, {
+			"type" : "string",
+			"name" : "impid"
+		}, {
+			"type" : "long",
+			"name" : "mediaid"
+		}, {
+			"type" : "long",
+			"name" : "adspaceid"
+		}, {
+			"type" : "int",
+			"name" : "price"
+		}
+	]
+}
+,
+{
+	"namespace": "com.madhouse.ssp.avro",
+	"type": "record",
+	"name": "ImpressionTrack",
+	"fields": [{
+			"type": "long",
+			"name": "time"
+		}, {
+			"type": ["null", "string"],
+			"name": "ua",
+			"default": null
+		}, {
+			"type": "string",
+			"name": "ip"
+		}, {
+			"type": "int",
+			"name": "status"
+		}, {
+			"type": "string",
+			"name": "impid"
+		}, {
+			"type": "long",
+			"name": "mediaid"
+		}, {
+			"type": "long",
+			"name": "adspaceid"
+		}, {
+			"type": "long",
+			"name": "policyid"
+		}, {
+			"type": "boolean",
+			"name": "valid"
+		}, {
+			"type": ["null", "string"],
+			"name": "ext",
+			"default": null
+		}, {
+			"type": "long",
+			"name": "dspid"
+		}, {
+			"type": "int",
+			"name": "income"
+		}, {
+			"type": "int",
+			"name": "cost"
+		}
+	]
+}
+,
+{
+	"namespace": "com.madhouse.ssp.avro",
+	"type": "record",
+	"name": "ClickTrack",
+	"fields": [{
+			"type": "long",
+			"name": "time"
+		}, {
+			"type": ["null", "string"],
+			"name": "ua",
+			"default": null
+		}, {
+			"type": "string",
+			"name": "ip"
+		}, {
+			"type": "int",
+			"name": "status"
+		}, {
+			"type": "string",
+			"name": "impid"
+		}, {
+			"type": "long",
+			"name": "mediaid"
+		}, {
+			"type": "long",
+			"name": "adspaceid"
+		}, {
+			"type": "long",
+			"name": "policyid"
+		}, {
+			"type": "boolean",
+			"name": "valid"
+		}, {
+			"type": ["null", "string"],
+			"name": "url",
+			"default": null
+		}, {
+			"type": ["null", "string"],
+			"name": "ext",
+			"default": null
+		}, {
+			"type": "long",
+			"name": "dspid"
+		}, {
+			"type": "int",
+			"name": "income"
+		}, {
+			"type": "int",
+			"name": "cost"
+		}
+	]
+}
+,
+{
+	"namespace": "com.madhouse.ssp.avro",
+	"type": "record",
+	"name": "DSPBid",
+	"fields": [{
+			"type": "long",
+			"name": "time"
+		}, {
+			"type": "long",
+			"name": "dspid"
+		}, {
+			"type": "long",
+			"name": "policyid"
+		}, {
+			"type": "int",
+			"name": "deliverytype"
+		}, {
+			"type": "long",
+			"name": "mediaid"
+		}, {
+			"type": "long",
+			"name": "adspaceid"
+		}, {
+			"type": "int",
+			"name": "status"
+		}, {
+			"type": "int",
+			"name": "price",
+			"default": 0
+		}, {
+			"name": "request",
+			"type": {
+				"type": "record",
+				"name": "DSPRequest",
+				"fields": [{
+						"type": ["null", "string"],
+						"name": "id",
+						"default": null
+					}, {
+						"type": "string",
+						"name": "impid"
+					}, {
+						"type": "int",
+						"name": "adtype"
+					}, {
+						"type": "int",
+						"name": "layout"
+					}, {
+						"type": "string",
+						"name": "tagid"
+					}, {
+						"type": ["null", "string"],
+						"name": "dealid",
+						"default": null
+					}, {
+						"type": "int",
+						"name": "test"
+					}, {
+						"type": "int",
+						"name": "bidfloor",
+						"default": 0
+					}, {
+						"type": "int",
+						"name": "bidtype",
+						"default": 1
+					}, {
+						"type": "int",
+						"name": "tmax",
+						"default": 120
+					}
+				]
+			}
+		}, {
+			"name": "response",
+			"default": null,
+			"type": {
+				"type": "record",
+				"name": "DSPResponse",
+				"fields": [{
+						"name": "id",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "bidid",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "impid",
+						"type": "string"
+					}, {
+						"name": "adid",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "cid",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "crid",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"type": "int",
+						"name": "price",
+						"default": 0
+					}, {
+						"name": "nurl",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "admid",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "icon",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "cover",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "title",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "desc",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"type": "int",
+						"name": "duration",
+						"default": 0
+					}, {
+						"type": {
+							"type": "array",
+							"items": "string"
+						},
+						"name": "adm"
+					}, {
+						"name": "dealid",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"name": "lpgurl",
+						"type": ["null", "string"],
+						"default": null
+					}, {
+						"type": "int",
+						"name": "acttype",
+						"default": 1
+					}, {
+						"name": "monitor",
+						"type": "Monitor"
+					}
+				]
+			}
+		}
+	]
+}
+]
