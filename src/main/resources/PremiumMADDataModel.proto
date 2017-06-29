@@ -9,6 +9,9 @@ message MediaBid
 	optional string ip = 3;
 	optional string impid = 4;
 	optional int32 status = 5;
+	optional int32 bidfloor = 6;
+	optional int32 bidtype = 7;
+	optional string location = 8;
 	optional MediaRequest request = 11;
 	optional MediaResponse response = 12;
 	
@@ -82,9 +85,8 @@ message MediaBid
 		repeated string tags = 33;
         //test mode
 		optional int32 test = 34;
+		//request basic_price
 		optional int32 bidfloor = 35;
-		optional int32 bidtype = 36;
-		optional string location = 37;
 	}
 	
 	message MediaResponse
