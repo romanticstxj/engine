@@ -208,8 +208,6 @@ public abstract class DSPBaseHandler {
                         nativeRequest.addAssets(asset);
                     }
 
-
-
                     if (plcmtMetaData.getLayout() == Constant.NativeLayout.VIDEO) {
                         PlcmtMetaData.Video var2 = var1.getVideo();
                         BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
@@ -318,12 +316,9 @@ public abstract class DSPBaseHandler {
                         }
 
                         if (bid.getAdmCount() > 0) {
-                            List<CharSequence> urls = new LinkedList<>();
                             for (String url : bid.getAdmList()) {
-                                urls.add(url);
+                                dspResponse.getAdm().add(url);
                             }
-
-                            dspResponse.setAdm(urls);
                         } else {
                             for (BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
                                 if (asset.hasTitle()) {

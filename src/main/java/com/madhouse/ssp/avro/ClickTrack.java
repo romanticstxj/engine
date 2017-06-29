@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 3671123805593943168L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClickTrack\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"time\",\"type\":\"long\"},{\"name\":\"ua\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"ip\",\"type\":\"string\"},{\"name\":\"status\",\"type\":\"int\"},{\"name\":\"impid\",\"type\":\"string\"},{\"name\":\"mediaid\",\"type\":\"long\"},{\"name\":\"adspaceid\",\"type\":\"long\"},{\"name\":\"policyid\",\"type\":\"long\"},{\"name\":\"valid\",\"type\":\"boolean\"},{\"name\":\"url\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"ext\",\"type\":{\"type\":\"record\",\"name\":\"TrackExt\",\"fields\":[{\"name\":\"args\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dspid\",\"type\":\"long\"},{\"name\":\"income\",\"type\":\"int\"},{\"name\":\"cost\",\"type\":\"int\"}]}}]}");
+  private static final long serialVersionUID = 5506169093517342291L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ClickTrack\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"time\",\"type\":\"long\"},{\"name\":\"ua\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"ip\",\"type\":\"string\"},{\"name\":\"status\",\"type\":\"int\"},{\"name\":\"impid\",\"type\":\"string\"},{\"name\":\"mediaid\",\"type\":\"long\"},{\"name\":\"adspaceid\",\"type\":\"long\"},{\"name\":\"policyid\",\"type\":\"long\"},{\"name\":\"valid\",\"type\":\"boolean\"},{\"name\":\"url\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"ext\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dspid\",\"type\":\"long\"},{\"name\":\"income\",\"type\":\"int\"},{\"name\":\"cost\",\"type\":\"int\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -61,7 +61,10 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
   @Deprecated public long policyid;
   @Deprecated public boolean valid;
   @Deprecated public java.lang.CharSequence url;
-  @Deprecated public com.madhouse.ssp.avro.TrackExt ext;
+  @Deprecated public java.lang.CharSequence ext;
+  @Deprecated public long dspid;
+  @Deprecated public int income;
+  @Deprecated public int cost;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -83,8 +86,11 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
    * @param valid The new value for valid
    * @param url The new value for url
    * @param ext The new value for ext
+   * @param dspid The new value for dspid
+   * @param income The new value for income
+   * @param cost The new value for cost
    */
-  public ClickTrack(java.lang.Long time, java.lang.CharSequence ua, java.lang.CharSequence ip, java.lang.Integer status, java.lang.CharSequence impid, java.lang.Long mediaid, java.lang.Long adspaceid, java.lang.Long policyid, java.lang.Boolean valid, java.lang.CharSequence url, com.madhouse.ssp.avro.TrackExt ext) {
+  public ClickTrack(java.lang.Long time, java.lang.CharSequence ua, java.lang.CharSequence ip, java.lang.Integer status, java.lang.CharSequence impid, java.lang.Long mediaid, java.lang.Long adspaceid, java.lang.Long policyid, java.lang.Boolean valid, java.lang.CharSequence url, java.lang.CharSequence ext, java.lang.Long dspid, java.lang.Integer income, java.lang.Integer cost) {
     this.time = time;
     this.ua = ua;
     this.ip = ip;
@@ -96,6 +102,9 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
     this.valid = valid;
     this.url = url;
     this.ext = ext;
+    this.dspid = dspid;
+    this.income = income;
+    this.cost = cost;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -113,6 +122,9 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
     case 8: return valid;
     case 9: return url;
     case 10: return ext;
+    case 11: return dspid;
+    case 12: return income;
+    case 13: return cost;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -131,7 +143,10 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
     case 7: policyid = (java.lang.Long)value$; break;
     case 8: valid = (java.lang.Boolean)value$; break;
     case 9: url = (java.lang.CharSequence)value$; break;
-    case 10: ext = (com.madhouse.ssp.avro.TrackExt)value$; break;
+    case 10: ext = (java.lang.CharSequence)value$; break;
+    case 11: dspid = (java.lang.Long)value$; break;
+    case 12: income = (java.lang.Integer)value$; break;
+    case 13: cost = (java.lang.Integer)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -300,7 +315,7 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
    * Gets the value of the 'ext' field.
    * @return The value of the 'ext' field.
    */
-  public com.madhouse.ssp.avro.TrackExt getExt() {
+  public java.lang.CharSequence getExt() {
     return ext;
   }
 
@@ -308,8 +323,56 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
    * Sets the value of the 'ext' field.
    * @param value the value to set.
    */
-  public void setExt(com.madhouse.ssp.avro.TrackExt value) {
+  public void setExt(java.lang.CharSequence value) {
     this.ext = value;
+  }
+
+  /**
+   * Gets the value of the 'dspid' field.
+   * @return The value of the 'dspid' field.
+   */
+  public java.lang.Long getDspid() {
+    return dspid;
+  }
+
+  /**
+   * Sets the value of the 'dspid' field.
+   * @param value the value to set.
+   */
+  public void setDspid(java.lang.Long value) {
+    this.dspid = value;
+  }
+
+  /**
+   * Gets the value of the 'income' field.
+   * @return The value of the 'income' field.
+   */
+  public java.lang.Integer getIncome() {
+    return income;
+  }
+
+  /**
+   * Sets the value of the 'income' field.
+   * @param value the value to set.
+   */
+  public void setIncome(java.lang.Integer value) {
+    this.income = value;
+  }
+
+  /**
+   * Gets the value of the 'cost' field.
+   * @return The value of the 'cost' field.
+   */
+  public java.lang.Integer getCost() {
+    return cost;
+  }
+
+  /**
+   * Sets the value of the 'cost' field.
+   * @param value the value to set.
+   */
+  public void setCost(java.lang.Integer value) {
+    this.cost = value;
   }
 
   /**
@@ -354,8 +417,10 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
     private long policyid;
     private boolean valid;
     private java.lang.CharSequence url;
-    private com.madhouse.ssp.avro.TrackExt ext;
-    private com.madhouse.ssp.avro.TrackExt.Builder extBuilder;
+    private java.lang.CharSequence ext;
+    private long dspid;
+    private int income;
+    private int cost;
 
     /** Creates a new Builder */
     private Builder() {
@@ -412,8 +477,17 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
         this.ext = data().deepCopy(fields()[10].schema(), other.ext);
         fieldSetFlags()[10] = true;
       }
-      if (other.hasExtBuilder()) {
-        this.extBuilder = com.madhouse.ssp.avro.TrackExt.newBuilder(other.getExtBuilder());
+      if (isValidValue(fields()[11], other.dspid)) {
+        this.dspid = data().deepCopy(fields()[11].schema(), other.dspid);
+        fieldSetFlags()[11] = true;
+      }
+      if (isValidValue(fields()[12], other.income)) {
+        this.income = data().deepCopy(fields()[12].schema(), other.income);
+        fieldSetFlags()[12] = true;
+      }
+      if (isValidValue(fields()[13], other.cost)) {
+        this.cost = data().deepCopy(fields()[13].schema(), other.cost);
+        fieldSetFlags()[13] = true;
       }
     }
 
@@ -467,7 +541,18 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
         this.ext = data().deepCopy(fields()[10].schema(), other.ext);
         fieldSetFlags()[10] = true;
       }
-      this.extBuilder = null;
+      if (isValidValue(fields()[11], other.dspid)) {
+        this.dspid = data().deepCopy(fields()[11].schema(), other.dspid);
+        fieldSetFlags()[11] = true;
+      }
+      if (isValidValue(fields()[12], other.income)) {
+        this.income = data().deepCopy(fields()[12].schema(), other.income);
+        fieldSetFlags()[12] = true;
+      }
+      if (isValidValue(fields()[13], other.cost)) {
+        this.cost = data().deepCopy(fields()[13].schema(), other.cost);
+        fieldSetFlags()[13] = true;
+      }
     }
 
     /**
@@ -858,7 +943,7 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
       * Gets the value of the 'ext' field.
       * @return The value.
       */
-    public com.madhouse.ssp.avro.TrackExt getExt() {
+    public java.lang.CharSequence getExt() {
       return ext;
     }
 
@@ -867,9 +952,8 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
       * @param value The value of 'ext'.
       * @return This builder.
       */
-    public com.madhouse.ssp.avro.ClickTrack.Builder setExt(com.madhouse.ssp.avro.TrackExt value) {
+    public com.madhouse.ssp.avro.ClickTrack.Builder setExt(java.lang.CharSequence value) {
       validate(fields()[10], value);
-      this.extBuilder = null;
       this.ext = value;
       fieldSetFlags()[10] = true;
       return this;
@@ -883,39 +967,6 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
       return fieldSetFlags()[10];
     }
 
-    /**
-     * Gets the Builder instance for the 'ext' field and creates one if it doesn't exist yet.
-     * @return This builder.
-     */
-    public com.madhouse.ssp.avro.TrackExt.Builder getExtBuilder() {
-      if (extBuilder == null) {
-        if (hasExt()) {
-          setExtBuilder(com.madhouse.ssp.avro.TrackExt.newBuilder(ext));
-        } else {
-          setExtBuilder(com.madhouse.ssp.avro.TrackExt.newBuilder());
-        }
-      }
-      return extBuilder;
-    }
-
-    /**
-     * Sets the Builder instance for the 'ext' field
-     * @param value The builder instance that must be set.
-     * @return This builder.
-     */
-    public com.madhouse.ssp.avro.ClickTrack.Builder setExtBuilder(com.madhouse.ssp.avro.TrackExt.Builder value) {
-      clearExt();
-      extBuilder = value;
-      return this;
-    }
-
-    /**
-     * Checks whether the 'ext' field has an active Builder instance
-     * @return True if the 'ext' field has an active Builder instance
-     */
-    public boolean hasExtBuilder() {
-      return extBuilder != null;
-    }
 
     /**
       * Clears the value of the 'ext' field.
@@ -923,8 +974,121 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
       */
     public com.madhouse.ssp.avro.ClickTrack.Builder clearExt() {
       ext = null;
-      extBuilder = null;
       fieldSetFlags()[10] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'dspid' field.
+      * @return The value.
+      */
+    public java.lang.Long getDspid() {
+      return dspid;
+    }
+
+    /**
+      * Sets the value of the 'dspid' field.
+      * @param value The value of 'dspid'.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.ClickTrack.Builder setDspid(long value) {
+      validate(fields()[11], value);
+      this.dspid = value;
+      fieldSetFlags()[11] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'dspid' field has been set.
+      * @return True if the 'dspid' field has been set, false otherwise.
+      */
+    public boolean hasDspid() {
+      return fieldSetFlags()[11];
+    }
+
+
+    /**
+      * Clears the value of the 'dspid' field.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.ClickTrack.Builder clearDspid() {
+      fieldSetFlags()[11] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'income' field.
+      * @return The value.
+      */
+    public java.lang.Integer getIncome() {
+      return income;
+    }
+
+    /**
+      * Sets the value of the 'income' field.
+      * @param value The value of 'income'.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.ClickTrack.Builder setIncome(int value) {
+      validate(fields()[12], value);
+      this.income = value;
+      fieldSetFlags()[12] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'income' field has been set.
+      * @return True if the 'income' field has been set, false otherwise.
+      */
+    public boolean hasIncome() {
+      return fieldSetFlags()[12];
+    }
+
+
+    /**
+      * Clears the value of the 'income' field.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.ClickTrack.Builder clearIncome() {
+      fieldSetFlags()[12] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'cost' field.
+      * @return The value.
+      */
+    public java.lang.Integer getCost() {
+      return cost;
+    }
+
+    /**
+      * Sets the value of the 'cost' field.
+      * @param value The value of 'cost'.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.ClickTrack.Builder setCost(int value) {
+      validate(fields()[13], value);
+      this.cost = value;
+      fieldSetFlags()[13] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'cost' field has been set.
+      * @return True if the 'cost' field has been set, false otherwise.
+      */
+    public boolean hasCost() {
+      return fieldSetFlags()[13];
+    }
+
+
+    /**
+      * Clears the value of the 'cost' field.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.ClickTrack.Builder clearCost() {
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -943,11 +1107,10 @@ public class ClickTrack extends org.apache.avro.specific.SpecificRecordBase impl
         record.policyid = fieldSetFlags()[7] ? this.policyid : (java.lang.Long) defaultValue(fields()[7]);
         record.valid = fieldSetFlags()[8] ? this.valid : (java.lang.Boolean) defaultValue(fields()[8]);
         record.url = fieldSetFlags()[9] ? this.url : (java.lang.CharSequence) defaultValue(fields()[9]);
-        if (extBuilder != null) {
-          record.ext = this.extBuilder.build();
-        } else {
-          record.ext = fieldSetFlags()[10] ? this.ext : (com.madhouse.ssp.avro.TrackExt) defaultValue(fields()[10]);
-        }
+        record.ext = fieldSetFlags()[10] ? this.ext : (java.lang.CharSequence) defaultValue(fields()[10]);
+        record.dspid = fieldSetFlags()[11] ? this.dspid : (java.lang.Long) defaultValue(fields()[11]);
+        record.income = fieldSetFlags()[12] ? this.income : (java.lang.Integer) defaultValue(fields()[12]);
+        record.cost = fieldSetFlags()[13] ? this.cost : (java.lang.Integer) defaultValue(fields()[13]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

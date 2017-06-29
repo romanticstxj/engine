@@ -83,12 +83,10 @@ public class WorkThread {
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
-                TrackExt.Builder var1 = TrackExt.newBuilder();
-                var1.setArgs(ext);
-                var1.setDspid(Long.parseLong(exts[0]));
-                var1.setIncome(Integer.parseInt(exts[1]));
-                var1.setCost(Integer.parseInt(exts[2]));
-                impressionTrack.setExtBuilder(var1);
+                impressionTrack.setExt(ext);
+                impressionTrack.setDspid(Long.parseLong(exts[0]));
+                impressionTrack.setIncome(Integer.parseInt(exts[1]));
+                impressionTrack.setCost(Integer.parseInt(exts[2]));
 
                 impressionTrack.setStatus(Constant.StatusCode.OK);
                 LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack.build());
@@ -141,11 +139,10 @@ public class WorkThread {
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
-                TrackExt.Builder var1 = TrackExt.newBuilder();
-                var1.setDspid(Long.parseLong(exts[0]));
-                var1.setIncome(Integer.parseInt(exts[1]));
-                var1.setCost(Integer.parseInt(exts[2]));
-                clickTrack.setExtBuilder(var1);
+                clickTrack.setExt(ext);
+                clickTrack.setDspid(Long.parseLong(exts[0]));
+                clickTrack.setIncome(Integer.parseInt(exts[1]));
+                clickTrack.setCost(Integer.parseInt(exts[2]));
 
                 String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
 
