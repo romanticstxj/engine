@@ -7,7 +7,7 @@ package com.madhouse.dsp;
 import com.madhouse.cache.*;
 import com.madhouse.cache.AdBlockMetaData;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.PremiumMADDataModel;
+import com.madhouse.ssp.avro.*;
 import com.madhouse.util.AESUtil;
 import com.madhouse.util.StringUtil;
 import com.madhouse.rtb.PremiumMADRTBProtocol.*;
@@ -19,9 +19,14 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public abstract class DSPBaseHandler {
-    public HttpRequestBase packageBidRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
+    public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
 
         if (!this.packageDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData.getDspBidBuilder())) {
@@ -29,8 +34,8 @@ public abstract class DSPBaseHandler {
             return null;
         }
 
-        PremiumMADDataModel.DSPBid.DSPRequest dspRequest = dspBidMetaData.getDspBidBuilder().getRequest();
-        PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+        DSPRequest dspRequest = dspBidMetaData.getDspBidBuilder().getRequest();
+        MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
         HttpPost httpPost = new HttpPost(dspMetaData.getBidUrl());
         httpPost.setHeader("Content-Type", "application/x-protobuf");
@@ -39,7 +44,7 @@ public abstract class DSPBaseHandler {
 
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
-        bidRequest.setId(dspRequest.getId());
+        bidRequest.setId(dspRequest.getId().toString());
         bidRequest.setTmax(mediaMetaData.getTimeout());
         bidRequest.setTest(mediaBidBuilder.getRequestBuilder().getTest());
         bidRequest.setAt(Constant.BidAt.SECOND_PRICE);
@@ -52,7 +57,7 @@ public abstract class DSPBaseHandler {
         if (mediaMetaData.getType() == Constant.MediaType.APP) {
             BidRequest.App.Builder app = BidRequest.App.newBuilder();
             app.setId(Long.toString(mediaMetaData.getId()));
-            app.setBundle(mediaRequest.getBundle());
+            app.setBundle(mediaRequest.getBundle().toString());
             app.addCat(Integer.toString(mediaMetaData.getCategory()));
             app.setName(mediaMetaData.getName());
             bidRequest.setApp(app);
@@ -68,22 +73,22 @@ public abstract class DSPBaseHandler {
 
         {
             BidRequest.Device.Builder device = BidRequest.Device.newBuilder();
-            device.setIp(mediaRequest.getIp());
-            device.setUa(mediaRequest.getUa());
-            device.setDid(mediaRequest.getDid());
-            device.setDidmd5(mediaRequest.getDidmd5());
-            device.setDpid(mediaRequest.getDpid());
-            device.setDpidmd5(mediaRequest.getDpidmd5());
-            device.setIfa(mediaRequest.getIfa());
-            device.setMac1(mediaRequest.getMac());
-            device.setMac1Md5(mediaRequest.getMacmd5());
+            device.setIp(mediaRequest.getIp().toString());
+            device.setUa(mediaRequest.getUa().toString());
+            device.setDid(mediaRequest.getDid().toString());
+            device.setDidmd5(mediaRequest.getDidmd5().toString());
+            device.setDpid(mediaRequest.getDpid().toString());
+            device.setDpidmd5(mediaRequest.getDpidmd5().toString());
+            device.setIfa(mediaRequest.getIfa().toString());
+            device.setMac1(mediaRequest.getMac().toString());
+            device.setMac1Md5(mediaRequest.getMacmd5().toString());
             device.setDevicetype(mediaRequest.getDevicetype());
             device.setConnectiontype(mediaRequest.getConnectiontype());
             device.setCarrier(mediaRequest.getCarrier());
-            device.setMake(mediaRequest.getMake());
-            device.setModel(mediaRequest.getModel());
+            device.setMake(mediaRequest.getMake().toString());
+            device.setModel(mediaRequest.getModel().toString());
             device.setOs(mediaRequest.getOs());
-            device.setOsv(mediaRequest.getOsv());
+            device.setOsv(mediaRequest.getOsv().toString());
             BidRequest.Device.Geo.Builder geo = BidRequest.Device.Geo.newBuilder();
             geo.setLon(mediaRequest.getLon());
             geo.setLat(mediaRequest.getLat());
@@ -93,7 +98,7 @@ public abstract class DSPBaseHandler {
 
         {
             BidRequest.Impression.Builder impression = BidRequest.Impression.newBuilder();
-            impression.setId(mediaBidBuilder.getImpid());
+            impression.setId(mediaBidBuilder.getImpid().toString());
 
             if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                 impression.setBidfloor(plcmtMetaData.getBidFloor());
@@ -258,7 +263,7 @@ public abstract class DSPBaseHandler {
 
     public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         try {
-            PremiumMADDataModel.DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
+            DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
 
             if (httpResponse != null) {
                 int status = httpResponse.getStatusLine().getStatusCode();
@@ -277,7 +282,7 @@ public abstract class DSPBaseHandler {
 
                     if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
                         BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
-                        PremiumMADDataModel.DSPBid.DSPResponse.Builder dspResponse = PremiumMADDataModel.DSPBid.DSPResponse.newBuilder();
+                        DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
                         dspResponse.setId(dspBidBuilder.getRequest().getId());
                         dspResponse.setBidid(bid.getId());
                         dspResponse.setImpid(dspBidBuilder.getRequest().getImpid());
@@ -291,10 +296,34 @@ public abstract class DSPBaseHandler {
                         dspResponse.setDealid(bid.getDealid());
                         dspResponse.setLpgurl(bid.getLpgurl());
                         dspResponse.setActtype(bid.getActtype());
-                        dspResponse.setMonitor(BidResponse.SeatBid.Bid.Monitor.newBuilder(bid.getMonitor()));
+
+                        if (bid.getMonitor() != null) {
+                            Monitor.Builder monitor = Monitor.newBuilder();
+                            dspResponse.setMonitorBuilder(monitor);
+
+                            for (BidResponse.SeatBid.Bid.Monitor.Track track : bid.getMonitor().getImpurlList()) {
+                                Track.Builder track1 = Track.newBuilder();
+                                track1.setStartdelay(track.getStartdelay());
+                                track1.setUrl(track.getUrl());
+                                monitor.getImpurl().add(track1.build());
+                            }
+
+                            for (String url : bid.getMonitor().getClkurlList()) {
+                                monitor.getClkurl().add(url);
+                            }
+
+                            for (String url : bid.getMonitor().getSecurlList()) {
+                                monitor.getSecurl().add(url);
+                            }
+                        }
 
                         if (bid.getAdmCount() > 0) {
-                            dspResponse.addAllAdm(bid.getAdmList());
+                            List<CharSequence> urls = new LinkedList<>();
+                            for (String url : bid.getAdmList()) {
+                                urls.add(url);
+                            }
+
+                            dspResponse.setAdm(urls);
                         } else {
                             for (BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
                                 if (asset.hasTitle()) {
@@ -308,7 +337,7 @@ public abstract class DSPBaseHandler {
                                 }
 
                                 if (asset.hasVideo()) {
-                                    dspResponse.addAdm(asset.getVideo().getUrl());
+                                    dspResponse.getAdm().add(asset.getVideo().getUrl());
                                     dspResponse.setDuration(asset.getVideo().getDuration());
                                     continue;
                                 }
@@ -326,7 +355,10 @@ public abstract class DSPBaseHandler {
                                         }
 
                                         default: {
-                                            dspResponse.addAllAdm(asset.getImage().getUrlList());
+                                            for (String url : asset.getImage().getUrlList()) {
+                                                dspResponse.getAdm().add(url);
+                                            }
+
                                             break;
                                         }
                                     }
@@ -334,7 +366,7 @@ public abstract class DSPBaseHandler {
                             }
                         }
 
-                        dspBidBuilder.setResponse(dspResponse);
+                        dspBidBuilder.setResponseBuilder(dspResponse);
                         dspBidBuilder.setStatus(Constant.StatusCode.OK);
                         return true;
                     } else {
@@ -356,8 +388,8 @@ public abstract class DSPBaseHandler {
 
     public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
         try {
-            PremiumMADDataModel.DSPBid.DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
-            String url = dspResponse.getNurl();
+            DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
+            String url = dspResponse.getNurl().toString();
             url = url.replace("${AUCTION_ID}", dspResponse.getId())
                     .replace("${AUCTION_IMP_ID}", dspResponse.getImpid())
                     .replace("${AUCTION_BID_ID}", dspResponse.getBidid())
@@ -373,16 +405,16 @@ public abstract class DSPBaseHandler {
             return url;
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return dspBidMetaData.getDspBidBuilder().getResponse().getNurl();
+            return dspBidMetaData.getDspBidBuilder().getResponse().getNurl().toString();
         }
     }
 
-    protected final boolean packageDSPRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, PremiumMADDataModel.DSPBid.Builder dspBidBuilder) {
+    protected final boolean packageDSPRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBid.Builder dspBidBuilder) {
 
         try {
-            PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+            MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
-            PremiumMADDataModel.DSPBid.DSPRequest.Builder dspRequest = PremiumMADDataModel.DSPBid.DSPRequest.newBuilder()
+            DSPRequest.Builder dspRequest = DSPRequest.newBuilder()
                     .setId(StringUtil.getUUID())
                     .setImpid(mediaBidBuilder.getImpid())
                     .setAdtype(plcmtMetaData.getAdType())
@@ -398,7 +430,7 @@ public abstract class DSPBaseHandler {
                     .setPolicyid(policyMetaData.getId())
                     .setDeliverytype(policyMetaData.getDeliveryType())
                     .setTime(System.currentTimeMillis())
-                    .setRequest(dspRequest);
+                    .setRequestBuilder(dspRequest);
 
             return true;
         } catch (Exception ex) {

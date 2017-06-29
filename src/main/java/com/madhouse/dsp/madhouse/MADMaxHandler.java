@@ -6,7 +6,7 @@ import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.rtb.PremiumMADRTBProtocol.*;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.PremiumMADDataModel;
+import com.madhouse.ssp.avro.*;
 import com.madhouse.util.AESUtil;
 import com.madhouse.util.StringUtil;
 import org.apache.http.HttpEntity;
@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class MADMaxHandler extends DSPBaseHandler {
     @Override
-    public HttpRequestBase packageBidRequest(PremiumMADDataModel.MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
+    public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
         return super.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData);
     }
 

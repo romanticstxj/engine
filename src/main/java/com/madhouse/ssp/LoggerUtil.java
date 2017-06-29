@@ -9,6 +9,9 @@ import com.madhouse.kafkaclient.util.KafkaCallback;
 import com.madhouse.kafkaclient.util.KafkaMessage;
 import com.madhouse.resource.ResourceManager;
 
+import com.madhouse.ssp.avro.*;
+import com.madhouse.ssp.avro.MediaBid;
+import com.madhouse.ssp.avro.WinNotice;
 import sun.security.jca.GetInstance;
 
 import java.util.List;
@@ -43,24 +46,24 @@ public class LoggerUtil extends KafkaCallback {
         return logger;
     }
 
-    public void writeBidLog(KafkaProducer kafkaProducer, PremiumMADDataModel.DSPBid message) {
-        kafkaProducer.sendMessage("adx_dsp", message.toByteArray());
+    public void writeBidLog(KafkaProducer kafkaProducer, DSPBid message) {
+        kafkaProducer.sendMessage("adx_dsp", message.toString());
     }
 
-    public void writeMediaLog(KafkaProducer kafkaProducer, PremiumMADDataModel.MediaBid message) {
-        kafkaProducer.sendMessage("adx_media", message.toByteArray());
+    public void writeMediaLog(KafkaProducer kafkaProducer, MediaBid message) {
+        kafkaProducer.sendMessage("adx_media", message.toString());
     }
 
-    public void writeWinNoticeLog(KafkaProducer kafkaProducer, PremiumMADDataModel.WinNotice message) {
-        kafkaProducer.sendMessage("adx_wn", message.toByteArray());
+    public void writeWinNoticeLog(KafkaProducer kafkaProducer, WinNotice message) {
+        kafkaProducer.sendMessage("adx_wn", message.toString());
     }
 
-    public void wirteImpressionTrackLog(KafkaProducer kafkaProducer, PremiumMADDataModel.ImpressionTrack message) {
-        kafkaProducer.sendMessage("adx_imp", message.toByteArray());
+    public void wirteImpressionTrackLog(KafkaProducer kafkaProducer, ImpressionTrack message) {
+        kafkaProducer.sendMessage("adx_imp", message.toString());
     }
 
-    public void writeClickTrackLog(KafkaProducer kafkaProducer, PremiumMADDataModel.ClickTrack message) {
-        kafkaProducer.sendMessage("adx_click", message.toByteArray());
+    public void writeClickTrackLog(KafkaProducer kafkaProducer, ClickTrack message) {
+        kafkaProducer.sendMessage("adx_click", message.toString());
     }
 
     @Override

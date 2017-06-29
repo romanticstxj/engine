@@ -1,22 +1,20 @@
 package com.madhouse.media.madhouse;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
-import com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.PremiumMADDataModel;
-import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest;
-import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaResponse;
 import com.madhouse.util.ObjectUtils;
 
 /**
@@ -37,7 +35,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 premiumMADResponse.setReturncode(String.valueOf(status));
                 return outputStreamWrite(premiumMADResponse,resp);
             } else {
-                PremiumMADDataModel.MediaBid.MediaRequest request = conversionToPremiumMADDataModel(mediaRequest);
+                MediaRequest request = conversionToPremiumMADDataModel(mediaRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(request);
                 mediaBidMetaData.setRequestObject(request);
                 return true;
@@ -49,7 +47,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         }
     }
     private MediaRequest conversionToPremiumMADDataModel(PremiumMADBidRequest madBidRequest) {
-        PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest = PremiumMADDataModel.MediaBid.MediaRequest.newBuilder();
+        MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         //广告请求流水号
         mediaRequest.setBid(madBidRequest.getBid());
         //广告位标识
@@ -290,7 +288,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         resp.setStatus(Constant.StatusCode.OK);
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            PremiumMADDataModel.MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             PremiumMADResponse premiumMADResponse=new PremiumMADResponse();
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,Constant.StatusCode.OK);
@@ -337,43 +335,57 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(Constant.StatusCode.OK == status){
             MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
             premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey());
-            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid());
+            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey().toString());
+            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid().toString());
             //premiumMADResponse.setCid(mediaResponse.get);
             premiumMADResponse.setAdwidth(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getW()));
             premiumMADResponse.setAdheight(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getH()));
             
-            if(mediaResponse.getDuration()>0){
+            if(mediaResponse.getDuration() > 0){
                 premiumMADResponse.setDuration(String.valueOf(mediaResponse.getDuration()));
-                premiumMADResponse.setIcon(mediaResponse.getIcon());
-                premiumMADResponse.setCover(mediaResponse.getCover());
+                premiumMADResponse.setIcon(mediaResponse.getIcon().toString());
+                premiumMADResponse.setCover(mediaResponse.getCover().toString());
             }
-            if (mediaResponse.hasTitle()) {
-                premiumMADResponse.setDisplaytitle(mediaResponse.getTitle());
-            }
-
-            if (mediaResponse.hasDesc()) {
-                premiumMADResponse.setDisplaytext(mediaResponse.getDesc());
+            if (mediaResponse.getTitle() != null) {
+                premiumMADResponse.setDisplaytitle(mediaResponse.getTitle().toString());
             }
 
-            if (mediaResponse.getAdmCount() > 0) {
-                premiumMADResponse.setImgurl( mediaResponse.getAdm(0)); 
+            if (mediaResponse.getDesc() != null) {
+                premiumMADResponse.setDisplaytext(mediaResponse.getDesc().toString());
             }
-            
-            premiumMADResponse.setAdm(mediaResponse.getAdmList());
-            premiumMADResponse.setClickurl(mediaResponse.getLpgurl());
+
+            if (mediaResponse.getAdm() != null && !mediaResponse.getAdm().isEmpty()) {
+                premiumMADResponse.setImgurl( mediaResponse.getAdm().get(0).toString());
+            }
+
+            List<String> adms = new LinkedList<>();
+            for (CharSequence adm : mediaResponse.getAdm()) {
+                adms.add(adm.toString());
+            }
+            premiumMADResponse.setAdm(adms);
+
+            premiumMADResponse.setClickurl(mediaResponse.getLpgurl().toString());
             // 点击监播
             List<String> list = new ArrayList<String>();
-            for (Track  track :mediaResponse.getMonitor().getImpurlList()) {
-                list.add(track.getUrl());
+            for (Track track : mediaResponse.getMonitor().getImpurl()) {
+                list.add(track.getUrl().toString());
             }
             premiumMADResponse.setImgtracking(list);
             //点击监播地址
-            premiumMADResponse.setThclkurl(mediaResponse.getMonitor().getClkurlList());
+            List<String> clkurls = new LinkedList<>();
+            for (CharSequence url : mediaResponse.getMonitor().getClkurl()) {
+                clkurls.add(url.toString());
+            }
+            premiumMADResponse.setThclkurl(clkurls);
+
             //品牌安全监测
-            premiumMADResponse.setSecurl(mediaResponse.getMonitor().getSecurlList());
+            List<String> securls = new LinkedList<>();
+            for (CharSequence url : mediaResponse.getMonitor().getSecurl()) {
+                securls.add(url.toString());
+            }
+            premiumMADResponse.setSecurl(securls);
         } else {
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey());
+            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey().toString());
             premiumMADResponse.setReturncode(String.valueOf(status));
         }
         logger.info("premiumMAD Response params is : {}", JSON.toJSONString(premiumMADResponse));

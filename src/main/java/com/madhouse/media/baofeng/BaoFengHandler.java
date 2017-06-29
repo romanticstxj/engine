@@ -19,8 +19,7 @@ import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.baofeng.BaoFengResponse.PV;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.PremiumMADDataModel;
-import com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest;
+import com.madhouse.ssp.avro.*;
 import com.madhouse.util.ObjectUtils;
 
 public class BaoFengHandler extends MediaBaseHandler {
@@ -44,7 +43,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                 resp.setStatus(status);
                 return false;
             } else {
-                PremiumMADDataModel.MediaBid.MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
+                MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
                 mediaBidMetaData.setRequestObject(baoFengBidRequest);
                 if (StringUtils.isEmpty(mediaRequest.getAdspacekey())) {
@@ -66,7 +65,7 @@ public class BaoFengHandler extends MediaBaseHandler {
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
 
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            PremiumMADDataModel.MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 try {
                     BaoFengResponse baoFengResponse = convertToBaofengResponse(mediaBidMetaData);
@@ -97,34 +96,34 @@ public class BaoFengHandler extends MediaBaseHandler {
         Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequest().getW();
         
         // 广告流水唯一标识
-        String bid = mediaBidMetaData.getMediaBidBuilder().getRequest().getBid();
+        String bid = mediaBidMetaData.getMediaBidBuilder().getRequest().getBid().toString();
 
-        PremiumMADDataModel.MediaBid.MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         
         // 点击url
-        baoFengResponse.setTarget(mediaResponse.getLpgurl());
+        baoFengResponse.setTarget(mediaResponse.getLpgurl().toString());
         
         String imgurl = null;
         if (mediaResponse.hasTitle()) {
-            baoFengResponse.setTitle(mediaResponse.getTitle());
+            baoFengResponse.setTitle(mediaResponse.getTitle().toString());
         }
 
         if (mediaResponse.hasDesc()) {
-            baoFengResponse.setDesc(mediaResponse.getDesc());
+            baoFengResponse.setDesc(mediaResponse.getDesc().toString());
         }
 
-        if (mediaResponse.getAdmCount() > 0) {
-            imgurl = mediaResponse.getAdm(0);
+        if (mediaResponse.getAdm() != null && !mediaResponse.getAdm().isEmpty()) {
+            imgurl = mediaResponse.getAdm().get(0).toString();
         }
 
         // 展示监播
-        List<String> imgtracking = new LinkedList<>();
-        for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : mediaResponse.getMonitor().getImpurlList()) {
+        List<CharSequence> imgtracking = new LinkedList<>();
+        for (Track track : mediaResponse.getMonitor().getImpurl()) {
             imgtracking.add(track.getUrl());
         }
 
         // 点击监播
-        List<String> thclkurl = mediaResponse.getMonitor().getClkurlList();
+        List<CharSequence> thclkurl = mediaResponse.getMonitor().getClkurl();
         // 暴风没有区分第三方点击和
         ArrayList<BaoFengResponse.Img> imgList = new ArrayList<>();
         BaoFengResponse.Img img = baoFengResponse.new Img();
@@ -156,13 +155,13 @@ public class BaoFengHandler extends MediaBaseHandler {
         
     }
     
-    private void handleMMA(BaoFengResponse baoFengResponse, List<String> thclkurl, List<PV> clkPvList) {
-        for (String url : thclkurl) {
+    private void handleMMA(BaoFengResponse baoFengResponse, List<CharSequence> thclkurl, List<PV> clkPvList) {
+        for (CharSequence url : thclkurl) {
             if (url.equals("__IDFA__") || url.equals("__IMEI__")) {
-                clkPvList.add(baoFengResponse.new PV(1, url));
+                clkPvList.add(baoFengResponse.new PV(1, url.toString()));
             }
             else {
-                clkPvList.add(baoFengResponse.new PV(0, url));
+                clkPvList.add(baoFengResponse.new PV(0, url.toString()));
             }
         }
         
@@ -236,8 +235,8 @@ public class BaoFengHandler extends MediaBaseHandler {
         return Constant.StatusCode.BAD_REQUEST;
     }
     
-    private PremiumMADDataModel.MediaBid.MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
-        PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest = PremiumMADDataModel.MediaBid.MediaRequest.newBuilder();
+    private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
+        MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         BaoFengBidRequest.App app = baoFengBidRequest.getApp();
         BaoFengBidRequest.Device device = baoFengBidRequest.getDevice();
@@ -388,7 +387,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         
     }
     
-    private void setWidthAndHeight(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest, int deviceType, int pos) {
+    private void setWidthAndHeight(MediaRequest.Builder mediaRequest, int deviceType, int pos) {
         // 开屏（7） 焦点图（6） 频道页banner（4） 详情页banner（5）
         // android 720*1280 720*264 230*130 480*110
         // iphone 640*1136 699*263 592*110
@@ -465,7 +464,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         mediaRequest.setH(0);
     }
     
-    private int osToDeviceType(com.madhouse.ssp.PremiumMADDataModel.MediaBid.MediaRequest.Builder mediaRequest) {
+    private int osToDeviceType(MediaRequest.Builder mediaRequest) {
         if (Constant.OSType.ANDROID == mediaRequest.getOs()) {
             // android系统对应的deviceType是3
             return 3;
