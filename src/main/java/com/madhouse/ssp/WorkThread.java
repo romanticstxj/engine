@@ -169,9 +169,9 @@ public class WorkThread {
     }
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
-        this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+        /*this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
         this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
-
+*/
         MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
         if (mediaBaseHandler == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);

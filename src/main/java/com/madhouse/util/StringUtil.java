@@ -4,12 +4,16 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 /**
  * Created by WUJUNFENG on 2017/6/9.
  */
 public class StringUtil {
+    
+    public static final Random random = new Random();
+    
     public static final String getUUID() {
         return UUID.randomUUID().toString();
     }
@@ -69,6 +73,16 @@ public class StringUtil {
             System.err.println(ex.toString());
             return null;
         }
+    }
+    /**
+     * 返回一个给定范围的随机数
+     */
+    public static int randomId(int n) {
+        if (n <= 0) {
+            return -1;
+        }
+        int i = random.nextInt(n);
+        return i + 1;
     }
 
 }
