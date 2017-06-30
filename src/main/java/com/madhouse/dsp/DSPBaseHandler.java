@@ -308,6 +308,10 @@ public abstract class DSPBaseHandler {
                             for (String url : bid.getMonitor().getSecurlList()) {
                                 monitor.getSecurl().add(url);
                             }
+
+                            for (String url : bid.getMonitor().getExtsList()) {
+                                monitor.getExts().add(url);
+                            }
                         }
 
                         if (bid.getAdmCount() > 0) {

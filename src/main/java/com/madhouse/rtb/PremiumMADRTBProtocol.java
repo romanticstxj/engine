@@ -29946,6 +29946,25 @@ public final class PremiumMADRTBProtocol {
            */
           com.google.protobuf.ByteString
               getSecurlBytes(int index);
+
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          com.google.protobuf.ProtocolStringList
+              getExtsList();
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          int getExtsCount();
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          java.lang.String getExts(int index);
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          com.google.protobuf.ByteString
+              getExtsBytes(int index);
         }
         /**
          * Protobuf type {@code com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor}
@@ -30025,6 +30044,15 @@ public final class PremiumMADRTBProtocol {
                     securl_.add(bs);
                     break;
                   }
+                  case 90: {
+                    com.google.protobuf.ByteString bs = input.readBytes();
+                    if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                      exts_ = new com.google.protobuf.LazyStringArrayList();
+                      mutable_bitField0_ |= 0x00000008;
+                    }
+                    exts_.add(bs);
+                    break;
+                  }
                 }
               }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -30041,6 +30069,9 @@ public final class PremiumMADRTBProtocol {
               }
               if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                 securl_ = securl_.getUnmodifiableView();
+              }
+              if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                exts_ = exts_.getUnmodifiableView();
               }
               this.unknownFields = unknownFields.build();
               makeExtensionsImmutable();
@@ -30720,10 +30751,40 @@ public final class PremiumMADRTBProtocol {
             return securl_.getByteString(index);
           }
 
+          public static final int EXTS_FIELD_NUMBER = 11;
+          private com.google.protobuf.LazyStringList exts_;
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          public com.google.protobuf.ProtocolStringList
+              getExtsList() {
+            return exts_;
+          }
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          public int getExtsCount() {
+            return exts_.size();
+          }
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          public java.lang.String getExts(int index) {
+            return exts_.get(index);
+          }
+          /**
+           * <code>repeated string exts = 11;</code>
+           */
+          public com.google.protobuf.ByteString
+              getExtsBytes(int index) {
+            return exts_.getByteString(index);
+          }
+
           private void initFields() {
             impurl_ = java.util.Collections.emptyList();
             clkurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
             securl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           }
           private byte memoizedIsInitialized = -1;
           public final boolean isInitialized() {
@@ -30746,6 +30807,9 @@ public final class PremiumMADRTBProtocol {
             }
             for (int i = 0; i < securl_.size(); i++) {
               output.writeBytes(3, securl_.getByteString(i));
+            }
+            for (int i = 0; i < exts_.size(); i++) {
+              output.writeBytes(11, exts_.getByteString(i));
             }
             getUnknownFields().writeTo(output);
           }
@@ -30777,6 +30841,15 @@ public final class PremiumMADRTBProtocol {
               }
               size += dataSize;
               size += 1 * getSecurlList().size();
+            }
+            {
+              int dataSize = 0;
+              for (int i = 0; i < exts_.size(); i++) {
+                dataSize += com.google.protobuf.CodedOutputStream
+                  .computeBytesSizeNoTag(exts_.getByteString(i));
+              }
+              size += dataSize;
+              size += 1 * getExtsList().size();
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -30906,6 +30979,8 @@ public final class PremiumMADRTBProtocol {
               bitField0_ = (bitField0_ & ~0x00000002);
               securl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
               bitField0_ = (bitField0_ & ~0x00000004);
+              exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+              bitField0_ = (bitField0_ & ~0x00000008);
               return this;
             }
 
@@ -30952,6 +31027,11 @@ public final class PremiumMADRTBProtocol {
                 bitField0_ = (bitField0_ & ~0x00000004);
               }
               result.securl_ = securl_;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                exts_ = exts_.getUnmodifiableView();
+                bitField0_ = (bitField0_ & ~0x00000008);
+              }
+              result.exts_ = exts_;
               onBuilt();
               return result;
             }
@@ -31010,6 +31090,16 @@ public final class PremiumMADRTBProtocol {
                 } else {
                   ensureSecurlIsMutable();
                   securl_.addAll(other.securl_);
+                }
+                onChanged();
+              }
+              if (!other.exts_.isEmpty()) {
+                if (exts_.isEmpty()) {
+                  exts_ = other.exts_;
+                  bitField0_ = (bitField0_ & ~0x00000008);
+                } else {
+                  ensureExtsIsMutable();
+                  exts_.addAll(other.exts_);
                 }
                 onChanged();
               }
@@ -31462,6 +31552,99 @@ public final class PremiumMADRTBProtocol {
   }
   ensureSecurlIsMutable();
               securl_.add(value);
+              onChanged();
+              return this;
+            }
+
+            private com.google.protobuf.LazyStringList exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            private void ensureExtsIsMutable() {
+              if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+                exts_ = new com.google.protobuf.LazyStringArrayList(exts_);
+                bitField0_ |= 0x00000008;
+               }
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public com.google.protobuf.ProtocolStringList
+                getExtsList() {
+              return exts_.getUnmodifiableView();
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public int getExtsCount() {
+              return exts_.size();
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public java.lang.String getExts(int index) {
+              return exts_.get(index);
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public com.google.protobuf.ByteString
+                getExtsBytes(int index) {
+              return exts_.getByteString(index);
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public Builder setExts(
+                int index, java.lang.String value) {
+              if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureExtsIsMutable();
+              exts_.set(index, value);
+              onChanged();
+              return this;
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public Builder addExts(
+                java.lang.String value) {
+              if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureExtsIsMutable();
+              exts_.add(value);
+              onChanged();
+              return this;
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public Builder addAllExts(
+                java.lang.Iterable<java.lang.String> values) {
+              ensureExtsIsMutable();
+              com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                  values, exts_);
+              onChanged();
+              return this;
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public Builder clearExts() {
+              exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              onChanged();
+              return this;
+            }
+            /**
+             * <code>repeated string exts = 11;</code>
+             */
+            public Builder addExtsBytes(
+                com.google.protobuf.ByteString value) {
+              if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureExtsIsMutable();
+              exts_.add(value);
               onChanged();
               return this;
             }
@@ -35280,11 +35463,11 @@ public final class PremiumMADRTBProtocol {
       "\001(\0132$.com.madhouse.rtb.BidRequest.Conten" +
       "t\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022" +
       "\020\n\010keywords\030\003 \003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nM" +
-      "ediaOneof\"\336\n\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
+      "ediaOneof\"\354\n\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
       "\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 \003(\0132%.com.madh" +
       "ouse.rtb.BidResponse.SeatBid\022\013\n\003nbr\030\004 \001(" +
-      "\005\032\356\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
-      "e.rtb.BidResponse.SeatBid.Bid\032\252\t\n\003Bid\022\n\n" +
+      "\005\032\374\t\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
+      "e.rtb.BidResponse.SeatBid.Bid\032\270\t\n\003Bid\022\n\n" +
       "\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022" +
       "\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004crid\030\006 \001(\t" +
       "\022\020\n\010duration\030\007 \001(\005\022\013\n\003adm\030\010 \003(\t\022L\n\nadm_n" +
@@ -35310,11 +35493,11 @@ public final class PremiumMADRTBProtocol {
       "\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003(\t\032<\n\005Vi" +
       "deo\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url\030\003 \001(\t\022\020" +
       "\n\010duration\030\004 \001(\005\032#\n\004Data\022\014\n\004type\030\001 \001(\005\022\r" +
-      "\n\005value\030\002 \001(\tB\014\n\nAssetOneof\032\234\001\n\007Monitor\022",
+      "\n\005value\030\002 \001(\tB\014\n\nAssetOneof\032\252\001\n\007Monitor\022",
       "G\n\006impurl\030\001 \003(\01327.com.madhouse.rtb.BidRe" +
       "sponse.SeatBid.Bid.Monitor.Track\022\016\n\006clku" +
-      "rl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\032(\n\005Track\022\022\n\nsta" +
-      "rtdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(\t"
+      "rl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\022\014\n\004exts\030\013 \003(\t\032(" +
+      "\n\005Track\022\022\n\nstartdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -35507,7 +35690,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_descriptor,
-        new java.lang.String[] { "Impurl", "Clkurl", "Securl", });
+        new java.lang.String[] { "Impurl", "Clkurl", "Securl", "Exts", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_Track_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_Track_fieldAccessorTable = new
