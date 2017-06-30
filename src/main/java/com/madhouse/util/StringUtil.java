@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by WUJUNFENG on 2017/6/9.
  */
@@ -83,6 +85,10 @@ public class StringUtil {
         }
         int i = random.nextInt(n);
         return i + 1;
+    }
+    
+    public static String validateString(String str) {
+        return StringUtils.isEmpty(str) ? "" : str;
     }
 
 }

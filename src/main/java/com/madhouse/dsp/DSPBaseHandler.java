@@ -5,12 +5,13 @@ package com.madhouse.dsp;
  */
 
 import com.madhouse.cache.*;
-import com.madhouse.cache.AdBlockMetaData;
 import com.madhouse.ssp.Constant;
+import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.AESUtil;
 import com.madhouse.util.StringUtil;
 import com.madhouse.rtb.PremiumMADRTBProtocol.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +19,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,8 @@ import java.util.List;
 
 
 public abstract class DSPBaseHandler {
+    @SuppressWarnings("static-access")
+    public static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
 

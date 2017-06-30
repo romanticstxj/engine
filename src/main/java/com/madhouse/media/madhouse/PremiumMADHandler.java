@@ -70,12 +70,15 @@ public class PremiumMADHandler extends MediaBaseHandler {
             case PremiumMADStatusCode.PremiumMadOs.OS_IOS:
                 mediaRequest.setOs(Constant.OSType.IOS);
                 mediaRequest.setIfa(madBidRequest.getIdfa());
+                mediaRequest.setDpid(madBidRequest.getOid());
                 break;
             case PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE:
                 mediaRequest.setOs(Constant.OSType.WINDOWS_PHONE);
+                mediaRequest.setDpid(madBidRequest.getUid());
                 break;
             default:
                 mediaRequest.setOs(Constant.OSType.UNKNOWN);
+                mediaRequest.setDpid(madBidRequest.getUid());
                 break;
         }
         /**
