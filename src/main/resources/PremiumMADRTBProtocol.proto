@@ -299,7 +299,8 @@ message BidResponse
                 repeated Track impurl = 1;
                 repeated string clkurl = 2;
                 repeated string securl = 3;
-
+                repeated string ext = 11;
+                
                 message Track
                 {
                     optional int32 startdelay = 1;
