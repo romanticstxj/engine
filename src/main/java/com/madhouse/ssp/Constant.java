@@ -12,7 +12,8 @@ public final class Constant {
     public static final class CommonKey {
         public static final String BID_RECORD = "str:%s:%s:%s:%s:bidrecord";
 
-        public static final String TARGET_KEY = "set:%d:%s:policys";
+        //deliverytype, targettype, targetinfo
+        public static final String TARGET_KEY = "set:%d:%d:%s:policys";
 
         public static final String MEDIA_META_DATA = "str:media_meta_data";
         public static final String PLACEMENT_META_DATA = "str:plcmt_meta_data";

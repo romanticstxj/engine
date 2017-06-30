@@ -19,17 +19,12 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 
 public abstract class DSPBaseHandler {
-    public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBidMetaData dspBidMetaData) {
+    public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
 
-        if (!this.packageDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspMetaData, dspBidMetaData.getDspBidBuilder())) {
+        if (!this.packageDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return null;
         }
@@ -37,10 +32,10 @@ public abstract class DSPBaseHandler {
         DSPRequest dspRequest = dspBidMetaData.getDspBidBuilder().getRequest();
         MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
-        HttpPost httpPost = new HttpPost(dspMetaData.getBidUrl());
+        HttpPost httpPost = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
         httpPost.setHeader("Content-Type", "application/x-protobuf");
 
-        DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspMetaData.getId(), plcmtMetaData.getId());
+        DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
 
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
