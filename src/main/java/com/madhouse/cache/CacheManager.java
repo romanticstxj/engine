@@ -259,10 +259,11 @@ public class CacheManager implements Runnable {
 
             if (currentDate.compareTo(policyMetaData.getStartDate()) >= 0 && currentDate.compareTo(policyMetaData.getEndDate()) <= 0) {
                 //placement
-                if (policyMetaData.getAdspaceList() != null && !policyMetaData.getAdspaceList().isEmpty()) {
-                    for (PolicyMetaData.PlcmtInfo plcmtInfo : policyMetaData.getAdspaceList()) {
-                        if (plcmtInfo.getStatus() > 0) {
-                            String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.PLACEMENT, Long.toString(plcmtInfo.getId()));
+                if (policyMetaData.getAdspaceInfoMap() != null && !policyMetaData.getAdspaceInfoMap().isEmpty()) {
+                    for (Map.Entry entry1 : policyMetaData.getAdspaceInfoMap().entrySet()) {
+                        PolicyMetaData.AdspaceInfo adspaceInfo = (PolicyMetaData.AdspaceInfo)entry1.getValue();
+                        if (adspaceInfo.getStatus() > 0) {
+                            String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.PLACEMENT, Long.toString(adspaceInfo.getId()));
                             HashSet<Long> var2 = var.get(key);
                             if (var2 == null) {
                                 var2 = new HashSet<>();

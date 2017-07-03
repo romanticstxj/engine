@@ -170,8 +170,8 @@ public class WorkThread {
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
         /*this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
-        this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
-*/
+        this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();*/
+
         MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
         if (mediaBaseHandler == null) {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -276,7 +276,9 @@ public class WorkThread {
                 this.multiHttpClient.reset();
 
                 Map<Long, DSPBidMetaData> selectedDspList = new HashMap<>();
-                for (PolicyMetaData.DSPInfo dspInfo : policyMetaData.getDspInfoList()) {
+                for (Map.Entry entry : policyMetaData.getDspInfoMap().entrySet()) {
+                    PolicyMetaData.DSPInfo dspInfo = (PolicyMetaData.DSPInfo)entry.getValue();
+
                     DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspInfo.getId());
                     if (dspInfo.getStatus() > 0 && dspMetaData != null && dspMetaData.getStatus() > 0) {
 
@@ -355,7 +357,7 @@ public class WorkThread {
                             String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBidBuilder.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                             this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "nx", "ex", 86400);
 
-                            if (this.packageMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
+                            if (this.createMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
                                 mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
                                 if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                     String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
@@ -378,7 +380,7 @@ public class WorkThread {
         }
     }
 
-    private boolean packageMediaResponse(DSPBid.Builder dspBidBuilder, MediaBid.Builder mediaBidBuilder) {
+    private boolean createMediaResponse(DSPBid.Builder dspBidBuilder, MediaBid.Builder mediaBidBuilder) {
         mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
 
         if (dspBidBuilder != null && dspBidBuilder.getStatus() == Constant.StatusCode.OK && dspBidBuilder.getResponse() != null) {
@@ -544,7 +546,7 @@ public class WorkThread {
 
             if (!selectedDspList.isEmpty()) {
                 DSPBidMetaData dspBidMetaData = Utility.randomWithWeights(selectedDspList);
-                winner = Pair.of(dspBidMetaData, policyMetaData.getBidFloor());
+                winner = Pair.of(dspBidMetaData, policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor());
             }
         } else {
             bidDspList.sort(new Comparator<DSPBidMetaData>() {

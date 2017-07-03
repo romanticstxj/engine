@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Monitor extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -5338692331893618099L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Monitor\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"impurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Track\",\"fields\":[{\"name\":\"startdelay\",\"type\":\"int\",\"default\":0},{\"name\":\"url\",\"type\":\"string\"}]}}},{\"name\":\"clkurl\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"securl\",\"type\":{\"type\":\"array\",\"items\":\"string\"}}]}");
+  private static final long serialVersionUID = -7549292319603533900L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Monitor\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"impurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Track\",\"fields\":[{\"name\":\"startdelay\",\"type\":\"int\",\"default\":0},{\"name\":\"url\",\"type\":\"string\"}]}}},{\"name\":\"clkurl\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"securl\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"exts\",\"type\":{\"type\":\"array\",\"items\":\"string\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -54,6 +54,7 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
   @Deprecated public java.util.List<com.madhouse.ssp.avro.Track> impurl;
   @Deprecated public java.util.List<java.lang.CharSequence> clkurl;
   @Deprecated public java.util.List<java.lang.CharSequence> securl;
+  @Deprecated public java.util.List<java.lang.CharSequence> exts;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -67,11 +68,13 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
    * @param impurl The new value for impurl
    * @param clkurl The new value for clkurl
    * @param securl The new value for securl
+   * @param exts The new value for exts
    */
-  public Monitor(java.util.List<com.madhouse.ssp.avro.Track> impurl, java.util.List<java.lang.CharSequence> clkurl, java.util.List<java.lang.CharSequence> securl) {
+  public Monitor(java.util.List<com.madhouse.ssp.avro.Track> impurl, java.util.List<java.lang.CharSequence> clkurl, java.util.List<java.lang.CharSequence> securl, java.util.List<java.lang.CharSequence> exts) {
     this.impurl = impurl;
     this.clkurl = clkurl;
     this.securl = securl;
+    this.exts = exts;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -81,6 +84,7 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
     case 0: return impurl;
     case 1: return clkurl;
     case 2: return securl;
+    case 3: return exts;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -92,6 +96,7 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
     case 0: impurl = (java.util.List<com.madhouse.ssp.avro.Track>)value$; break;
     case 1: clkurl = (java.util.List<java.lang.CharSequence>)value$; break;
     case 2: securl = (java.util.List<java.lang.CharSequence>)value$; break;
+    case 3: exts = (java.util.List<java.lang.CharSequence>)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -145,6 +150,22 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   /**
+   * Gets the value of the 'exts' field.
+   * @return The value of the 'exts' field.
+   */
+  public java.util.List<java.lang.CharSequence> getExts() {
+    return exts;
+  }
+
+  /**
+   * Sets the value of the 'exts' field.
+   * @param value the value to set.
+   */
+  public void setExts(java.util.List<java.lang.CharSequence> value) {
+    this.exts = value;
+  }
+
+  /**
    * Creates a new Monitor RecordBuilder.
    * @return A new Monitor RecordBuilder
    */
@@ -179,6 +200,7 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
     private java.util.List<com.madhouse.ssp.avro.Track> impurl;
     private java.util.List<java.lang.CharSequence> clkurl;
     private java.util.List<java.lang.CharSequence> securl;
+    private java.util.List<java.lang.CharSequence> exts;
 
     /** Creates a new Builder */
     private Builder() {
@@ -203,6 +225,10 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
         this.securl = data().deepCopy(fields()[2].schema(), other.securl);
         fieldSetFlags()[2] = true;
       }
+      if (isValidValue(fields()[3], other.exts)) {
+        this.exts = data().deepCopy(fields()[3].schema(), other.exts);
+        fieldSetFlags()[3] = true;
+      }
     }
 
     /**
@@ -222,6 +248,10 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
       if (isValidValue(fields()[2], other.securl)) {
         this.securl = data().deepCopy(fields()[2].schema(), other.securl);
         fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.exts)) {
+        this.exts = data().deepCopy(fields()[3].schema(), other.exts);
+        fieldSetFlags()[3] = true;
       }
     }
 
@@ -342,6 +372,45 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
       return this;
     }
 
+    /**
+      * Gets the value of the 'exts' field.
+      * @return The value.
+      */
+    public java.util.List<java.lang.CharSequence> getExts() {
+      return exts;
+    }
+
+    /**
+      * Sets the value of the 'exts' field.
+      * @param value The value of 'exts'.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.Monitor.Builder setExts(java.util.List<java.lang.CharSequence> value) {
+      validate(fields()[3], value);
+      this.exts = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'exts' field has been set.
+      * @return True if the 'exts' field has been set, false otherwise.
+      */
+    public boolean hasExts() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'exts' field.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.Monitor.Builder clearExts() {
+      exts = null;
+      fieldSetFlags()[3] = false;
+      return this;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public Monitor build() {
@@ -350,6 +419,7 @@ public class Monitor extends org.apache.avro.specific.SpecificRecordBase impleme
         record.impurl = fieldSetFlags()[0] ? this.impurl : (java.util.List<com.madhouse.ssp.avro.Track>) defaultValue(fields()[0]);
         record.clkurl = fieldSetFlags()[1] ? this.clkurl : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[1]);
         record.securl = fieldSetFlags()[2] ? this.securl : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[2]);
+        record.exts = fieldSetFlags()[3] ? this.exts : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[3]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

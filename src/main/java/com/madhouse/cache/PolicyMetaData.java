@@ -24,21 +24,19 @@ public class PolicyMetaData {
     private List<Integer> os;
     private List<Integer> connectionType;
 
-    private List<PlcmtInfo> adspaceList;
-    private List<DSPInfo> dspInfoList;
     private Map<Long, DSPInfo> dspInfoMap;
+    private Map<Long, AdspaceInfo> adspaceInfoMap;
 
     private int controlType;
     private int maxCount;
 
-    private int bidFloor;
-    private int bidType;
-
     private int status;
 
-    public class PlcmtInfo {
+    public class AdspaceInfo {
         private long id;
         private int status;
+        private int bidType;
+        private int bidFloor;
 
         public long getId() {
             return id;
@@ -54,6 +52,22 @@ public class PolicyMetaData {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public int getBidType() {
+            return bidType;
+        }
+
+        public void setBidType(int bidType) {
+            this.bidType = bidType;
+        }
+
+        public int getBidFloor() {
+            return bidFloor;
+        }
+
+        public void setBidFloor(int bidFloor) {
+            this.bidFloor = bidFloor;
         }
     }
 
@@ -168,14 +182,6 @@ public class PolicyMetaData {
         this.connectionType = connectionType;
     }
 
-    public List<PlcmtInfo> getAdspaceList() {
-        return adspaceList;
-    }
-
-    public void setAdspaceList(List<PlcmtInfo> adspaceList) {
-        this.adspaceList = adspaceList;
-    }
-
     public int getControlType() {
         return controlType;
     }
@@ -192,31 +198,6 @@ public class PolicyMetaData {
         this.maxCount = maxCount;
     }
 
-    public int getBidFloor() {
-        return bidFloor;
-    }
-
-    public void setBidFloor(int bidFloor) {
-        this.bidFloor = bidFloor;
-    }
-
-    public int getBidType() {
-        return bidType;
-    }
-
-    public void setBidType(int bidType) {
-        this.bidType = bidType;
-    }
-
-
-    public List<DSPInfo> getDspInfoList() {
-        return dspInfoList;
-    }
-
-    public void setDspInfoList(List<DSPInfo> dspInfoList) {
-        this.dspInfoList = dspInfoList;
-    }
-
     public Map<Long, DSPInfo> getDspInfoMap() {
         return dspInfoMap;
     }
@@ -231,5 +212,13 @@ public class PolicyMetaData {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Map<Long, AdspaceInfo> getAdspaceInfoMap() {
+        return adspaceInfoMap;
+    }
+
+    public void setAdspaceInfoMap(Map<Long, AdspaceInfo> adspaceInfoMap) {
+        this.adspaceInfoMap = adspaceInfoMap;
     }
 }

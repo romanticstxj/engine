@@ -41,7 +41,7 @@ import com.madhouse.util.StringUtil;
 public class MADMaxHandler extends DSPBaseHandler {
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
-        if (!this.packageDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
+        if (!this.createDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return null;
         }
@@ -117,7 +117,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 break;
         }
         String str = sb.toString().replace(" ", "%20");
-        logger.info("request url:{}", str);// httpclient无法解析空格，需要把空格替换掉
+        logger.error("request url:{}", str);// httpclient无法解析空格，需要把空格替换掉
         HttpGet httpGet = new HttpGet(str);
         
         return httpGet;
@@ -150,7 +150,7 @@ public class MADMaxHandler extends DSPBaseHandler {
             }
             return false;
         } catch (Exception e) {
-            logger.info("Response is parm:{}", dspBidMetaData.getDspBidBuilder().toString());
+            logger.error("Response is parm:{}", dspBidMetaData.getDspBidBuilder().toString());
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return false;
         }

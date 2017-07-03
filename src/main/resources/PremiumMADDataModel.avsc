@@ -33,7 +33,13 @@
 				"items": "string"
 			},
 			"name": "securl"
-		}
+		}, {
+         	"type": {
+         		"type": "array",
+         		"items": "string"
+         	},
+         	"name": "exts"
+        }
 	]
 }
 ,
