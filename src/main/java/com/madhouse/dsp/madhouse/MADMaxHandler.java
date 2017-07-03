@@ -46,10 +46,14 @@ public class MADMaxHandler extends DSPBaseHandler {
             return null;
         }
         MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
-        String urlTemplate = null;
-        if(!dspBidMetaData.getDspMetaData().getBidUrl().startsWith("?")){
-            urlTemplate=urlTemplate+"?";
+        String urlTemplate = dspBidMetaData.getDspMetaData().getBidUrl();
+
+        if (urlTemplate.contains("?")) {
+            urlTemplate += "&";
+        } else {
+            urlTemplate += "?";
         }
+
         StringBuilder sb = new StringBuilder(urlTemplate);
         // url编码
         String ua = builder.getUa().toString();
