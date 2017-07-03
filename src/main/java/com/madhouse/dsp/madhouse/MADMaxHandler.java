@@ -8,18 +8,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.cache.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import com.alibaba.fastjson.JSON;
-import com.madhouse.cache.AdBlockMetaData;
-import com.madhouse.cache.DSPBidMetaData;
-import com.madhouse.cache.DSPMetaData;
-import com.madhouse.cache.MediaMetaData;
-import com.madhouse.cache.PlcmtMetaData;
-import com.madhouse.cache.PolicyMetaData;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.madhouse.PremiumMADResponse;
 import com.madhouse.media.madhouse.PremiumMADStatusCode;
@@ -76,7 +72,14 @@ public class MADMaxHandler extends DSPBaseHandler {
         } catch (UnsupportedEncodingException e) {
             logger.error(e.toString());
         }
-        sb.append("adspaceid=").append(dspBidMetaData.getDspBidBuilder().getRequest().getTagid())
+
+        DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
+        String adspaceId = plcmtMetaData.getAdspaceKey();
+        if (dspBidMetaData != null && StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
+            adspaceId = dspMappingMetaData.getMappingKey();
+        }
+
+        sb.append("adspaceid=").append(adspaceId)
                 .append("&adtype=").append(StringUtil.validateString(builder.getAdtype().toString()))
                 .append("&width=").append(builder.getW() != null ? builder.getW() : plcmtMetaData.getBanner().getW())
                 .append("&height=").append(builder.getH() != null ? builder.getH() : plcmtMetaData.getBanner().getH())
