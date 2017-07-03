@@ -24,7 +24,7 @@ public abstract class DSPBaseHandler {
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
 
-        if (!this.packageDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
+        if (!this.createDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return null;
         }
@@ -403,7 +403,7 @@ public abstract class DSPBaseHandler {
         }
     }
 
-    protected final boolean packageDSPRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBid.Builder dspBidBuilder) {
+    protected final boolean createDSPRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBid.Builder dspBidBuilder) {
 
         try {
             MediaRequest mediaRequest = mediaBidBuilder.getRequest();
@@ -416,8 +416,8 @@ public abstract class DSPBaseHandler {
                     .setTagid(plcmtMetaData.getAdspaceKey())
                     .setDealid(policyMetaData.getDealId())
                     .setTest(mediaRequest.getTest())
-                    .setBidfloor(policyMetaData.getBidFloor())
-                    .setBidtype(policyMetaData.getBidType())
+                    .setBidfloor(policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())
+                    .setBidtype(policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidType())
                     .setTmax(mediaMetaData.getTimeout());
 
             dspBidBuilder.setDspid(dspMetaData.getId())
