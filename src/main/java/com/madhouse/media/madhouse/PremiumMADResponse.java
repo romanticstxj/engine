@@ -49,7 +49,7 @@ public class PremiumMADResponse {
     //展示监播
     private List<String> imgtracking;
     
-    //监播地址
+    //点击地址
     private List<String> thclkurl;
     
     //品牌安全监测
