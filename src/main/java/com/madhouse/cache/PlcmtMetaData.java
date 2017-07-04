@@ -23,6 +23,7 @@ public class PlcmtMetaData {
     private int bidFloor;
     private int bidType;
 
+    private boolean enableHttps;
     private String adspaceKey;
     private int status;
 
@@ -289,5 +290,13 @@ public class PlcmtMetaData {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public boolean isEnableHttps() {
+        return enableHttps;
+    }
+
+    public void setEnableHttps(boolean enableHttps) {
+        this.enableHttps = enableHttps;
     }
 }
