@@ -124,9 +124,9 @@ public class VamakerHandler extends DSPBaseHandler {
         if (StringUtils.isNotEmpty(builder.getIp().toString())) {
             sb.append("&_ip=").append(builder.getIp().toString());
         }
-        //if(adspace.isSupportHttps()){
+        if(plcmtMetaData.isEnableHttps()){
             sb.append("&_sc=").append("0");
-        //}
+        }
         String str = sb.toString().replace(" ", "%20");
         logger.info("Vamaker request url:{}", str);// httpclient无法解析空格，需要把空格替换掉
         HttpGet httpGet = new HttpGet(str);
