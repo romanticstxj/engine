@@ -149,6 +149,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
                     }  else if (madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_OK)){
                         DSPResponse.Builder response= convertMADMaxResponse(madResponse,dspBidMetaData);
+                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
                         dspBidMetaData.getDspBidBuilder().setResponse(response.build());
                         return true;
                     }
