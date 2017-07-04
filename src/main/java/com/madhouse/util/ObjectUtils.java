@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
@@ -15,6 +17,8 @@ import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
+
+import com.madhouse.ssp.LoggerUtil;
 
 public class ObjectUtils {
     public static boolean isNotEmpty(Object obj) {
@@ -106,5 +110,33 @@ public class ObjectUtils {
         }
         return outStr;
     }
-    
+    /**
+     * 计算字符串的MD5
+     */
+    public static String getMD5(String str) {
+        if (str != null) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] temp = md.digest(str.getBytes());
+                return byteToHexString(temp);
+            } catch (NoSuchAlgorithmException e) {
+                LoggerUtil.getInstance().getPremiummadlogger().error(e.toString());
+            }
+        }
+        return null;
+    }
+    /**
+     * 将指定byte数组转换成32位字符串
+     */
+    public static String byteToHexString(byte[] b) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte aB : b) {
+            String hex = Integer.toString(aB & 0xFF, 16);
+            if (hex.length() == 1) {
+                hex = '0' + hex;
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 }
