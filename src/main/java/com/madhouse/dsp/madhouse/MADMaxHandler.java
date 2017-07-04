@@ -1,6 +1,5 @@
 package com.madhouse.dsp.madhouse;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -8,20 +7,23 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.madhouse.cache.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import com.alibaba.fastjson.JSON;
+import com.madhouse.cache.AdBlockMetaData;
+import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.DSPBidMetaData;
+import com.madhouse.cache.DSPMappingMetaData;
+import com.madhouse.cache.MediaMetaData;
+import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.PolicyMetaData;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.madhouse.PremiumMADResponse;
 import com.madhouse.media.madhouse.PremiumMADStatusCode;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.DSPBid;
-import com.madhouse.ssp.avro.DSPRequest;
 import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.DSPResponse.Builder;
 import com.madhouse.ssp.avro.MediaBid;
@@ -124,7 +126,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 break;
         }
         String str = sb.toString().replace(" ", "%20");
-        logger.error("request url:{}", str);// httpclient无法解析空格，需要把空格替换掉
+        logger.info("MADMax request url:{}", str);// httpclient无法解析空格，需要把空格替换掉
         HttpGet httpGet = new HttpGet(str);
         
         return httpGet;
@@ -157,7 +159,7 @@ public class MADMaxHandler extends DSPBaseHandler {
             }
             return false;
         } catch (Exception e) {
-            logger.error("Response is parm:{}", dspBidMetaData.getDspBidBuilder().toString());
+            logger.error("MADMax Response :{}", dspBidMetaData.getDspBidBuilder().toString());
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return false;
         }
