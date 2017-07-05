@@ -105,8 +105,9 @@ public abstract class DSPBaseHandler {
                 impression.setBidfloor(plcmtMetaData.getBidFloor());
                 impression.setBidtype(plcmtMetaData.getBidType());
             } else {
+                //policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor()
                 impression.setBidfloor(0);
-                impression.setBidtype(Constant.BidType.CPM);
+                impression.setBidtype(policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidType());
             }
 
             if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
