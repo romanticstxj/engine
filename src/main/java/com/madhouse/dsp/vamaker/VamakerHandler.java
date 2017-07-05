@@ -3,11 +3,13 @@ package com.madhouse.dsp.vamaker;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.util.EntityUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.AdBlockMetaData;
 import com.madhouse.cache.CacheManager;
@@ -143,14 +145,18 @@ public class VamakerHandler extends DSPBaseHandler {
                 return false;
             }
             String result = EntityUtils.toString(httpResponse.getEntity());
-            logger.debug("Vamaker Response is:{}",result);
+            logger.info("Vamaker Response is:{}",result);
             VamakerResponse vamakerResponse = JSON.parseObject(result, VamakerResponse.class);
             dspResponse.setCid(vamakerResponse.getCid());
-            dspResponse.setId(String.valueOf(dspBidMetaData.getDspMetaData().getId()));
+            dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequest().getId()));
+            dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid().toString());
             //dspResponse.setAdid(value)
+            //dspResponse.setAdmid(madResponse.getAdspaceid());
+            //dspResponse.setBidid(madResponse.getBid());
             dspResponse.setLpgurl(vamakerResponse.getLp());
             dspResponse.setDesc(vamakerResponse.getDesc());
             dspResponse.setTitle(vamakerResponse.getTitle());
+            dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
             List<CharSequence> adm=new ArrayList<CharSequence>();
             for (String img : vamakerResponse.getImg()) {
                 adm.add(img);
