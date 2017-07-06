@@ -465,6 +465,8 @@ public class WorkThread {
             targetInfo.add(Pair.of(Constant.TargetType.CONNECTION_TYPE, info));
         }
 
+        SetUtil<Long> setUtil = new SetUtil<>();
+
         List<Set<Long>> targetPolicy = new LinkedList<>();
         for (Pair<Integer, List<String>> info : targetInfo) {
             List<Set<Long>> policys = new LinkedList<>();
@@ -481,10 +483,10 @@ public class WorkThread {
                 }
             }
 
-            targetPolicy.add(SetUtil.multiSetUnion(policys));
+            targetPolicy.add(setUtil.multiSetUnion(policys));
         }
 
-        return new LinkedList<>(SetUtil.setDiff(SetUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
+        return new LinkedList<>(setUtil.setDiff(setUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
     }
 
     private void internalError(HttpServletResponse resp, MediaBid.Builder mediaBidBuilder, int statusCode) {

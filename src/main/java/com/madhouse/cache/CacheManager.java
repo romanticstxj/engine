@@ -107,6 +107,7 @@ public class CacheManager implements Runnable {
         Object dspMetaData = this.loadDSPMetaData();
         Object mediaMappingData = this.loadMediaMappingData();
         Object dspMappingData = this.loadDSPMappingData();
+        Object policyTargetInfo = this.updatePolicyTargetInfo();
 
         this.mediaMetaDataMap = (ConcurrentHashMap<Long, MediaMetaData>)mediaMetaData;
         this.plcmtMetaDataMap = (ConcurrentHashMap<String, PlcmtMetaData>)plcmtMetaData;
@@ -115,8 +116,7 @@ public class CacheManager implements Runnable {
         this.dspMetaDataMap = (ConcurrentHashMap<Long, DSPMetaData>)dspMetaData;
         this.mediaMappingMetaDataMap = (ConcurrentHashMap<Long, MediaMappingMetaData>)mediaMappingData;
         this.dspMappingMetaDataMap = (ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>)dspMappingData;
-
-        this.policyTargetMap = this.updatePolicyTargetInfo();
+        this.policyTargetMap = (ConcurrentHashMap<String, HashSet<Long>>)policyTargetInfo;
     }
 
     private ConcurrentHashMap<Long, MediaMetaData> loadMediaMetaData() {

@@ -7,38 +7,62 @@ import java.util.Set;
 /**
  * Created by WUJUNFENG on 2017/6/16.
  */
-public class SetUtil {
-    public static Set<Long> setUnion(Set<Long> var1, Set<Long> var2) {
-        Set<Long> result = new HashSet<Long>();
+public class SetUtil<T> {
+    public Set<T> setUnion(Set<T> var1, Set<T> var2) {
+        Set<T> result = new HashSet<>();
 
-        result.addAll(var1);
-        result.addAll(var2);
+        if (var1 != null && !var1.isEmpty()) {
+            result.addAll(var1);
+        }
+
+        if (var2 != null && !var2.isEmpty()) {
+            result.addAll(var2);
+        }
+
         return result;
     }
 
-    public static Set<Long> setInter(Set<Long> var1, Set<Long> var2) {
-        Set<Long> result = new HashSet<Long>();
+    public Set<T> setInter(Set<T> var1, Set<T> var2) {
+        Set<T> result = new HashSet<>();
 
-        result.addAll(var1);
-        result.retainAll(var2);
+        if (var1 == null || var1.isEmpty() || var2 == null || var2.isEmpty()) {
+            return result;
+        }
+
+        if (var1.size() < var2.size()) {
+            result.addAll(var1);
+            result.retainAll(var2);
+        } else {
+            result.addAll(var2);
+            result.retainAll(var1);
+        }
+
         return result;
     }
 
-    public static Set<Long> setDiff(Set<Long> var1, Set<Long> var2) {
-        Set<Long> result = new HashSet<Long>();
+    public Set<T> setDiff(Set<T> var1, Set<T> var2) {
+        Set<T> result = new HashSet<>();
+
+        if (var1 == null || var1.isEmpty()) {
+            return result;
+        }
 
         result.addAll(var1);
+        if (var2 == null || var2.isEmpty()) {
+            return result;
+        }
+
         result.removeAll(var2);
         return result;
     }
 
-    public static Set<Long> multiSetInter(List<Set<Long>> list) {
-        Set<Long> result = null;
+    public Set<T> multiSetInter(List<Set<T>> list) {
+        Set<T> result = null;
 
         if (!list.isEmpty()) {
-            for (Set<Long> var : list) {
+            for (Set<T> var : list) {
                 if (result != null) {
-                    result = SetUtil.setInter(result, var);
+                    result = this.setInter(result, var);
                 } else {
                     result = var;
                 }
@@ -50,13 +74,13 @@ public class SetUtil {
         return result;
     }
 
-    public static Set<Long> multiSetUnion(List<Set<Long>> list) {
-        Set<Long> result = null;
+    public Set<T> multiSetUnion(List<Set<T>> list) {
+        Set<T> result = null;
 
         if (!list.isEmpty()) {
-            for (Set<Long> var : list) {
+            for (Set<T> var : list) {
                 if (result != null) {
-                    result = SetUtil.setUnion(result, var);
+                    result = this.setUnion(result, var);
                 } else {
                     result = var;
                 }
@@ -68,13 +92,13 @@ public class SetUtil {
         return result;
     }
 
-    public static Set<Long> multiSetDiff(List<Set<Long>> list) {
-        Set<Long> result = null;
+    public Set<T> multiSetDiff(List<Set<T>> list) {
+        Set<T> result = null;
 
         if (!list.isEmpty()) {
-            for (Set<Long> var : list) {
+            for (Set<T> var : list) {
                 if (result != null) {
-                    result = SetUtil.setDiff(result, var);
+                    result = this.setDiff(result, var);
                 } else {
                     result = var;
                 }
