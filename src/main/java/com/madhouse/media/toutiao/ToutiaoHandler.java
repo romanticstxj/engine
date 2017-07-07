@@ -88,7 +88,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             }
         }
         String supplierAdspaceKey = "";
-        if(StringUtils.isEmpty(mediaRequest.getAdspacekey())){
+        if(!StringUtils.isEmpty(mediaRequest.getAdspacekey())){
             if (isSandbox) {// sandbox环境
                 supplierAdspaceKey = "sandbox:TT:0:0";
                 //模拟竞价，不计费
@@ -175,20 +175,20 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 break;
         }
         //操作系统的版本
-        if(StringUtils.isEmpty(device.getOsv())){
+        if(!StringUtils.isEmpty(device.getOsv())){
             mediaRequest.setOsv(device.getOsv());
         }
-        if(StringUtils.isEmpty(device.getIp())){
+        if(!StringUtils.isEmpty(device.getIp())){
             mediaRequest.setIp(device.getIp());
         }
-        if(StringUtils.isEmpty(device.getUa())){
+        if(!StringUtils.isEmpty(device.getUa())){
             mediaRequest.setUa(device.getUa());
         }
         //设备型号
-        if(StringUtils.isEmpty(device.getModel())){
+        if(!StringUtils.isEmpty(device.getModel())){
             mediaRequest.setModel(device.getModel());
         }
-        if(StringUtils.isEmpty(device.getMake())){
+        if(!StringUtils.isEmpty(device.getMake())){
             mediaRequest.setModel(device.getMake());
         }
         /**
@@ -200,6 +200,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             //纬度
             mediaRequest.setLat((float)geo.getLat());
         }
+        mediaRequest.setType(Constant.MediaType.APP);
         logger.info("Toutiao Request params is : {}", mediaRequest.toString());
         return mediaRequest.build();
     }

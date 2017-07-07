@@ -93,35 +93,39 @@ public class PremiumMADHandler extends MediaBaseHandler {
         mediaRequest.setDevicetype(Integer.parseInt(madBidRequest.getDevicetype()));
        
         //操作系统的版本
-        if(StringUtils.isEmpty(madBidRequest.getOsv())){
+        if(!StringUtils.isEmpty(madBidRequest.getOsv())){
             mediaRequest.setOsv(madBidRequest.getOsv());
         }
-        if(StringUtils.isEmpty(madBidRequest.getIp())){
+        if(!StringUtils.isEmpty(madBidRequest.getIp())){
             mediaRequest.setIp(madBidRequest.getIp());
         }
-        if(StringUtils.isEmpty(madBidRequest.getUa())){
+        if(!StringUtils.isEmpty(madBidRequest.getUa())){
             mediaRequest.setUa(madBidRequest.getUa());
         }
         //设备型号
         
-        if(StringUtils.isEmpty(madBidRequest.getDevice())){
+        if(!StringUtils.isEmpty(madBidRequest.getDevice())){
             mediaRequest.setModel(madBidRequest.getDevice());
         }
         // 手机号码。
-        if(StringUtils.isEmpty(madBidRequest.getCell())){
+        if(!StringUtils.isEmpty(madBidRequest.getCell())){
             mediaRequest.setCell(madBidRequest.getCell());
         }
         //MD5加密的手机号码。
-        if(StringUtils.isEmpty(madBidRequest.getMcell())){
+        if(!StringUtils.isEmpty(madBidRequest.getMcell())){
             mediaRequest.setCellmd5(madBidRequest.getMcell());
         }
         //经度
-        if(StringUtils.isEmpty(madBidRequest.getLon())){
+        if(!StringUtils.isEmpty(madBidRequest.getLon())){
             mediaRequest.setLon(Float.parseFloat(madBidRequest.getLon()));
         }
         //纬度
-        if(StringUtils.isEmpty(madBidRequest.getLat())){
+        if(!StringUtils.isEmpty(madBidRequest.getLat())){
             mediaRequest.setLat(Float.parseFloat(madBidRequest.getLat()));
+        }
+        //投放的媒体形式
+        if(!StringUtils.isEmpty(madBidRequest.getMedia())){
+            mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
         }
         logger.info("PremiumMAD Request params is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();

@@ -23,7 +23,7 @@
             "apiClass": ""
         }, {
             "path": "/adcall/moweather/bidrequest",
-            "apiClass": ""
+            "apiClass": "com.madhouse.media.mojiweather.MojiWeatherHandler"
         }, {
             "path": "/adcall/baofeng/bidrequest",
             "apiClass": "com.madhouse.media.baofeng.BaoFengHandler"
