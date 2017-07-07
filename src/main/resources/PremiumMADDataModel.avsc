@@ -84,10 +84,12 @@
 						"default": null
 					}, {
 						"type": "long",
-						"name": "mediaid"
+						"name": "mediaid",
+						"default": 0
 					}, {
 						"type": "int",
-						"name": "category"
+						"name": "category",
+						"default": 0
 					}, {
 						"type": "int",
 						"name": "type"
@@ -101,7 +103,8 @@
 						"default": null
 					}, {
 						"type": "long",
-						"name": "adspaceid"
+						"name": "adspaceid",
+						"default": 0
 					}, {
 						"type": "string",
 						"name": "adspacekey"
@@ -202,7 +205,8 @@
 							"type": "array",
 							"items": "string"
 						},
-						"name": "tags"
+						"name": "tags",
+						"default": null
 					}, {
 						"type": "int",
 						"name": "test",

@@ -1,5 +1,7 @@
 package com.madhouse.media.madhouse;
 
+import java.util.List;
+
 public class PremiumMADBidRequest {
     /**
      * Bid Request ID 广告请求流水号必须唯一
@@ -154,7 +156,9 @@ public class PremiumMADBidRequest {
     /**
      * 广告请求时所携带的标签code，UrlEncode编码
      * */
-    private String label;
+    private List<String> label;
+    
+    
     public String getBid() {
         return bid;
     }
@@ -341,10 +345,10 @@ public class PremiumMADBidRequest {
     public void setMcell(String mcell) {
         this.mcell = mcell;
     }
-    public String getLabel() {
+    public List<String> getLabel() {
         return label;
     }
-    public void setLabel(String label) {
+    public void setLabel(List<String> label) {
         this.label = label;
     }
     

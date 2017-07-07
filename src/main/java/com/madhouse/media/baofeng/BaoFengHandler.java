@@ -367,12 +367,12 @@ public class BaoFengHandler extends MediaBaseHandler {
         }
 
         // 设备浏览器的User-Agent字符串
-        if (StringUtils.isEmpty(device.getUa())) {
+        if (!StringUtils.isEmpty(device.getUa())) {
             mediaRequest.setUa(device.getUa());
         }
 
         // ip地址
-        if (StringUtils.isEmpty(device.getIp())) {
+        if (!StringUtils.isEmpty(device.getIp())) {
             mediaRequest.setIp(device.getIp());
         }
         
@@ -382,6 +382,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         mediaRequest.setModel(device.getModel() != null ? device.getModel() : "");
         // mac地址
         mediaRequest.setMac(device.getMac() != null ? device.getMac() : "");
+        mediaRequest.setType(Constant.MediaType.APP);
         logger.info("BaoFeng request params is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();
         
