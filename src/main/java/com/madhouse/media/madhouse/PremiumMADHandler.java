@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -126,6 +127,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
         //投放的媒体形式
         if(!StringUtils.isEmpty(madBidRequest.getMedia())){
             mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
+        }
+        for (String label : madBidRequest.getLabel()) {
+            mediaRequest.getTags().add(label);
         }
         logger.info("PremiumMAD Request params is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();
