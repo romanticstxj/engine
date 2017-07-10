@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.madhouse.configuration.Redis;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -73,12 +74,22 @@ public class ResourceManager {
 
     public boolean init()
     {
+        {
+            Redis.Config config = this.premiummad.getRedis().getMaster();
+            this.jedisPoolMaster = new JedisPool(config.getHost(), config.getPort());
+        }
+
+        {
+            Redis.Config config = this.premiummad.getRedis().getSlave();
+            this.jedisPoolSlave = new JedisPool(config.getHost(), config.getPort());
+        }
+
         this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);
         for (Bid bid : premiummad.getWebapp().getBids())
         {
-			if (!StringUtils.isEmpty(bid.getApiClass())) {
+			if (!StringUtils.isEmpty(bid.getClassName())) {
 				try {
-					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getApiClass()).newInstance());
+					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getClassName()).newInstance());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

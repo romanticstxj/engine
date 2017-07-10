@@ -5,75 +5,47 @@
         "gZipOn": false,
         "bids": [{
             "path": "/adcall/bidrequest",
-            "apiClass": "com.madhouse.media.madhouse.PremiumMADHandler"
+            "className": "com.madhouse.media.madhouse.PremiumMADHandler"
         }, {
             "path": "/client/bidrequest",
-            "apiClass": "com.madhouse.media.madhouse.PremiumMADHandler"
+            "className": "com.madhouse.media.madhouse.PremiumMADHandler"
         }, {
             "path": "/motv/bidrequest",
-            "apiClass": "com.madhouse.media.madhouse.PremiumMADHandler"
+            "className": "com.madhouse.media.madhouse.PremiumMADHandler"
         }, {
             "path": "/adcall/xtrader/bidrequest",
-            "apiClass": ""
+            "className": ""
         }, {
             "path": "/adcall/dianping/bidrequest",
-            "apiClass": ""
+            "className": ""
         }, {
             "path": "/adcall/xiaomi/bidrequest",
-            "apiClass": ""
+            "className": ""
         }, {
             "path": "/adcall/moweather/bidrequest",
-            "apiClass": "com.madhouse.media.mojiweather.MojiWeatherHandler"
+            "className": "com.madhouse.media.mojiweather.MojiWeatherHandler"
         }, {
             "path": "/adcall/baofeng/bidrequest",
-            "apiClass": "com.madhouse.media.baofeng.BaoFengHandler"
+            "className": "com.madhouse.media.baofeng.BaoFengHandler"
         }, {
             "path": "/adcall/momo/bidrequest",
-            "apiClass": ""
+            "className": ""
         }, {
             "path": "/adcall/toutiao/bidrequest",
-            "apiClass": "com.madhouse.media.toutiao.ToutiaoHandler"
+            "className": "com.madhouse.media.toutiao.ToutiaoHandler"
         }, {
             "path": "/adcall/vam/bidrequest",
-            "apiClass": ""
+            "className": ""
         }, {
             "path": "/adcall/sohu/bidrequest",
-            "apiClass": ""
+            "className": ""
         }, {
             "path": "/adcall/tencent/bidrequest",
-            "apiClass": ""
+            "className": ""
         }
         ],
         "impression": "/adcall/impression",
         "click": "/adcall/click"
-    },
-    "metadata": {
-        "requesturls": [{
-            "type": "mediameta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "plcmtmeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "policymeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "dspmeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "adblockmeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "mediamapping",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "dspmapping",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "creativemeta",
-            "url": "http://www.madhouse.cn"
-        }
-        ]
     },
     "kafka": {
         "brokers": "127.0.0.1:6379;127.0.0.1:6379;127.0.0.1:6379",
@@ -98,11 +70,16 @@
     "redis": {
         "slave": {
             "passwd": "",
-            "url": "127.0.0.1:6379"
+            "host": "127.0.0.1",
+            "port": 6379,
+            "db" : 0
         },
+
         "master": {
             "passwd": "",
-            "url": "127.0.0.1:6379"
+            "host": "127.0.0.1",
+            "port": 6379,
+            "db" : 0
         }
     }
 }
