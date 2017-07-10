@@ -4,45 +4,45 @@
         "port": 8181,
         "gZipOn": false,
         "bids": [{
-            "path": "/adcall/bidrequest",
-            "className": "com.madhouse.media.madhouse.PremiumMADHandler"
-        }, {
-            "path": "/client/bidrequest",
-            "className": "com.madhouse.media.madhouse.PremiumMADHandler"
-        }, {
-            "path": "/motv/bidrequest",
-            "className": "com.madhouse.media.madhouse.PremiumMADHandler"
-        }, {
-            "path": "/adcall/xtrader/bidrequest",
-            "className": ""
-        }, {
-            "path": "/adcall/dianping/bidrequest",
-            "className": ""
-        }, {
-            "path": "/adcall/xiaomi/bidrequest",
-            "className": ""
-        }, {
-            "path": "/adcall/moweather/bidrequest",
-            "className": "com.madhouse.media.mojiweather.MojiWeatherHandler"
-        }, {
-            "path": "/adcall/baofeng/bidrequest",
-            "className": "com.madhouse.media.baofeng.BaoFengHandler"
-        }, {
-            "path": "/adcall/momo/bidrequest",
-            "className": ""
-        }, {
-            "path": "/adcall/toutiao/bidrequest",
-            "className": "com.madhouse.media.toutiao.ToutiaoHandler"
-        }, {
-            "path": "/adcall/vam/bidrequest",
-            "className": ""
-        }, {
-            "path": "/adcall/sohu/bidrequest",
-            "className": ""
-        }, {
-            "path": "/adcall/tencent/bidrequest",
-            "className": ""
-        }
+                "path": "/adcall/bidrequest",
+                "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+            }, {
+                "path": "/client/bidrequest",
+                "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+            }, {
+                "path": "/motv/bidrequest",
+                "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+            }, {
+                "path": "/adcall/xtrader/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/dianping/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/xiaomi/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/moweather/bidrequest",
+                "className": "com.madhouse.media.mojiweather.MojiWeatherHandler"
+            }, {
+                "path": "/adcall/baofeng/bidrequest",
+                "className": "com.madhouse.media.baofeng.BaoFengHandler"
+            }, {
+                "path": "/adcall/momo/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/toutiao/bidrequest",
+                "className": "com.madhouse.media.toutiao.ToutiaoHandler"
+            }, {
+                "path": "/adcall/vam/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/sohu/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/tencent/bidrequest",
+                "className": ""
+            }
         ],
         "impression": "/adcall/impression",
         "click": "/adcall/click"
@@ -50,21 +50,21 @@
     "kafka": {
         "brokers": "127.0.0.1:6379;127.0.0.1:6379;127.0.0.1:6379",
         "topics": [{
-            "type": "mediabid",
-            "value": "topic_mediabid"
-        }, {
-            "type": "dspbid",
-            "value": "topic_dspbid"
-        }, {
-            "type": "winnotice",
-            "value": "topic_winnotice"
-        }, {
-            "type": "impression",
-            "value": "topic_impression"
-        }, {
-            "type": "click",
-            "value": "topic_click"
-        }
+                "type": "mediabid",
+                "value": "topic_mediabid"
+            }, {
+                "type": "dspbid",
+                "value": "topic_dspbid"
+            }, {
+                "type": "winnotice",
+                "value": "topic_winnotice"
+            }, {
+                "type": "impression",
+                "value": "topic_impression"
+            }, {
+                "type": "click",
+                "value": "topic_click"
+            }
         ]
     },
     "redis": {
@@ -75,14 +75,13 @@
             "passwd": "",
             "host": "127.0.0.1",
             "port": 6379,
-            "db" : 0
+            "db": 0
         },
-
         "master": {
             "passwd": "",
             "host": "127.0.0.1",
             "port": 6379,
-            "db" : 0
+            "db": 0
         }
     }
 }
