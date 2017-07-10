@@ -19,6 +19,7 @@ import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -75,13 +76,20 @@ public class ResourceManager {
     public boolean init()
     {
         {
-            Redis.Config config = this.premiummad.getRedis().getMaster();
-            this.jedisPoolMaster = new JedisPool(config.getHost(), config.getPort());
-        }
+            GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+            poolConfig.setMinIdle(this.premiummad.getRedis().getMinIdle());
+            poolConfig.setMaxIdle(this.premiummad.getRedis().getMaxIdle());
+            poolConfig.setMaxTotal(this.premiummad.getRedis().getMaxTotal());
 
-        {
-            Redis.Config config = this.premiummad.getRedis().getSlave();
-            this.jedisPoolSlave = new JedisPool(config.getHost(), config.getPort());
+            {
+                Redis.Config config = this.premiummad.getRedis().getMaster();
+                this.jedisPoolMaster = new JedisPool(poolConfig, config.getHost(), config.getPort());
+            }
+
+            {
+                Redis.Config config = this.premiummad.getRedis().getSlave();
+                this.jedisPoolSlave = new JedisPool(poolConfig, config.getHost(), config.getPort());
+            }
         }
 
         this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);

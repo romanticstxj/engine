@@ -68,6 +68,9 @@
         ]
     },
     "redis": {
+        "minIdle": 8,
+        "maxIdle": 16,
+        "maxTotal": 32,
         "slave": {
             "passwd": "",
             "host": "127.0.0.1",

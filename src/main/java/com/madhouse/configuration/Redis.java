@@ -43,8 +43,34 @@ public class Redis {
 	}
 
 	private Config master;
-
 	private Config slave;
+	private int maxIdle;
+	private int minIdle;
+	private int maxTotal;
+
+	public int getMaxIdle() {
+		return maxIdle;
+	}
+
+	public void setMaxIdle(int maxIdle) {
+		this.maxIdle = maxIdle;
+	}
+
+	public int getMinIdle() {
+		return minIdle;
+	}
+
+	public void setMinIdle(int minIdle) {
+		this.minIdle = minIdle;
+	}
+
+	public int getMaxTotal() {
+		return maxTotal;
+	}
+
+	public void setMaxTotal(int maxTotal) {
+		this.maxTotal = maxTotal;
+	}
 
 	public Config getMaster() {
 		return master;
