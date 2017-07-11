@@ -47,13 +47,14 @@ public class XiaoMiHandler extends MediaBaseHandler {
             int status = validateRequiredParam(bidRequest);
             if (status == Constant.StatusCode.OK) {
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
-                mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
-                mediaBidMetaData.setRequestObject(bidRequest);
-                return true;
-            } else {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                return false;
+                if(mediaRequest != null){
+                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.setRequestObject(bidRequest);
+                    return true;
+                }
             }
+            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            return false;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -207,7 +208,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
             }
             mediaRequest.setOsv(device.getOsv() != null ? device.getOsv() : null);
             mediaRequest.setMac(device.getMacsha1());
-            mediaRequest.setMac(device.getMacmd5());
+            mediaRequest.setMacmd5(device.getMacmd5());
 
             Geo geo = device.getGeo();
             if (geo != null) {
@@ -362,7 +363,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
 
         XiaoMiResponse.SeatBid[] setBids = {seatBid};//目前仅支持长度为1
         bidResponse.setSeatbid(setBids);
-        logger.debug("XiaoMi Response params is : {}", JSON.toJSONString(bidResponse));
+        logger.info("XiaoMi Response params is : {}", JSON.toJSONString(bidResponse));
         return bidResponse;
     }
 
