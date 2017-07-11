@@ -150,13 +150,13 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 mediaRequest.setUa(device.getUa());
             }
             switch (device.getDevicetype()) {
-                case 0:
+                case XiaoMiStatusCode.Devicetype.UNKNOWN:
                     mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
                     break;
-                case 1:
+                case XiaoMiStatusCode.Devicetype.IPHONE:
                     mediaRequest.setDevicetype(Constant.DeviceType.PHONE);
                     break;
-                case 3:
+                case XiaoMiStatusCode.Devicetype.IPAD:
                     mediaRequest.setDevicetype(Constant.DeviceType.PAD);
                     break;
                 default:
@@ -169,14 +169,14 @@ public class XiaoMiHandler extends MediaBaseHandler {
             mediaRequest.setModel(device.getModel());
             String os = device.getOs();
             if (StringUtils.isNotEmpty(os)) {
-                if ("android".equalsIgnoreCase(os)) {
+                if (XiaoMiStatusCode.XiaoMiOs.ANDROID.equalsIgnoreCase(os)) {
                     mediaRequest.setOs(Constant.OSType.ANDROID);
                     mediaRequest.setDid(device.getDidsha1());
                     mediaRequest.setDidmd5(device.getDidmd5());
                     //Android ID - md5 - sha1
                     mediaRequest.setDpid(device.getDpid());
                     mediaRequest.setDpidmd5(device.getDpidmd5() != null ? device.getDpidmd5() : device.getDpidsha1());
-                } else if ("ios".equalsIgnoreCase(os)) {
+                } else if (XiaoMiStatusCode.XiaoMiOs.IOS.equalsIgnoreCase(os)) {
                     mediaRequest.setOs(Constant.OSType.IOS);
                     mediaRequest.setIfa(device.getIdfasha1());
                 } else {
@@ -188,16 +188,16 @@ public class XiaoMiHandler extends MediaBaseHandler {
             Integer connectionType = device.getConnectiontype();
             if (connectionType != null) {
                 switch (connectionType) {
-                    case 2://WIFI 网络
+                    case XiaoMiStatusCode.ConnectionType.WIFI://WIFI 网络
                         mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
                         break;
-                    case 4://蜂窝数据网络 ­ 2G
+                    case XiaoMiStatusCode.ConnectionType._2G://蜂窝数据网络 ­ 2G
                         mediaRequest.setConnectiontype(Constant.ConnectionType._2G);
                         break;
-                    case 5://蜂窝数据网络 ­ 3G
+                    case XiaoMiStatusCode.ConnectionType._3G://蜂窝数据网络 ­ 3G
                         mediaRequest.setConnectiontype(Constant.ConnectionType._3G);
                         break;
-                    case 6://蜂窝数据网络 ­ 4G
+                    case XiaoMiStatusCode.ConnectionType._4G://蜂窝数据网络 ­ 4G
                         mediaRequest.setConnectiontype(Constant.ConnectionType._4G);
                         break;
                     default:
