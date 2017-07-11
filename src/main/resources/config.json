@@ -20,7 +20,7 @@
             "apiClass": ""
         }, {
             "path": "/adcall/xiaomi/bidrequest",
-            "apiClass": ""
+            "apiClass": "com.madhouse.media.xiaomi.XiaoMiHandler"
         }, {
             "path": "/adcall/moweather/bidrequest",
             "apiClass": "com.madhouse.media.mojiweather.MojiWeatherHandler"
