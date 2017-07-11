@@ -4,105 +4,84 @@
         "port": 8181,
         "gZipOn": false,
         "bids": [{
-            "path": "/adcall/bidrequest",
-            "apiClass": "com.madhouse.media.madhouse.PremiumMADHandler"
-        }, {
-            "path": "/client/bidrequest",
-            "apiClass": "com.madhouse.media.madhouse.PremiumMADHandler"
-        }, {
-            "path": "/motv/bidrequest",
-            "apiClass": "com.madhouse.media.madhouse.PremiumMADHandler"
-        }, {
-            "path": "/adcall/xtrader/bidrequest",
-            "apiClass": ""
-        }, {
-            "path": "/adcall/dianping/bidrequest",
-            "apiClass": ""
-        }, {
-            "path": "/adcall/xiaomi/bidrequest",
-            "apiClass": "com.madhouse.media.xiaomi.XiaoMiHandler"
-        }, {
-            "path": "/adcall/moweather/bidrequest",
-            "apiClass": "com.madhouse.media.mojiweather.MojiWeatherHandler"
-        }, {
-            "path": "/adcall/baofeng/bidrequest",
-            "apiClass": "com.madhouse.media.baofeng.BaoFengHandler"
-        }, {
-            "path": "/adcall/momo/bidrequest",
-            "apiClass": ""
-        }, {
-            "path": "/adcall/toutiao/bidrequest",
-            "apiClass": "com.madhouse.media.toutiao.ToutiaoHandler"
-        }, {
-            "path": "/adcall/vam/bidrequest",
-            "apiClass": ""
-        }, {
-            "path": "/adcall/sohu/bidrequest",
-            "apiClass": ""
-        }, {
-            "path": "/adcall/tencent/bidrequest",
-            "apiClass": ""
-        }
+                "path": "/adcall/bidrequest",
+                "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+            }, {
+                "path": "/client/bidrequest",
+                "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+            }, {
+                "path": "/motv/bidrequest",
+                "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+            }, {
+                "path": "/adcall/xtrader/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/dianping/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/xiaomi/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/moweather/bidrequest",
+                "className": "com.madhouse.media.mojiweather.MojiWeatherHandler"
+            }, {
+                "path": "/adcall/baofeng/bidrequest",
+                "className": "com.madhouse.media.baofeng.BaoFengHandler"
+            }, {
+                "path": "/adcall/momo/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/toutiao/bidrequest",
+                "className": "com.madhouse.media.toutiao.ToutiaoHandler"
+            }, {
+                "path": "/adcall/vam/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/sohu/bidrequest",
+                "className": ""
+            }, {
+                "path": "/adcall/tencent/bidrequest",
+                "className": ""
+            }
         ],
         "impression": "/adcall/impression",
         "click": "/adcall/click"
     },
-    "metadata": {
-        "requesturls": [{
-            "type": "mediameta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "plcmtmeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "policymeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "dspmeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "adblockmeta",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "mediamapping",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "dspmapping",
-            "url": "http://www.madhouse.cn"
-        }, {
-            "type": "creativemeta",
-            "url": "http://www.madhouse.cn"
-        }
-        ]
-    },
     "kafka": {
         "brokers": "127.0.0.1:6379;127.0.0.1:6379;127.0.0.1:6379",
         "topics": [{
-            "type": "mediabid",
-            "value": "topic_mediabid"
-        }, {
-            "type": "dspbid",
-            "value": "topic_dspbid"
-        }, {
-            "type": "winnotice",
-            "value": "topic_winnotice"
-        }, {
-            "type": "impression",
-            "value": "topic_impression"
-        }, {
-            "type": "click",
-            "value": "topic_click"
-        }
+                "type": "mediabid",
+                "value": "topic_mediabid"
+            }, {
+                "type": "dspbid",
+                "value": "topic_dspbid"
+            }, {
+                "type": "winnotice",
+                "value": "topic_winnotice"
+            }, {
+                "type": "impression",
+                "value": "topic_impression"
+            }, {
+                "type": "click",
+                "value": "topic_click"
+            }
         ]
     },
     "redis": {
+        "minIdle": 8,
+        "maxIdle": 16,
+        "maxTotal": 32,
         "slave": {
             "passwd": "",
-            "url": "127.0.0.1:6379"
+            "host": "127.0.0.1",
+            "port": 6379,
+            "db": 0
         },
         "master": {
             "passwd": "",
-            "url": "127.0.0.1:6379"
+            "host": "127.0.0.1",
+            "port": 6379,
+            "db": 0
         }
     }
 }

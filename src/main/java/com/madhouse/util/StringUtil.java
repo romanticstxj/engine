@@ -13,9 +13,9 @@ import org.apache.commons.lang3.StringUtils;
  * Created by WUJUNFENG on 2017/6/9.
  */
 public class StringUtil {
-    
+
     public static final Random random = new Random();
-    
+
     public static final String getUUID() {
         return UUID.randomUUID().toString();
     }
@@ -83,8 +83,8 @@ public class StringUtil {
         if (n <= 0) {
             return -1;
         }
-        int i = random.nextInt(n);
-        return i + 1;
+
+        return random.nextInt(n) + 1;
     }
     
     public static String validateString(String str) {

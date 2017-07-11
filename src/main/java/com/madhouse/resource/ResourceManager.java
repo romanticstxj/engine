@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.madhouse.configuration.Redis;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -18,6 +19,7 @@ import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -73,12 +75,29 @@ public class ResourceManager {
 
     public boolean init()
     {
+        {
+            GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+            poolConfig.setMinIdle(this.premiummad.getRedis().getMinIdle());
+            poolConfig.setMaxIdle(this.premiummad.getRedis().getMaxIdle());
+            poolConfig.setMaxTotal(this.premiummad.getRedis().getMaxTotal());
+
+            {
+                Redis.Config config = this.premiummad.getRedis().getMaster();
+                this.jedisPoolMaster = new JedisPool(poolConfig, config.getHost(), config.getPort());
+            }
+
+            {
+                Redis.Config config = this.premiummad.getRedis().getSlave();
+                this.jedisPoolSlave = new JedisPool(poolConfig, config.getHost(), config.getPort());
+            }
+        }
+
         this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);
         for (Bid bid : premiummad.getWebapp().getBids())
         {
-			if (!StringUtils.isEmpty(bid.getApiClass())) {
+			if (!StringUtils.isEmpty(bid.getClassName())) {
 				try {
-					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getApiClass()).newInstance());
+					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getClassName()).newInstance());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

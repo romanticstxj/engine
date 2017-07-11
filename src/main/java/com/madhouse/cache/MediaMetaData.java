@@ -11,7 +11,10 @@ public class MediaMetaData {
     private long id;
     private String name;
     private int category;
+    //app, site
     private int type;
+    private int advertiserAuditMode;
+    private int materialAuditMode;
     private int apiType;
     private int status;
     private int timeout;
@@ -70,5 +73,21 @@ public class MediaMetaData {
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    public int getAdvertiserAuditMode() {
+        return advertiserAuditMode;
+    }
+
+    public void setAdvertiserAuditMode(int advertiserAuditMode) {
+        this.advertiserAuditMode = advertiserAuditMode;
+    }
+
+    public int getMaterialAuditMode() {
+        return materialAuditMode;
+    }
+
+    public void setMaterialAuditMode(int materialAuditMode) {
+        this.materialAuditMode = materialAuditMode;
     }
 }

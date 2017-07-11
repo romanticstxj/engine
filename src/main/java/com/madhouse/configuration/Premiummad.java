@@ -7,16 +7,6 @@ public class Premiummad {
 
 	private Kafka kafka;
 
-	private MetaData metadata;
-
-	public MetaData getMetadata() {
-		return metadata;
-	}
-
-	public void setMetadata(MetaData metadata) {
-		this.metadata = metadata;
-	}
-
 	public Redis getRedis() {
 		return redis;
 	}

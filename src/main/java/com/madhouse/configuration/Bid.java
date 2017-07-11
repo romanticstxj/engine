@@ -4,7 +4,7 @@ public class Bid {
 
 	private String path;
 
-	private String apiClass;
+	private String className;
 
 	public String getPath() {
 		return path;
@@ -14,17 +14,17 @@ public class Bid {
 		this.path = path;
 	}
 
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
 	public Bid(String path) {
 		super();
 		this.path = path;
-	}
-
-	public String getApiClass() {
-		return apiClass;
-	}
-
-	public void setApiClass(String apiClass) {
-		this.apiClass = apiClass;
 	}
 
 	public Bid() {
