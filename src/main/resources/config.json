@@ -20,7 +20,7 @@
                 "className": ""
             }, {
                 "path": "/adcall/xiaomi/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.xiaomi.XiaoMiHandler"
             }, {
                 "path": "/adcall/moweather/bidrequest",
                 "className": "com.madhouse.media.mojiweather.MojiWeatherHandler"
@@ -35,7 +35,7 @@
                 "className": "com.madhouse.media.toutiao.ToutiaoHandler"
             }, {
                 "path": "/adcall/vam/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.vamaker.VamakerHandler"
             }, {
                 "path": "/adcall/sohu/bidrequest",
                 "className": ""

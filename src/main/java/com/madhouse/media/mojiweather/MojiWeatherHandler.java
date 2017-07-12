@@ -106,6 +106,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             mediaRequest.setModel(mojiWeatherBidRequest.getDevice());
         }
         mediaRequest.setType(Constant.MediaType.APP);
+        logger.info("mojiWeather request params is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();
     }
 
