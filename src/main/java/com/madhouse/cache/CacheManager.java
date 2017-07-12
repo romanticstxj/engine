@@ -27,13 +27,17 @@ public class CacheManager implements Runnable {
         return cacheManager;
     }
     private ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    //metadata
-    private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
-    private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
-    private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
-    private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
-    private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
 
+    //dsp metadata
+    private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
+    //media metadata
+    private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
+    //placement metadata
+    private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
+    //adblock metadata
+    private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
+    //policy metadata
+    private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
     //adspaceId, mediaMappingMetaData
     private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
     //dspid, <adspaceId, dspMappingMetaData>
@@ -107,7 +111,7 @@ public class CacheManager implements Runnable {
         Object dspMetaData = this.loadDSPMetaData();
         Object mediaMappingData = this.loadMediaMappingData();
         Object dspMappingData = this.loadDSPMappingData();
-        Object policyTargetInfo = this.updatePolicyTargetInfo();
+        Object policyTargetInfo = this.updatePolicyTargetInfo(policyMetaData);
 
         this.mediaMetaDataMap = (ConcurrentHashMap<Long, MediaMetaData>)mediaMetaData;
         this.plcmtMetaDataMap = (ConcurrentHashMap<String, PlcmtMetaData>)plcmtMetaData;
@@ -234,11 +238,13 @@ public class CacheManager implements Runnable {
         return var1;
     }
 
-    private ConcurrentHashMap<String, HashSet<Long>> updatePolicyTargetInfo() {
+    private ConcurrentHashMap<String, HashSet<Long>> updatePolicyTargetInfo(Object metaData) {
         ConcurrentHashMap<String, HashSet<Long>> var = new ConcurrentHashMap<>();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-        for (Map.Entry entry : this.policyMetaDataMap.entrySet()) {
+        ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = (ConcurrentHashMap<Long, PolicyMetaData>)metaData;
+
+        for (Map.Entry entry : policyMetaDataMap.entrySet()) {
             PolicyMetaData policyMetaData = (PolicyMetaData)entry.getValue();
 
             if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {

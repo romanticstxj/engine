@@ -445,8 +445,9 @@ public class WorkThread {
         //location
         {
             List<String> info = new LinkedList<>();
-            info.add(mediaBidBuilder.getLocation().subSequence(0, 4) + "*");
-            info.add(mediaBidBuilder.getLocation().subSequence(0, 6) + "*");
+            info.add(mediaBidBuilder.getLocation().subSequence(0, 1) + "000000000");
+            info.add(mediaBidBuilder.getLocation().subSequence(0, 4) + "000000");
+            info.add(mediaBidBuilder.getLocation().subSequence(0, 6) + "0000");
             info.add(mediaBidBuilder.getLocation().toString());
             targetInfo.add(Pair.of(Constant.TargetType.LOCATION, info));
         }
