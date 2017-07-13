@@ -17,7 +17,7 @@
                 "className": ""
             }, {
                 "path": "/adcall/dianping/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.mtdp.MTDPHandler"
             }, {
                 "path": "/adcall/xiaomi/bidrequest",
                 "className": "com.madhouse.media.xiaomi.XiaoMiHandler"

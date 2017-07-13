@@ -63,7 +63,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
     }
     
     private int validateRequiredParam(XiaoMiBidRequest bidRequest) {
-        if (!ObjectUtils.isEmpty(bidRequest)) {
+        if (ObjectUtils.isNotEmpty(bidRequest)) {
             String id = bidRequest.getId();
             if (StringUtils.isEmpty(id)) {
                 logger.debug("bidRequest.id is missing");
@@ -209,7 +209,6 @@ public class XiaoMiHandler extends MediaBaseHandler {
             mediaRequest.setOsv(device.getOsv() != null ? device.getOsv() : null);
             mediaRequest.setMac(device.getMacsha1());
             mediaRequest.setMacmd5(device.getMacmd5());
-
             Geo geo = device.getGeo();
             if (geo != null) {
                 if(ObjectUtils.isNotEmpty(geo.getLat())){
@@ -222,7 +221,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
             String adspaceKey = "";
             if (isSandbox) {//sandbox环境
                 adspaceKey = new StringBuffer().append("sandbox:").append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
-                //模拟竞价，不计费
+                //模拟竞价，
                 mediaRequest.setTest(Constant.Test.SIMULATION);
             } else {
                 adspaceKey = new StringBuffer().append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
@@ -241,6 +240,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
                     mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
                 }
             }
+            mediaRequest.setType(Constant.MediaType.APP);
             logger.info("xiaomi request params is : {}", mediaRequest.toString());
         }else{
             return null;
