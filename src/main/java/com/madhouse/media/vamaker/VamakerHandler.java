@@ -112,10 +112,10 @@ public class VamakerHandler extends MediaBaseHandler {
         mediaRequest.setW(mobile.getWidth());
         mediaRequest.setH(mobile.getHeight());
         mediaRequest.setBidfloor(mobile.getBidfloor());
-        mediaRequest.setMake(StringUtil.validateString(mobile.getBrand()));
-        mediaRequest.setModel(StringUtil.validateString(mobile.getModel()));
-        mediaRequest.setBundle(StringUtil.validateString(mobile.getPgn()));
-        mediaRequest.setName(StringUtil.validateString(mobile.getAppName()));
+        mediaRequest.setMake(StringUtil.toString(mobile.getBrand()));
+        mediaRequest.setModel(StringUtil.toString(mobile.getModel()));
+        mediaRequest.setBundle(StringUtil.toString(mobile.getPgn()));
+        mediaRequest.setName(StringUtil.toString(mobile.getAppName()));
         mediaRequest.setCarrier(mobile.getOperateId());
         mediaRequest.setConnectiontype(mobile.getNetwork() > 5 ? mobile.getNetwork() : Constant.ConnectionType.CELL);
         

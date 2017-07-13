@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.madhouse.configuration.Redis;
+import com.madhouse.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -34,7 +35,7 @@ public class ResourceManager {
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
     private final ArrayList<Pair<Long, String>> iptables = this.loadLocations();
-    private final Premiummad premiummad = JSON.parseObject(ObjectUtils.ReadFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
+    private final Premiummad premiummad = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
 
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};

@@ -139,8 +139,8 @@ public class XiaoMiHandler extends MediaBaseHandler {
         mediaRequest.setBid(imp.getId());
         App app = bidRequest.getApp();
         if (app != null) {
-            mediaRequest.setName(StringUtil.validateString(app.getName()));
-            mediaRequest.setBundle(StringUtil.validateString(app.getBundle()));
+            mediaRequest.setName(StringUtil.toString(app.getName()));
+            mediaRequest.setBundle(StringUtil.toString(app.getBundle()));
         }
         Device device = bidRequest.getDevice();
         if (device != null) {

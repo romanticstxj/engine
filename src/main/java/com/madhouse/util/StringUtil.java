@@ -3,6 +3,12 @@ package com.madhouse.util;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -20,8 +26,23 @@ public class StringUtil {
         return UUID.randomUUID().toString();
     }
 
-    public static final String getString(String str) {
+    public static final String toString(String str) {
         return str == null ? "" : str;
+    }
+
+    public static final String bytes2Hex(byte[] data) {
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : data) {
+            String str = Integer.toString(b & 0xff, 16);
+            if (str.length() < 2) {
+                str = "0" + str;
+            }
+
+            sb.append(str);
+        }
+
+        return sb.toString();
     }
 
     public static final byte[] hex2Bytes(String hex) {
@@ -76,19 +97,44 @@ public class StringUtil {
             return null;
         }
     }
-    /**
-     * 返回一个给定范围的随机数
-     */
-    public static int randomId(int n) {
-        if (n <= 0) {
-            return -1;
+
+    public static String readFile(String path) {
+        File file = new File(path);
+        BufferedReader reader = null;
+        StringBuffer sb = new StringBuffer();
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                }
+            }
         }
 
-        return random.nextInt(n) + 1;
-    }
-    
-    public static String validateString(String str) {
-        return StringUtils.isEmpty(str) ? "" : str;
+        return sb.toString();
     }
 
+    public static String getMD5(String str) {
+        if (str != null) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] data = md.digest(str.getBytes());
+                return bytes2Hex(data);
+            } catch (NoSuchAlgorithmException e) {
+                System.err.println(e.toString());
+            }
+        }
+
+        return null;
+    }
 }
