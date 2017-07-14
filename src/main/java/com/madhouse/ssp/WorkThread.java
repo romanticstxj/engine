@@ -230,8 +230,8 @@ public class WorkThread {
 
             //init location
             String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp().toString());
-            if (location == null) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            if (StringUtils.isEmpty(location)) {
+                resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
@@ -247,7 +247,6 @@ public class WorkThread {
             if (blockid > 0) {
                 adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(blockid);
                 if (adBlockMetaData == null) {
-                    this.internalError(resp, mediaBidBuilder, Constant.StatusCode.INTERNAL_ERROR);
                     return;
                 }
             }
@@ -529,16 +528,6 @@ public class WorkThread {
         }
 
         return new LinkedList<>(SetUtil.setDiff(SetUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
-    }
-
-    private void internalError(HttpServletResponse resp, MediaBid.Builder mediaBidBuilder, int statusCode) {
-        try {
-            resp.setStatus(statusCode);
-            mediaBidBuilder.setStatus(statusCode);
-            LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBidBuilder.build());
-        } catch (Exception ex) {
-            LoggerUtil.getInstance().getBaseLogger(Constant.TopicType.MEDIA_BID).info(mediaBidBuilder.build());
-        }
     }
 
     private List<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
