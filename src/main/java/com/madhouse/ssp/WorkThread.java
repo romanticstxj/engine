@@ -468,7 +468,7 @@ public class WorkThread {
         //placement
         {
             List<String> info = new LinkedList<>();
-            String adspaceKey = String.format("%d-%s", mediaRequest.getAdspaceid(), StringUtil.toString(mediaRequest.getDealid().toString()));
+            String adspaceKey = String.format("%d-%s", mediaRequest.getAdspaceid(), StringUtil.toString(mediaRequest.getDealid()));
             info.add(adspaceKey);
             targetInfo.add(Pair.of(Constant.TargetType.PLACEMENT, info));
         }
