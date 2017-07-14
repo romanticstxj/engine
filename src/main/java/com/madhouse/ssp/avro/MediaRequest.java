@@ -7,41 +7,41 @@ package com.madhouse.ssp.avro;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MediaRequest\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"bid\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"mediaid\",\"type\":\"long\",\"default\":0},{\"name\":\"category\",\"type\":\"int\",\"default\":0},{\"name\":\"type\",\"type\":\"int\"},{\"name\":\"bundle\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"name\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"adspaceid\",\"type\":\"long\",\"default\":0},{\"name\":\"adspacekey\",\"type\":\"string\"},{\"name\":\"adtype\",\"type\":\"int\"},{\"name\":\"w\",\"type\":\"int\"},{\"name\":\"h\",\"type\":\"int\"},{\"name\":\"did\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"didmd5\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dpid\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"dpidmd5\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"mac\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"macmd5\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"ifa\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"carrier\",\"type\":\"int\",\"default\":0},{\"name\":\"connectiontype\",\"type\":\"int\",\"default\":0},{\"name\":\"devicetype\",\"type\":\"int\",\"default\":0},{\"name\":\"dealid\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"lon\",\"type\":\"float\",\"default\":0},{\"name\":\"lat\",\"type\":\"float\",\"default\":0},{\"name\":\"os\",\"type\":\"int\",\"default\":0},{\"name\":\"osv\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"ip\",\"type\":\"string\"},{\"name\":\"ua\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"make\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"model\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cell\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"cellmd5\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"tags\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"default\":null},{\"name\":\"test\",\"type\":\"int\",\"default\":0},{\"name\":\"bidfloor\",\"type\":\"int\",\"default\":0}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MediaRequest\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"bid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"mediaid\",\"type\":\"long\",\"default\":0},{\"name\":\"category\",\"type\":\"int\",\"default\":0},{\"name\":\"type\",\"type\":\"int\"},{\"name\":\"bundle\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"name\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"adspaceid\",\"type\":\"long\",\"default\":0},{\"name\":\"adspacekey\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adtype\",\"type\":\"int\"},{\"name\":\"w\",\"type\":\"int\"},{\"name\":\"h\",\"type\":\"int\"},{\"name\":\"did\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"didmd5\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"dpid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"dpidmd5\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"mac\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"macmd5\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"ifa\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"carrier\",\"type\":\"int\",\"default\":0},{\"name\":\"connectiontype\",\"type\":\"int\",\"default\":0},{\"name\":\"devicetype\",\"type\":\"int\",\"default\":0},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"lon\",\"type\":\"float\",\"default\":0},{\"name\":\"lat\",\"type\":\"float\",\"default\":0},{\"name\":\"os\",\"type\":\"int\",\"default\":0},{\"name\":\"osv\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"ip\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"ua\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"make\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"model\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cell\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cellmd5\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"tags\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null},{\"name\":\"test\",\"type\":\"int\",\"default\":0},{\"name\":\"bidfloor\",\"type\":\"int\",\"default\":0}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  @Deprecated public java.lang.CharSequence bid;
+  @Deprecated public java.lang.String bid;
   @Deprecated public long mediaid;
   @Deprecated public int category;
   @Deprecated public int type;
-  @Deprecated public java.lang.CharSequence bundle;
-  @Deprecated public java.lang.CharSequence name;
+  @Deprecated public java.lang.String bundle;
+  @Deprecated public java.lang.String name;
   @Deprecated public long adspaceid;
-  @Deprecated public java.lang.CharSequence adspacekey;
+  @Deprecated public java.lang.String adspacekey;
   @Deprecated public int adtype;
   @Deprecated public int w;
   @Deprecated public int h;
-  @Deprecated public java.lang.CharSequence did;
-  @Deprecated public java.lang.CharSequence didmd5;
-  @Deprecated public java.lang.CharSequence dpid;
-  @Deprecated public java.lang.CharSequence dpidmd5;
-  @Deprecated public java.lang.CharSequence mac;
-  @Deprecated public java.lang.CharSequence macmd5;
-  @Deprecated public java.lang.CharSequence ifa;
+  @Deprecated public java.lang.String did;
+  @Deprecated public java.lang.String didmd5;
+  @Deprecated public java.lang.String dpid;
+  @Deprecated public java.lang.String dpidmd5;
+  @Deprecated public java.lang.String mac;
+  @Deprecated public java.lang.String macmd5;
+  @Deprecated public java.lang.String ifa;
   @Deprecated public int carrier;
   @Deprecated public int connectiontype;
   @Deprecated public int devicetype;
-  @Deprecated public java.lang.CharSequence dealid;
+  @Deprecated public java.lang.String dealid;
   @Deprecated public float lon;
   @Deprecated public float lat;
   @Deprecated public int os;
-  @Deprecated public java.lang.CharSequence osv;
-  @Deprecated public java.lang.CharSequence ip;
-  @Deprecated public java.lang.CharSequence ua;
-  @Deprecated public java.lang.CharSequence make;
-  @Deprecated public java.lang.CharSequence model;
-  @Deprecated public java.lang.CharSequence cell;
-  @Deprecated public java.lang.CharSequence cellmd5;
-  @Deprecated public java.util.List<java.lang.CharSequence> tags;
+  @Deprecated public java.lang.String osv;
+  @Deprecated public java.lang.String ip;
+  @Deprecated public java.lang.String ua;
+  @Deprecated public java.lang.String make;
+  @Deprecated public java.lang.String model;
+  @Deprecated public java.lang.String cell;
+  @Deprecated public java.lang.String cellmd5;
+  @Deprecated public java.util.List<java.lang.String> tags;
   @Deprecated public int test;
   @Deprecated public int bidfloor;
 
@@ -55,7 +55,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * All-args constructor.
    */
-  public MediaRequest(java.lang.CharSequence bid, java.lang.Long mediaid, java.lang.Integer category, java.lang.Integer type, java.lang.CharSequence bundle, java.lang.CharSequence name, java.lang.Long adspaceid, java.lang.CharSequence adspacekey, java.lang.Integer adtype, java.lang.Integer w, java.lang.Integer h, java.lang.CharSequence did, java.lang.CharSequence didmd5, java.lang.CharSequence dpid, java.lang.CharSequence dpidmd5, java.lang.CharSequence mac, java.lang.CharSequence macmd5, java.lang.CharSequence ifa, java.lang.Integer carrier, java.lang.Integer connectiontype, java.lang.Integer devicetype, java.lang.CharSequence dealid, java.lang.Float lon, java.lang.Float lat, java.lang.Integer os, java.lang.CharSequence osv, java.lang.CharSequence ip, java.lang.CharSequence ua, java.lang.CharSequence make, java.lang.CharSequence model, java.lang.CharSequence cell, java.lang.CharSequence cellmd5, java.util.List<java.lang.CharSequence> tags, java.lang.Integer test, java.lang.Integer bidfloor) {
+  public MediaRequest(java.lang.String bid, java.lang.Long mediaid, java.lang.Integer category, java.lang.Integer type, java.lang.String bundle, java.lang.String name, java.lang.Long adspaceid, java.lang.String adspacekey, java.lang.Integer adtype, java.lang.Integer w, java.lang.Integer h, java.lang.String did, java.lang.String didmd5, java.lang.String dpid, java.lang.String dpidmd5, java.lang.String mac, java.lang.String macmd5, java.lang.String ifa, java.lang.Integer carrier, java.lang.Integer connectiontype, java.lang.Integer devicetype, java.lang.String dealid, java.lang.Float lon, java.lang.Float lat, java.lang.Integer os, java.lang.String osv, java.lang.String ip, java.lang.String ua, java.lang.String make, java.lang.String model, java.lang.String cell, java.lang.String cellmd5, java.util.List<java.lang.String> tags, java.lang.Integer test, java.lang.Integer bidfloor) {
     this.bid = bid;
     this.mediaid = mediaid;
     this.category = category;
@@ -139,39 +139,39 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: bid = (java.lang.CharSequence)value$; break;
+    case 0: bid = (java.lang.String)value$; break;
     case 1: mediaid = (java.lang.Long)value$; break;
     case 2: category = (java.lang.Integer)value$; break;
     case 3: type = (java.lang.Integer)value$; break;
-    case 4: bundle = (java.lang.CharSequence)value$; break;
-    case 5: name = (java.lang.CharSequence)value$; break;
+    case 4: bundle = (java.lang.String)value$; break;
+    case 5: name = (java.lang.String)value$; break;
     case 6: adspaceid = (java.lang.Long)value$; break;
-    case 7: adspacekey = (java.lang.CharSequence)value$; break;
+    case 7: adspacekey = (java.lang.String)value$; break;
     case 8: adtype = (java.lang.Integer)value$; break;
     case 9: w = (java.lang.Integer)value$; break;
     case 10: h = (java.lang.Integer)value$; break;
-    case 11: did = (java.lang.CharSequence)value$; break;
-    case 12: didmd5 = (java.lang.CharSequence)value$; break;
-    case 13: dpid = (java.lang.CharSequence)value$; break;
-    case 14: dpidmd5 = (java.lang.CharSequence)value$; break;
-    case 15: mac = (java.lang.CharSequence)value$; break;
-    case 16: macmd5 = (java.lang.CharSequence)value$; break;
-    case 17: ifa = (java.lang.CharSequence)value$; break;
+    case 11: did = (java.lang.String)value$; break;
+    case 12: didmd5 = (java.lang.String)value$; break;
+    case 13: dpid = (java.lang.String)value$; break;
+    case 14: dpidmd5 = (java.lang.String)value$; break;
+    case 15: mac = (java.lang.String)value$; break;
+    case 16: macmd5 = (java.lang.String)value$; break;
+    case 17: ifa = (java.lang.String)value$; break;
     case 18: carrier = (java.lang.Integer)value$; break;
     case 19: connectiontype = (java.lang.Integer)value$; break;
     case 20: devicetype = (java.lang.Integer)value$; break;
-    case 21: dealid = (java.lang.CharSequence)value$; break;
+    case 21: dealid = (java.lang.String)value$; break;
     case 22: lon = (java.lang.Float)value$; break;
     case 23: lat = (java.lang.Float)value$; break;
     case 24: os = (java.lang.Integer)value$; break;
-    case 25: osv = (java.lang.CharSequence)value$; break;
-    case 26: ip = (java.lang.CharSequence)value$; break;
-    case 27: ua = (java.lang.CharSequence)value$; break;
-    case 28: make = (java.lang.CharSequence)value$; break;
-    case 29: model = (java.lang.CharSequence)value$; break;
-    case 30: cell = (java.lang.CharSequence)value$; break;
-    case 31: cellmd5 = (java.lang.CharSequence)value$; break;
-    case 32: tags = (java.util.List<java.lang.CharSequence>)value$; break;
+    case 25: osv = (java.lang.String)value$; break;
+    case 26: ip = (java.lang.String)value$; break;
+    case 27: ua = (java.lang.String)value$; break;
+    case 28: make = (java.lang.String)value$; break;
+    case 29: model = (java.lang.String)value$; break;
+    case 30: cell = (java.lang.String)value$; break;
+    case 31: cellmd5 = (java.lang.String)value$; break;
+    case 32: tags = (java.util.List<java.lang.String>)value$; break;
     case 33: test = (java.lang.Integer)value$; break;
     case 34: bidfloor = (java.lang.Integer)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -181,7 +181,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Gets the value of the 'bid' field.
    */
-  public java.lang.CharSequence getBid() {
+  public java.lang.String getBid() {
     return bid;
   }
 
@@ -189,7 +189,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'bid' field.
    * @param value the value to set.
    */
-  public void setBid(java.lang.CharSequence value) {
+  public void setBid(java.lang.String value) {
     this.bid = value;
   }
 
@@ -241,7 +241,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Gets the value of the 'bundle' field.
    */
-  public java.lang.CharSequence getBundle() {
+  public java.lang.String getBundle() {
     return bundle;
   }
 
@@ -249,14 +249,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'bundle' field.
    * @param value the value to set.
    */
-  public void setBundle(java.lang.CharSequence value) {
+  public void setBundle(java.lang.String value) {
     this.bundle = value;
   }
 
   /**
    * Gets the value of the 'name' field.
    */
-  public java.lang.CharSequence getName() {
+  public java.lang.String getName() {
     return name;
   }
 
@@ -264,7 +264,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'name' field.
    * @param value the value to set.
    */
-  public void setName(java.lang.CharSequence value) {
+  public void setName(java.lang.String value) {
     this.name = value;
   }
 
@@ -286,7 +286,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Gets the value of the 'adspacekey' field.
    */
-  public java.lang.CharSequence getAdspacekey() {
+  public java.lang.String getAdspacekey() {
     return adspacekey;
   }
 
@@ -294,7 +294,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'adspacekey' field.
    * @param value the value to set.
    */
-  public void setAdspacekey(java.lang.CharSequence value) {
+  public void setAdspacekey(java.lang.String value) {
     this.adspacekey = value;
   }
 
@@ -346,7 +346,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Gets the value of the 'did' field.
    */
-  public java.lang.CharSequence getDid() {
+  public java.lang.String getDid() {
     return did;
   }
 
@@ -354,14 +354,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'did' field.
    * @param value the value to set.
    */
-  public void setDid(java.lang.CharSequence value) {
+  public void setDid(java.lang.String value) {
     this.did = value;
   }
 
   /**
    * Gets the value of the 'didmd5' field.
    */
-  public java.lang.CharSequence getDidmd5() {
+  public java.lang.String getDidmd5() {
     return didmd5;
   }
 
@@ -369,14 +369,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'didmd5' field.
    * @param value the value to set.
    */
-  public void setDidmd5(java.lang.CharSequence value) {
+  public void setDidmd5(java.lang.String value) {
     this.didmd5 = value;
   }
 
   /**
    * Gets the value of the 'dpid' field.
    */
-  public java.lang.CharSequence getDpid() {
+  public java.lang.String getDpid() {
     return dpid;
   }
 
@@ -384,14 +384,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'dpid' field.
    * @param value the value to set.
    */
-  public void setDpid(java.lang.CharSequence value) {
+  public void setDpid(java.lang.String value) {
     this.dpid = value;
   }
 
   /**
    * Gets the value of the 'dpidmd5' field.
    */
-  public java.lang.CharSequence getDpidmd5() {
+  public java.lang.String getDpidmd5() {
     return dpidmd5;
   }
 
@@ -399,14 +399,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'dpidmd5' field.
    * @param value the value to set.
    */
-  public void setDpidmd5(java.lang.CharSequence value) {
+  public void setDpidmd5(java.lang.String value) {
     this.dpidmd5 = value;
   }
 
   /**
    * Gets the value of the 'mac' field.
    */
-  public java.lang.CharSequence getMac() {
+  public java.lang.String getMac() {
     return mac;
   }
 
@@ -414,14 +414,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'mac' field.
    * @param value the value to set.
    */
-  public void setMac(java.lang.CharSequence value) {
+  public void setMac(java.lang.String value) {
     this.mac = value;
   }
 
   /**
    * Gets the value of the 'macmd5' field.
    */
-  public java.lang.CharSequence getMacmd5() {
+  public java.lang.String getMacmd5() {
     return macmd5;
   }
 
@@ -429,14 +429,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'macmd5' field.
    * @param value the value to set.
    */
-  public void setMacmd5(java.lang.CharSequence value) {
+  public void setMacmd5(java.lang.String value) {
     this.macmd5 = value;
   }
 
   /**
    * Gets the value of the 'ifa' field.
    */
-  public java.lang.CharSequence getIfa() {
+  public java.lang.String getIfa() {
     return ifa;
   }
 
@@ -444,7 +444,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'ifa' field.
    * @param value the value to set.
    */
-  public void setIfa(java.lang.CharSequence value) {
+  public void setIfa(java.lang.String value) {
     this.ifa = value;
   }
 
@@ -496,7 +496,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Gets the value of the 'dealid' field.
    */
-  public java.lang.CharSequence getDealid() {
+  public java.lang.String getDealid() {
     return dealid;
   }
 
@@ -504,7 +504,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'dealid' field.
    * @param value the value to set.
    */
-  public void setDealid(java.lang.CharSequence value) {
+  public void setDealid(java.lang.String value) {
     this.dealid = value;
   }
 
@@ -556,7 +556,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   /**
    * Gets the value of the 'osv' field.
    */
-  public java.lang.CharSequence getOsv() {
+  public java.lang.String getOsv() {
     return osv;
   }
 
@@ -564,14 +564,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'osv' field.
    * @param value the value to set.
    */
-  public void setOsv(java.lang.CharSequence value) {
+  public void setOsv(java.lang.String value) {
     this.osv = value;
   }
 
   /**
    * Gets the value of the 'ip' field.
    */
-  public java.lang.CharSequence getIp() {
+  public java.lang.String getIp() {
     return ip;
   }
 
@@ -579,14 +579,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'ip' field.
    * @param value the value to set.
    */
-  public void setIp(java.lang.CharSequence value) {
+  public void setIp(java.lang.String value) {
     this.ip = value;
   }
 
   /**
    * Gets the value of the 'ua' field.
    */
-  public java.lang.CharSequence getUa() {
+  public java.lang.String getUa() {
     return ua;
   }
 
@@ -594,14 +594,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'ua' field.
    * @param value the value to set.
    */
-  public void setUa(java.lang.CharSequence value) {
+  public void setUa(java.lang.String value) {
     this.ua = value;
   }
 
   /**
    * Gets the value of the 'make' field.
    */
-  public java.lang.CharSequence getMake() {
+  public java.lang.String getMake() {
     return make;
   }
 
@@ -609,14 +609,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'make' field.
    * @param value the value to set.
    */
-  public void setMake(java.lang.CharSequence value) {
+  public void setMake(java.lang.String value) {
     this.make = value;
   }
 
   /**
    * Gets the value of the 'model' field.
    */
-  public java.lang.CharSequence getModel() {
+  public java.lang.String getModel() {
     return model;
   }
 
@@ -624,14 +624,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'model' field.
    * @param value the value to set.
    */
-  public void setModel(java.lang.CharSequence value) {
+  public void setModel(java.lang.String value) {
     this.model = value;
   }
 
   /**
    * Gets the value of the 'cell' field.
    */
-  public java.lang.CharSequence getCell() {
+  public java.lang.String getCell() {
     return cell;
   }
 
@@ -639,14 +639,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'cell' field.
    * @param value the value to set.
    */
-  public void setCell(java.lang.CharSequence value) {
+  public void setCell(java.lang.String value) {
     this.cell = value;
   }
 
   /**
    * Gets the value of the 'cellmd5' field.
    */
-  public java.lang.CharSequence getCellmd5() {
+  public java.lang.String getCellmd5() {
     return cellmd5;
   }
 
@@ -654,14 +654,14 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'cellmd5' field.
    * @param value the value to set.
    */
-  public void setCellmd5(java.lang.CharSequence value) {
+  public void setCellmd5(java.lang.String value) {
     this.cellmd5 = value;
   }
 
   /**
    * Gets the value of the 'tags' field.
    */
-  public java.util.List<java.lang.CharSequence> getTags() {
+  public java.util.List<java.lang.String> getTags() {
     return tags;
   }
 
@@ -669,7 +669,7 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
    * Sets the value of the 'tags' field.
    * @param value the value to set.
    */
-  public void setTags(java.util.List<java.lang.CharSequence> value) {
+  public void setTags(java.util.List<java.lang.String> value) {
     this.tags = value;
   }
 
@@ -724,39 +724,39 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<MediaRequest>
     implements org.apache.avro.data.RecordBuilder<MediaRequest> {
 
-    private java.lang.CharSequence bid;
+    private java.lang.String bid;
     private long mediaid;
     private int category;
     private int type;
-    private java.lang.CharSequence bundle;
-    private java.lang.CharSequence name;
+    private java.lang.String bundle;
+    private java.lang.String name;
     private long adspaceid;
-    private java.lang.CharSequence adspacekey;
+    private java.lang.String adspacekey;
     private int adtype;
     private int w;
     private int h;
-    private java.lang.CharSequence did;
-    private java.lang.CharSequence didmd5;
-    private java.lang.CharSequence dpid;
-    private java.lang.CharSequence dpidmd5;
-    private java.lang.CharSequence mac;
-    private java.lang.CharSequence macmd5;
-    private java.lang.CharSequence ifa;
+    private java.lang.String did;
+    private java.lang.String didmd5;
+    private java.lang.String dpid;
+    private java.lang.String dpidmd5;
+    private java.lang.String mac;
+    private java.lang.String macmd5;
+    private java.lang.String ifa;
     private int carrier;
     private int connectiontype;
     private int devicetype;
-    private java.lang.CharSequence dealid;
+    private java.lang.String dealid;
     private float lon;
     private float lat;
     private int os;
-    private java.lang.CharSequence osv;
-    private java.lang.CharSequence ip;
-    private java.lang.CharSequence ua;
-    private java.lang.CharSequence make;
-    private java.lang.CharSequence model;
-    private java.lang.CharSequence cell;
-    private java.lang.CharSequence cellmd5;
-    private java.util.List<java.lang.CharSequence> tags;
+    private java.lang.String osv;
+    private java.lang.String ip;
+    private java.lang.String ua;
+    private java.lang.String make;
+    private java.lang.String model;
+    private java.lang.String cell;
+    private java.lang.String cellmd5;
+    private java.util.List<java.lang.String> tags;
     private int test;
     private int bidfloor;
 
@@ -1056,12 +1056,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'bid' field */
-    public java.lang.CharSequence getBid() {
+    public java.lang.String getBid() {
       return bid;
     }
     
     /** Sets the value of the 'bid' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setBid(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setBid(java.lang.String value) {
       validate(fields()[0], value);
       this.bid = value;
       fieldSetFlags()[0] = true;
@@ -1153,12 +1153,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'bundle' field */
-    public java.lang.CharSequence getBundle() {
+    public java.lang.String getBundle() {
       return bundle;
     }
     
     /** Sets the value of the 'bundle' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setBundle(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setBundle(java.lang.String value) {
       validate(fields()[4], value);
       this.bundle = value;
       fieldSetFlags()[4] = true;
@@ -1178,12 +1178,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'name' field */
-    public java.lang.CharSequence getName() {
+    public java.lang.String getName() {
       return name;
     }
     
     /** Sets the value of the 'name' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setName(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setName(java.lang.String value) {
       validate(fields()[5], value);
       this.name = value;
       fieldSetFlags()[5] = true;
@@ -1227,12 +1227,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'adspacekey' field */
-    public java.lang.CharSequence getAdspacekey() {
+    public java.lang.String getAdspacekey() {
       return adspacekey;
     }
     
     /** Sets the value of the 'adspacekey' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setAdspacekey(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setAdspacekey(java.lang.String value) {
       validate(fields()[7], value);
       this.adspacekey = value;
       fieldSetFlags()[7] = true;
@@ -1324,12 +1324,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'did' field */
-    public java.lang.CharSequence getDid() {
+    public java.lang.String getDid() {
       return did;
     }
     
     /** Sets the value of the 'did' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setDid(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setDid(java.lang.String value) {
       validate(fields()[11], value);
       this.did = value;
       fieldSetFlags()[11] = true;
@@ -1349,12 +1349,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'didmd5' field */
-    public java.lang.CharSequence getDidmd5() {
+    public java.lang.String getDidmd5() {
       return didmd5;
     }
     
     /** Sets the value of the 'didmd5' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setDidmd5(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setDidmd5(java.lang.String value) {
       validate(fields()[12], value);
       this.didmd5 = value;
       fieldSetFlags()[12] = true;
@@ -1374,12 +1374,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'dpid' field */
-    public java.lang.CharSequence getDpid() {
+    public java.lang.String getDpid() {
       return dpid;
     }
     
     /** Sets the value of the 'dpid' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setDpid(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setDpid(java.lang.String value) {
       validate(fields()[13], value);
       this.dpid = value;
       fieldSetFlags()[13] = true;
@@ -1399,12 +1399,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'dpidmd5' field */
-    public java.lang.CharSequence getDpidmd5() {
+    public java.lang.String getDpidmd5() {
       return dpidmd5;
     }
     
     /** Sets the value of the 'dpidmd5' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setDpidmd5(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setDpidmd5(java.lang.String value) {
       validate(fields()[14], value);
       this.dpidmd5 = value;
       fieldSetFlags()[14] = true;
@@ -1424,12 +1424,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'mac' field */
-    public java.lang.CharSequence getMac() {
+    public java.lang.String getMac() {
       return mac;
     }
     
     /** Sets the value of the 'mac' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setMac(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setMac(java.lang.String value) {
       validate(fields()[15], value);
       this.mac = value;
       fieldSetFlags()[15] = true;
@@ -1449,12 +1449,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'macmd5' field */
-    public java.lang.CharSequence getMacmd5() {
+    public java.lang.String getMacmd5() {
       return macmd5;
     }
     
     /** Sets the value of the 'macmd5' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setMacmd5(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setMacmd5(java.lang.String value) {
       validate(fields()[16], value);
       this.macmd5 = value;
       fieldSetFlags()[16] = true;
@@ -1474,12 +1474,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'ifa' field */
-    public java.lang.CharSequence getIfa() {
+    public java.lang.String getIfa() {
       return ifa;
     }
     
     /** Sets the value of the 'ifa' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setIfa(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setIfa(java.lang.String value) {
       validate(fields()[17], value);
       this.ifa = value;
       fieldSetFlags()[17] = true;
@@ -1571,12 +1571,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'dealid' field */
-    public java.lang.CharSequence getDealid() {
+    public java.lang.String getDealid() {
       return dealid;
     }
     
     /** Sets the value of the 'dealid' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setDealid(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setDealid(java.lang.String value) {
       validate(fields()[21], value);
       this.dealid = value;
       fieldSetFlags()[21] = true;
@@ -1668,12 +1668,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'osv' field */
-    public java.lang.CharSequence getOsv() {
+    public java.lang.String getOsv() {
       return osv;
     }
     
     /** Sets the value of the 'osv' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setOsv(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setOsv(java.lang.String value) {
       validate(fields()[25], value);
       this.osv = value;
       fieldSetFlags()[25] = true;
@@ -1693,12 +1693,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'ip' field */
-    public java.lang.CharSequence getIp() {
+    public java.lang.String getIp() {
       return ip;
     }
     
     /** Sets the value of the 'ip' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setIp(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setIp(java.lang.String value) {
       validate(fields()[26], value);
       this.ip = value;
       fieldSetFlags()[26] = true;
@@ -1718,12 +1718,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'ua' field */
-    public java.lang.CharSequence getUa() {
+    public java.lang.String getUa() {
       return ua;
     }
     
     /** Sets the value of the 'ua' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setUa(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setUa(java.lang.String value) {
       validate(fields()[27], value);
       this.ua = value;
       fieldSetFlags()[27] = true;
@@ -1743,12 +1743,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'make' field */
-    public java.lang.CharSequence getMake() {
+    public java.lang.String getMake() {
       return make;
     }
     
     /** Sets the value of the 'make' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setMake(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setMake(java.lang.String value) {
       validate(fields()[28], value);
       this.make = value;
       fieldSetFlags()[28] = true;
@@ -1768,12 +1768,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'model' field */
-    public java.lang.CharSequence getModel() {
+    public java.lang.String getModel() {
       return model;
     }
     
     /** Sets the value of the 'model' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setModel(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setModel(java.lang.String value) {
       validate(fields()[29], value);
       this.model = value;
       fieldSetFlags()[29] = true;
@@ -1793,12 +1793,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'cell' field */
-    public java.lang.CharSequence getCell() {
+    public java.lang.String getCell() {
       return cell;
     }
     
     /** Sets the value of the 'cell' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setCell(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setCell(java.lang.String value) {
       validate(fields()[30], value);
       this.cell = value;
       fieldSetFlags()[30] = true;
@@ -1818,12 +1818,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'cellmd5' field */
-    public java.lang.CharSequence getCellmd5() {
+    public java.lang.String getCellmd5() {
       return cellmd5;
     }
     
     /** Sets the value of the 'cellmd5' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setCellmd5(java.lang.CharSequence value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setCellmd5(java.lang.String value) {
       validate(fields()[31], value);
       this.cellmd5 = value;
       fieldSetFlags()[31] = true;
@@ -1843,12 +1843,12 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     /** Gets the value of the 'tags' field */
-    public java.util.List<java.lang.CharSequence> getTags() {
+    public java.util.List<java.lang.String> getTags() {
       return tags;
     }
     
     /** Sets the value of the 'tags' field */
-    public com.madhouse.ssp.avro.MediaRequest.Builder setTags(java.util.List<java.lang.CharSequence> value) {
+    public com.madhouse.ssp.avro.MediaRequest.Builder setTags(java.util.List<java.lang.String> value) {
       validate(fields()[32], value);
       this.tags = value;
       fieldSetFlags()[32] = true;
@@ -1919,39 +1919,39 @@ public class MediaRequest extends org.apache.avro.specific.SpecificRecordBase im
     public MediaRequest build() {
       try {
         MediaRequest record = new MediaRequest();
-        record.bid = fieldSetFlags()[0] ? this.bid : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.bid = fieldSetFlags()[0] ? this.bid : (java.lang.String) defaultValue(fields()[0]);
         record.mediaid = fieldSetFlags()[1] ? this.mediaid : (java.lang.Long) defaultValue(fields()[1]);
         record.category = fieldSetFlags()[2] ? this.category : (java.lang.Integer) defaultValue(fields()[2]);
         record.type = fieldSetFlags()[3] ? this.type : (java.lang.Integer) defaultValue(fields()[3]);
-        record.bundle = fieldSetFlags()[4] ? this.bundle : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.name = fieldSetFlags()[5] ? this.name : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.bundle = fieldSetFlags()[4] ? this.bundle : (java.lang.String) defaultValue(fields()[4]);
+        record.name = fieldSetFlags()[5] ? this.name : (java.lang.String) defaultValue(fields()[5]);
         record.adspaceid = fieldSetFlags()[6] ? this.adspaceid : (java.lang.Long) defaultValue(fields()[6]);
-        record.adspacekey = fieldSetFlags()[7] ? this.adspacekey : (java.lang.CharSequence) defaultValue(fields()[7]);
+        record.adspacekey = fieldSetFlags()[7] ? this.adspacekey : (java.lang.String) defaultValue(fields()[7]);
         record.adtype = fieldSetFlags()[8] ? this.adtype : (java.lang.Integer) defaultValue(fields()[8]);
         record.w = fieldSetFlags()[9] ? this.w : (java.lang.Integer) defaultValue(fields()[9]);
         record.h = fieldSetFlags()[10] ? this.h : (java.lang.Integer) defaultValue(fields()[10]);
-        record.did = fieldSetFlags()[11] ? this.did : (java.lang.CharSequence) defaultValue(fields()[11]);
-        record.didmd5 = fieldSetFlags()[12] ? this.didmd5 : (java.lang.CharSequence) defaultValue(fields()[12]);
-        record.dpid = fieldSetFlags()[13] ? this.dpid : (java.lang.CharSequence) defaultValue(fields()[13]);
-        record.dpidmd5 = fieldSetFlags()[14] ? this.dpidmd5 : (java.lang.CharSequence) defaultValue(fields()[14]);
-        record.mac = fieldSetFlags()[15] ? this.mac : (java.lang.CharSequence) defaultValue(fields()[15]);
-        record.macmd5 = fieldSetFlags()[16] ? this.macmd5 : (java.lang.CharSequence) defaultValue(fields()[16]);
-        record.ifa = fieldSetFlags()[17] ? this.ifa : (java.lang.CharSequence) defaultValue(fields()[17]);
+        record.did = fieldSetFlags()[11] ? this.did : (java.lang.String) defaultValue(fields()[11]);
+        record.didmd5 = fieldSetFlags()[12] ? this.didmd5 : (java.lang.String) defaultValue(fields()[12]);
+        record.dpid = fieldSetFlags()[13] ? this.dpid : (java.lang.String) defaultValue(fields()[13]);
+        record.dpidmd5 = fieldSetFlags()[14] ? this.dpidmd5 : (java.lang.String) defaultValue(fields()[14]);
+        record.mac = fieldSetFlags()[15] ? this.mac : (java.lang.String) defaultValue(fields()[15]);
+        record.macmd5 = fieldSetFlags()[16] ? this.macmd5 : (java.lang.String) defaultValue(fields()[16]);
+        record.ifa = fieldSetFlags()[17] ? this.ifa : (java.lang.String) defaultValue(fields()[17]);
         record.carrier = fieldSetFlags()[18] ? this.carrier : (java.lang.Integer) defaultValue(fields()[18]);
         record.connectiontype = fieldSetFlags()[19] ? this.connectiontype : (java.lang.Integer) defaultValue(fields()[19]);
         record.devicetype = fieldSetFlags()[20] ? this.devicetype : (java.lang.Integer) defaultValue(fields()[20]);
-        record.dealid = fieldSetFlags()[21] ? this.dealid : (java.lang.CharSequence) defaultValue(fields()[21]);
+        record.dealid = fieldSetFlags()[21] ? this.dealid : (java.lang.String) defaultValue(fields()[21]);
         record.lon = fieldSetFlags()[22] ? this.lon : (java.lang.Float) defaultValue(fields()[22]);
         record.lat = fieldSetFlags()[23] ? this.lat : (java.lang.Float) defaultValue(fields()[23]);
         record.os = fieldSetFlags()[24] ? this.os : (java.lang.Integer) defaultValue(fields()[24]);
-        record.osv = fieldSetFlags()[25] ? this.osv : (java.lang.CharSequence) defaultValue(fields()[25]);
-        record.ip = fieldSetFlags()[26] ? this.ip : (java.lang.CharSequence) defaultValue(fields()[26]);
-        record.ua = fieldSetFlags()[27] ? this.ua : (java.lang.CharSequence) defaultValue(fields()[27]);
-        record.make = fieldSetFlags()[28] ? this.make : (java.lang.CharSequence) defaultValue(fields()[28]);
-        record.model = fieldSetFlags()[29] ? this.model : (java.lang.CharSequence) defaultValue(fields()[29]);
-        record.cell = fieldSetFlags()[30] ? this.cell : (java.lang.CharSequence) defaultValue(fields()[30]);
-        record.cellmd5 = fieldSetFlags()[31] ? this.cellmd5 : (java.lang.CharSequence) defaultValue(fields()[31]);
-        record.tags = fieldSetFlags()[32] ? this.tags : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[32]);
+        record.osv = fieldSetFlags()[25] ? this.osv : (java.lang.String) defaultValue(fields()[25]);
+        record.ip = fieldSetFlags()[26] ? this.ip : (java.lang.String) defaultValue(fields()[26]);
+        record.ua = fieldSetFlags()[27] ? this.ua : (java.lang.String) defaultValue(fields()[27]);
+        record.make = fieldSetFlags()[28] ? this.make : (java.lang.String) defaultValue(fields()[28]);
+        record.model = fieldSetFlags()[29] ? this.model : (java.lang.String) defaultValue(fields()[29]);
+        record.cell = fieldSetFlags()[30] ? this.cell : (java.lang.String) defaultValue(fields()[30]);
+        record.cellmd5 = fieldSetFlags()[31] ? this.cellmd5 : (java.lang.String) defaultValue(fields()[31]);
+        record.tags = fieldSetFlags()[32] ? this.tags : (java.util.List<java.lang.String>) defaultValue(fields()[32]);
         record.test = fieldSetFlags()[33] ? this.test : (java.lang.Integer) defaultValue(fields()[33]);
         record.bidfloor = fieldSetFlags()[34] ? this.bidfloor : (java.lang.Integer) defaultValue(fields()[34]);
         return record;
