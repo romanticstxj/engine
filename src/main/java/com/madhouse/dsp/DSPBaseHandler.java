@@ -398,7 +398,7 @@ public abstract class DSPBaseHandler {
 
             if (url.contains("${AUCTION_PRICE")) {
                 String text = String.format("%d_%d", dspBidMetaData.getDspBidBuilder().getPrice(), System.currentTimeMillis() / 1000);
-                byte[] key = StringUtil.hex2Bytes(dspBidMetaData.getDspMetaData().getToken());
+                byte[] key = StringUtil.hexToBytes(dspBidMetaData.getDspMetaData().getToken());
                 byte[] data = AESUtil.encryptECB(text.getBytes("utf-8"), key, AESUtil.Algorithm.AES);
                 return url.replace("${AUCTION_PRICE}", StringUtil.urlSafeBase64Encode(data));
             }

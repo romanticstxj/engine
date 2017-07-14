@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.madhouse.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -91,7 +92,7 @@ public class VamakerHandler extends DSPBaseHandler {
                 if (StringUtils.isEmpty(imei)) {
                     return null;
                 }
-                sb.append("&_imei=").append(ObjectUtils.getMD5(imei));
+                sb.append("&_imei=").append(StringUtil.getMD5(imei));
                 sb.append("&_aaid=").append(imei);
                 if (StringUtils.isNotEmpty(builder.getMac())) {
                     sb.append("&_mc=").append(builder.getMac());

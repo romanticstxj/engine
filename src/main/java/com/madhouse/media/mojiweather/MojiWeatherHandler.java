@@ -307,10 +307,10 @@ public class MojiWeatherHandler extends MediaBaseHandler {
                 data.setType("1");
             }
             data.setClickurl(mediaResponse.getLpgurl() != null ? mediaResponse.getLpgurl().toString() : "");
-            data.setAdwidth(StringUtil.validateString(mediaRequest.getW().toString()));
-            data.setAdheight(StringUtil.validateString(mediaRequest.getH().toString()));
-            data.setAdtitle(StringUtil.validateString(mediaResponse.getTitle().toString()));
-            data.setAdtext(StringUtil.validateString(mediaResponse.getDesc().toString()));
+            data.setAdwidth(StringUtil.toString(mediaRequest.getW().toString()));
+            data.setAdheight(StringUtil.toString(mediaRequest.getH().toString()));
+            data.setAdtitle(StringUtil.toString(mediaResponse.getTitle().toString()));
+            data.setAdtext(StringUtil.toString(mediaResponse.getDesc().toString()));
             data.setUrlSeparator(";");
             //点击监播
             StringBuffer sb_clk = new StringBuffer();

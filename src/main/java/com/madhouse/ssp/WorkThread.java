@@ -6,10 +6,7 @@ import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.ssp.avro.*;
-import com.madhouse.util.HttpUtil;
-import com.madhouse.util.SetUtil;
-import com.madhouse.util.StringUtil;
-import com.madhouse.util.Utility;
+import com.madhouse.util.*;
 import com.madhouse.util.httpclient.MultiHttpClient;
 import com.madhouse.util.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
@@ -256,7 +253,7 @@ public class WorkThread {
             }
         }
 
-        int[] deliveryTypes = {Constant.DeliveryType.PDB, Constant.DeliveryType.PDB, Constant.DeliveryType.RTB};
+        int[] deliveryTypes = {Constant.DeliveryType.PDB, Constant.DeliveryType.PD, Constant.DeliveryType.RTB};
 
         for (int i = 0; i < deliveryTypes.length; ++i) {
             //policy targeting
@@ -271,8 +268,10 @@ public class WorkThread {
                 continue;
             }
 
-            PolicyMetaData policyMetaData = null;
-            while ((policyMetaData = Utility.randomWithWeights(policyMetaDatas)) != null) {
+            int selectedIndex = -1;
+            while ((selectedIndex = Utility.randomWithWeights(policyMetaDatas)) != -1) {
+                PolicyMetaData policyMetaData = policyMetaDatas.get(selectedIndex).getLeft();
+
                 this.multiHttpClient.reset();
 
                 Map<Long, DSPBidMetaData> selectedDspList = new HashMap<>();
@@ -283,10 +282,9 @@ public class WorkThread {
                     if (dspInfo.getStatus() > 0 && dspMetaData != null && dspMetaData.getStatus() > 0) {
 
                         //QPS Contorl
-                        String qpsKey = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
-
-                        this.redisMaster.set(qpsKey, "0", "NX", "EX", 3);
-                        long totalCount = this.redisMaster.incrBy(qpsKey, 1);
+                        String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
+                        this.redisMaster.set(qpsControl, "0", "NX", "EX", 3);
+                        long totalCount = this.redisMaster.incrBy(qpsControl, 1);
                         if (totalCount >= dspMetaData.getMaxQPS()) {
                             continue;
                         }
@@ -312,24 +310,64 @@ public class WorkThread {
                 }
 
                 if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(new Date());
+
+                    int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                    int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+                    String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+
                     if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {
                         if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                            String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                            long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
-                            if (count >= policyMetaData.getMaxCount()) {
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+                                int pastDays = Utility.dateDiff(StringUtil.toDate(currentDate), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                                int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                if (count >= ((double)policyMetaData.getMaxCount() * pastDays / totalDays)) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
+                            } else {
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                                if (count >= policyMetaData.getMaxCount()) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
                             }
                         } else {
-                            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                            String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-                            long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
-                            if (count >= policyMetaData.getMaxCount()) {
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+                                int pastHours = 0;
+                                int totalHours = 0;
+                                if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
+                                    pastHours = currentHour + 1;
+                                    totalHours = 24;
+                                } else {
+                                    List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
+                                    for (int hour : hours) {
+                                        if (hour <= currentHour) {
+                                            pastHours += 1;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+
+                                    totalHours = hours.size();
+                                }
+
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                if (count >= ((double)policyMetaData.getMaxCount() * pastHours / totalHours)) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
+                            } else {
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                if (count >= policyMetaData.getMaxCount()) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
                             }
+
                         }
                     }
 
-                    List<DSPBidMetaData> bidDspList = new LinkedList<DSPBidMetaData>();
+                    List<DSPBidMetaData> dspBidderList = new LinkedList<DSPBidMetaData>();
                     for (Map.Entry entry : selectedDspList.entrySet()) {
                         DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
                         DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
@@ -338,7 +376,7 @@ public class WorkThread {
                         if (httpResponse != null) {
                             if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
                                 if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {
-                                    bidDspList.add(dspBidMetaData);
+                                    dspBidderList.add(dspBidMetaData);
                                 }
                             }
                         } else {
@@ -348,8 +386,8 @@ public class WorkThread {
                         dspBidMetaData.getHttpRequestBase().releaseConnection();
                     }
 
-                    if (!bidDspList.isEmpty()) {
-                        Pair<DSPBidMetaData, Integer> winner = this.selectWinner(plcmtMetaData, policyMetaData, bidDspList);
+                    if (!dspBidderList.isEmpty()) {
+                        Pair<DSPBidMetaData, Integer> winner = this.selectWinner(plcmtMetaData, policyMetaData, dspBidderList);
                         if (winner != null) {
                             DSPBidMetaData dspBidMetaData = winner.getLeft();
                             dspBidMetaData.getDspBidBuilder().setPrice(winner.getRight());
@@ -376,6 +414,8 @@ public class WorkThread {
 
                     break;
                 }
+
+                policyMetaDatas.remove(selectedIndex);
             }
         }
     }
@@ -427,7 +467,8 @@ public class WorkThread {
         //placement
         {
             List<String> info = new LinkedList<>();
-            info.add(Long.toString(mediaRequest.getAdspaceid()));
+            String adspaceKey = String.format("%d-%s", mediaRequest.getAdspaceid(), StringUtil.toString(mediaRequest.getDealid().toString()));
+            info.add(adspaceKey);
             targetInfo.add(Pair.of(Constant.TargetType.PLACEMENT, info));
         }
 
@@ -436,9 +477,9 @@ public class WorkThread {
             List<String> info = new LinkedList<>();
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
-            info.add(String.format("%d%02d", weekday, hour));
+            info.add(String.format("%d%02d", weekDay, hour));
             targetInfo.add(Pair.of(Constant.TargetType.WEEK_HOUR, info));
         }
 
@@ -466,9 +507,9 @@ public class WorkThread {
             targetInfo.add(Pair.of(Constant.TargetType.CONNECTION_TYPE, info));
         }
 
-        List<Set<Long>> targetPolicy = new LinkedList<>();
+        List<Collection<Long>> targetPolicy = new LinkedList<>();
         for (Pair<Integer, List<String>> info : targetInfo) {
-            List<Set<Long>> policys = new LinkedList<>();
+            List<Collection<Long>> policys = new LinkedList<>();
 
             Set<Long> policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.CommonKey.TARGET_KEY, deliveryType, info.getLeft(), ""));
             if (policy != null) {
@@ -500,7 +541,7 @@ public class WorkThread {
 
     private List<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
 
-        List<Pair<PolicyMetaData, Integer>> policyMetaDatas = new LinkedList<>();
+        List<Pair<PolicyMetaData, Integer>> policyMetaDatas = new ArrayList<>(policyList.size());
         for (long policyId : policyList) {
             PolicyMetaData policyMetaData = CacheManager.getInstance().getPolicyMetaData(policyId);
             if (policyMetaData != null) {
@@ -530,27 +571,29 @@ public class WorkThread {
 
     private Pair<DSPBidMetaData, Integer> selectWinner(PlcmtMetaData plcmtMetaData,
                                                                    PolicyMetaData policyMetaData,
-                                                                   List<DSPBidMetaData> bidDspList) {
+                                                                   List<DSPBidMetaData> dspBidderList) {
         Pair<DSPBidMetaData, Integer> winner = null;
 
         if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
-            List<Pair<DSPBidMetaData, Integer>> selectedDspList = new LinkedList<Pair<DSPBidMetaData, Integer>>();
+            /*Map<DSPBidMetaData, Integer> selectedDspList = new HashMap<>();
             Map<Long, PolicyMetaData.DSPInfo> dspInfoMap = policyMetaData.getDspInfoMap();
 
-            for (DSPBidMetaData dspBidMetaData : bidDspList) {
+            for (DSPBidMetaData dspBidMetaData : dspBidderList) {
                 DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
                 int weight = dspInfoMap.get(dspMetaData.getId()).getWeight();
                 if (weight > 0) {
-                    selectedDspList.add(Pair.of(dspBidMetaData, weight));
+                    selectedDspList.put(dspBidMetaData, weight);
                 }
             }
 
             if (!selectedDspList.isEmpty()) {
                 DSPBidMetaData dspBidMetaData = Utility.randomWithWeights(selectedDspList);
                 winner = Pair.of(dspBidMetaData, policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor());
-            }
+            }*/
+
+            winner = Pair.of(dspBidderList.get(0), policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor());
         } else {
-            bidDspList.sort(new Comparator<DSPBidMetaData>() {
+            dspBidderList.sort(new Comparator<DSPBidMetaData>() {
                 @Override
                 public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
                     return o1.getDspBidBuilder().getResponse().getPrice() > o2.getDspBidBuilder().getResponse().getPrice() ? 1 : -1;
@@ -558,12 +601,12 @@ public class WorkThread {
             });
 
             int price = plcmtMetaData.getBidFloor();
-            if (bidDspList.size() >= 2) {
-                DSPBidMetaData dspBidMetaData = bidDspList.get(1);
+            if (dspBidderList.size() >= 2) {
+                DSPBidMetaData dspBidMetaData = dspBidderList.get(1);
                 price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
             }
 
-            winner = Pair.of(bidDspList.get(0), price + 1);
+            winner = Pair.of(dspBidderList.get(0), price + 1);
         }
 
         return winner;

@@ -188,6 +188,11 @@ public final class Constant {
     public static final class PolicyControlType {
         public static final int NULL = 0;
         public static final int TOTAL = 1;
-        public static final int DAY = 2;
+        public static final int DAILY = 2;
+    }
+
+    public static final class PolicyControlMethod {
+        public static final int FAST = 1;
+        public static final int AVERAGE = 2;
     }
 }

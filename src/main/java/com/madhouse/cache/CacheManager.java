@@ -4,17 +4,16 @@ package com.madhouse.cache;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
+import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
+import com.madhouse.util.Utility;
 import kafka.tools.StateChangeLogMerger;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -121,6 +120,8 @@ public class CacheManager implements Runnable {
         this.mediaMappingMetaDataMap = (ConcurrentHashMap<Long, MediaMappingMetaData>)mediaMappingData;
         this.dspMappingMetaDataMap = (ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>)dspMappingData;
         this.policyTargetMap = (ConcurrentHashMap<String, HashSet<Long>>)policyTargetInfo;
+
+        this.blockedPolicy.clear();
     }
 
     private ConcurrentHashMap<Long, MediaMetaData> loadMediaMetaData() {
@@ -240,7 +241,12 @@ public class CacheManager implements Runnable {
 
     private ConcurrentHashMap<String, HashSet<Long>> updatePolicyTargetInfo(Object metaData) {
         ConcurrentHashMap<String, HashSet<Long>> var = new ConcurrentHashMap<>();
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
         ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = (ConcurrentHashMap<Long, PolicyMetaData>)metaData;
 
@@ -248,28 +254,70 @@ public class CacheManager implements Runnable {
             PolicyMetaData policyMetaData = (PolicyMetaData)entry.getValue();
 
             if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {
-                if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                    String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                    long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
-                    if (count >= policyMetaData.getMaxCount()) {
-                        continue;
+                if (policyMetaData.getControlType() == Constant.PolicyControlType.DAILY) {
+                    if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.FAST) {
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                        long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
+                        if (count >= policyMetaData.getMaxCount()) {
+                            continue;
+                        }
+                    } else {
+                        int pastHours = 0;
+                        int totalHours = 0;
+                        if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
+                            pastHours = currentHour + 1;
+                            totalHours = 24;
+                        } else {
+                            List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
+                            for (int hour : hours) {
+                                if (hour <= currentHour) {
+                                    pastHours += 1;
+                                } else {
+                                    break;
+                                }
+                            }
+
+                            totalHours = hours.size();
+                        }
+
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                        long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
+                        if (count >= ((double)policyMetaData.getMaxCount() * pastHours / totalHours)) {
+                            continue;
+                        }
                     }
                 } else {
-                    String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-                    long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
-                    if (count >= policyMetaData.getMaxCount()) {
-                        continue;
+                    if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.FAST) {
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                        long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
+                        if (count >= policyMetaData.getMaxCount()) {
+                            continue;
+                        }
+                    } else {
+                        if (StringUtils.isEmpty(policyMetaData.getEndDate())) {
+                            continue;
+                        }
+
+                        int pastDays = Utility.dateDiff(StringUtil.toDate(currentDate), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                        int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+
+                        String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                        long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
+                        if (count >= ((double)policyMetaData.getMaxCount() * pastDays / totalDays)) {
+                            continue;
+                        }
                     }
                 }
             }
 
-            if (currentDate.compareTo(policyMetaData.getStartDate()) >= 0 && currentDate.compareTo(policyMetaData.getEndDate()) <= 0) {
+            if (currentDate.compareTo(policyMetaData.getStartDate()) >= 0 && (StringUtils.isEmpty(policyMetaData.getEndDate()) || currentDate.compareTo(policyMetaData.getEndDate()) <= 0)) {
                 //placement
                 if (policyMetaData.getAdspaceInfoMap() != null && !policyMetaData.getAdspaceInfoMap().isEmpty()) {
                     for (Map.Entry entry1 : policyMetaData.getAdspaceInfoMap().entrySet()) {
                         PolicyMetaData.AdspaceInfo adspaceInfo = (PolicyMetaData.AdspaceInfo)entry1.getValue();
                         if (adspaceInfo.getStatus() > 0) {
-                            String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.PLACEMENT, Long.toString(adspaceInfo.getId()));
+                            String adspaceKey = String.format("%d-%s", adspaceInfo.getId(), StringUtil.toString(adspaceInfo.getDealId()));
+                            String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.PLACEMENT, adspaceKey);
                             HashSet<Long> var2 = var.get(key);
                             if (var2 == null) {
                                 var2 = new HashSet<>();
@@ -284,13 +332,12 @@ public class CacheManager implements Runnable {
                 }
 
                 //weekhour
-                if (policyMetaData.getWeekHours() != null) {
-                    Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekHours();
+                if (!ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
+                    Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekDayHours();
                     for (Map.Entry entry1 : weekHours.entrySet()) {
-                        int week = (Integer)entry1.getKey();
                         List<Integer> hours = (List<Integer>)entry1.getValue();
                         for (int hour : hours) {
-                            String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.WEEK_HOUR, String.format("%d%02d", week, hour));
+                            String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEK_HOUR, String.format("%d%02d", (Integer)entry1.getKey(), hour));
                             HashSet<Long> var2 = var.get(key);
                             if (var2 == null) {
                                 var2 = new HashSet<>();
@@ -301,7 +348,7 @@ public class CacheManager implements Runnable {
                         }
                     }
                 } else {
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.WEEK_HOUR, "");
+                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEK_HOUR, "");
                     HashSet<Long> var2 = var.get(key);
                     if (var2 == null) {
                         var2 = new HashSet<>();
@@ -314,7 +361,7 @@ public class CacheManager implements Runnable {
                 //location
                 if (policyMetaData.getLocation() != null && !policyMetaData.getLocation().isEmpty()) {
                     for (String location : policyMetaData.getLocation()) {
-                        String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.LOCATION, location);
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.LOCATION, location);
                         HashSet<Long> var2 = var.get(key);
                         if (var2 == null) {
                             var2 = new HashSet<>();
@@ -324,7 +371,7 @@ public class CacheManager implements Runnable {
                         var2.add(policyMetaData.getId());
                     }
                 } else {
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.LOCATION, "");
+                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.LOCATION, "");
                     HashSet<Long> var2 = var.get(key);
                     if (var2 == null) {
                         var2 = new HashSet<>();
@@ -337,7 +384,7 @@ public class CacheManager implements Runnable {
                 //os
                 if (policyMetaData.getOs() != null && !policyMetaData.getOs().isEmpty()) {
                     for (int os : policyMetaData.getOs()) {
-                        String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.OS, Integer.toString(os));
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.OS, Integer.toString(os));
                         HashSet<Long> var2 = var.get(key);
                         if (var2 == null) {
                             var2 = new HashSet<>();
@@ -347,7 +394,7 @@ public class CacheManager implements Runnable {
                         var2.add(policyMetaData.getId());
                     }
                 } else {
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.OS, "");
+                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.OS, "");
                     HashSet<Long> var2 = var.get(key);
                     if (var2 == null) {
                         var2 = new HashSet<>();
@@ -360,7 +407,7 @@ public class CacheManager implements Runnable {
                 //connection type
                 if (policyMetaData.getConnectionType() != null && !policyMetaData.getConnectionType().isEmpty()) {
                     for (int connectionType : policyMetaData.getConnectionType()) {
-                        String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.CONNECTION_TYPE, Integer.toString(connectionType));
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.CONNECTION_TYPE, Integer.toString(connectionType));
                         HashSet<Long> var2 = var.get(key);
                         if (var2 == null) {
                             var2 = new HashSet<>();
@@ -370,7 +417,7 @@ public class CacheManager implements Runnable {
                         var2.add(policyMetaData.getId());
                     }
                 } else {
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, Constant.TargetType.CONNECTION_TYPE, "");
+                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.CONNECTION_TYPE, "");
                     HashSet<Long> var2 = var.get(key);
                     if (var2 == null) {
                         var2 = new HashSet<>();

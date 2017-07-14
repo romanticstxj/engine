@@ -1,14 +1,12 @@
 package com.madhouse.util;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by WUJUNFENG on 2017/6/16.
  */
 public class SetUtil {
-    public static<T> Set<T> setUnion(Set<T> var1, Set<T> var2) {
+    public static<T> Set<T> setUnion(Collection<T> var1, Collection<T> var2) {
         Set<T> result = new HashSet<>();
 
         if (var1 != null && !var1.isEmpty()) {
@@ -22,7 +20,7 @@ public class SetUtil {
         return result;
     }
 
-    public static<T> Set<T> setInter(Set<T> var1, Set<T> var2) {
+    public static<T> Set<T> setInter(Collection<T> var1, Collection<T> var2) {
         Set<T> result = new HashSet<>();
 
         if (var1 == null || var1.isEmpty() || var2 == null || var2.isEmpty()) {
@@ -40,7 +38,7 @@ public class SetUtil {
         return result;
     }
 
-    public static<T> Set<T> setDiff(Set<T> var1, Set<T> var2) {
+    public static<T> Set<T> setDiff(Collection<T> var1, Collection<T> var2) {
         Set<T> result = new HashSet<>();
 
         if (var1 == null || var1.isEmpty()) {
@@ -56,15 +54,16 @@ public class SetUtil {
         return result;
     }
 
-    public static<T> Set<T> multiSetInter(List<Set<T>> list) {
+    public static<T> Set<T> multiSetInter(List<Collection<T>> list) {
         Set<T> result = null;
 
         if (!list.isEmpty()) {
-            for (Set<T> var : list) {
+            for (Collection<T> var : list) {
                 if (result != null) {
                     result = SetUtil.setInter(result, var);
                 } else {
-                    result = var;
+                    result = new HashSet<>();
+                    result.addAll(var);
                 }
             }
         } else {
@@ -74,15 +73,16 @@ public class SetUtil {
         return result;
     }
 
-    public static<T> Set<T> multiSetUnion(List<Set<T>> list) {
+    public static<T> Set<T> multiSetUnion(List<Collection<T>> list) {
         Set<T> result = null;
 
         if (!list.isEmpty()) {
-            for (Set<T> var : list) {
+            for (Collection<T> var : list) {
                 if (result != null) {
                     result = SetUtil.setUnion(result, var);
                 } else {
-                    result = var;
+                    result = new HashSet<>();
+                    result.addAll(var);
                 }
             }
         } else {
@@ -92,15 +92,16 @@ public class SetUtil {
         return result;
     }
 
-    public static<T> Set<T> multiSetDiff(List<Set<T>> list) {
+    public static<T> Set<T> multiSetDiff(List<Collection<T>> list) {
         Set<T> result = null;
 
         if (!list.isEmpty()) {
-            for (Set<T> var : list) {
+            for (Collection<T> var : list) {
                 if (result != null) {
                     result = SetUtil.setDiff(result, var);
                 } else {
-                    result = var;
+                    result = new HashSet<>();
+                    result.addAll(var);
                 }
             }
         } else {

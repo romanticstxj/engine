@@ -82,47 +82,47 @@ public class MADMaxHandler extends DSPBaseHandler {
         }
 
         sb.append("adspaceid=").append(adspaceId)
-                .append("&adtype=").append(StringUtil.validateString(builder.getAdtype().toString()))
+                .append("&adtype=").append(StringUtil.toString(builder.getAdtype().toString()))
                 .append("&width=").append(builder.getW() != null ? builder.getW() : plcmtMetaData.getBanner().getW())
                 .append("&height=").append(builder.getH() != null ? builder.getH() : plcmtMetaData.getBanner().getH())
-                .append("&pkgname=").append(StringUtil.validateString(pkgname))
-                .append("&conn=").append(StringUtil.validateString(builder.getConnectiontype().toString()))
-                .append("&carrier=").append(StringUtil.validateString(builder.getCarrier().toString()))
-                .append("&device=").append(StringUtil.validateString(device))
-                .append("&bid=").append(StringUtil.validateString(dspBidMetaData.getDspBidBuilder().getRequest().getId().toString()))
-                .append("&appname=").append(StringUtil.validateString(appname))
+                .append("&pkgname=").append(StringUtil.toString(pkgname))
+                .append("&conn=").append(StringUtil.toString(builder.getConnectiontype().toString()))
+                .append("&carrier=").append(StringUtil.toString(builder.getCarrier().toString()))
+                .append("&device=").append(StringUtil.toString(device))
+                .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequest().getId().toString()))
+                .append("&appname=").append(StringUtil.toString(appname))
                 .append("&apitype=4")
-                .append("&pcat=").append(StringUtil.validateString(builder.getCategory().toString()))
-                .append("&osv=").append(StringUtil.validateString(builder.getOsv().toString()))
-                .append("&wma=").append(StringUtil.validateString(builder.getMac().toString()))
-                .append("&ua=").append(StringUtil.validateString(ua))
-                .append("&ip=").append(StringUtil.validateString(builder.getIp().toString()))
-                .append("&pid=").append(StringUtil.validateString(builder.getMediaid().toString()))
-                .append("&density=").append(StringUtil.validateString(String.valueOf(mediaMetaData.getType())))
-                .append("&media=").append(StringUtil.validateString(builder.getDpid().toString()))
-                .append("&lon=").append(StringUtil.validateString(builder.getLon().toString()))
-                .append("&lat=").append(StringUtil.validateString(builder.getLat().toString()))
-                .append("&cell=").append(StringUtil.validateString(builder.getCell().toString()))
-                .append("&mcell=").append(StringUtil.validateString(builder.getCellmd5().toString()));
+                .append("&pcat=").append(StringUtil.toString(builder.getCategory().toString()))
+                .append("&osv=").append(StringUtil.toString(builder.getOsv().toString()))
+                .append("&wma=").append(StringUtil.toString(builder.getMac().toString()))
+                .append("&ua=").append(StringUtil.toString(ua))
+                .append("&ip=").append(StringUtil.toString(builder.getIp().toString()))
+                .append("&pid=").append(StringUtil.toString(builder.getMediaid().toString()))
+                .append("&density=").append(StringUtil.toString(String.valueOf(mediaMetaData.getType())))
+                .append("&media=").append(StringUtil.toString(builder.getDpid().toString()))
+                .append("&lon=").append(StringUtil.toString(builder.getLon().toString()))
+                .append("&lat=").append(StringUtil.toString(builder.getLat().toString()))
+                .append("&cell=").append(StringUtil.toString(builder.getCell().toString()))
+                .append("&mcell=").append(StringUtil.toString(builder.getCellmd5().toString()));
         switch (builder.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(StringUtil.validateString(builder.getDid().toString()))
-                   .append("&aid=").append(StringUtil.validateString(builder.getDpid().toString()))
-                   .append("&aaid=").append(StringUtil.validateString(builder.getIfa().toString()));
+                   .append("&imei=").append(StringUtil.toString(builder.getDid().toString()))
+                   .append("&aid=").append(StringUtil.toString(builder.getDpid().toString()))
+                   .append("&aaid=").append(StringUtil.toString(builder.getIfa().toString()));
                 break;
             case Constant.OSType.IOS:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_IOS)
-                    .append("&idfa=").append(StringUtil.validateString(builder.getIfa().toString()))
-                    .append("&oid=").append(StringUtil.validateString(builder.getDpid().toString()));
+                    .append("&idfa=").append(StringUtil.toString(builder.getIfa().toString()))
+                    .append("&oid=").append(StringUtil.toString(builder.getDpid().toString()));
                 break;
             case Constant.OSType.WINDOWS_PHONE:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE)
-                .append("&uid=").append(StringUtil.validateString(builder.getDpid().toString()));
+                .append("&uid=").append(StringUtil.toString(builder.getDpid().toString()));
                 break;
             default:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_OTHERS)
-                .append("&uid=").append(StringUtil.validateString(builder.getDpid().toString()));
+                .append("&uid=").append(StringUtil.toString(builder.getDpid().toString()));
                 break;
         }
         String str = sb.toString().replace(" ", "%20");
