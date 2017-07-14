@@ -2,7 +2,7 @@ package com.madhouse.ssp;
 
 import com.alibaba.fastjson.JSON;
 import com.google.protobuf.GeneratedMessage;
-import com.madhouse.configuration.Topic;
+import com.madhouse.configuration.Kafka;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.kafkaclient.util.KafkaCallback;
@@ -34,8 +34,8 @@ public class LoggerUtil extends KafkaCallback {
     
     private static ConcurrentHashMap<String, Logger> loggerBaseMap = new ConcurrentHashMap<String, Logger>();
     static{
-        List<Topic> list=  ResourceManager.getInstance().getPremiummad().getKafka().getTopics();
-        for (Topic topic : list) {
+        List<Kafka.Topic> list=  ResourceManager.getInstance().getPremiummad().getKafka().getTopics();
+        for (Kafka.Topic topic : list) {
             loggerBaseMap.put(topic.getType(),LogManager.getLogger(topic.getType()));
         }
     }
