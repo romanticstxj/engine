@@ -34,6 +34,7 @@ public final class Constant {
         public static final int NO_CONTENT = 204;
         public static final int REDIRECT = 302;
         public static final int BAD_REQUEST = 400;
+        public static final int NOT_ALLOWED = 405;
         public static final int REQUEST_TIMEOUT = 408;
         public static final int INTERNAL_ERROR = 500;
     }
