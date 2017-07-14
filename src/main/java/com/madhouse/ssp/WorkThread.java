@@ -468,9 +468,9 @@ public class WorkThread {
             targetInfo.add(Pair.of(Constant.TargetType.CONNECTION_TYPE, info));
         }
 
-        List<Set<Long>> targetPolicy = new LinkedList<>();
+        List<Collection<Long>> targetPolicy = new LinkedList<>();
         for (Pair<Integer, List<String>> info : targetInfo) {
-            List<Set<Long>> policys = new LinkedList<>();
+            List<Collection<Long>> policys = new LinkedList<>();
 
             Set<Long> policy = CacheManager.getInstance().getPolicyTargetInfo(String.format(Constant.CommonKey.TARGET_KEY, deliveryType, info.getLeft(), ""));
             if (policy != null) {
