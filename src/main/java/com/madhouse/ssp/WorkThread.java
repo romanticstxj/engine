@@ -266,13 +266,15 @@ public class WorkThread {
             }
 
             //get policy detail
-            Map<PolicyMetaData, Integer> policyMetaDatas = this.getPolicyMetaData(policyList);
+            List<Pair<PolicyMetaData, Integer>> policyMetaDatas = this.getPolicyMetaData(policyList);
             if (policyMetaDatas == null || policyMetaDatas.isEmpty()) {
                 continue;
             }
 
-            PolicyMetaData policyMetaData = null;
-            while ((policyMetaData = Utility.randomWithWeights(policyMetaDatas)) != null) {
+            int selectedIndex = -1;
+            while ((selectedIndex = Utility.randomWithWeights(policyMetaDatas)) != -1) {
+                PolicyMetaData policyMetaData = policyMetaDatas.get(selectedIndex).getLeft();
+
                 this.multiHttpClient.reset();
 
                 Map<Long, DSPBidMetaData> selectedDspList = new HashMap<>();
@@ -377,7 +379,7 @@ public class WorkThread {
                     break;
                 }
 
-                policyMetaDatas.remove(policyMetaData);
+                policyMetaDatas.remove(selectedIndex);
             }
         }
     }
@@ -500,13 +502,13 @@ public class WorkThread {
         }
     }
 
-    private Map<PolicyMetaData, Integer> getPolicyMetaData(List<Long> policyList) {
+    private List<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
 
-        Map<PolicyMetaData, Integer> policyMetaDatas = new HashMap<>();
+        List<Pair<PolicyMetaData, Integer>> policyMetaDatas = new ArrayList<>(policyList.size());
         for (long policyId : policyList) {
             PolicyMetaData policyMetaData = CacheManager.getInstance().getPolicyMetaData(policyId);
             if (policyMetaData != null) {
-                policyMetaDatas.put(policyMetaData, policyMetaData.getWeight());
+                policyMetaDatas.add(Pair.of(policyMetaData, policyMetaData.getWeight()));
             }
         }
 

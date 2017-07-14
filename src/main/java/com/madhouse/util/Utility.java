@@ -10,18 +10,19 @@ import java.util.*;
 public final class Utility {
     private static final Random random = new Random(System.currentTimeMillis());
 
-    public static <T> T randomWithWeights(Map<T, Integer> dataSource) {
+    public static <T> int randomWithWeights(Collection<Pair<T, Integer>> dataSource) {
         if (dataSource == null || dataSource.isEmpty()) {
-            return null;
+            return -1;
         }
 
-        ArrayList<Pair<T, Integer>> weightsList = new ArrayList<Pair<T, Integer>>(dataSource.size());
+        List<Pair<Integer, Integer>> weightsList = new ArrayList<>(dataSource.size());
 
+        int index = 0;
         int maxLength = 0;
-        for (Map.Entry entry : dataSource.entrySet()) {
-            Pair<T, Integer> var1 = Pair.of((T)entry.getKey(), maxLength);
+        for (Pair<T, Integer> data : dataSource) {
+            Pair<Integer, Integer> var1 = Pair.of(index++, maxLength);
             weightsList.add(var1);
-            maxLength += (Integer)entry.getValue();
+            maxLength += data.getRight();
         }
 
         int value = random.nextInt(maxLength);
@@ -30,7 +31,7 @@ public final class Utility {
         int end = weightsList.size();
         while (end - start > 1) {
             int mid = (end + start) / 2;
-            Pair<T, Integer> var1 = weightsList.get(mid);
+            Pair<Integer, Integer> var1 = weightsList.get(mid);
             if (value >= var1.getRight()) {
                 start = mid;
             } else {
