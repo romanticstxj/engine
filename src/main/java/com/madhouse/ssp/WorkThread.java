@@ -285,10 +285,9 @@ public class WorkThread {
                     if (dspInfo.getStatus() > 0 && dspMetaData != null && dspMetaData.getStatus() > 0) {
 
                         //QPS Contorl
-                        String qpsKey = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
-
-                        this.redisMaster.set(qpsKey, "0", "NX", "EX", 3);
-                        long totalCount = this.redisMaster.incrBy(qpsKey, 1);
+                        String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
+                        this.redisMaster.set(qpsControl, "0", "NX", "EX", 3);
+                        long totalCount = this.redisMaster.incrBy(qpsControl, 1);
                         if (totalCount >= dspMetaData.getMaxQPS()) {
                             continue;
                         }
@@ -314,20 +313,60 @@ public class WorkThread {
                 }
 
                 if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(new Date());
+
+                    int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                    int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+                    String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+
                     if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {
                         if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                            String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                            long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
-                            if (count >= policyMetaData.getMaxCount()) {
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+                                int pastDays = Utility.dateDiff(StringUtil.toDate(currentDate), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                                int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                if (count >= ((double)policyMetaData.getMaxCount() * pastDays / totalDays)) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
+                            } else {
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                                if (count >= policyMetaData.getMaxCount()) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
                             }
                         } else {
-                            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                            String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-                            long count = StringUtils.isEmpty(text) ? 0 : Long.parseLong(text);
-                            if (count >= policyMetaData.getMaxCount()) {
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+                                int pastHours = 0;
+                                int totalHours = 0;
+                                if (policyMetaData.getWeekHours() == null || policyMetaData.getWeekHours().isEmpty()) {
+                                    pastHours = currentHour + 1;
+                                    totalHours = 24;
+                                } else {
+                                    List<Integer> hours = policyMetaData.getWeekHours().get(weekDay);
+                                    for (int hour : hours) {
+                                        if (hour <= currentHour) {
+                                            pastHours += 1;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+
+                                    totalHours = hours.size();
+                                }
+
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                if (count >= ((double)policyMetaData.getMaxCount() * pastHours / totalHours)) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
+                            } else {
+                                long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                if (count >= policyMetaData.getMaxCount()) {
+                                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                }
                             }
+
                         }
                     }
 
@@ -431,7 +470,8 @@ public class WorkThread {
         //placement
         {
             List<String> info = new LinkedList<>();
-            info.add(Long.toString(mediaRequest.getAdspaceid()));
+            String adspaceKey = String.format("%d-%s", mediaRequest.getAdspaceid(), StringUtil.toString(mediaRequest.getDealid().toString()));
+            info.add(adspaceKey);
             targetInfo.add(Pair.of(Constant.TargetType.PLACEMENT, info));
         }
 
@@ -440,9 +480,9 @@ public class WorkThread {
             List<String> info = new LinkedList<>();
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
-            info.add(String.format("%d%02d", weekday, hour));
+            info.add(String.format("%d%02d", weekDay, hour));
             targetInfo.add(Pair.of(Constant.TargetType.WEEK_HOUR, info));
         }
 

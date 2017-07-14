@@ -29,6 +29,7 @@ public class PolicyMetaData {
 
     private int controlType;
     private int maxCount;
+    private int controlMethod;
 
     private int status;
 
@@ -37,6 +38,7 @@ public class PolicyMetaData {
         private int status;
         private int bidType;
         private int bidFloor;
+        private String dealId;
 
         public long getId() {
             return id;
@@ -68,6 +70,14 @@ public class PolicyMetaData {
 
         public void setBidFloor(int bidFloor) {
             this.bidFloor = bidFloor;
+        }
+
+        public String getDealId() {
+            return dealId;
+        }
+
+        public void setDealId(String dealId) {
+            this.dealId = dealId;
         }
     }
 
@@ -220,5 +230,13 @@ public class PolicyMetaData {
 
     public void setAdspaceInfoMap(Map<Long, AdspaceInfo> adspaceInfoMap) {
         this.adspaceInfoMap = adspaceInfoMap;
+    }
+
+    public int getControlMethod() {
+        return controlMethod;
+    }
+
+    public void setControlMethod(int controlMethod) {
+        this.controlMethod = controlMethod;
     }
 }
