@@ -6,10 +6,7 @@ import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.ssp.avro.*;
-import com.madhouse.util.HttpUtil;
-import com.madhouse.util.SetUtil;
-import com.madhouse.util.StringUtil;
-import com.madhouse.util.Utility;
+import com.madhouse.util.*;
 import com.madhouse.util.httpclient.MultiHttpClient;
 import com.madhouse.util.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
@@ -340,11 +337,11 @@ public class WorkThread {
                             if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                                 int pastHours = 0;
                                 int totalHours = 0;
-                                if (policyMetaData.getWeekHours() == null || policyMetaData.getWeekHours().isEmpty()) {
+                                if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
                                     pastHours = currentHour + 1;
                                     totalHours = 24;
                                 } else {
-                                    List<Integer> hours = policyMetaData.getWeekHours().get(weekDay);
+                                    List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
                                     for (int hour : hours) {
                                         if (hour <= currentHour) {
                                             pastHours += 1;

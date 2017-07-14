@@ -19,7 +19,7 @@ public class PolicyMetaData {
     private String endDate;
 
     //targeting info
-    private Map<Integer, List<Integer>> weekHours;
+    private Map<Integer, List<Integer>> weekDayHours;
     private List<String> location;
     private List<Integer> os;
     private List<Integer> connectionType;
@@ -160,12 +160,12 @@ public class PolicyMetaData {
         this.endDate = endDate;
     }
 
-    public Map<Integer, List<Integer>> getWeekHours() {
-        return weekHours;
+    public Map<Integer, List<Integer>> getWeekDayHours() {
+        return weekDayHours;
     }
 
-    public void setWeekHours(Map<Integer, List<Integer>> weekHours) {
-        this.weekHours = weekHours;
+    public void setWeekDayHours(Map<Integer, List<Integer>> weekDayHours) {
+        this.weekDayHours = weekDayHours;
     }
 
     public List<String> getLocation() {

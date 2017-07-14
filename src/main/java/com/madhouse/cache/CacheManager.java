@@ -4,6 +4,7 @@ package com.madhouse.cache;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
+import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
 import kafka.tools.StateChangeLogMerger;
@@ -263,11 +264,11 @@ public class CacheManager implements Runnable {
                     } else {
                         int pastHours = 0;
                         int totalHours = 0;
-                        if (policyMetaData.getWeekHours() == null || policyMetaData.getWeekHours().isEmpty()) {
+                        if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
                             pastHours = currentHour + 1;
                             totalHours = 24;
                         } else {
-                            List<Integer> hours = policyMetaData.getWeekHours().get(weekDay);
+                            List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
                             for (int hour : hours) {
                                 if (hour <= currentHour) {
                                     pastHours += 1;
@@ -331,8 +332,8 @@ public class CacheManager implements Runnable {
                 }
 
                 //weekhour
-                if (policyMetaData.getWeekHours() != null && !policyMetaData.getWeekHours().isEmpty()) {
-                    Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekHours();
+                if (!ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
+                    Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekDayHours();
                     for (Map.Entry entry1 : weekHours.entrySet()) {
                         List<Integer> hours = (List<Integer>)entry1.getValue();
                         for (int hour : hours) {
