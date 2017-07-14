@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -30,7 +32,7 @@ public class StringUtil {
         return str == null ? "" : str;
     }
 
-    public static final String bytes2Hex(byte[] data) {
+    public static final String bytesToHex(byte[] data) {
         StringBuilder sb = new StringBuilder();
 
         for (byte b : data) {
@@ -45,7 +47,7 @@ public class StringUtil {
         return sb.toString();
     }
 
-    public static final byte[] hex2Bytes(String hex) {
+    public static final byte[] hexToBytes(String hex) {
         try {
             if (hex.length() % 2 != 0) {
                 return null;
@@ -129,10 +131,42 @@ public class StringUtil {
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 byte[] data = md.digest(str.getBytes());
-                return bytes2Hex(data);
+                return bytesToHex(data);
             } catch (NoSuchAlgorithmException e) {
                 System.err.println(e.toString());
             }
+        }
+
+        return null;
+    }
+
+    public static Date toDate(String date) {
+        SimpleDateFormat df = null;
+
+        if (date.contains("-")) {
+            if (date.length() <= 10) {
+                df = new SimpleDateFormat("yyyy-MM-dd");
+            } else {
+                df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            }
+        } else if (date.contains("/")) {
+            if (date.length() <= 10) {
+                df = new SimpleDateFormat("yyyy/MM/dd");
+            } else {
+                df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            }
+        } else {
+            if (date.length() <= 8) {
+                df = new SimpleDateFormat("yyyyMMdd");
+            } else {
+                df = new SimpleDateFormat("yyyyMMddHHmmss");
+            }
+        }
+
+        try {
+            return df.parse(date);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
         }
 
         return null;

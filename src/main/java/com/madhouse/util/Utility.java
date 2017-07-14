@@ -2,6 +2,8 @@ package com.madhouse.util;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -40,5 +42,9 @@ public final class Utility {
         }
 
         return weightsList.get(start).getLeft();
+    }
+
+    public static int dateDiff(Date dateFrom, Date dateTo) {
+        return (int)((dateFrom.getTime() - dateTo.getTime()) / 86400000);
     }
 }
