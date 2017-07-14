@@ -32,6 +32,10 @@ public class StringUtil {
         return str == null ? "" : str;
     }
 
+    public static final String toString(CharSequence str) {
+        return str != null ? toString(str.toString()) : "";
+    }
+
     public static final String bytesToHex(byte[] data) {
         StringBuilder sb = new StringBuilder();
 

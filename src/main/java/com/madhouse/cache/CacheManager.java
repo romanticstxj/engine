@@ -337,7 +337,7 @@ public class CacheManager implements Runnable {
                     for (Map.Entry entry1 : weekHours.entrySet()) {
                         List<Integer> hours = (List<Integer>)entry1.getValue();
                         for (int hour : hours) {
-                            String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEK_HOUR, String.format("%d%02d", (Integer)entry1.getKey(), hour));
+                            String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEKDAY_HOUR, String.format("%d%02d", (Integer)entry1.getKey(), hour));
                             HashSet<Long> var2 = var.get(key);
                             if (var2 == null) {
                                 var2 = new HashSet<>();
@@ -348,7 +348,7 @@ public class CacheManager implements Runnable {
                         }
                     }
                 } else {
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEK_HOUR, "");
+                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEKDAY_HOUR, "");
                     HashSet<Long> var2 = var.get(key);
                     if (var2 == null) {
                         var2 = new HashSet<>();

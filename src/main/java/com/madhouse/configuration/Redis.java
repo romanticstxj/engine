@@ -87,16 +87,4 @@ public class Redis {
 	public void setSlave(Config slave) {
 		this.slave = slave;
 	}
-
-	public Redis(Config master, Config slave) {
-		super();
-		this.master = master;
-		this.slave = slave;
-	}
-
-	public Redis() {
-		super();
-		// TODO 自动生成的构造函数存根
-	}
-
 }

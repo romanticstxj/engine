@@ -62,17 +62,4 @@ public class WebApp {
 	public void setClick(String click) {
 		this.click = click;
 	}
-
-	public WebApp(String domain, String impression, String click, List<Bid> bids) {
-		super();
-		this.domain = domain;
-		this.impression = impression;
-		this.click = click;
-		this.bids = bids;
-	}
-
-	public WebApp() {
-		super();
-		// TODO 自动生成的构造函数存根
-	}
 }
