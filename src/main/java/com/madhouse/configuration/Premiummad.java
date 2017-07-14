@@ -30,8 +30,4 @@ public class Premiummad {
 	public void setKafka(Kafka kafka) {
 		this.kafka = kafka;
 	}
-
-	public Premiummad() {
-		super();
-	}
 }

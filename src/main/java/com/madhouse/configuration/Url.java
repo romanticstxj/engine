@@ -19,16 +19,4 @@ public class Url {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	public Url(String type, String url) {
-		super();
-		this.type = type;
-		this.url = url;
-	}
-
-	public Url() {
-		super();
-		// TODO 自动生成的构造函数存根
-	}
-
 }

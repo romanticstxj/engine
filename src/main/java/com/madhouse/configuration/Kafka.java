@@ -53,16 +53,4 @@ public class Kafka {
 			this.topicsMap.put(topic.getType(), topic.getTopic());
 		}
 	}
-
-	public Kafka(String brokers, List<Topic> topics) {
-		super();
-		this.brokers = brokers;
-		this.topics = topics;
-	}
-
-	public Kafka() {
-		super();
-		// TODO 自动生成的构造函数存根
-	}
-
 }
