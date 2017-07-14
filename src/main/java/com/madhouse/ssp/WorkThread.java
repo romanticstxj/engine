@@ -481,7 +481,7 @@ public class WorkThread {
             int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
             info.add(String.format("%d%02d", weekDay, hour));
-            targetInfo.add(Pair.of(Constant.TargetType.WEEK_HOUR, info));
+            targetInfo.add(Pair.of(Constant.TargetType.WEEKDAY_HOUR, info));
         }
 
         //location
@@ -541,23 +541,6 @@ public class WorkThread {
         }
 
         return policyMetaDatas;
-    }
-
-    private List<Pair<PolicyMetaData, Integer>> selectPolicy(List<PolicyMetaData> policyMetaDatas) {
-
-        int selectType = -1;
-        List<Pair<PolicyMetaData, Integer>> selectedPolicys = new LinkedList<>();
-        for (PolicyMetaData policyMetaData : policyMetaDatas) {
-            if (selectType > 0 && selectType != policyMetaData.getDeliveryType()) {
-                break;
-            } else {
-                selectType = policyMetaData.getDeliveryType();
-                selectedPolicys.add(Pair.of(policyMetaData, policyMetaData.getWeight()));
-                policyMetaDatas.remove(policyMetaData);
-            }
-        }
-
-        return selectedPolicys;
     }
 
     private Pair<DSPBidMetaData, Integer> selectWinner(PlcmtMetaData plcmtMetaData,

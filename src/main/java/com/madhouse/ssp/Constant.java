@@ -180,7 +180,7 @@ public final class Constant {
 
     public static final class TargetType {
         public static final int PLACEMENT = 1;
-        public static final int WEEK_HOUR = 2;
+        public static final int WEEKDAY_HOUR = 2;
         public static final int LOCATION = 4;
         public static final int OS = 8;
         public static final int CONNECTION_TYPE = 16;
