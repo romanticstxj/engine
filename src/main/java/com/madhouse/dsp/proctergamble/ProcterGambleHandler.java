@@ -1,6 +1,5 @@
 package com.madhouse.dsp.proctergamble;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.madhouse.cache.AdBlockMetaData;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.DSPBidMetaData;
@@ -39,10 +37,10 @@ import com.madhouse.dsp.proctergamble.PGMadAds.Size;
 import com.madhouse.dsp.proctergamble.PGMadAds.Version;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.DSPResponse;
+import com.madhouse.ssp.avro.MediaBid.Builder;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.Monitor;
 import com.madhouse.ssp.avro.Track;
-import com.madhouse.ssp.avro.MediaBid.Builder;
 import com.madhouse.util.ObjectUtils;
 
 public class ProcterGambleHandler extends DSPBaseHandler {
@@ -188,8 +186,18 @@ public class ProcterGambleHandler extends DSPBaseHandler {
     
     private AdSlot.Builder getAdslot(MediaRequest.Builder builder, PlcmtMetaData plcmtMetaData, String adspaceId) {
         // adSlot
-        int width = ObjectUtils.isEmpty(builder.getW()) ? plcmtMetaData.getW() : builder.getW();
-        int height = ObjectUtils.isEmpty(builder.getH()) ? plcmtMetaData.getH() : builder.getH();
+        int width = 0;
+        if(builder.hasW()){
+            width = plcmtMetaData.getW();
+        } else {
+            width = builder.getW();
+        }
+        int height = 0;
+        if(builder.hasH()){
+            height = plcmtMetaData.getH();
+        } else {
+            height = builder.getH();
+        }
         
         AdSlot.Builder adSlotBuilder = AdSlot.newBuilder().setId(adspaceId).setSize(Size.newBuilder().setWidth(width).setHeight(height));
         //optional

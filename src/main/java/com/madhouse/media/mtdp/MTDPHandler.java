@@ -44,11 +44,11 @@ public class MTDPHandler extends MediaBaseHandler {
                     return true;
                 }
             }
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         }
     }
@@ -190,17 +190,21 @@ public class MTDPHandler extends MediaBaseHandler {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     DPAds.BidResponse bidResponse = convertToMTDPResponse(mediaBidMetaData);
-                } else {
-                    resp.setStatus(mediaBid.getStatus());
-                    return false;
+                    if(null != bidResponse){
+                        resp.getOutputStream().write(bidResponse.toByteArray());
+                        resp.setStatus(Constant.StatusCode.OK);
+                        return true;
+                    }
                 }
+                resp.setStatus(mediaBid.getStatus());
+                return false;
             }
         } catch (Exception e) {
-            logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
+            resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+        resp.setStatus(Constant.StatusCode.NO_CONTENT);
         return false;
     }
 
@@ -243,6 +247,8 @@ public class MTDPHandler extends MediaBaseHandler {
         // 投标人id
         seatbid.setSeat("madhouse");
         DPAds.BidResponse bidResponse = DPAds.BidResponse.newBuilder().setId(mediaRequest.getBid().toString()).addSeatbid(seatbid).build();
+        
+        logger.info("MTDP Response params is : {}", bidResponse.toString());
         return bidResponse;
     }
     

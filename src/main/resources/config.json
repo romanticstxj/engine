@@ -29,7 +29,7 @@
                 "className": "com.madhouse.media.baofeng.BaoFengHandler"
             }, {
                 "path": "/adcall/momo/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.momo.MomoHandler"
             }, {
                 "path": "/adcall/toutiao/bidrequest",
                 "className": "com.madhouse.media.toutiao.ToutiaoHandler"
