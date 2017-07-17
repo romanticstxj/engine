@@ -26,6 +26,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         
         try {
             MojiWeatherBidRequest mojiWeatherBidRequest = JSON.parseObject(getRequestParamsString(req), MojiWeatherBidRequest.class);
+            logger.info("MojiWeather Request params is : {}",JSON.toJSONString(mojiWeatherBidRequest));
             int status = validateRequiredParam(mojiWeatherBidRequest);
             if (status == Constant.StatusCode.OK) {
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(mojiWeatherBidRequest); 
@@ -106,7 +107,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             mediaRequest.setModel(mojiWeatherBidRequest.getDevice());
         }
         mediaRequest.setType(Constant.MediaType.APP);
-        logger.info("mojiWeather request params is : {}", JSON.toJSONString(mediaRequest));
+        logger.info("mojiWeather convert mediaRequest is :{}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();
     }
 
@@ -247,6 +248,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             } else {
                 moWeatherResponse=convertToMojiWeatherResponse(MojiWeatherStatusCode.StatusCode.CODE_501,mediaBidMetaData,(MojiWeatherBidRequest)mediaBidMetaData.getRequestObject());
             }
+            logger.info("MojiWeather Response params is : {}", JSON.toJSONString(moWeatherResponse));
             outputStreamWrite(resp,moWeatherResponse);
             return true;
         }
@@ -290,27 +292,27 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             if(null != mediaResponse.getDuration() && mediaResponse.getDuration()>0){
                 data.setType("2");
                 if(null!=mediaResponse.getCover()){
-                    data.setVedioimg(mediaResponse.getCover().toString());
+                    data.setVedioimg(mediaResponse.getCover());
                 }
                 data.setVedioPlaytime(mediaResponse.getDuration());
                 if(null!=mediaResponse.getAdm() && mediaResponse.getAdm().size()>0){
                     if(null!=mediaResponse.getAdm().get(0)){
-                        data.setVediourl(mediaResponse.getAdm().get(0).toString());
+                        data.setVediourl(mediaResponse.getAdm().get(0));
                     }
                 }
             }else{
                 if(null!=mediaResponse.getAdm() && mediaResponse.getAdm().size()>0){
                     if(null!=mediaResponse.getAdm().get(0)){
-                        data.setImgurl(mediaResponse.getAdm().get(0).toString());
+                        data.setImgurl(mediaResponse.getAdm().get(0));
                     }
                 }
                 data.setType("1");
             }
-            data.setClickurl(mediaResponse.getLpgurl() != null ? mediaResponse.getLpgurl().toString() : "");
+            data.setClickurl(mediaResponse.getLpgurl() != null ? mediaResponse.getLpgurl() : "");
             data.setAdwidth(StringUtil.toString(mediaRequest.getW().toString()));
             data.setAdheight(StringUtil.toString(mediaRequest.getH().toString()));
-            data.setAdtitle(StringUtil.toString(mediaResponse.getTitle().toString()));
-            data.setAdtext(StringUtil.toString(mediaResponse.getDesc().toString()));
+            data.setAdtitle(StringUtil.toString(mediaResponse.getTitle()));
+            data.setAdtext(StringUtil.toString(mediaResponse.getDesc()));
             data.setUrlSeparator(";");
             //点击监播
             StringBuffer sb_clk = new StringBuffer();
@@ -324,8 +326,8 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
             //展示监播
             StringBuffer sb_imp = new StringBuffer();
-            for (CharSequence imp : mediaResponse.getMonitor().getClkurl()) {
-                sb_imp.append(imp.toString()).append(data.getUrlSeparator());
+            for (String imp : mediaResponse.getMonitor().getClkurl()) {
+                sb_imp.append(imp).append(data.getUrlSeparator());
             }
             if (sb_imp.length() > 1) {
                 sb_imp = sb_imp.delete(sb_imp.length() - data.getUrlSeparator().length(),sb_imp.length());

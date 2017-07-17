@@ -287,5 +287,5 @@ public class BaoFengBidRequest {
 			this.pos = pos;
 		}
 	}
-
+	
 }

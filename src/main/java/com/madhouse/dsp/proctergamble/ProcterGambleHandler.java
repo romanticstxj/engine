@@ -80,7 +80,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         }
         BidRequest.Builder pg = BidRequest.newBuilder()//
             .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())//价格必填
-            .setRequestId(dspBidMetaData.getDspBidBuilder().getRequest().getId().toString())//
+            .setRequestId(dspBidMetaData.getDspBidBuilder().getRequest().getId())//
             .setApiVersion(Version.newBuilder().setMajor(2).setMinor(3))//
             .setApp(appBuilder)//
             .setDevice(deviceBuilder)//
@@ -101,20 +101,20 @@ public class ProcterGambleHandler extends DSPBaseHandler {
             case Constant.OSType.ANDROID:
                 deviceBuilder.setOs(Os.ANDROID);
                 UdId.Builder udidBuilder = UdId.newBuilder();
-                String aid=builder.getDpid().toString();
+                String aid=builder.getDpid();
                 if (aid != null) {
                     udidBuilder.setAndroidId(aid);
-                } else if (builder.getDid().toString() != null) {
-                    udidBuilder.setAndroidId(builder.getDid().toString());
+                } else if (builder.getDid() != null) {
+                    udidBuilder.setAndroidId(builder.getDid());
                 }
                 break;
             case Constant.OSType.IOS:
                 deviceBuilder.setOs(Os.IOS);
-                String idfa = builder.getIfa().toString();
+                String idfa = builder.getIfa();
                 if (idfa != null) {
                     deviceBuilder.setUdid(UdId.newBuilder().setIdfa(idfa));
                 } else if (builder.getMac() != null) {
-                    deviceBuilder.setUdid(UdId.newBuilder().setMac(builder.getMac().toString()));
+                    deviceBuilder.setUdid(UdId.newBuilder().setMac(builder.getMac()));
                 } else {
                     return null;
                 }
@@ -123,7 +123,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                 return null;
         }
         // os version
-        String osv = builder.getOsv().toString();// os版本，必填点号分割
+        String osv = builder.getOsv();// os版本，必填点号分割
         if (osv != null) {
             String[] osvs = osv.split("\\.");
             if (osvs.length >= 1) {
@@ -152,7 +152,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
             }
         }
         // Vendor Model
-        String device = builder.getModel().toString();
+        String device = builder.getModel();
         if (device != null && device.length() > 0) {
             String[] str = device.split(" ");
             if (str.length >= 1) {
@@ -175,7 +175,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         // 网络类型
         Network.Builder networkBuilder = Network.newBuilder();
         //ip
-        String ip = builder.getIp().toString();
+        String ip = builder.getIp();
         if (StringUtils.isEmpty(ip)) {
             return null;
         }
@@ -220,7 +220,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         App.Builder appBuilder = App.newBuilder();
         appBuilder.setId(adspaceId);
         App.StaticInfo.Builder appStaticInfoBuilder = App.StaticInfo.newBuilder();
-        String pkgname = builder.getBundle().toString();
+        String pkgname = builder.getBundle();
         if (pkgname != null && pkgname.length() > 0) {
             try {
                 appStaticInfoBuilder.setBundleId(URLEncoder.encode(pkgname, "UTF-8"));
@@ -228,7 +228,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                 logger.error(adspaceId + "pkgname error is:" + e.toString());
             }
         }
-        String appname = builder.getName().toString();
+        String appname = builder.getName();
         if (appname != null && appname.length() > 0) {
             try {
                 appStaticInfoBuilder.setName(URLEncoder.encode(appname, "UTF-8"));
@@ -263,7 +263,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                         MaterialMeta materialMeta = ad.getMaterialMeta();
                         //dspResponse.setCid(value)
                         dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequest().getId()));
-                        dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid().toString());
+                        dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
                         
                         dspResponse.setLpgurl(materialMeta.getClickUrl());
                         dspResponse.setDesc(materialMeta.getDescription1());

@@ -35,7 +35,7 @@ public class MomoHandler extends MediaBaseHandler {
         
         try {
             MomoExchange.BidRequest bidRequest = MomoExchange.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.debug("debug Request params is : {}", bidRequest.toString());
+            logger.info("Momo Request params is : {}", bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(bidRequest);
@@ -160,6 +160,7 @@ public class MomoHandler extends MediaBaseHandler {
             }
         }
         mediaRequest.setType(Constant.MediaType.APP);
+        logger.info("Momorequest convert mediaRequest is : {}", mediaRequest.toString());
         return mediaRequest.build();
     }
 
@@ -277,14 +278,14 @@ public class MomoHandler extends MediaBaseHandler {
         MomoExchange.BidRequest bidRequest = (BidRequest)mediaBidMetaData.getRequestObject();
         
         MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
-        nativeCreativeBuilder.setTitle(mediaResponse.getTitle().toString());
-        nativeCreativeBuilder.setDesc(mediaResponse.getDesc().toString());
+        nativeCreativeBuilder.setTitle(mediaResponse.getTitle());
+        nativeCreativeBuilder.setDesc(mediaResponse.getDesc());
         nativeCreativeBuilder.setLogo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder());
         if(null != mediaResponse.getDuration() && mediaResponse.getDuration()>0){
-            nativeCreativeBuilder.addVideo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Video.newBuilder().setUrl(mediaResponse.getAdm().get(0).toString()));          //视频
-            nativeCreativeBuilder.setCardTitle(mediaResponse.getTitle().toString()); //无单独的行动卡标题 使用视频物料的标题
-            nativeCreativeBuilder.setCardDesc(mediaResponse.getDesc().toString());   //无单独的行动卡副标题 使用视频物料的副标题
-            nativeCreativeBuilder.setLandingpageUrl(MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder().setUrl(mediaResponse.getAdm().get(0).toString()));  //落地页
+            nativeCreativeBuilder.addVideo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Video.newBuilder().setUrl(mediaResponse.getAdm().get(0)));          //视频
+            nativeCreativeBuilder.setCardTitle(mediaResponse.getTitle()); //无单独的行动卡标题 使用视频物料的标题
+            nativeCreativeBuilder.setCardDesc(mediaResponse.getDesc());   //无单独的行动卡副标题 使用视频物料的副标题
+            nativeCreativeBuilder.setLandingpageUrl(MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder().setUrl(mediaResponse.getAdm().get(0)));  //落地页
             if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(FEED_LANDING_PAGE_VIDEO)){
                 nativeCreativeBuilder.setNativeFormat(FEED_LANDING_PAGE_VIDEO);
             }
@@ -292,9 +293,9 @@ public class MomoHandler extends MediaBaseHandler {
             MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
             imageBuilder.setHeight(mediaRequest.getH());
             imageBuilder.setWidth(mediaRequest.getW());
-            imageBuilder.setUrl(mediaResponse.getAdm().get(0).toString());
+            imageBuilder.setUrl(mediaResponse.getAdm().get(0));
             nativeCreativeBuilder.addImage(imageBuilder);           //广告图片
-            nativeCreativeBuilder.setLandingpageUrl(MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder().setUrl(mediaResponse.getAdm().get(0).toString()));  //落地页
+            nativeCreativeBuilder.setLandingpageUrl(MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder().setUrl(mediaResponse.getAdm().get(0)));  //落地页
             if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(FEED_LANDING_PAGE_LARGE_IMG)){
                 nativeCreativeBuilder.setNativeFormat(FEED_LANDING_PAGE_LARGE_IMG);
             }
@@ -305,9 +306,9 @@ public class MomoHandler extends MediaBaseHandler {
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
         bidBuilder.setImpid(bidRequest.getImpList().get(0).getId());
         bidBuilder.setPrice(mediaBidMetaData.getMediaBidBuilder().getRequest().getBidfloor());
-        bidBuilder.setCid(mediaResponse.getCid().toString());
-        bidBuilder.setAdid(mediaResponse.getAdmid().toString());   //广告位id
-        bidBuilder.setCrid(mediaResponse.getCrid().toString());  //物料id
+        bidBuilder.setCid(mediaResponse.getCid());
+        bidBuilder.setAdid(mediaResponse.getAdmid());   //广告位id
+        bidBuilder.setCrid(mediaResponse.getCrid());  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
         bidBuilder.setNativeCreative(nativeCreativeBuilder);
         /**
@@ -316,12 +317,12 @@ public class MomoHandler extends MediaBaseHandler {
         List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             for (Track track : imgtracking) {
-                bidBuilder.addClicktrackers(track.toString());
+                bidBuilder.addClicktrackers(track.getUrl().toString());
             }
         }
-        List<CharSequence> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
-            for (CharSequence thclk : thclkurl) {
+            for (String thclk : thclkurl) {
                 bidBuilder.addImptrackers(thclk.toString());
             }
         }

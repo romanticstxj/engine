@@ -29,6 +29,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         
         try {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
+            logger.info("BaoFengBidRequest Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             if(Constant.StatusCode.OK != status){
                 PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
@@ -131,7 +132,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         for (String label : madBidRequest.getLabel()) {
             mediaRequest.getTags().add(label);
         }
-        logger.info("PremiumMAD Request params is : {}", JSON.toJSONString(mediaRequest));
+        logger.info("PremiumMAD convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();
     }
     private int validateRequiredParam(PremiumMADBidRequest mediaRequest) {
@@ -352,52 +353,45 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(Constant.StatusCode.OK == status){
             MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
             premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey().toString());
-            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid().toString());
-            premiumMADResponse.setCid(mediaResponse.getCid().toString());
+            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey());
+            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid());
+            premiumMADResponse.setCid(mediaResponse.getCid());
             premiumMADResponse.setAdwidth(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getW()));
             premiumMADResponse.setAdheight(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getH()));
             
             if(mediaResponse.getDuration() > 0){
                 premiumMADResponse.setDuration(String.valueOf(mediaResponse.getDuration()));
-                premiumMADResponse.setIcon(mediaResponse.getIcon().toString());
-                premiumMADResponse.setCover(mediaResponse.getCover().toString());
+                premiumMADResponse.setIcon(mediaResponse.getIcon());
+                premiumMADResponse.setCover(mediaResponse.getCover());
             }
             if (mediaResponse.getTitle() != null) {
-                premiumMADResponse.setDisplaytitle(mediaResponse.getTitle().toString());
+                premiumMADResponse.setDisplaytitle(mediaResponse.getTitle());
             }
 
             if (mediaResponse.getDesc() != null) {
-                premiumMADResponse.setDisplaytext(mediaResponse.getDesc().toString());
+                premiumMADResponse.setDisplaytext(mediaResponse.getDesc());
             }
 
             if (mediaResponse.getAdm() != null && !mediaResponse.getAdm().isEmpty()) {
-                premiumMADResponse.setImgurl( mediaResponse.getAdm().get(0).toString());
+                premiumMADResponse.setImgurl( mediaResponse.getAdm().get(0));
             }
 
-            premiumMADResponse.setAdm(new LinkedList<>());
-            for (CharSequence adm : mediaResponse.getAdm()) {
-                premiumMADResponse.getAdm().add(adm.toString());
-            }
+            premiumMADResponse.setAdm(mediaResponse.getAdm());
 
-            premiumMADResponse.setClickurl(mediaResponse.getLpgurl().toString());
+            premiumMADResponse.setClickurl(mediaResponse.getLpgurl());
             // 点击监播
             premiumMADResponse.setImgtracking(new LinkedList<>());
             for (Track track : mediaResponse.getMonitor().getImpurl()) {
-                premiumMADResponse.getImgtracking().add(track.getUrl().toString());
+                premiumMADResponse.getImgtracking().add(track.getUrl());
             }
             //点击监播地址
-            premiumMADResponse.setThclkurl(new LinkedList<>());
-            for (CharSequence url : mediaResponse.getMonitor().getClkurl()) {
-                premiumMADResponse.getThclkurl().add(url.toString());
-            }
+            premiumMADResponse.setThclkurl(mediaResponse.getMonitor().getClkurl());
+            
             //品牌安全监测
-            premiumMADResponse.setSecurl(new LinkedList<>());
-            for (CharSequence url : mediaResponse.getMonitor().getSecurl()) {
-                premiumMADResponse.getSecurl().add(url.toString());
-            }
+            premiumMADResponse.setSecurl(mediaResponse.getMonitor().getSecurl());
+            
         } else {
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey().toString());
+            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey());
             premiumMADResponse.setReturncode(String.valueOf(status));
         }
         logger.info("premiumMAD Response params is : {}", JSON.toJSONString(premiumMADResponse));

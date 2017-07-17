@@ -197,7 +197,7 @@ public class WorkThread {
             MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
             //get placement metadata
-            PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey().toString());
+            PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
             if (plcmtMetaData == null) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
@@ -229,7 +229,7 @@ public class WorkThread {
             }
 
             //init location
-            String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp().toString());
+            String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
             if (StringUtils.isEmpty(location)) {
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
@@ -490,7 +490,7 @@ public class WorkThread {
             info.add(mediaBidBuilder.getLocation().subSequence(0, 1) + "000000000");
             info.add(mediaBidBuilder.getLocation().subSequence(0, 4) + "000000");
             info.add(mediaBidBuilder.getLocation().subSequence(0, 6) + "0000");
-            info.add(mediaBidBuilder.getLocation().toString());
+            info.add(mediaBidBuilder.getLocation());
             targetInfo.add(Pair.of(Constant.TargetType.LOCATION, info));
         }
 

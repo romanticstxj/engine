@@ -45,7 +45,7 @@ public abstract class DSPBaseHandler {
 
         //bid request
         BidRequest.Builder bidRequest = BidRequest.newBuilder();
-        bidRequest.setId(dspRequest.getId().toString());
+        bidRequest.setId(dspRequest.getId());
         bidRequest.setTmax(mediaMetaData.getTimeout());
         bidRequest.setTest(mediaBidBuilder.getRequestBuilder().getTest());
         bidRequest.setAt(Constant.BidAt.SECOND_PRICE);
@@ -58,7 +58,7 @@ public abstract class DSPBaseHandler {
         if (mediaMetaData.getType() == Constant.MediaType.APP) {
             BidRequest.App.Builder app = BidRequest.App.newBuilder();
             app.setId(Long.toString(mediaMetaData.getId()));
-            app.setBundle(mediaRequest.getBundle().toString());
+            app.setBundle(mediaRequest.getBundle());
             app.addCat(Integer.toString(mediaMetaData.getCategory()));
             app.setName(mediaMetaData.getName());
             bidRequest.setApp(app);
@@ -74,22 +74,22 @@ public abstract class DSPBaseHandler {
 
         {
             BidRequest.Device.Builder device = BidRequest.Device.newBuilder();
-            device.setIp(mediaRequest.getIp().toString());
-            device.setUa(mediaRequest.getUa().toString());
-            device.setDid(mediaRequest.getDid().toString());
-            device.setDidmd5(mediaRequest.getDidmd5().toString());
-            device.setDpid(mediaRequest.getDpid().toString());
-            device.setDpidmd5(mediaRequest.getDpidmd5().toString());
-            device.setIfa(mediaRequest.getIfa().toString());
-            device.setMac1(mediaRequest.getMac().toString());
-            device.setMac1Md5(mediaRequest.getMacmd5().toString());
+            device.setIp(mediaRequest.getIp());
+            device.setUa(mediaRequest.getUa());
+            device.setDid(mediaRequest.getDid());
+            device.setDidmd5(mediaRequest.getDidmd5());
+            device.setDpid(mediaRequest.getDpid());
+            device.setDpidmd5(mediaRequest.getDpidmd5());
+            device.setIfa(mediaRequest.getIfa());
+            device.setMac1(mediaRequest.getMac());
+            device.setMac1Md5(mediaRequest.getMacmd5());
             device.setDevicetype(mediaRequest.getDevicetype());
             device.setConnectiontype(mediaRequest.getConnectiontype());
             device.setCarrier(mediaRequest.getCarrier());
-            device.setMake(mediaRequest.getMake().toString());
-            device.setModel(mediaRequest.getModel().toString());
+            device.setMake(mediaRequest.getMake());
+            device.setModel(mediaRequest.getModel());
             device.setOs(mediaRequest.getOs());
-            device.setOsv(mediaRequest.getOsv().toString());
+            device.setOsv(mediaRequest.getOsv());
             BidRequest.Device.Geo.Builder geo = BidRequest.Device.Geo.newBuilder();
             geo.setLon(mediaRequest.getLon());
             geo.setLat(mediaRequest.getLat());
@@ -99,7 +99,7 @@ public abstract class DSPBaseHandler {
 
         {
             BidRequest.Impression.Builder impression = BidRequest.Impression.newBuilder();
-            impression.setId(mediaBidBuilder.getImpid().toString());
+            impression.setId(mediaBidBuilder.getImpid());
 
             if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                 impression.setBidfloor(plcmtMetaData.getBidFloor());
@@ -390,7 +390,7 @@ public abstract class DSPBaseHandler {
     public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
         try {
             DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
-            String url = dspResponse.getNurl().toString();
+            String url = dspResponse.getNurl();
             url = url.replace("${AUCTION_ID}", dspResponse.getId())
                     .replace("${AUCTION_IMP_ID}", dspResponse.getImpid())
                     .replace("${AUCTION_BID_ID}", dspResponse.getBidid())
@@ -406,7 +406,7 @@ public abstract class DSPBaseHandler {
             return url;
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return dspBidMetaData.getDspBidBuilder().getResponse().getNurl().toString();
+            return dspBidMetaData.getDspBidBuilder().getResponse().getNurl();
         }
     }
 

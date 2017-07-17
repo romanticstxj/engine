@@ -54,10 +54,10 @@ public class MADMaxHandler extends DSPBaseHandler {
 
         StringBuilder sb = new StringBuilder(urlTemplate);
         // url编码
-        String ua = builder.getUa().toString();
-        String device = builder.getModel().toString();
-        String pkgname = builder.getBundle().toString();
-        String appname = builder.getName().toString();
+        String ua = builder.getUa();
+        String device = builder.getModel();
+        String pkgname = builder.getBundle();
+        String appname = builder.getName();
         try {
             if (ua != null) {
                 ua = URLEncoder.encode(ua, "UTF-8");
@@ -89,40 +89,40 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&conn=").append(StringUtil.toString(builder.getConnectiontype().toString()))
                 .append("&carrier=").append(StringUtil.toString(builder.getCarrier().toString()))
                 .append("&device=").append(StringUtil.toString(device))
-                .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequest().getId().toString()))
+                .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequest().getId()))
                 .append("&appname=").append(StringUtil.toString(appname))
                 .append("&apitype=4")
                 .append("&pcat=").append(StringUtil.toString(builder.getCategory().toString()))
-                .append("&osv=").append(StringUtil.toString(builder.getOsv().toString()))
-                .append("&wma=").append(StringUtil.toString(builder.getMac().toString()))
+                .append("&osv=").append(StringUtil.toString(builder.getOsv()))
+                .append("&wma=").append(StringUtil.toString(builder.getMac()))
                 .append("&ua=").append(StringUtil.toString(ua))
-                .append("&ip=").append(StringUtil.toString(builder.getIp().toString()))
+                .append("&ip=").append(StringUtil.toString(builder.getIp()))
                 .append("&pid=").append(StringUtil.toString(builder.getMediaid().toString()))
                 .append("&density=").append(StringUtil.toString(String.valueOf(mediaMetaData.getType())))
-                .append("&media=").append(StringUtil.toString(builder.getDpid().toString()))
+                .append("&media=").append(StringUtil.toString(builder.getDpid()))
                 .append("&lon=").append(StringUtil.toString(builder.getLon().toString()))
                 .append("&lat=").append(StringUtil.toString(builder.getLat().toString()))
-                .append("&cell=").append(StringUtil.toString(builder.getCell().toString()))
-                .append("&mcell=").append(StringUtil.toString(builder.getCellmd5().toString()));
+                .append("&cell=").append(StringUtil.toString(builder.getCell()))
+                .append("&mcell=").append(StringUtil.toString(builder.getCellmd5()));
         switch (builder.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(StringUtil.toString(builder.getDid().toString()))
-                   .append("&aid=").append(StringUtil.toString(builder.getDpid().toString()))
-                   .append("&aaid=").append(StringUtil.toString(builder.getIfa().toString()));
+                   .append("&imei=").append(StringUtil.toString(builder.getDid()))
+                   .append("&aid=").append(StringUtil.toString(builder.getDpid()))
+                   .append("&aaid=").append(StringUtil.toString(builder.getIfa()));
                 break;
             case Constant.OSType.IOS:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_IOS)
-                    .append("&idfa=").append(StringUtil.toString(builder.getIfa().toString()))
-                    .append("&oid=").append(StringUtil.toString(builder.getDpid().toString()));
+                    .append("&idfa=").append(StringUtil.toString(builder.getIfa()))
+                    .append("&oid=").append(StringUtil.toString(builder.getDpid()));
                 break;
             case Constant.OSType.WINDOWS_PHONE:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE)
-                .append("&uid=").append(StringUtil.toString(builder.getDpid().toString()));
+                .append("&uid=").append(StringUtil.toString(builder.getDpid()));
                 break;
             default:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_OTHERS)
-                .append("&uid=").append(StringUtil.toString(builder.getDpid().toString()));
+                .append("&uid=").append(StringUtil.toString(builder.getDpid()));
                 break;
         }
         String str = sb.toString().replace(" ", "%20");
@@ -178,11 +178,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setDesc(madResponse.getDisplaytext());
         dspResponse.setDuration(Integer.parseInt(madResponse.getDuration().toString()));
         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
-        List<CharSequence> adm=new ArrayList<CharSequence>();
-        for (String adma : madResponse.getAdm()) {
-            adm.add(adma);
-        }
-        dspResponse.setAdm(adm);
+        dspResponse.setAdm(madResponse.getAdm());
         dspResponse.setLpgurl(madResponse.getClickurl());
         Monitor.Builder monitor = Monitor.newBuilder();
         List<Track> tracks=new ArrayList<>();
@@ -190,16 +186,8 @@ public class MADMaxHandler extends DSPBaseHandler {
             tracks.add(new Track(0, track));
         }
         monitor.setImpurl(tracks);
-        List<CharSequence> thclkList=new ArrayList<CharSequence>();
-        for (String thclk : madResponse.getThclkurl()) {
-            thclkList.add(thclk);
-        }
-        monitor.setClkurl(thclkList);
-        List<CharSequence> securlList=new ArrayList<CharSequence>();
-        for (String thclk : madResponse.getSecurl()) {
-            securlList.add(thclk);
-        }
-        monitor.setSecurl(securlList);
+        monitor.setClkurl(madResponse.getThclkurl());
+        monitor.setSecurl(madResponse.getSecurl());
         dspResponse.setMonitorBuilder(monitor);
         return dspResponse;
     }

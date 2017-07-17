@@ -53,7 +53,7 @@ public class VamakerHandler extends DSPBaseHandler {
         }
         sb.append("_a=").append(adspaceId);
         sb.append("&_t=24"); //fixed,没有这个参数取不到广告
-        String pkgname = builder.getBundle().toString();
+        String pkgname = builder.getBundle();
         try {
             pkgname = URLEncoder.encode(pkgname, "UTF-8");
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class VamakerHandler extends DSPBaseHandler {
                 
                 //os=1 时参 数_imei 必填, _mc、_aid、 _aaid 选填\
                 
-                String imei = builder.getDid().toString();
+                String imei = builder.getDid();
                 if (StringUtils.isEmpty(imei)) {
                     return null;
                 }
@@ -120,12 +120,12 @@ public class VamakerHandler extends DSPBaseHandler {
             sb.append("&_lat=").append(builder.getLat());
         }
 
-        if (StringUtils.isNotEmpty(builder.getCellmd5().toString())) {
-            sb.append("&_mpn=").append(builder.getCellmd5().toString());
+        if (StringUtils.isNotEmpty(builder.getCellmd5())) {
+            sb.append("&_mpn=").append(builder.getCellmd5());
         }
 
-        if (StringUtils.isNotEmpty(builder.getIp().toString())) {
-            sb.append("&_ip=").append(builder.getIp().toString());
+        if (StringUtils.isNotEmpty(builder.getIp())) {
+            sb.append("&_ip=").append(builder.getIp());
         }
         if(plcmtMetaData.isEnableHttps()){
             sb.append("&_sc=").append("0");
@@ -150,30 +150,21 @@ public class VamakerHandler extends DSPBaseHandler {
             VamakerResponse vamakerResponse = JSON.parseObject(result, VamakerResponse.class);
             dspResponse.setCid(vamakerResponse.getCid());
             dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequest().getId()));
-            dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid().toString());
-            //dspResponse.setAdid(value)
-            //dspResponse.setAdmid(madResponse.getAdspaceid());
-            //dspResponse.setBidid(madResponse.getBid());
+            dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
+            dspResponse.setAdid(vamakerResponse.getAdid());
+            dspResponse.setBidid(String.valueOf(dspBidMetaData.getDspMetaData().getId()));
             dspResponse.setLpgurl(vamakerResponse.getLp());
             dspResponse.setDesc(vamakerResponse.getDesc());
             dspResponse.setTitle(vamakerResponse.getTitle());
             dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
-            List<CharSequence> adm=new ArrayList<CharSequence>();
-            for (String img : vamakerResponse.getImg()) {
-                adm.add(img);
-            }
-            dspResponse.setAdm(adm);
+            dspResponse.setAdm(vamakerResponse.getImg());
             Monitor.Builder monitor = Monitor.newBuilder();
             List<Track> tracks=new ArrayList<>();
             for (String track : vamakerResponse.getPm()) {
                 tracks.add(new Track(0, track));
             }
             monitor.setImpurl(tracks);
-            List<CharSequence> thclkList=new ArrayList<CharSequence>();
-            for (String thclk : vamakerResponse.getCm()) {
-                thclkList.add(thclk);
-            }   
-            monitor.setClkurl(thclkList);
+            monitor.setClkurl(vamakerResponse.getCm());
             dspResponse.setMonitorBuilder(monitor);
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
             dspBidMetaData.getDspBidBuilder().setResponse(dspResponse.build());

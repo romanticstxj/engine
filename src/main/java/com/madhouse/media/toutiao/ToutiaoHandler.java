@@ -201,7 +201,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             mediaRequest.setLat((float)geo.getLat());
         }
         mediaRequest.setType(Constant.MediaType.APP);
-        logger.info("Toutiao Request params is : {}", mediaRequest.toString());
+        logger.info("Toutiao convert mediaRequest is : {}", mediaRequest.toString());
         return mediaRequest.build();
     }
     /**
@@ -361,7 +361,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         TOUTIAOAds.Bid.Builder bidBuilder = TOUTIAOAds.Bid.newBuilder();
         Long id = Math.round(Math.random() * 89999999 + 10000000);
         bidBuilder.setId(String.valueOf(id)); 
-        bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid().toString()));
+        bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid()));
         bidBuilder.setAdslotId(bidRequest.getAdslots(0).getId());
         bidBuilder.setPrice( mediaRequest.getBidfloor());
         
@@ -372,21 +372,21 @@ public class ToutiaoHandler extends MediaBaseHandler {
         }
         imageMetaBuilder.setHeight(mediaRequest.getH());
         imageMetaBuilder.setWidth(mediaRequest.getW());
-        imageMetaBuilder.setUrl(mediaResponse.getAdm().get(0).toString());
+        imageMetaBuilder.setUrl(mediaResponse.getAdm().get(0));
         materialMetaBuilder.setImageBanner(imageMetaBuilder);
 
         //win的竞价成功通知
         materialMetaBuilder.setNurl(ToutiaoStatusCode.Url.URL.replace("{adspaceid}", mediaRequest.getAdspacekey()));
         //信息流落地页广告和详情页图文为必须返回
-        materialMetaBuilder.setSource(StringUtils.isEmpty(mediaResponse.getDesc()) ? "" : mediaResponse.getDesc().toString());
-        materialMetaBuilder.setTitle(StringUtils.isEmpty(mediaResponse.getTitle()) ? "" : mediaResponse.getTitle().toString());
-        externalMetaBuilder.setUrl(mediaResponse.getLpgurl().toString());
+        materialMetaBuilder.setSource(StringUtils.isEmpty(mediaResponse.getDesc()) ? "" : mediaResponse.getDesc());
+        materialMetaBuilder.setTitle(StringUtils.isEmpty(mediaResponse.getTitle()) ? "" : mediaResponse.getTitle());
+        externalMetaBuilder.setUrl(mediaResponse.getLpgurl());
         materialMetaBuilder.setExternal(externalMetaBuilder);        
-        for (CharSequence clk : mediaResponse.getMonitor().getClkurl()) {
-            materialMetaBuilder.addClickUrl(clk.toString());
+        for (String clk : mediaResponse.getMonitor().getClkurl()) {
+            materialMetaBuilder.addClickUrl(clk);
         }
         for (com.madhouse.ssp.avro.Track imp : mediaResponse.getMonitor().getImpurl()) {
-            materialMetaBuilder.addShowUrl(imp.getUrl().toString());
+            materialMetaBuilder.addShowUrl(imp.getUrl());
         }
         bidBuilder.setCreative(materialMetaBuilder);
         seatBidBuilder.addAds(bidBuilder);

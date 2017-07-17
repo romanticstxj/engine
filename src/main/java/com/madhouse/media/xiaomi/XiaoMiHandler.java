@@ -43,7 +43,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
             String bytes = getRequestPostBytes(req);
             
             XiaoMiBidRequest bidRequest = JSON.parseObject(bytes, XiaoMiBidRequest.class);
-            logger.debug("XiaoMi Request params is : {}", JSON.toJSONString(bidRequest));
+            logger.info("XiaoMi Request params is : {}", JSON.toJSONString(bidRequest));
             int status = validateRequiredParam(bidRequest);
             if (status == Constant.StatusCode.OK) {
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
@@ -241,7 +241,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 }
             }
             mediaRequest.setType(Constant.MediaType.APP);
-            logger.info("xiaomi request params is : {}", mediaRequest.toString());
+            logger.info("xiaomi convert mediaRequest is : {}", mediaRequest.toString());
         }else{
             return null;
         }
@@ -289,7 +289,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         XiaoMiResponse.Bid bid = bidResponse.new Bid();
         bid.setImpid(bidRequest.getImp()[0].getId());
         bid.setPrice(mediaRequest.getBidfloor());//Bid price as CPM; 必须高于底价,否则竞价失败 ;必须字段,单位为分
-        bid.setAdid(mediaRequest.getAdspacekey().toString());
+        bid.setAdid(mediaRequest.getAdspacekey());
         //判断接受的类型
         String[] mines = null;
         Imp imp = bidRequest.getImp()[0];
@@ -299,7 +299,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
             mines = imp.getSplash().getMines();
         }
         if (mines != null && mines.length > 0) {//需要判断类型
-            String imgUrl = mediaResponse.getAdm().get(0).toString();
+            String imgUrl = mediaResponse.getAdm().get(0);
             if (StringUtils.isEmpty(imgUrl)) {
                 logger.warn("imgurl is null");
                 return null;
@@ -319,10 +319,10 @@ public class XiaoMiHandler extends MediaBaseHandler {
             }
         }
         Map<String, String> adm = new HashMap<>();
-        adm.put("langdingurl", mediaResponse.getLpgurl().toString());
-        adm.put("imgurl", mediaResponse.getAdm().get(0).toString());
-        adm.put("title", mediaResponse.getTitle().toString());
-        adm.put("source", mediaResponse.getDesc().toString());
+        adm.put("langdingurl", mediaResponse.getLpgurl());
+        adm.put("imgurl", mediaResponse.getAdm().get(0));
+        adm.put("title", mediaResponse.getTitle());
+        adm.put("source", mediaResponse.getDesc());
         bid.setAdm(JSON.toJSONString(adm));
         bid.setTagid(bidRequest.getImp()[0].getTagid());//广告位标识ID，对应imp中的tagid
         bid.setTemplateid(bidRequest.getImp()[0].getTemplateid());
@@ -330,27 +330,27 @@ public class XiaoMiHandler extends MediaBaseHandler {
         bid.setBillingtype(1);//计费方式。1:千次展示 2:点击 3:下载 4:排期 5:轮 播。目前只支持CPM计费
         bid.setH(mediaRequest.getH());
         bid.setW(mediaRequest.getW());
-        bid.setLandingurl(mediaResponse.getLpgurl().toString());
+        bid.setLandingurl(mediaResponse.getLpgurl());
         bid.setTemplateid(bidRequest.getImp()[0].getTemplates()[0].getId());
 
         List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             String[] impurl = new String[imgtracking.size()];
             for (int i = 0; i < imgtracking.size(); i++) {
-                String s = imgtracking.get(i).getUrl().toString();
+                String s = imgtracking.get(i).getUrl();
                 if (s != null && s.length() != 0) {
-                    impurl[i] = imgtracking.get(i).getUrl().toString();
+                    impurl[i] = imgtracking.get(i).getUrl();
                 }
             }
             bid.setImpurl(impurl);
         }
-        List<CharSequence> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
             String[] curl = new String[thclkurl.size()];
             for (int i = 0; i < thclkurl.size(); i++) {
-                String s = thclkurl.get(i).toString();
+                String s = thclkurl.get(i);
                 if (s != null && s.length() != 0) {
-                    curl[i] = thclkurl.get(i).toString();
+                    curl[i] = thclkurl.get(i);
                 }
             }
             bid.setCurl(curl);

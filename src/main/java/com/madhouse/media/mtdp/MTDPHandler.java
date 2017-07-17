@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.PlcmtMetaData;
@@ -34,7 +33,7 @@ public class MTDPHandler extends MediaBaseHandler {
         }
         try {
             DPAds.BidRequest bidRequest = DPAds.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.debug("MTDP Request params is : {}", bidRequest.toString());
+            logger.info("MTDP Request params is : {}", bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
@@ -140,6 +139,7 @@ public class MTDPHandler extends MediaBaseHandler {
         
         DPAds.BidRequest.Site site = bidRequest.getSite();
         mediaRequest.setType(site !=null ? Constant.MediaType.APP : Constant.MediaType.SITE);
+        logger.info("MTDPrequest convert mediaRequest is : {}", mediaRequest.toString());
         return mediaRequest.build();
     }
 
@@ -218,7 +218,7 @@ public class MTDPHandler extends MediaBaseHandler {
         DPAds.BidResponse.Bid.Builder bid = DPAds.BidResponse.Bid.newBuilder();
         
         
-        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
+        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
         bid.setImpid(bidRequest.getImp(0).getId());
         if (bidRequest != null &&  bidRequest.getImp(0).getBidfloor() != 0) {
             bid.setPrice((float)bidRequest.getImp(0).getBidfloor());
@@ -226,27 +226,27 @@ public class MTDPHandler extends MediaBaseHandler {
             bid.setPrice(0.01f);
         }
         
-        //bid.setAdid(mediaResponse.geta.toString());
-        bid.setCid(mediaResponse.getCid().toString());
-        bid.setCrid(mediaResponse.getCrid().toString());
+        //bid.setAdid(mediaResponse.geta);
+        bid.setCid(mediaResponse.getCid());
+        bid.setCrid(mediaResponse.getCrid());
         bid.setSlotId(bidRequest.getImp(0).getSlotId());
-        bid.addLandingmacro(mediaResponse.getLpgurl().toString());
+        bid.addLandingmacro(mediaResponse.getLpgurl());
         List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             for (Track track : imgtracking) {
-                bid.getImpmacroList().add(track.toString());
+                bid.getImpmacroList().add(track.getUrl());
             }
         }
-        List<CharSequence> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
-            for (CharSequence thclk : thclkurl) {
-                bid.getClickmacroList().add(thclk.toString());
+            for (String thclk : thclkurl) {
+                bid.getClickmacroList().add(thclk);
             }
         }
         seatbid.addBid(bid);
         // 投标人id
         seatbid.setSeat("madhouse");
-        DPAds.BidResponse bidResponse = DPAds.BidResponse.newBuilder().setId(mediaRequest.getBid().toString()).addSeatbid(seatbid).build();
+        DPAds.BidResponse bidResponse = DPAds.BidResponse.newBuilder().setId(mediaRequest.getBid()).addSeatbid(seatbid).build();
         
         logger.info("MTDP Response params is : {}", bidResponse.toString());
         return bidResponse;
