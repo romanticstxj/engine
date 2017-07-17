@@ -16,7 +16,7 @@ public class AESUtil {
     public static final byte[] decryptECB(byte[] data, byte[] key, String algorithm) {
         try {
             SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-            Cipher cipher = Cipher.getInstance("AES");
+            Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
             return cipher.doFinal(data);
         } catch (Exception ex) {
