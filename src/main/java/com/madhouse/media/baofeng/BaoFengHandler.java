@@ -1,17 +1,12 @@
 package com.madhouse.media.baofeng;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.madhouse.rtb.PremiumMADRTBProtocol;
-
 import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
@@ -19,7 +14,10 @@ import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.baofeng.BaoFengResponse.PV;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.*;
+import com.madhouse.ssp.avro.MediaBid;
+import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaResponse;
+import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 
@@ -41,10 +39,7 @@ public class BaoFengHandler extends MediaBaseHandler {
             BaoFengBidRequest baoFengBidRequest = JSON.parseObject(bytes, BaoFengBidRequest.class);
             logger.info("BaoFeng Request params is : {}",JSON.toJSONString(baoFengBidRequest));
             int status = validateRequiredParam(baoFengBidRequest, resp);
-            if (status != Constant.StatusCode.OK) {
-                resp.setStatus(status);
-                return false;
-            } else {
+            if (status == Constant.StatusCode.OK) {
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
                 mediaBidMetaData.setRequestObject(baoFengBidRequest);
@@ -53,6 +48,9 @@ public class BaoFengHandler extends MediaBaseHandler {
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
                 }
+            } else {
+                resp.setStatus(status);
+                return false;
             }
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
@@ -234,20 +232,20 @@ public class BaoFengHandler extends MediaBaseHandler {
         
         // 操作系统的类型
         String os = device.getOs();
-        if ("ios".equalsIgnoreCase(os)) {
+        if (BaoFengStatusCode.Os.OS_IOS.equalsIgnoreCase(os)) {
             mediaRequest.setOs(Constant.OSType.IOS);
-        } else if ("android".equalsIgnoreCase(os)) {
+        } else if (BaoFengStatusCode.Os.OS_ANDROID.equalsIgnoreCase(os)) {
             mediaRequest.setOs(Constant.OSType.ANDROID);
         } else {
             // 1 iphone 2 ipad 3 android
             switch (device.getDevicetype()) {
-                case 1:
+                case BaoFengStatusCode.Devicetype.IPHONE:
                     mediaRequest.setOs(Constant.OSType.IOS);
                     break;
-                case 2:
+                case BaoFengStatusCode.Devicetype.IPAD:
                     mediaRequest.setOs(Constant.OSType.IOS);
                     break;
-                case 3:
+                case BaoFengStatusCode.Devicetype.ANDROID:
                     mediaRequest.setOs(Constant.OSType.ANDROID);
                     break;
                 default:
@@ -261,12 +259,10 @@ public class BaoFengHandler extends MediaBaseHandler {
                 mediaRequest.setIfa(device.getDpid());
                 break;
             }
-
             case Constant.OSType.ANDROID: {
                 mediaRequest.setDid(device.getDpid());
                 break;
             }
-
             default:
                 break;
         }
@@ -319,17 +315,17 @@ public class BaoFengHandler extends MediaBaseHandler {
 
         // 连接方式 0：unknow 1：wifi 2：2G/3G/4G
         switch (device.getConnectiontype()) {
-            case 0: {
+            case BaoFengStatusCode.ConnectionType.UNKNOWN: {
                 mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
                 break;
             }
 
-            case 1: {
+            case BaoFengStatusCode.ConnectionType.WIFI: {
                 mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
                 break;
             }
 
-            case 2: {
+            case BaoFengStatusCode.ConnectionType._2G_3G_4G: {
                 mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
                 break;
             }
@@ -342,13 +338,13 @@ public class BaoFengHandler extends MediaBaseHandler {
         // 运行商 移动46000；联通46001；电信46003
         String carrier = device.getCarrier() != null ? device.getCarrier() : "";
         switch (carrier) {
-            case "46000":
+            case BaoFengStatusCode.Carrier.CHINA_MOBILE:
                 mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
                 break;
-            case "46001":
+            case BaoFengStatusCode.Carrier.CHINA_UNICOM:
                 mediaRequest.setCarrier(Constant.Carrier.CHINA_UNICOM);
                 break;
-            case "46003":
+            case BaoFengStatusCode.Carrier.CHINA_TELECOM:
                 mediaRequest.setCarrier(Constant.Carrier.CHINA_TELECOM);
                 break;
             default:

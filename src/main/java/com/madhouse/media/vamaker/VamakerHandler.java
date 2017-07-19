@@ -119,7 +119,7 @@ public class VamakerHandler extends MediaBaseHandler {
         mediaRequest.setName(StringUtil.toString(mobile.getAppName()));
         mediaRequest.setCarrier(mobile.getOperateId());
         mediaRequest.setConnectiontype(mobile.getNetwork() > 5 ? mobile.getNetwork() : Constant.ConnectionType.CELL);
-        
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         VamakerRTB.VamRequest.Mobile.Point point = mobile.getCorner();
         if (point != null) {
             mediaRequest.setLon(point.getLongitude());

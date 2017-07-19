@@ -145,7 +145,7 @@ public class XtraderHandler extends MediaBaseHandler {
                 break;
         }
         if (!StringUtils.isEmpty(device.getOsv())) {
-            mediaRequest.setOsv(device.getOs());
+            mediaRequest.setOsv(device.getOsv());
         }
         if(!StringUtils.isEmpty(device.getExt().getMac())){
             mediaRequest.setMac(device.getExt().getMac());

@@ -1,21 +1,18 @@
 package com.madhouse.media.madhouse;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.madhouse.ssp.avro.*;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
+import com.madhouse.ssp.avro.MediaBid;
+import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaResponse;
+import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 
 /**
@@ -48,6 +45,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
             return false;
         }
     }
+    /** 
+    * TODO (这里用一句话描述这个方法的作用)
+    * @param madBidRequest
+    * @return
+    */
     private MediaRequest conversionToPremiumMADDataModel(PremiumMADBidRequest madBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         //广告请求流水号
@@ -93,7 +95,10 @@ public class PremiumMADHandler extends MediaBaseHandler {
         mediaRequest.setConnectiontype(Integer.parseInt(madBidRequest.getConn()));
         //设备类型
         mediaRequest.setDevicetype(Integer.parseInt(madBidRequest.getDevicetype()));
-       
+        String mac = madBidRequest.getWma();
+        if(!StringUtils.isEmpty(mac)){
+            mediaRequest.setOsv(mac);
+        }
         //操作系统的版本
         if(!StringUtils.isEmpty(madBidRequest.getOsv())){
             mediaRequest.setOsv(madBidRequest.getOsv());
@@ -128,9 +133,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
         //投放的媒体形式
         if(!StringUtils.isEmpty(madBidRequest.getMedia())){
             mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
-        }
-        for (String label : madBidRequest.getLabel()) {
-            mediaRequest.getTags().add(label);
         }
         logger.info("PremiumMAD convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();

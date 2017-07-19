@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
+import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.tencent.GPBForDSP.Request;
 import com.madhouse.media.tencent.GPBForDSP.Request.App;
@@ -52,7 +54,21 @@ public class TencentHandler extends MediaBaseHandler {
         Impression impression =bidRequest.getImpression(0);
         Device device=bidRequest.getDevice();
         App app=bidRequest.getApp();
-        
+        StringBuilder sb = new StringBuilder();
+        sb.append("TENC:");
+        String TencAdspaceId = bidRequest.getImpression(0).getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
+        sb.append(TencAdspaceId).append(":");
+        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(sb.toString());
+        if (plcmtMetaData != null) {
+            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        } else { 
+             plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("TENC:0:");
+            if(plcmtMetaData != null){
+                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            }else{
+                return null;
+            }
+        }
         mediaRequest.setBid(bidRequest.getId());
         
         Integer w = null;

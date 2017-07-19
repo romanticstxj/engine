@@ -106,6 +106,14 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(mojiWeatherBidRequest.getDevice())) {
             mediaRequest.setModel(mojiWeatherBidRequest.getDevice());
         }
+        //经度
+        if(!StringUtils.isEmpty(mojiWeatherBidRequest.getLon())){
+            mediaRequest.setLon(Float.parseFloat(mojiWeatherBidRequest.getLon()));
+        }
+        //纬度
+        if(!StringUtils.isEmpty(mojiWeatherBidRequest.getLat())){
+            mediaRequest.setLat(Float.parseFloat(mojiWeatherBidRequest.getLat()));
+        }
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("mojiWeather convert mediaRequest is :{}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();

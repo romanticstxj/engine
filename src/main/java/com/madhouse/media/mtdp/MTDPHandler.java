@@ -92,12 +92,15 @@ public class MTDPHandler extends MediaBaseHandler {
         
         mediaRequest.setName(bidRequest.getApp().getName());   
         
-        mediaRequest.setOsv(device.getOsv());
-        
-        mediaRequest.setMake(device.getMake());
-        
-        mediaRequest.setModel(device.getModel());
-        
+        if(!StringUtils.isEmpty(device.getOsv())){
+            mediaRequest.setOsv(device.getOsv());
+        }
+        if(!StringUtils.isEmpty(device.getMake())){
+            mediaRequest.setMake(device.getMake());
+        }
+        if(!StringUtils.isEmpty(device.getModel())){
+            mediaRequest.setModel(device.getModel());
+        }
         /**
          * OS 或  Android
          */
@@ -120,8 +123,9 @@ public class MTDPHandler extends MediaBaseHandler {
         } else {
             mediaRequest.setOs(Constant.OSType.UNKNOWN);
         }
-        
-        
+        mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
         
         String ua = device.getUa();
         if (!StringUtils.isEmpty(ua)) {

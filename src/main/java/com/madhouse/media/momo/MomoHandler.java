@@ -98,14 +98,19 @@ public class MomoHandler extends MediaBaseHandler {
         
         MomoExchange.BidRequest.Device device =  bidRequest.getDevice();
         
-        
-        mediaRequest.setOsv(device.getOsv());
-        mediaRequest.setMake(device.getMake());
-        mediaRequest.setModel(device.getModel());
-        mediaRequest.setMacmd5(device.getMacmd5());
-        
-        
-        
+        //操作系统的版本
+        if(!StringUtils.isEmpty(device.getOsv())){
+            mediaRequest.setOsv(device.getOsv());
+        }
+        if(!StringUtils.isEmpty(device.getMake())){
+            mediaRequest.setMake(device.getMake());
+        }
+        if(!StringUtils.isEmpty(device.getModel())){
+            mediaRequest.setModel(device.getModel());
+        }
+        if(!StringUtils.isEmpty(device.getMacmd5())){
+            mediaRequest.setMacmd5(device.getMacmd5());
+        }
         String ua = device.getUa();
         if (!StringUtils.isEmpty(ua)) {
             mediaRequest.setUa(ua);

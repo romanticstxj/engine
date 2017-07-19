@@ -135,7 +135,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         
         mediaRequest.setW(adTemplate.getWidth());
         mediaRequest.setH(adTemplate.getHeight());
-        
+        mediaRequest.setBidfloor((int)imp.getBidfloor());
         mediaRequest.setBid(imp.getId());
         App app = bidRequest.getApp();
         if (app != null) {
@@ -166,8 +166,12 @@ public class XiaoMiHandler extends MediaBaseHandler {
             }
             //网络服务提供商，未填 
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
-            mediaRequest.setMake(device.getMake());
-            mediaRequest.setModel(device.getModel());
+            if(!StringUtils.isEmpty(device.getMake())){
+                mediaRequest.setMake(device.getMake()); 
+            }
+            if(!StringUtils.isEmpty(device.getModel())){
+                mediaRequest.setModel(device.getModel()); 
+            }
             String os = device.getOs();
             if (StringUtils.isNotEmpty(os)) {
                 if (XiaoMiStatusCode.XiaoMiOs.ANDROID.equalsIgnoreCase(os)) {
@@ -207,14 +211,18 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 }
             }
             mediaRequest.setOsv(device.getOsv() != null ? device.getOsv() : null);
-            mediaRequest.setMac(device.getMacsha1());
-            mediaRequest.setMacmd5(device.getMacmd5());
+            if(!StringUtils.isEmpty(device.getMacsha1())){
+                mediaRequest.setMac(device.getMacsha1());
+            }
+            if(!StringUtils.isEmpty(device.getMacmd5())){
+                mediaRequest.setMacmd5(device.getMacmd5());
+            }
             Geo geo = device.getGeo();
             if (geo != null) {
-                if(ObjectUtils.isNotEmpty(geo.getLat())){
+                if(ObjectUtils.isNotEmpty(geo.getLat()+"")){
                     mediaRequest.setLat((float)geo.getLat());
                 }
-                if(ObjectUtils.isNotEmpty(geo.getLon())){
+                if(ObjectUtils.isNotEmpty(geo.getLon()+"")){
                     mediaRequest.setLon((float)geo.getLon());
                 }
             }

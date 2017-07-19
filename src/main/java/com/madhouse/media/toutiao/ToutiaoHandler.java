@@ -42,16 +42,17 @@ public class ToutiaoHandler extends MediaBaseHandler {
             TOUTIAOAds.BidRequest bidRequest = TOUTIAOAds.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
             logger.info("ToutiaoHandler params is {} "+bidRequest.toString());
             int status =  validateRequiredParam(bidRequest);
-            if(Constant.StatusCode.OK != status){
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                TOUTIAOAds.BidResponse.Builder builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
-                return outputStreamWrite(builder, resp);
-            } else {
+            if(Constant.StatusCode.OK == status){
                 MediaRequest request = conversionToPremiumMADDataModel(isSandbox,bidRequest);
-                mediaBidMetaData.getMediaBidBuilder().setRequest(request);
-                mediaBidMetaData.setRequestObject(bidRequest);
-                return true;
-            }
+                if(request != null){
+                    mediaBidMetaData.getMediaBidBuilder().setRequest(request);
+                    mediaBidMetaData.setRequestObject(bidRequest);
+                    return true;
+                }
+            } 
+            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            TOUTIAOAds.BidResponse.Builder builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
+            return outputStreamWrite(builder, resp);
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -84,7 +85,9 @@ public class ToutiaoHandler extends MediaBaseHandler {
                         .append(device.getOs().toLowerCase()).toString());
             if (plcmtMetaData != null) {
                 mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
-                mediaRequest.setTest(Constant.Test.SIMULATION);
+                mediaRequest.setTest(Constant.Test.REAL);
+                mediaRequest.setW(plcmtMetaData.getW());
+                mediaRequest.setH(plcmtMetaData.getH());
             }
         }
         String supplierAdspaceKey = "";
@@ -104,14 +107,20 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
                 mediaRequest.setW(plcmtMetaData.getW());
                 mediaRequest.setH(plcmtMetaData.getH());
+            }else{
+                return null; 
             }
         }
-        //包名
-        mediaRequest.setBundle(app.getBundle());
-        //应用程序名称
-        mediaRequest.setName(app.getName());
         mediaRequest.setBidfloor(adSlot.getBidFloor());
-        if(StringUtils.isEmpty(String.valueOf(deal.getId()))){
+        //包名
+        if(!StringUtils.isEmpty(app.getBundle())){
+            mediaRequest.setBundle(app.getBundle());
+        }
+        //应用程序名称
+        if(!StringUtils.isEmpty(app.getName())){
+            mediaRequest.setName(app.getName());
+        }
+        if(!StringUtils.isEmpty(String.valueOf(deal.getId()))){
             mediaRequest.setDealid(String.valueOf(deal.getId()));
         }
         /****
@@ -189,7 +198,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             mediaRequest.setModel(device.getModel());
         }
         if(!StringUtils.isEmpty(device.getMake())){
-            mediaRequest.setModel(device.getMake());
+            mediaRequest.setMake(device.getMake());
         }
         /**
          * 赋值地理位置信息
