@@ -145,7 +145,7 @@ public class VamakerHandler extends DSPBaseHandler {
                 logger.warn("vamaker no ad reson:{}", statusCode);
                 return false;
             }
-            String result = EntityUtils.toString(httpResponse.getEntity());
+            String result = EntityUtils.toString(httpResponse.getEntity(),"utf-8");
             logger.info("Vamaker Response is:{}",result);
             VamakerResponse vamakerResponse = JSON.parseObject(result, VamakerResponse.class);
             dspResponse.setCid(vamakerResponse.getCid());

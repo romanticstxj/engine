@@ -238,7 +238,10 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 }
                 if(plcmtMetaData != null){
                     mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+                }else{
+                    return null;
                 }
+                
             }
             mediaRequest.setType(Constant.MediaType.APP);
             logger.info("xiaomi convert mediaRequest is : {}", mediaRequest.toString());

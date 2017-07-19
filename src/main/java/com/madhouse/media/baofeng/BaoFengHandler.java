@@ -20,6 +20,7 @@ import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.baofeng.BaoFengResponse.PV;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
+import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 
 public class BaoFengHandler extends MediaBaseHandler {
@@ -36,9 +37,9 @@ public class BaoFengHandler extends MediaBaseHandler {
 
         try {
             req.setCharacterEncoding("UTF-8");
-            String bytes = getRequestPostBytes(req);
+            String bytes = HttpUtil.getRequestPostBytes(req);
             BaoFengBidRequest baoFengBidRequest = JSON.parseObject(bytes, BaoFengBidRequest.class);
-            logger.info("BaoFengBidRequest Request params is : {}",JSON.toJSONString(baoFengBidRequest));
+            logger.info("BaoFeng Request params is : {}",JSON.toJSONString(baoFengBidRequest));
             int status = validateRequiredParam(baoFengBidRequest, resp);
             if (status != Constant.StatusCode.OK) {
                 resp.setStatus(status);
@@ -166,24 +167,6 @@ public class BaoFengHandler extends MediaBaseHandler {
             }
         }
         
-    }
-    
-    public static String getRequestPostBytes(HttpServletRequest request)
-        throws IOException {
-        int contentLength = request.getContentLength();
-        if (contentLength < 0) {
-            return null;
-        }
-        byte buffer[] = new byte[contentLength];
-        for (int i = 0; i < contentLength;) {
-            
-            int readlen = request.getInputStream().read(buffer, i, contentLength - i);
-            if (readlen == -1) {
-                break;
-            }
-            i += readlen;
-        }
-        return new String(buffer);
     }
     
     private int validateRequiredParam(BaoFengBidRequest baoFengBidRequest, HttpServletResponse resp) {
@@ -372,6 +355,8 @@ public class BaoFengHandler extends MediaBaseHandler {
                 mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
                 break;
         }
+        
+        
 
         // 设备浏览器的User-Agent字符串
         if (!StringUtils.isEmpty(device.getUa())) {

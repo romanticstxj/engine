@@ -74,7 +74,7 @@ public class MomoHandler extends MediaBaseHandler {
         }else{
             mediaRequest.setTest(Constant.Test.SIMULATION);
         }
-
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String campainType = getCampainType(imp.getNative());
         String adspaceKey = new StringBuffer().append("MM:").append(imp.getSlotid()).append(":").append(bidRequest.getDevice().getOs().toLowerCase()).append(":").append(campainType).toString();
         PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);

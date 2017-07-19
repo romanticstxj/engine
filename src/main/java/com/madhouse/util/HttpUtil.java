@@ -1,6 +1,8 @@
 package com.madhouse.util;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -47,5 +49,23 @@ public class HttpUtil {
         }
 
         return "";
+    }
+    
+    public static String getRequestPostBytes(HttpServletRequest request)
+        throws IOException {
+        int contentLength = request.getContentLength();
+        if (contentLength < 0) {
+            return null;
+        }
+        byte buffer[] = new byte[contentLength];
+        for (int i = 0; i < contentLength;) {
+            
+            int readlen = request.getInputStream().read(buffer, i, contentLength - i);
+            if (readlen == -1) {
+                break;
+            }
+            i += readlen;
+        }
+        return new String(buffer);
     }
 }

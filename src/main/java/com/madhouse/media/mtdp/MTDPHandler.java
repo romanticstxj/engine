@@ -81,6 +81,7 @@ public class MTDPHandler extends MediaBaseHandler {
                 return null;
             }
         }
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setBid(bidRequest.getId());
         
         mediaRequest.setW(banner.getW());

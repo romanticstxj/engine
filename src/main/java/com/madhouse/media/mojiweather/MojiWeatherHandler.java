@@ -55,7 +55,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         mediaRequest.setName(mojiWeatherBidRequest.getAppname());
         mediaRequest.setBidfloor(mojiWeatherBidRequest.getBasic_price() == null ? 0 : mojiWeatherBidRequest.getBasic_price());
         mediaRequest.setAdtype(2);   
-        
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setCarrier(mojiWeatherBidRequest.getCarrier());
         switch (mojiWeatherBidRequest.getOs()) {
             case MojiWeatherStatusCode.MojiWeatherOs.OS_ANDROID:
