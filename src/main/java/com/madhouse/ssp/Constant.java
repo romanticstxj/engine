@@ -43,15 +43,24 @@ public final class Constant {
         public static final int MADHOUSE = 1;
     }
 
+    public static final class DSPApiType {
+        public static final int MADRTB = 1;
+        public static final int MADAPI = 2;
+        public static final int VAMAKER = 11;
+        public static final int PG = 12;
+        public static final int ADSAGE = 13;
+        public static final int MEILA = 14;
+        public static final int REACHMAX = 15;
+        public static final int AMNET = 16;
+        public static final int KEDA = 17;
+        public static final int TENCENT = 18;
+        public static final int BAIDU = 19;
+    }
+
     public static final class BidAt {
         public static final int FIRST_PRICE = 1;
         public static final int SECOND_PRICE = 2;
         public static final int FIXED_PRICE = 3;
-    }
-
-    public static final class DSPApiType {
-        public static final int MADHOUSE_PROTO = 1;
-        public static final int MADHOUSE_JSON = 2;
     }
 
     public static final class DeliveryType {

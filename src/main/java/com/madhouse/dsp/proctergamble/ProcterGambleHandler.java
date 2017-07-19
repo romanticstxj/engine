@@ -46,12 +46,7 @@ import com.madhouse.util.ObjectUtils;
 public class ProcterGambleHandler extends DSPBaseHandler {
 
     @Override
-    public HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
-        DSPBidMetaData dspBidMetaData) {
-        if (!this.createDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
-            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-            return null;
-        }
+    public HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
         MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
         Device.Builder deviceBuilder = getDevice(builder);
         if (deviceBuilder == null) {

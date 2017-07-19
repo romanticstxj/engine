@@ -27,22 +27,14 @@ public abstract class DSPBaseHandler {
     
     @SuppressWarnings("static-access")
     public static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
-    
-    public abstract HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData);
-    public abstract boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData);
 
-    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
-        return null;
-    }
-
-    protected final boolean createDSPRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPMetaData dspMetaData, DSPBid.Builder dspBidBuilder) {
+    public final HttpRequestBase packageRequest(MediaBid.Builder mediaBid, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
 
         try {
-            MediaRequest mediaRequest = mediaBidBuilder.getRequest();
-
+            MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
             DSPRequest.Builder dspRequest = DSPRequest.newBuilder()
                     .setId(StringUtil.getUUID())
-                    .setImpid(mediaBidBuilder.getImpid())
+                    .setImpid(mediaBid.getImpid())
                     .setAdtype(plcmtMetaData.getAdType())
                     .setLayout(plcmtMetaData.getLayout())
                     .setTagid(plcmtMetaData.getAdspaceKey())
@@ -52,16 +44,29 @@ public abstract class DSPBaseHandler {
                     .setBidtype(policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidType())
                     .setTmax(mediaMetaData.getTimeout());
 
-            dspBidBuilder.setDspid(dspMetaData.getId())
+            DSPBid.Builder dspBid = dspBidMetaData.getDspBidBuilder();
+            dspBid.setDspid(dspBidMetaData.getDspMetaData().getId())
                     .setPolicyid(policyMetaData.getId())
                     .setDeliverytype(policyMetaData.getDeliveryType())
                     .setTime(System.currentTimeMillis())
                     .setRequestBuilder(dspRequest);
 
-            return true;
-        } catch (Exception ex) {
-            System.err.println(ex.toString());
-            return false;
+            return this.packageBidRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return null;
         }
     }
+
+    public final boolean parseResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
+        return this.parseBidResponse(httpResponse, dspBidMetaData);
+    }
+
+    protected abstract HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData);
+    protected abstract boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData);
+
+    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
+        return null;
+    }
+
 }

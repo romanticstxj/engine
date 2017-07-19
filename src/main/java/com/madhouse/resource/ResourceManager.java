@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.madhouse.configuration.Redis;
+import com.madhouse.dsp.madhouse.MADMaxHandler;
+import com.madhouse.dsp.madrtb.MADRTBHandler;
+import com.madhouse.dsp.proctergamble.ProcterGambleHandler;
+import com.madhouse.dsp.vamaker.VamakerHandler;
+import com.madhouse.ssp.Constant;
 import com.madhouse.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -76,6 +81,14 @@ public class ResourceManager {
 
     public boolean init()
     {
+        {
+            this.dspBaseHandlerMap.clear();
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.MADRTB, new MADRTBHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.MADAPI, new MADMaxHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.PG, new ProcterGambleHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.VAMAKER, new VamakerHandler());
+        }
+
         {
             GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
             poolConfig.setMinIdle(this.premiummad.getRedis().getMinIdle());

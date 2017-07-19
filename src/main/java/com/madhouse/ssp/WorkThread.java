@@ -14,6 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.logging.log4j.Logger;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ public class WorkThread {
     private Jedis redisSlave = null;
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
     private HttpClient winNoticeHttpClient = new HttpClient();
+    private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     private ExecutorService winNoticeService = Executors.newCachedThreadPool();
     private final byte[] image = {  0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
                                     (byte)0x80, 0x01, 0x00, 0x00, 0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, 0x21,
@@ -170,6 +172,7 @@ public class WorkThread {
             /*this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
             this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();*/
 
+            //get media request handler
             MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
             if (mediaBaseHandler == null) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -177,24 +180,24 @@ public class WorkThread {
             }
 
             MediaBidMetaData mediaBidMetaData = new MediaBidMetaData();
-            MediaBid.Builder mediaBidBuilder = MediaBid.newBuilder();
+            MediaBid.Builder mediaBid = MediaBid.newBuilder();
 
             //init mediaBid object
-            mediaBidBuilder.setImpid(StringUtil.getUUID());
-            mediaBidBuilder.setIp(HttpUtil.getRealIp(req));
-            mediaBidBuilder.setUa(HttpUtil.getUserAgent(req));
-            mediaBidBuilder.setTime(System.currentTimeMillis());
-            mediaBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
+            mediaBid.setImpid(StringUtil.getUUID());
+            mediaBid.setIp(HttpUtil.getRealIp(req));
+            mediaBid.setUa(HttpUtil.getUserAgent(req));
+            mediaBid.setTime(System.currentTimeMillis());
+            mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
 
-            mediaBidMetaData.setMediaBidBuilder(mediaBidBuilder);
+            mediaBidMetaData.setMediaBidBuilder(mediaBid);
 
             //parse media request
-            if (!mediaBaseHandler.parseMediaRequest(req, mediaBidMetaData, resp)) {
+            if (!mediaBaseHandler.parseRequest(req, mediaBidMetaData, resp)) {
                 return;
             }
 
-            mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
-            MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
+            mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
+            MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
 
             //get placement metadata
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
@@ -220,12 +223,12 @@ public class WorkThread {
 
             //init user ip
             if (!mediaRequest.hasIp()) {
-                mediaRequest.setIp(mediaBidBuilder.getIp());
+                mediaRequest.setIp(mediaBid.getIp());
             }
 
             //init user ua
             if (!mediaRequest.hasUa()) {
-                mediaRequest.setUa(mediaBidBuilder.getUa());
+                mediaRequest.setUa(mediaBid.getUa());
             }
 
             //init location
@@ -235,11 +238,11 @@ public class WorkThread {
                 return;
             }
 
-            mediaBidBuilder.setLocation(location);
+            mediaBid.setLocation(location);
 
             //bidfloor, bidtype
-            mediaBidBuilder.setBidfloor(plcmtMetaData.getBidFloor());
-            mediaBidBuilder.setBidtype(plcmtMetaData.getBidType());
+            mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
+            mediaBid.setBidtype(plcmtMetaData.getBidType());
 
             //get block metadata
             long blockid = plcmtMetaData.getBlockId();
@@ -255,7 +258,7 @@ public class WorkThread {
 
             for (int i = 0; i < deliveryTypes.length; ++i) {
                 //policy targeting
-                List<Long> policyList = this.policyTargeting(mediaBidBuilder, deliveryTypes[i]);
+                List<Long> policyList = this.policyTargeting(mediaBid, deliveryTypes[i]);
                 if (policyList == null || policyList.isEmpty()) {
                     continue;
                 }
@@ -294,9 +297,13 @@ public class WorkThread {
                             dspBidMetaData.setDspBidBuilder(dspBidBuilder);
 
                             DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
-                            dspBidMetaData.setDspBaseHandler(dspBaseHandler);
+                            if (dspBaseHandler == null) {
+                                logger.error("dspApiType[%d-%] error.", dspMetaData.getId(), dspMetaData.getApiType());
+                                continue;
+                            }
 
-                            HttpRequestBase httpRequestBase = dspBaseHandler.packageBidRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
+                            dspBidMetaData.setDspBaseHandler(dspBaseHandler);
+                            HttpRequestBase httpRequestBase = dspBaseHandler.packageRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
                             if (httpRequestBase != null) {
                                 HttpClient httpClient = dspMetaData.getHttpClient();
                                 httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
@@ -372,7 +379,7 @@ public class WorkThread {
                             DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
                             HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
                             if (httpResponse != null) {
-                                if (dspBaseHandler.parseBidResponse(httpResponse, dspBidMetaData)) {
+                                if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
                                     if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {
                                         dspBidderList.add(dspBidMetaData);
                                     }
@@ -390,11 +397,10 @@ public class WorkThread {
                                 DSPBidMetaData dspBidMetaData = winner.getLeft();
                                 dspBidMetaData.getDspBidBuilder().setPrice(winner.getRight());
 
-                                String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBidBuilder.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
+                                String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "nx", "ex", 86400);
 
-                                if (this.createMediaResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData.getMediaBidBuilder())) {
-                                    mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
+                                if (mediaBaseHandler.packageResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp)) {
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                         String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
                                         if (!StringUtils.isEmpty(url)) {
@@ -421,45 +427,6 @@ public class WorkThread {
         } catch (Exception ex) {
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
         }
-    }
-
-    private boolean createMediaResponse(DSPBid.Builder dspBidBuilder, MediaBid.Builder mediaBidBuilder) {
-        mediaBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
-
-        if (dspBidBuilder != null && dspBidBuilder.getStatus() == Constant.StatusCode.OK && dspBidBuilder.getResponse() != null) {
-            DSPResponse dspResponse = dspBidBuilder.getResponse();
-
-            try {
-                MediaResponse.Builder mediaResponse = MediaResponse.newBuilder();
-
-                mediaResponse.setDspid(dspBidBuilder.getDspid());
-                mediaResponse.setAdmid(dspResponse.getAdmid());
-                mediaResponse.setLayout(dspBidBuilder.getRequest().getLayout());
-                mediaResponse.setTitle(dspResponse.getTitle());
-                mediaResponse.setDesc(dspResponse.getDesc());
-                mediaResponse.setIcon(dspResponse.getIcon());
-                mediaResponse.setCover(dspResponse.getCover());
-                mediaResponse.setAdm(dspResponse.getAdm());
-                mediaResponse.setDealid(dspResponse.getDealid());
-                mediaResponse.setDuration(dspResponse.getDuration());
-                mediaResponse.setLpgurl(dspResponse.getLpgurl());
-                mediaResponse.setActtype(dspResponse.getActtype());
-                mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitor()));
-
-                mediaBidBuilder.setResponseBuilder(mediaResponse);
-                mediaBidBuilder.setStatus(Constant.StatusCode.OK);
-
-                return true;
-
-            } catch (Exception ex) {
-                System.err.println(ex.toString());
-                mediaBidBuilder.setStatus(Constant.StatusCode.INTERNAL_ERROR);
-            }
-        } else {
-            mediaBidBuilder.setStatus(Constant.StatusCode.INTERNAL_ERROR);
-        }
-
-        return false;
     }
 
     private List<Long> policyTargeting(MediaBid.Builder mediaBidBuilder, int deliveryType) {

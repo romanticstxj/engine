@@ -39,10 +39,7 @@ import com.madhouse.util.StringUtil;
 public class MADMaxHandler extends DSPBaseHandler {
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
-        if (!this.createDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
-            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-            return null;
-        }
+
         MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
         String urlTemplate = dspBidMetaData.getDspMetaData().getBidUrl();
 

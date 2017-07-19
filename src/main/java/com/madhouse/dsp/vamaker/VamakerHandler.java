@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.madhouse.ssp.avro.*;
 import com.madhouse.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -21,23 +22,14 @@ import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.cache.PolicyMetaData;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.MediaBid.Builder;
-import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.Monitor;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 
 public class VamakerHandler extends DSPBaseHandler {
 
     @Override
-    public HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
-        DSPBidMetaData dspBidMetaData) {
-        if (!this.createDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
-            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-            return null;
-        }
-        
+    public HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
+
         MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
         String urlTemplate = dspBidMetaData.getDspMetaData().getBidUrl();
         if (urlTemplate.contains("?")) {

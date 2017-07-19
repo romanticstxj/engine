@@ -7,6 +7,7 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.AESUtil;
 import com.madhouse.util.StringUtil;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,18 +22,11 @@ import org.apache.http.util.EntityUtils;
 public class MADRTBHandler extends DSPBaseHandler {
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
-        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
-
-        if (!this.createDSPRequest(mediaBidBuilder, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData.getDspMetaData(), dspBidMetaData.getDspBidBuilder())) {
-            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-            return null;
-        }
-
         DSPRequest dspRequest = dspBidMetaData.getDspBidBuilder().getRequest();
         MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
         HttpPost httpPost = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
-        httpPost.setHeader("Content-Type", "application/x-protobuf");
+        httpPost.setHeader("Content-Type", "application/x-protobuf; charset=utf-8");
 
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
 
@@ -258,12 +252,12 @@ public class MADRTBHandler extends DSPBaseHandler {
     @Override
     public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         try {
-            DSPBid.Builder dspBidBuilder = dspBidMetaData.getDspBidBuilder();
+            DSPBid.Builder dspBid = dspBidMetaData.getDspBidBuilder();
 
             if (httpResponse != null) {
                 int status = httpResponse.getStatusLine().getStatusCode();
                 if (status != Constant.StatusCode.OK) {
-                    dspBidBuilder.setStatus(status);
+                    dspBid.setStatus(status);
                     return false;
                 }
 
@@ -271,16 +265,16 @@ public class MADRTBHandler extends DSPBaseHandler {
                 PremiumMADRTBProtocol.BidResponse bidResponse = PremiumMADRTBProtocol.BidResponse.parseFrom(EntityUtils.toByteArray(entity));
                 if (bidResponse != null) {
                     if (bidResponse.hasNbr() && bidResponse.getNbr() >= 0) {
-                        dspBidBuilder.setStatus(Constant.StatusCode.NO_CONTENT);
+                        dspBid.setStatus(Constant.StatusCode.NO_CONTENT);
                         return false;
                     }
 
                     if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
                         PremiumMADRTBProtocol.BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
                         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
-                        dspResponse.setId(dspBidBuilder.getRequest().getId());
+                        dspResponse.setId(dspBid.getRequest().getId());
                         dspResponse.setBidid(bid.getId());
-                        dspResponse.setImpid(dspBidBuilder.getRequest().getImpid());
+                        dspResponse.setImpid(dspBid.getRequest().getImpid());
                         dspResponse.setAdid(bid.getAdid());
                         dspResponse.setCid(bid.getCid());
                         dspResponse.setCrid(bid.getCrid());
@@ -362,17 +356,17 @@ public class MADRTBHandler extends DSPBaseHandler {
                             }
                         }
 
-                        dspBidBuilder.setResponseBuilder(dspResponse);
-                        dspBidBuilder.setStatus(Constant.StatusCode.OK);
+                        dspBid.setResponseBuilder(dspResponse);
+                        dspBid.setStatus(Constant.StatusCode.OK);
                         return true;
                     } else {
-                        dspBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
+                        dspBid.setStatus(Constant.StatusCode.BAD_REQUEST);
                     }
                 } else {
-                    dspBidBuilder.setStatus(Constant.StatusCode.BAD_REQUEST);
+                    dspBid.setStatus(Constant.StatusCode.BAD_REQUEST);
                 }
             } else {
-                dspBidBuilder.setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
+                dspBid.setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
             }
         } catch (Exception ex) {
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);

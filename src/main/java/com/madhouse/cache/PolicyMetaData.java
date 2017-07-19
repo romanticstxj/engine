@@ -83,7 +83,6 @@ public class PolicyMetaData {
 
     public class DSPInfo {
         private long id;
-        private int weight;
         private int status;
 
         public long getId() {
@@ -92,14 +91,6 @@ public class PolicyMetaData {
 
         public void setId(long id) {
             this.id = id;
-        }
-
-        public int getWeight() {
-            return weight;
-        }
-
-        public void setWeight(int weight) {
-            this.weight = weight;
         }
 
         public int getStatus() {
