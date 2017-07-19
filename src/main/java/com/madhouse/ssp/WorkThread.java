@@ -397,14 +397,16 @@ public class WorkThread {
                                     mediaBaseHandler.packageMediaResponse(mediaBidMetaData, resp);
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                         String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
-                                        final HttpGet httpGet = new HttpGet(url);
-                                        final HttpClient httpClient = this.winNoticeHttpClient;
-                                        this.winNoticeService.submit(new Runnable() {
-                                            public void run() {
-                                                httpClient.execute(httpGet, 150);
-                                                httpGet.releaseConnection();
-                                            }
-                                        });
+                                        if (!StringUtils.isEmpty(url)) {
+                                            final HttpGet httpGet = new HttpGet(url);
+                                            final HttpClient httpClient = this.winNoticeHttpClient;
+                                            this.winNoticeService.submit(new Runnable() {
+                                                public void run() {
+                                                    httpClient.execute(httpGet, 150);
+                                                    httpGet.releaseConnection();
+                                                }
+                                            });
+                                        }
                                     }
                                 }
                             }
