@@ -382,10 +382,14 @@ public class MADRTBHandler extends DSPBaseHandler {
         try {
             DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
             String url = dspResponse.getNurl();
-            url = url.replace("${AUCTION_ID}", dspResponse.getId())
-                    .replace("${AUCTION_IMP_ID}", dspResponse.getImpid())
-                    .replace("${AUCTION_BID_ID}", dspResponse.getBidid())
-                    .replace("${AUCTION_AD_ID}", dspResponse.getAdid());
+            if (StringUtils.isEmpty(url)) {
+                return null;
+            }
+
+            url = url.replace("${AUCTION_ID}", StringUtil.toString(dspResponse.getId()))
+                    .replace("${AUCTION_IMP_ID}", StringUtil.toString(dspResponse.getImpid()))
+                    .replace("${AUCTION_BID_ID}", StringUtil.toString(dspResponse.getBidid()))
+                    .replace("${AUCTION_AD_ID}", StringUtil.toString(dspResponse.getAdid()));
 
             if (url.contains("${AUCTION_PRICE")) {
                 String text = String.format("%d_%d", auctionPrice, System.currentTimeMillis() / 1000);
