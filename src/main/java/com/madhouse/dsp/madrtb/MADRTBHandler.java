@@ -26,6 +26,7 @@ public class MADRTBHandler extends DSPBaseHandler {
         MediaRequest mediaRequest = mediaBidBuilder.getRequest();
 
         HttpPost httpPost = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
+        httpPost.setHeader("x-madrtb-version", "1.2");
         httpPost.setHeader("Content-Type", "application/x-protobuf; charset=utf-8");
 
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
@@ -377,7 +378,7 @@ public class MADRTBHandler extends DSPBaseHandler {
     }
 
     @Override
-    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
+    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData, int auctionPrice) {
         try {
             DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
             String url = dspResponse.getNurl();
@@ -387,7 +388,7 @@ public class MADRTBHandler extends DSPBaseHandler {
                     .replace("${AUCTION_AD_ID}", dspResponse.getAdid());
 
             if (url.contains("${AUCTION_PRICE")) {
-                String text = String.format("%d_%d", dspBidMetaData.getDspBidBuilder().getPrice(), System.currentTimeMillis() / 1000);
+                String text = String.format("%d_%d", auctionPrice, System.currentTimeMillis() / 1000);
                 byte[] key = StringUtil.hexToBytes(dspBidMetaData.getDspMetaData().getToken());
                 byte[] data = AESUtil.encryptECB(text.getBytes("utf-8"), key, AESUtil.Algorithm.AES);
                 return url.replace("${AUCTION_PRICE}", StringUtil.urlSafeBase64Encode(data));

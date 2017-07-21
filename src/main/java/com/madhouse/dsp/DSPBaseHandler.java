@@ -65,7 +65,7 @@ public abstract class DSPBaseHandler {
     protected abstract HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData);
     protected abstract boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData);
 
-    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
+    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData, int auctionPrice) {
         return null;
     }
 

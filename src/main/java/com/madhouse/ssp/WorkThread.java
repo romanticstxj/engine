@@ -395,14 +395,14 @@ public class WorkThread {
                             Pair<DSPBidMetaData, Integer> winner = this.selectWinner(plcmtMetaData, policyMetaData, dspBidderList);
                             if (winner != null) {
                                 DSPBidMetaData dspBidMetaData = winner.getLeft();
-                                dspBidMetaData.getDspBidBuilder().setPrice(winner.getRight());
+                                int auctionPrice = winner.getRight();
 
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "nx", "ex", 86400);
 
                                 if (mediaBaseHandler.packageResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp)) {
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                                        String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
+                                        String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData, auctionPrice);
                                         if (!StringUtils.isEmpty(url)) {
                                             final HttpGet httpGet = new HttpGet(url);
                                             final HttpClient httpClient = this.winNoticeHttpClient;
