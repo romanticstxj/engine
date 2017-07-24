@@ -36,6 +36,50 @@
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
 		</RollingRandomAccessFile>
+		<!-- dsp -->
+		<RollingRandomAccessFile name="dspbid"
+			fileName="${LOG_HOME}\dspbid.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\dspbid-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout>
+                <Pattern>%m%n</Pattern>
+            </PatternLayout>
+			<Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+		</RollingRandomAccessFile>
+		<!-- winnotice -->
+		<RollingRandomAccessFile name="winnotice"
+			fileName="${LOG_HOME}\winnotice.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\winnotice-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout>
+                <Pattern>%m%n</Pattern>
+            </PatternLayout>
+			<Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+		</RollingRandomAccessFile>
+		<!-- impression -->
+		<RollingRandomAccessFile name="impression"
+			fileName="${LOG_HOME}\impression.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\impression-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout>
+                <Pattern>%m%n</Pattern>
+            </PatternLayout>
+			<Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+		</RollingRandomAccessFile>
+		<!-- click -->
+		<RollingRandomAccessFile name="click"
+			fileName="${LOG_HOME}\click.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\click-%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout>
+                <Pattern>%m%n</Pattern>
+            </PatternLayout>
+			<Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+		</RollingRandomAccessFile>
 		
 	</Appenders>
 	<loggers>
@@ -49,6 +93,18 @@
 		
 		<Logger name="mediabid" additivity="false" level="all">
 			<appender-ref ref="mediabid" />
+		</Logger>
+		<Logger name="dspbid" additivity="false" level="all">
+			<appender-ref ref="dspbid" />
+		</Logger>
+		<Logger name="winnotice" additivity="false" level="all">
+			<appender-ref ref="winnotice" />
+		</Logger>
+		<Logger name="impression" additivity="false" level="all">
+			<appender-ref ref="impression" />
+		</Logger>
+		<Logger name="click" additivity="false" level="all">
+			<appender-ref ref="click" />
 		</Logger>
 	</loggers>
 </Configuration>

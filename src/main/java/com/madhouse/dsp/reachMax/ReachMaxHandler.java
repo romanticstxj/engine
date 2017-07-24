@@ -1,4 +1,4 @@
-package com.madhouse.dsp.proctergamble;
+package com.madhouse.dsp.reachMax;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -23,35 +23,37 @@ import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.cache.PolicyMetaData;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.dsp.proctergamble.PGMadAds.Ad;
-import com.madhouse.dsp.proctergamble.PGMadAds.Ad.MaterialMeta;
 import com.madhouse.dsp.proctergamble.PGMadAds.AdSlot;
 import com.madhouse.dsp.proctergamble.PGMadAds.App;
 import com.madhouse.dsp.proctergamble.PGMadAds.BidRequest;
 import com.madhouse.dsp.proctergamble.PGMadAds.BidResponse;
 import com.madhouse.dsp.proctergamble.PGMadAds.CreativeType;
 import com.madhouse.dsp.proctergamble.PGMadAds.Device;
+import com.madhouse.dsp.proctergamble.PGMadAds.Ad.MaterialMeta;
 import com.madhouse.dsp.proctergamble.PGMadAds.Device.Os;
 import com.madhouse.dsp.proctergamble.PGMadAds.Device.UdId;
 import com.madhouse.dsp.proctergamble.PGMadAds.Network;
 import com.madhouse.dsp.proctergamble.PGMadAds.Size;
 import com.madhouse.dsp.proctergamble.PGMadAds.Version;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.MediaBid.Builder;
+import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.Monitor;
 import com.madhouse.ssp.avro.Track;
 
-public class ProcterGambleHandler extends DSPBaseHandler {
+public class ReachMaxHandler extends DSPBaseHandler {
 
     @Override
-    public HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
+    protected HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
+        DSPBidMetaData dspBidMetaData) {
+        
         MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
         Device.Builder deviceBuilder = getDevice(builder);
         if (deviceBuilder == null) {
             return null;
         }
-        Network.Builder networkBuilder = getNetwork(builder);
+        Network.Builder networkBuilder = getNetwork(builder,mediaBidBuilder.getLocation() == null ? "" : mediaBidBuilder.getLocation());
         if (networkBuilder == null) {
             return null;
         }
@@ -164,7 +166,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         return deviceBuilder;
     }
 
-    private com.madhouse.dsp.proctergamble.PGMadAds.Network.Builder getNetwork(com.madhouse.ssp.avro.MediaRequest.Builder builder) {
+    private com.madhouse.dsp.proctergamble.PGMadAds.Network.Builder getNetwork(com.madhouse.ssp.avro.MediaRequest.Builder builder, String location) {
         
         // 网络类型
         Network.Builder networkBuilder = Network.newBuilder();
@@ -174,6 +176,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
             return null;
         }
         networkBuilder.setIpv4(ip);
+        networkBuilder.setIpv6(location);
         return networkBuilder;
     }
     
@@ -243,7 +246,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         return appBuilder;
     }
     @Override
-    public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
+    protected boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         try {
@@ -268,7 +271,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                         List<Track> tracks=new ArrayList<>();
                         for (int i = 0; i < materialMeta.getWinNoticeUrlCount(); i++) {
                             String noticeurl = materialMeta.getWinNoticeUrl(i);
-                            if (noticeurl != null && noticeurl.contains("{AUCTION_PRICE}")) {//替换保洁的price,同时保存transactionId
+                            if (noticeurl != null && noticeurl.contains("{AUCTION_PRICE}")) {//替换的price,同时保存transactionId
                                 noticeurl = noticeurl.replace("{AUCTION_PRICE}", "1");
                                 try{
                                     int i1 = noticeurl.lastIndexOf("transactionId");
@@ -299,5 +302,6 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         }
         return false;
     }
+    
     
 }
