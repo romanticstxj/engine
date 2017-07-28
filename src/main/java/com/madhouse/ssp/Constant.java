@@ -15,11 +15,17 @@ public final class Constant {
         //deliverytype, targettype, targetinfo
         public static final String TARGET_KEY = "set:%d:%d:%s:policys";
 
-        public static final String MEDIA_META_DATA = "str:media_meta_data";
-        public static final String PLACEMENT_META_DATA = "str:plcmt_meta_data";
-        public static final String ADBLOCK_META_DATA = "str:adblock_meta_data";
-        public static final String POLICY_META_DATA = "str:policy_meta_data";
-        public static final String DSP_META_DATA = "str:dsp_meta_data";
+        public static final String ALL_MEDIA = "set:all_media";
+        public static final String MEDIA_META_DATA = "str:%s:media_info";
+        public static final String ALL_PLACEMENT = "set:all_plcmt";
+        public static final String PLACEMENT_META_DATA = "str:%s:plcmt_info";
+        public static final String ALL_ADBLOCK = "set:all_adblock";
+        public static final String ADBLOCK_META_DATA = "str:%s:adblock_info";
+        public static final String ALL_POLICY = "set:all_policy";
+        public static final String POLICY_META_DATA = "str:%s:policy_info";
+        public static final String ALL_DSP = "set:all_dsp";
+        public static final String DSP_META_DATA = "str:%s:dsp_info";
+        
         public static final String MEDIA_MAPPING_DATA = "str:media_mapping_data";
         public static final String DSP_MAPPING_DATA = "str:dsp_mapping_data";
 
