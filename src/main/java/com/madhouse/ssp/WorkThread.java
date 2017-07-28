@@ -31,8 +31,6 @@ import java.util.concurrent.Executors;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class WorkThread {
-    private Jedis redisMaster = null;
-    private Jedis redisSlave = null;
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
     private HttpClient winNoticeHttpClient = new HttpClient();
     private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
@@ -64,15 +62,15 @@ public class WorkThread {
             ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
 
             //bid redis check
-            this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+            Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (!this.redisSlave.exists(recordKey)) {
+            if (!redisMaster.exists(recordKey)) {
                 impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
             recordKey = String.format(Constant.CommonKey.IMP_RECORD, impid, mid, plcmtid, policyid);
-            String ret = this.redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
             if (!StringUtils.isEmpty(ret) && ret.substring(0, 2).compareTo("OK") != 0) {
                 impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -125,15 +123,15 @@ public class WorkThread {
             ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
 
             //bid redis check
-            this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+            Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (!this.redisSlave.exists(recordKey)) {
+            if (!redisMaster.exists(recordKey)) {
                 clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
             recordKey = String.format(Constant.CommonKey.CLK_RECORD, impid, mid, plcmtid, policyid);
-            String ret = this.redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
             if (!StringUtils.isEmpty(ret) && ret.substring(0, 2).compareTo("OK") != 0) {
                 clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -179,8 +177,8 @@ public class WorkThread {
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            /*this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
-            this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();*/
+            Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+            Jedis redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
             //get media request handler
             MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
@@ -294,8 +292,8 @@ public class WorkThread {
 
                             //QPS Contorl
                             String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
-                            this.redisMaster.set(qpsControl, "0", "NX", "EX", 3);
-                            long totalCount = this.redisMaster.incrBy(qpsControl, 1);
+                            redisMaster.set(qpsControl, "0", "NX", "EX", 3);
+                            long totalCount = redisMaster.incrBy(qpsControl, 1);
                             if (totalCount >= dspMetaData.getMaxQPS()) {
                                 continue;
                             }
@@ -338,12 +336,12 @@ public class WorkThread {
                                     int pastDays = Utility.dateDiff(StringUtil.toDate(currentDate), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
                                     int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
 
-                                    long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
                                     if (count >= ((double)policyMetaData.getMaxCount() * pastDays / totalDays)) {
                                         CacheManager.getInstance().blockPolicy(policyMetaData.getId());
                                     }
                                 } else {
-                                    long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                                     if (count >= policyMetaData.getMaxCount()) {
                                         CacheManager.getInstance().blockPolicy(policyMetaData.getId());
                                     }
@@ -368,12 +366,12 @@ public class WorkThread {
                                         totalHours = hours.size();
                                     }
 
-                                    long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
                                     if (count >= ((double)policyMetaData.getMaxCount() * pastHours / totalHours)) {
                                         CacheManager.getInstance().blockPolicy(policyMetaData.getId());
                                     }
                                 } else {
-                                    long count = this.redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
                                     if (count >= policyMetaData.getMaxCount()) {
                                         CacheManager.getInstance().blockPolicy(policyMetaData.getId());
                                     }
@@ -409,7 +407,7 @@ public class WorkThread {
 
                                 int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
-                                this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
+                                redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
 
                                 if (mediaBaseHandler.packageResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp)) {
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
