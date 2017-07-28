@@ -126,17 +126,15 @@ public class CacheManager implements Runnable {
 
     private ConcurrentHashMap<Long, MediaMetaData> loadMediaMetaData() {
         ConcurrentHashMap<Long, MediaMetaData> var = new ConcurrentHashMap<Long, MediaMetaData>();
-
-        String text = this.redisSlave.get(Constant.CommonKey.MEDIA_META_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<MediaMetaData> mediaMetaDatas = JSON.parseArray(text, MediaMetaData.class);
-            for (MediaMetaData mediaMetaData : mediaMetaDatas) {
-                if (mediaMetaData.getStatus() >= 0) {
-                    var.put(mediaMetaData.getId(), mediaMetaData);
-                }
+        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_MEDIA);
+        for (String mediaId : set) {
+            String text = this.redisSlave.get(String.format(Constant.CommonKey.MEDIA_META_DATA,mediaId));
+            if (!StringUtils.isEmpty(text)) {
+                MediaMetaData mediaMetaData = JSON.parseObject(text, MediaMetaData.class);
+                var.put(mediaMetaData.getId(), mediaMetaData);
+                
             }
         }
-
         return var;
     }
 
@@ -190,17 +188,15 @@ public class CacheManager implements Runnable {
 
     private ConcurrentHashMap<Long, DSPMetaData> loadDSPMetaData() {
         ConcurrentHashMap<Long, DSPMetaData> var = new ConcurrentHashMap<Long, DSPMetaData>();
-
-        String text = this.redisSlave.get(Constant.CommonKey.DSP_META_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<DSPMetaData> dspMetaDatas = JSON.parseArray(text, DSPMetaData.class);
-            for (DSPMetaData dspMetaData : dspMetaDatas) {
-                if (dspMetaData.getStatus() >= 0) {
-                    var.put(dspMetaData.getId(), dspMetaData);
-                }
+        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_DSP);
+        for (String mediaId : set) {
+            String text = this.redisSlave.get(String.format(Constant.CommonKey.DSP_META_DATA,mediaId));
+            if (!StringUtils.isEmpty(text)) {
+                DSPMetaData metaData = JSON.parseObject(text, DSPMetaData.class);
+                var.put(metaData.getId() , metaData);
+                
             }
         }
-
         return var;
     }
 
