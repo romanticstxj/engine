@@ -14,7 +14,7 @@
                 "className": "com.madhouse.media.madhouse.PremiumMADHandler"
             }, {
                 "path": "/adcall/xtrader/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.xtrader.XtraderHandler"
             }, {
                 "path": "/adcall/dianping/bidrequest",
                 "className": "com.madhouse.media.mtdp.MTDPHandler"
@@ -41,7 +41,7 @@
                 "className": ""
             }, {
                 "path": "/adcall/tencent/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.tencent.TencentHandler"
             }
         ],
         "impression": "/adcall/impression",

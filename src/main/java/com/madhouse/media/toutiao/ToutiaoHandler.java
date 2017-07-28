@@ -342,6 +342,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
     }
     private boolean outputStreamWrite(TOUTIAOAds.BidResponse.Builder builder, HttpServletResponse resp)  {
         try {
+            resp.setContentType("application/octet-stream;charset=UTF-8");
             resp.getOutputStream().write(builder.build().toByteArray());
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);

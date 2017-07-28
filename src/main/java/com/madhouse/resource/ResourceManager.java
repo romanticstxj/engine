@@ -11,10 +11,12 @@ import com.madhouse.configuration.Redis;
 import com.madhouse.dsp.madhouse.MADMaxHandler;
 import com.madhouse.dsp.madrtb.MADRTBHandler;
 import com.madhouse.dsp.proctergamble.ProcterGambleHandler;
+import com.madhouse.dsp.reachMax.ReachMaxHandler;
 import com.madhouse.dsp.vamaker.VamakerHandler;
 import com.madhouse.ssp.Constant;
 import com.madhouse.util.IPLocation;
 import com.madhouse.util.StringUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -26,7 +28,9 @@ import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
+
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -57,6 +61,7 @@ public class ResourceManager {
             this.dspBaseHandlerMap.put(Constant.DSPApiType.MADAPI, new MADMaxHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.PG, new ProcterGambleHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.VAMAKER, new VamakerHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.REACHMAX, new ReachMaxHandler());
         }
 
         {

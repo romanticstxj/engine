@@ -162,7 +162,7 @@ public class VamakerHandler extends DSPBaseHandler {
             dspBidMetaData.getDspBidBuilder().setResponse(dspResponse.build());
             return true;
         } catch (Exception e) {
-            logger.error("MADMax Response :{}", dspBidMetaData.getDspBidBuilder().toString());
+            logger.error("Vamaker Response :{}", dspBidMetaData.getDspBidBuilder().toString());
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return false;
         }
