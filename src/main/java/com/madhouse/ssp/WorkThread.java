@@ -70,6 +70,13 @@ public class WorkThread {
                 impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
+            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
+            recordKey = String.format(Constant.CommonKey.IMP_RECORD, impid, mid, plcmtid, policyid);
+            String ret = this.redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
+            if (!StringUtils.isEmpty(ret) && ret.substring(0, 2).compareTo("OK") != 0) {
+                impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
+            }
+
             impressionTrack.setTime(System.currentTimeMillis());
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
@@ -122,6 +129,13 @@ public class WorkThread {
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
             if (!this.redisSlave.exists(recordKey)) {
                 clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
+            }
+
+            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
+            recordKey = String.format(Constant.CommonKey.CLK_RECORD, impid, mid, plcmtid, policyid);
+            String ret = this.redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
+            if (!StringUtils.isEmpty(ret) && ret.substring(0, 2).compareTo("OK") != 0) {
+                clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
 
             clickTrack.setTime(System.currentTimeMillis());
@@ -294,7 +308,7 @@ public class WorkThread {
 
                             DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
                             if (dspBaseHandler == null) {
-                                logger.error("dspApiType[%d-%] error.", dspMetaData.getId(), dspMetaData.getApiType());
+                                logger.error("dspApiType[%d-%d] error.", dspMetaData.getId(), dspMetaData.getApiType());
                                 continue;
                             }
 
@@ -393,8 +407,9 @@ public class WorkThread {
                                 DSPBidMetaData dspBidMetaData = winner.getLeft();
                                 int auctionPrice = winner.getRight();
 
+                                int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
-                                this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "nx", "ex", 86400);
+                                this.redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
 
                                 if (mediaBaseHandler.packageResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp)) {
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {

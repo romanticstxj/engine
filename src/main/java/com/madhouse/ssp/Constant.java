@@ -10,7 +10,9 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 public final class Constant {
 
     public static final class CommonKey {
-        public static final String BID_RECORD = "str:%s:%s:%s:%s:bidrecord";
+        public static final String BID_RECORD = "str:%s:%s:%s:%s:bid_record";
+        public static final String IMP_RECORD = "str:%s:%s:%s:%s:imp_record";
+        public static final String CLK_RECORD = "str:%s:%s:%s:%s:clk_record";
 
         //deliverytype, targettype, targetinfo
         public static final String TARGET_KEY = "set:%d:%d:%s:policys";
@@ -213,7 +215,7 @@ public final class Constant {
     }
 
     public static final class InvalidType {
-        public static final int NO_REQUEST = 1;
-        public static final int DUPLICATE = 2;
+        public static final int NO_REQUEST = -1;
+        public static final int DUPLICATE = 1;
     }
 }

@@ -15,6 +15,8 @@ public class WebApp {
 
 	private List<Bid> bids;
 
+	private int expiredTime;
+
 	public int getPort() {
 		return port;
 	}
@@ -61,5 +63,13 @@ public class WebApp {
 
 	public void setClick(String click) {
 		this.click = click;
+	}
+
+	public int getExpiredTime() {
+		return expiredTime;
+	}
+
+	public void setExpiredTime(int expiredTime) {
+		this.expiredTime = expiredTime;
 	}
 }

@@ -1,6 +1,6 @@
 package com.madhouse.configuration;
 
-public class Premiummad {
+public class Configuration {
 	private Redis redis;
 
 	private WebApp webapp;

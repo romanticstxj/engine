@@ -34,7 +34,7 @@ public class LoggerUtil extends KafkaCallback {
     
     private static ConcurrentHashMap<String, Logger> loggerBaseMap = new ConcurrentHashMap<String, Logger>();
     static{
-        List<Kafka.Topic> list=  ResourceManager.getInstance().getPremiummad().getKafka().getTopics();
+        List<Kafka.Topic> list=  ResourceManager.getInstance().getConfiguration().getKafka().getTopics();
         for (Kafka.Topic topic : list) {
             loggerBaseMap.put(topic.getType(),LogManager.getLogger(topic.getType()));
         }

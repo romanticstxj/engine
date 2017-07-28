@@ -22,7 +22,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.configuration.Bid;
-import com.madhouse.configuration.Premiummad;
+import com.madhouse.configuration.Configuration;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
@@ -45,7 +45,7 @@ public class ResourceManager {
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
     private final IPLocation ipTables = new IPLocation(ResourceManager.class.getClassLoader().getResource("locations.dat").getPath());
-    private final Premiummad premiummad = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Premiummad.class);
+    private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Configuration.class);
 
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
@@ -66,23 +66,23 @@ public class ResourceManager {
 
         {
             GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-            poolConfig.setMinIdle(this.premiummad.getRedis().getMinIdle());
-            poolConfig.setMaxIdle(this.premiummad.getRedis().getMaxIdle());
-            poolConfig.setMaxTotal(this.premiummad.getRedis().getMaxTotal());
+            poolConfig.setMinIdle(this.configuration.getRedis().getMinIdle());
+            poolConfig.setMaxIdle(this.configuration.getRedis().getMaxIdle());
+            poolConfig.setMaxTotal(this.configuration.getRedis().getMaxTotal());
 
             {
-                Redis.Config config = this.premiummad.getRedis().getMaster();
+                Redis.Config config = this.configuration.getRedis().getMaster();
                 this.jedisPoolMaster = new JedisPool(poolConfig, config.getHost(), config.getPort());
             }
 
             {
-                Redis.Config config = this.premiummad.getRedis().getSlave();
+                Redis.Config config = this.configuration.getRedis().getSlave();
                 this.jedisPoolSlave = new JedisPool(poolConfig, config.getHost(), config.getPort());
             }
         }
 
-        this.kafkaProducer = new KafkaProducer(this.premiummad.getKafka().getBrokers(), 1048576, 8, null);
-        for (Bid bid : premiummad.getWebapp().getBids())
+        this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 1048576, 8, null);
+        for (Bid bid : configuration.getWebapp().getBids())
         {
 			if (!StringUtils.isEmpty(bid.getClassName())) {
 				try {
@@ -100,8 +100,8 @@ public class ResourceManager {
         return this.kafkaProducer;
     }
 
-    public Premiummad getPremiummad() {
-        return this.premiummad;
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     public DSPBaseHandler getDSPHandler(int apiType) {

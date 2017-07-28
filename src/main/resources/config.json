@@ -3,6 +3,7 @@
         "domain": "http://ssp.madhouse.cn/api",
         "port": 8181,
         "gZipOn": false,
+        "expiredTime": 86400,
         "bids": [{
                 "path": "/adcall/bidrequest",
                 "className": "com.madhouse.media.madhouse.PremiumMADHandler"

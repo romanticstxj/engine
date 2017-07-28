@@ -22,7 +22,7 @@ import java.util.List;
 public class ServerMain {
 	public static void main(String[] args) {
 		ServletHandler servletHandler = new ServletHandler(null);
-		WebApp webApp = ResourceManager.getInstance().getPremiummad().getWebapp();
+		WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
 		servletHandler.addHandler(webApp.getImpression(), new ImpressionServlet());
 		servletHandler.addHandler(webApp.getClick(), new ClickServlet());
 
