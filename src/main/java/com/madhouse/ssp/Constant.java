@@ -211,4 +211,9 @@ public final class Constant {
         public static final int FAST = 1;
         public static final int AVERAGE = 2;
     }
+
+    public static final class InvalidType {
+        public static final int NO_REQUEST = 1;
+        public static final int DUPLICATE = 2;
+    }
 }

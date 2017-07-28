@@ -350,8 +350,9 @@
 			"type": "long",
 			"name": "policyid"
 		}, {
-			"type": "boolean",
-			"name": "valid"
+			"type": "int",
+			"name": "invalid",
+			"default": 0
 		}, {
 			"type": ["null", "string"],
 			"name": "ext",
@@ -399,8 +400,9 @@
 			"type": "long",
 			"name": "policyid"
 		}, {
-			"type": "boolean",
-			"name": "valid"
+			"type": "int",
+			"name": "invalid",
+			"default" : 0
 		}, {
 			"type": ["null", "string"],
 			"name": "url",

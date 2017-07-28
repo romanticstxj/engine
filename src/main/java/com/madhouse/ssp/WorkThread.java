@@ -66,10 +66,8 @@ public class WorkThread {
             //bid redis check
             this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (this.redisSlave.exists(recordKey)) {
-                impressionTrack.setValid(true);
-            } else {
-                impressionTrack.setValid(false);
+            if (!this.redisSlave.exists(recordKey)) {
+                impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
             impressionTrack.setTime(System.currentTimeMillis());
@@ -122,10 +120,8 @@ public class WorkThread {
             //bid redis check
             this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (this.redisSlave.exists(recordKey)) {
-                clickTrack.setValid(true);
-            } else {
-                clickTrack.setValid(false);
+            if (!this.redisSlave.exists(recordKey)) {
+                clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
             clickTrack.setTime(System.currentTimeMillis());
