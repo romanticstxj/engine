@@ -7,7 +7,6 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
-import kafka.tools.StateChangeLogMerger;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import redis.clients.jedis.Jedis;

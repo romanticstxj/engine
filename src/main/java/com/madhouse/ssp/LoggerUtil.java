@@ -47,32 +47,30 @@ public class LoggerUtil extends KafkaCallback {
     }
 
     public void writeBidLog(KafkaProducer kafkaProducer, DSPBid message) {
-        kafkaProducer.sendMessage("adx_dsp", message.toString());
+        kafkaProducer.sendMessage("adx_dsp", message.toString().getBytes());
     }
 
     public void writeMediaLog(KafkaProducer kafkaProducer, MediaBid message) {
-        kafkaProducer.sendMessage("adx_media", message.toString());
+        kafkaProducer.sendMessage("adx_media", message.toString().getBytes());
     }
 
     public void writeWinNoticeLog(KafkaProducer kafkaProducer, WinNotice message) {
-        kafkaProducer.sendMessage("adx_wn", message.toString());
+        kafkaProducer.sendMessage("adx_wn", message.toString().getBytes());
     }
 
     public void wirteImpressionTrackLog(KafkaProducer kafkaProducer, ImpressionTrack message) {
-        kafkaProducer.sendMessage("adx_imp", message.toString());
+        kafkaProducer.sendMessage("adx_imp", message.toString().getBytes());
     }
 
     public void writeClickTrackLog(KafkaProducer kafkaProducer, ClickTrack message) {
-        kafkaProducer.sendMessage("adx_click", message.toString());
+        kafkaProducer.sendMessage("adx_click", message.toString().getBytes());
     }
 
     @Override
-    public void onSendError(List<KafkaMessage> messages) {
-        for (KafkaMessage message :messages) {
-
-        }
+    public void onCompletion(KafkaMessage message, Exception e) {
+        super.onCompletion(message, e);
     }
-    
+
     public static Logger getPremiummadlogger() {
         return premiumMadLogger;
     }

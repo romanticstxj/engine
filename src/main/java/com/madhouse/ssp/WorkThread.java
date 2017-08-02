@@ -4,7 +4,6 @@ import com.madhouse.cache.*;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.resource.ResourceManager;
-import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.*;
 import com.madhouse.util.httpclient.MultiHttpClient;
@@ -409,7 +408,7 @@ public class WorkThread {
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
 
-                                if (mediaBaseHandler.packageResponse(dspBidMetaData.getDspBidBuilder(), mediaBidMetaData, resp)) {
+                                if (mediaBaseHandler.packageResponse(mediaBidMetaData, resp, dspBidMetaData.getDspBidBuilder())) {
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                         String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData, auctionPrice);
                                         if (!StringUtils.isEmpty(url)) {

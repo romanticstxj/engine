@@ -59,9 +59,9 @@
         <dependency>
             <groupId>com.madhouse</groupId>
             <artifactId>kafkaclient</artifactId>
-            <version>1.0.0</version>
+            <version>0.10.2.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/kafkaclient-1.0.0-jar-with-dependencies.jar</systemPath>
+            <systemPath>${project.basedir}/libs/kafkaclient-0.10.2.1-jar-with-dependencies.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

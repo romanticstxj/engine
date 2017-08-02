@@ -21,7 +21,7 @@ public abstract class MediaBaseHandler {
         return this.parseMediaRequest(req, mediaBidMetaData, resp);
     }
 
-    public final boolean packageResponse(DSPBid.Builder dspBid, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
+    public final boolean packageResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp, DSPBid.Builder dspBid) {
         MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
 
         mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);

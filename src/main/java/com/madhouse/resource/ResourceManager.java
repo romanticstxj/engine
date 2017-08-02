@@ -81,7 +81,7 @@ public class ResourceManager {
             }
         }
 
-        this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 1048576, 8, null);
+        this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 8, null);
         for (Bid bid : configuration.getWebapp().getBids())
         {
 			if (!StringUtils.isEmpty(bid.getClassName())) {
