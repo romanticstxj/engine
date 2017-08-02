@@ -248,7 +248,7 @@ public class CacheManager implements Runnable {
         for (Map.Entry entry : policyMetaDataMap.entrySet()) {
             PolicyMetaData policyMetaData = (PolicyMetaData)entry.getValue();
 
-            if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {
+            if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
                 if (policyMetaData.getControlType() == Constant.PolicyControlType.DAILY) {
                     if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.FAST) {
                         String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
