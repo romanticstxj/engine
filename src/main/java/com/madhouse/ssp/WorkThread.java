@@ -329,7 +329,7 @@ public class WorkThread {
                         int currentHour = cal.get(Calendar.HOUR_OF_DAY);
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 
-                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NULL) {
+                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
                             if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
                                 if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                                     int pastDays = Utility.dateDiff(StringUtil.toDate(currentDate), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
