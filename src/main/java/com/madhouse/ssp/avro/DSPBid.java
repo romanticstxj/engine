@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -4029987564737700995L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DSPBid\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"time\",\"type\":\"long\"},{\"name\":\"dspid\",\"type\":\"long\"},{\"name\":\"policyid\",\"type\":\"long\"},{\"name\":\"deliverytype\",\"type\":\"int\"},{\"name\":\"mediaid\",\"type\":\"long\"},{\"name\":\"adspaceid\",\"type\":\"long\"},{\"name\":\"status\",\"type\":\"int\"},{\"name\":\"request\",\"type\":{\"type\":\"record\",\"name\":\"DSPRequest\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"impid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adtype\",\"type\":\"int\"},{\"name\":\"layout\",\"type\":\"int\"},{\"name\":\"tagid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"test\",\"type\":\"int\"},{\"name\":\"bidfloor\",\"type\":\"int\",\"default\":0},{\"name\":\"bidtype\",\"type\":\"int\",\"default\":1},{\"name\":\"tmax\",\"type\":\"int\",\"default\":120}]}},{\"name\":\"response\",\"type\":{\"type\":\"record\",\"name\":\"DSPResponse\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"bidid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"impid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"crid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"price\",\"type\":\"int\",\"default\":0},{\"name\":\"nurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"admid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"icon\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cover\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"title\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"desc\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"duration\",\"type\":\"int\",\"default\":0},{\"name\":\"adm\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"lpgurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"acttype\",\"type\":\"int\",\"default\":1},{\"name\":\"monitor\",\"type\":{\"type\":\"record\",\"name\":\"Monitor\",\"fields\":[{\"name\":\"impurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Track\",\"fields\":[{\"name\":\"startdelay\",\"type\":\"int\",\"default\":0},{\"name\":\"url\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"clkurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"securl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"exts\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}}]}}]},\"default\":null}]}");
+  private static final long serialVersionUID = -2527205341039149203L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DSPBid\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"time\",\"type\":\"long\"},{\"name\":\"dspid\",\"type\":\"long\"},{\"name\":\"policyid\",\"type\":\"long\"},{\"name\":\"deliverytype\",\"type\":\"int\"},{\"name\":\"mediaid\",\"type\":\"long\"},{\"name\":\"adspaceid\",\"type\":\"long\"},{\"name\":\"status\",\"type\":\"int\"},{\"name\":\"winner\",\"type\":\"int\",\"default\":0},{\"name\":\"request\",\"type\":{\"type\":\"record\",\"name\":\"DSPRequest\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"impid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adtype\",\"type\":\"int\"},{\"name\":\"layout\",\"type\":\"int\"},{\"name\":\"tagid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"test\",\"type\":\"int\"},{\"name\":\"bidfloor\",\"type\":\"int\",\"default\":0},{\"name\":\"bidtype\",\"type\":\"int\",\"default\":1},{\"name\":\"tmax\",\"type\":\"int\",\"default\":120}]}},{\"name\":\"response\",\"type\":{\"type\":\"record\",\"name\":\"DSPResponse\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"bidid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"impid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"crid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"price\",\"type\":\"int\",\"default\":0},{\"name\":\"nurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"admid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"icon\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cover\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"title\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"desc\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"duration\",\"type\":\"int\",\"default\":0},{\"name\":\"adm\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"lpgurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"acttype\",\"type\":\"int\",\"default\":1},{\"name\":\"monitor\",\"type\":{\"type\":\"record\",\"name\":\"Monitor\",\"fields\":[{\"name\":\"impurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Track\",\"fields\":[{\"name\":\"startdelay\",\"type\":\"int\",\"default\":0},{\"name\":\"url\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"clkurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"securl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"exts\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}}]}}]},\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -58,6 +58,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
   @Deprecated public long mediaid;
   @Deprecated public long adspaceid;
   @Deprecated public int status;
+  @Deprecated public int winner;
   @Deprecated public com.madhouse.ssp.avro.DSPRequest request;
   @Deprecated public com.madhouse.ssp.avro.DSPResponse response;
 
@@ -77,10 +78,11 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
    * @param mediaid The new value for mediaid
    * @param adspaceid The new value for adspaceid
    * @param status The new value for status
+   * @param winner The new value for winner
    * @param request The new value for request
    * @param response The new value for response
    */
-  public DSPBid(java.lang.Long time, java.lang.Long dspid, java.lang.Long policyid, java.lang.Integer deliverytype, java.lang.Long mediaid, java.lang.Long adspaceid, java.lang.Integer status, com.madhouse.ssp.avro.DSPRequest request, com.madhouse.ssp.avro.DSPResponse response) {
+  public DSPBid(java.lang.Long time, java.lang.Long dspid, java.lang.Long policyid, java.lang.Integer deliverytype, java.lang.Long mediaid, java.lang.Long adspaceid, java.lang.Integer status, java.lang.Integer winner, com.madhouse.ssp.avro.DSPRequest request, com.madhouse.ssp.avro.DSPResponse response) {
     this.time = time;
     this.dspid = dspid;
     this.policyid = policyid;
@@ -88,6 +90,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     this.mediaid = mediaid;
     this.adspaceid = adspaceid;
     this.status = status;
+    this.winner = winner;
     this.request = request;
     this.response = response;
   }
@@ -103,8 +106,9 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     case 4: return mediaid;
     case 5: return adspaceid;
     case 6: return status;
-    case 7: return request;
-    case 8: return response;
+    case 7: return winner;
+    case 8: return request;
+    case 9: return response;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -120,8 +124,9 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     case 4: mediaid = (java.lang.Long)value$; break;
     case 5: adspaceid = (java.lang.Long)value$; break;
     case 6: status = (java.lang.Integer)value$; break;
-    case 7: request = (com.madhouse.ssp.avro.DSPRequest)value$; break;
-    case 8: response = (com.madhouse.ssp.avro.DSPResponse)value$; break;
+    case 7: winner = (java.lang.Integer)value$; break;
+    case 8: request = (com.madhouse.ssp.avro.DSPRequest)value$; break;
+    case 9: response = (com.madhouse.ssp.avro.DSPResponse)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -239,6 +244,22 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
   }
 
   /**
+   * Gets the value of the 'winner' field.
+   * @return The value of the 'winner' field.
+   */
+  public java.lang.Integer getWinner() {
+    return winner;
+  }
+
+  /**
+   * Sets the value of the 'winner' field.
+   * @param value the value to set.
+   */
+  public void setWinner(java.lang.Integer value) {
+    this.winner = value;
+  }
+
+  /**
    * Gets the value of the 'request' field.
    * @return The value of the 'request' field.
    */
@@ -309,6 +330,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     private long mediaid;
     private long adspaceid;
     private int status;
+    private int winner;
     private com.madhouse.ssp.avro.DSPRequest request;
     private com.madhouse.ssp.avro.DSPRequest.Builder requestBuilder;
     private com.madhouse.ssp.avro.DSPResponse response;
@@ -353,16 +375,20 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
         this.status = data().deepCopy(fields()[6].schema(), other.status);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.request)) {
-        this.request = data().deepCopy(fields()[7].schema(), other.request);
+      if (isValidValue(fields()[7], other.winner)) {
+        this.winner = data().deepCopy(fields()[7].schema(), other.winner);
         fieldSetFlags()[7] = true;
+      }
+      if (isValidValue(fields()[8], other.request)) {
+        this.request = data().deepCopy(fields()[8].schema(), other.request);
+        fieldSetFlags()[8] = true;
       }
       if (other.hasRequestBuilder()) {
         this.requestBuilder = com.madhouse.ssp.avro.DSPRequest.newBuilder(other.getRequestBuilder());
       }
-      if (isValidValue(fields()[8], other.response)) {
-        this.response = data().deepCopy(fields()[8].schema(), other.response);
-        fieldSetFlags()[8] = true;
+      if (isValidValue(fields()[9], other.response)) {
+        this.response = data().deepCopy(fields()[9].schema(), other.response);
+        fieldSetFlags()[9] = true;
       }
       if (other.hasResponseBuilder()) {
         this.responseBuilder = com.madhouse.ssp.avro.DSPResponse.newBuilder(other.getResponseBuilder());
@@ -403,14 +429,18 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
         this.status = data().deepCopy(fields()[6].schema(), other.status);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.request)) {
-        this.request = data().deepCopy(fields()[7].schema(), other.request);
+      if (isValidValue(fields()[7], other.winner)) {
+        this.winner = data().deepCopy(fields()[7].schema(), other.winner);
         fieldSetFlags()[7] = true;
       }
-      this.requestBuilder = null;
-      if (isValidValue(fields()[8], other.response)) {
-        this.response = data().deepCopy(fields()[8].schema(), other.response);
+      if (isValidValue(fields()[8], other.request)) {
+        this.request = data().deepCopy(fields()[8].schema(), other.request);
         fieldSetFlags()[8] = true;
+      }
+      this.requestBuilder = null;
+      if (isValidValue(fields()[9], other.response)) {
+        this.response = data().deepCopy(fields()[9].schema(), other.response);
+        fieldSetFlags()[9] = true;
       }
       this.responseBuilder = null;
     }
@@ -682,6 +712,44 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     }
 
     /**
+      * Gets the value of the 'winner' field.
+      * @return The value.
+      */
+    public java.lang.Integer getWinner() {
+      return winner;
+    }
+
+    /**
+      * Sets the value of the 'winner' field.
+      * @param value The value of 'winner'.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.DSPBid.Builder setWinner(int value) {
+      validate(fields()[7], value);
+      this.winner = value;
+      fieldSetFlags()[7] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'winner' field has been set.
+      * @return True if the 'winner' field has been set, false otherwise.
+      */
+    public boolean hasWinner() {
+      return fieldSetFlags()[7];
+    }
+
+
+    /**
+      * Clears the value of the 'winner' field.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.DSPBid.Builder clearWinner() {
+      fieldSetFlags()[7] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'request' field.
       * @return The value.
       */
@@ -695,10 +763,10 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPBid.Builder setRequest(com.madhouse.ssp.avro.DSPRequest value) {
-      validate(fields()[7], value);
+      validate(fields()[8], value);
       this.requestBuilder = null;
       this.request = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[8] = true;
       return this;
     }
 
@@ -707,7 +775,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
       * @return True if the 'request' field has been set, false otherwise.
       */
     public boolean hasRequest() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[8];
     }
 
     /**
@@ -751,7 +819,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     public com.madhouse.ssp.avro.DSPBid.Builder clearRequest() {
       request = null;
       requestBuilder = null;
-      fieldSetFlags()[7] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
@@ -769,10 +837,10 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPBid.Builder setResponse(com.madhouse.ssp.avro.DSPResponse value) {
-      validate(fields()[8], value);
+      validate(fields()[9], value);
       this.responseBuilder = null;
       this.response = value;
-      fieldSetFlags()[8] = true;
+      fieldSetFlags()[9] = true;
       return this;
     }
 
@@ -781,7 +849,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
       * @return True if the 'response' field has been set, false otherwise.
       */
     public boolean hasResponse() {
-      return fieldSetFlags()[8];
+      return fieldSetFlags()[9];
     }
 
     /**
@@ -825,7 +893,7 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
     public com.madhouse.ssp.avro.DSPBid.Builder clearResponse() {
       response = null;
       responseBuilder = null;
-      fieldSetFlags()[8] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -841,15 +909,16 @@ public class DSPBid extends org.apache.avro.specific.SpecificRecordBase implemen
         record.mediaid = fieldSetFlags()[4] ? this.mediaid : (java.lang.Long) defaultValue(fields()[4]);
         record.adspaceid = fieldSetFlags()[5] ? this.adspaceid : (java.lang.Long) defaultValue(fields()[5]);
         record.status = fieldSetFlags()[6] ? this.status : (java.lang.Integer) defaultValue(fields()[6]);
+        record.winner = fieldSetFlags()[7] ? this.winner : (java.lang.Integer) defaultValue(fields()[7]);
         if (requestBuilder != null) {
           record.request = this.requestBuilder.build();
         } else {
-          record.request = fieldSetFlags()[7] ? this.request : (com.madhouse.ssp.avro.DSPRequest) defaultValue(fields()[7]);
+          record.request = fieldSetFlags()[8] ? this.request : (com.madhouse.ssp.avro.DSPRequest) defaultValue(fields()[8]);
         }
         if (responseBuilder != null) {
           record.response = this.responseBuilder.build();
         } else {
-          record.response = fieldSetFlags()[8] ? this.response : (com.madhouse.ssp.avro.DSPResponse) defaultValue(fields()[8]);
+          record.response = fieldSetFlags()[9] ? this.response : (com.madhouse.ssp.avro.DSPResponse) defaultValue(fields()[9]);
         }
         return record;
       } catch (java.lang.Exception e) {
