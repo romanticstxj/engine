@@ -450,6 +450,10 @@
 			"type": "int",
 			"name": "status"
 		}, {
+			"type": "int",
+			"name": "winner",
+			"default": 0
+		}, {
 			"name": "request",
 			"type": {
 				"type": "record",
