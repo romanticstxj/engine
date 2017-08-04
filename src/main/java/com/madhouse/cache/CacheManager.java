@@ -140,32 +140,29 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<String, PlcmtMetaData> loadPlcmtMetaData() {
         ConcurrentHashMap<String, PlcmtMetaData> var = new ConcurrentHashMap<String, PlcmtMetaData>();
 
-        String text = this.redisSlave.get(Constant.CommonKey.PLACEMENT_META_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<PlcmtMetaData> plcmtMetaDatas = JSON.parseArray(text, PlcmtMetaData.class);
-            for (PlcmtMetaData plcmtMetaData : plcmtMetaDatas) {
-                if (plcmtMetaData.getStatus() >= 0) {
-                    var.put(plcmtMetaData.getAdspaceKey(), plcmtMetaData);
-                }
+        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
+        for (String id : set) {
+            String text = this.redisSlave.get(String.format(Constant.CommonKey.PLACEMENT_META_DATA,id));
+            if (!StringUtils.isEmpty(text)) {
+                PlcmtMetaData metaData = JSON.parseObject(text, PlcmtMetaData.class);
+                var.put(String.valueOf(metaData.getId()), metaData);
+                
             }
         }
-
         return var;
     }
 
     private ConcurrentHashMap<Long, PolicyMetaData> loadPolicyMetaData() {
         ConcurrentHashMap<Long, PolicyMetaData> var = new ConcurrentHashMap<Long, PolicyMetaData>();
-
-        String text = this.redisSlave.get(Constant.CommonKey.POLICY_META_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<PolicyMetaData> policyMetaDatas = JSON.parseArray(text, PolicyMetaData.class);
-            for (PolicyMetaData policyMetaData : policyMetaDatas) {
-                if (policyMetaData.getStatus() >= 0) {
-                    var.put(policyMetaData.getId(), policyMetaData);
-                }
+        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_POLICY);
+        for (String mediaId : set) {
+            String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_META_DATA,mediaId));
+            if (!StringUtils.isEmpty(text)) {
+                PolicyMetaData metaData = JSON.parseObject(text, PolicyMetaData.class);
+                var.put(metaData.getId(), metaData);
+                
             }
         }
-
         return var;
     }
 

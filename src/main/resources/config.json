@@ -70,17 +70,17 @@
     },
     "redis": {
         "minIdle": 8,
-        "maxIdle": 16,
-        "maxTotal": 32,
+        "maxIdle": 100,
+        "maxTotal": 300,
         "slave": {
             "passwd": "",
-            "host": "127.0.0.1",
+            "host": "172.16.25.26",
             "port": 6379,
             "db": 0
         },
         "master": {
             "passwd": "",
-            "host": "127.0.0.1",
+            "host": "172.16.25.26",
             "port": 6379,
             "db": 0
         }

@@ -45,7 +45,8 @@ public class ResourceManager {
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
     private final IPLocation ipTables = new IPLocation(ResourceManager.class.getClassLoader().getResource("locations.dat").getPath());
-    private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getClassLoader().getResource("config.json").getPath()), Configuration.class);
+    
+    private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getResourceAsStream("/config.json")), Configuration.class);
 
     private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};

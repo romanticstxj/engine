@@ -1,21 +1,18 @@
 package com.madhouse.util;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.IOUtils;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 /**
  * Created by WUJUNFENG on 2017/6/9.
@@ -104,30 +101,13 @@ public class StringUtil {
         }
     }
 
-    public static String readFile(String path) {
-        File file = new File(path);
-        BufferedReader reader = null;
-        StringBuffer sb = new StringBuffer();
-
+    public static String readFile(InputStream is) {
         try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-            reader.close();
+            return IOUtils.toString(is);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e1) {
-                }
-            }
         }
-
-        return sb.toString();
+        return null;
     }
 
     public static String getMD5(String str) {

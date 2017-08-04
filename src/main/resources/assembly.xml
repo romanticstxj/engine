@@ -1,0 +1,50 @@
+<assembly>
+    <!-- 项目打成Zip包的Id -->
+    <id>release</id>
+    <!-- 打zip包时，包含一层打包目录 -->
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <formats>
+        <!-- 包的后缀 -->
+        <format>tar.gz</format>
+    </formats>
+    <!-- 把编译好的jar文件包含到发布的目录中去并设置脚本文件的权限-->
+    <files>
+        <file>
+            <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+            <destName>engine.jar</destName>
+            <outputDirectory>/</outputDirectory>
+        </file>
+    </files>
+
+    <dependencySets>
+        <!-- 项目依赖包的输出目录，下面为当前目录的lib文件夹下 -->
+        <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+            <useProjectArtifact>false</useProjectArtifact>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <!-- 项目一些说明的资源输出的目录，下面为当前目录 -->
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>/conf</outputDirectory>
+            <includes>
+                <include>*.json</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>/bin</outputDirectory>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>libs</directory>
+            <outputDirectory>/lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

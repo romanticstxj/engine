@@ -1,28 +1,21 @@
 package com.madhouse.ssp;
 
-import com.alibaba.fastjson.JSON;
-import com.google.protobuf.GeneratedMessage;
-import com.madhouse.configuration.Kafka;
-import com.madhouse.dsp.DSPBaseHandler;
-import com.madhouse.kafkaclient.producer.KafkaProducer;
-import com.madhouse.kafkaclient.util.KafkaCallback;
-import com.madhouse.kafkaclient.util.KafkaMessage;
-import com.madhouse.resource.ResourceManager;
-
-import com.madhouse.ssp.avro.*;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.WinNotice;
-import sun.security.jca.GetInstance;
-
 import java.util.List;
-
-
-
-
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.madhouse.configuration.Kafka;
+import com.madhouse.kafkaclient.producer.KafkaProducer;
+import com.madhouse.kafkaclient.util.KafkaCallback;
+import com.madhouse.kafkaclient.util.KafkaMessage;
+import com.madhouse.resource.ResourceManager;
+import com.madhouse.ssp.avro.ClickTrack;
+import com.madhouse.ssp.avro.DSPBid;
+import com.madhouse.ssp.avro.ImpressionTrack;
+import com.madhouse.ssp.avro.MediaBid;
+import com.madhouse.ssp.avro.WinNotice;
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
