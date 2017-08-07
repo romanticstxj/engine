@@ -27,6 +27,8 @@ public final class Constant {
         public static final String POLICY_META_DATA = "str:%s:policy_info";
         public static final String ALL_DSP = "set:all_dsp";
         public static final String DSP_META_DATA = "str:%s:dsp_info";
+        public static final String ALL_MATERIAL = "set:all_material";
+        public static final String MATERIAL_META_DATA = "str:%s:material_info";
         
         public static final String MEDIA_MAPPING_DATA = "str:media_mapping_data";
         public static final String DSP_MAPPING_DATA = "str:dsp_mapping_data";
