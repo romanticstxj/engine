@@ -1,5 +1,6 @@
 package com.madhouse.ssp;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,7 +30,7 @@ public class LoggerUtil extends KafkaCallback {
     static{
         List<Kafka.Topic> list=  ResourceManager.getInstance().getConfiguration().getKafka().getTopics();
         for (Kafka.Topic topic : list) {
-            loggerBaseMap.put(topic.getType(),LogManager.getLogger(topic.getType()));
+            loggerBaseMap.put(topic.getType(),LogManager.getLogger(topic.getTopic()));
         }
     }
     private LoggerUtil() {
@@ -39,29 +40,84 @@ public class LoggerUtil extends KafkaCallback {
         return logger;
     }
 
-    public void writeBidLog(KafkaProducer kafkaProducer, DSPBid message) {
-        kafkaProducer.sendMessage("adx_dsp", message.toString().getBytes());
+    public void writeBidLog(KafkaProducer kafkaProducer, DSPBid.Builder message) {
+        try {
+            sendMessage(kafkaProducer, message.build().toByteBuffer().array(),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.CommonKey.KAFKA_DSP_BID));
+        } catch (Exception e) {
+            premiumMadLogger.error(e.toString());
+        }
     }
 
-    public void writeMediaLog(KafkaProducer kafkaProducer, MediaBid message) {
-        kafkaProducer.sendMessage("adx_media", message.toString().getBytes());
+    public void writeMediaLog(KafkaProducer kafkaProducer, MediaBid.Builder message) {
+        try {
+            sendMessage(kafkaProducer, message.build().toByteBuffer().array(),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.CommonKey.KAFKA_MEDIA_BID));
+        } catch (Exception e) {
+            premiumMadLogger.error(e.toString());
+        }
     }
 
-    public void writeWinNoticeLog(KafkaProducer kafkaProducer, WinNotice message) {
-        kafkaProducer.sendMessage("adx_wn", message.toString().getBytes());
+    public void writeWinNoticeLog(KafkaProducer kafkaProducer, WinNotice.Builder message) {
+        try {
+            sendMessage(kafkaProducer, message.build().toByteBuffer().array(),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.CommonKey.KAFKA_WIN_NOTICE));
+        } catch (Exception e) {
+            premiumMadLogger.error(e.toString());
+        }
     }
 
-    public void wirteImpressionTrackLog(KafkaProducer kafkaProducer, ImpressionTrack message) {
-        kafkaProducer.sendMessage("adx_imp", message.toString().getBytes());
+    public void wirteImpressionTrackLog(KafkaProducer kafkaProducer, ImpressionTrack.Builder message) {
+        try {
+            sendMessage(kafkaProducer, message.build().toByteBuffer().array(),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.CommonKey.KAFKA_IMPRESSION));
+        } catch (Exception e) {
+            premiumMadLogger.error(e.toString());
+        }
     }
 
-    public void writeClickTrackLog(KafkaProducer kafkaProducer, ClickTrack message) {
-        kafkaProducer.sendMessage("adx_click", message.toString().getBytes());
+    public void writeClickTrackLog(KafkaProducer kafkaProducer, ClickTrack.Builder message) {
+        try {
+            sendMessage(kafkaProducer, message.build().toByteBuffer().array(),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.CommonKey.KAFKA_CLICK));
+        } catch (Exception e) {
+            premiumMadLogger.error(e.toString());
+        }
     }
 
     @Override
     public void onCompletion(KafkaMessage message, Exception e) {
-        super.onCompletion(message, e);
+        try {
+            if(null != message && null !=e){
+                String kafkaType = ResourceManager.getInstance().getConfiguration().getKafka().getkafka(message.topic);
+                String information = null;
+                switch (kafkaType) {
+                    case Constant.CommonKey.KAFKA_CLICK:
+                        ClickTrack clickTrack = ClickTrack.fromByteBuffer(ByteBuffer.wrap(message.message));
+                        information = clickTrack.toString();
+                        break;
+                    case Constant.CommonKey.KAFKA_DSP_BID:
+                        DSPBid dspBid = DSPBid.fromByteBuffer(ByteBuffer.wrap(message.message));
+                        information = dspBid.toString();
+                        break;
+                    case Constant.CommonKey.KAFKA_IMPRESSION:
+                        ImpressionTrack impressionTrack = ImpressionTrack.fromByteBuffer(ByteBuffer.wrap(message.message));
+                        information = impressionTrack.toString();
+                        break;
+                    case Constant.CommonKey.KAFKA_MEDIA_BID:
+                        MediaBid mediaBid = MediaBid.fromByteBuffer(ByteBuffer.wrap(message.message));
+                        information = mediaBid.toString();
+                        break;
+                    case Constant.CommonKey.KAFKA_WIN_NOTICE:
+                        WinNotice winNotice = WinNotice.fromByteBuffer(ByteBuffer.wrap(message.message));
+                        information = winNotice.toString();
+                        break;
+                }
+                if(null != information){
+                    Logger logger= loggerBaseMap.get(kafkaType);
+                    logger.info(information);
+                }
+                premiumMadLogger.error(e.toString());
+            }
+            super.onCompletion(message, e);
+        } catch (Exception e1) {
+            premiumMadLogger.error(e1.toString());
+        }
     }
 
     public static Logger getPremiummadlogger() {
@@ -71,7 +127,8 @@ public class LoggerUtil extends KafkaCallback {
     public Logger getBaseLogger(String type) {
         return loggerBaseMap.get(type);
     }
-
     
-    
+    private void sendMessage(KafkaProducer kafkaProducer,byte[] message,String topic ) {
+        kafkaProducer.sendMessage(topic, message);
+    }
 }

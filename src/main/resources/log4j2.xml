@@ -26,9 +26,9 @@
             </Policies>
 		</RollingRandomAccessFile>
 		<!-- 媒体 -->
-		<RollingRandomAccessFile name="mediabid"
-			fileName="${LOG_HOME}\mediabid.log"
-			filePattern="${LOG_HOME}\$${date:yyyy-MM}\mediabid-%d{yyyy-MM-dd-HH}.log">
+		<RollingRandomAccessFile name="topic_mediabid"
+			fileName="${LOG_HOME}\topic_mediabid.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\topic_mediabid-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -37,9 +37,9 @@
             </Policies>
 		</RollingRandomAccessFile>
 		<!-- dsp -->
-		<RollingRandomAccessFile name="dspbid"
-			fileName="${LOG_HOME}\dspbid.log"
-			filePattern="${LOG_HOME}\$${date:yyyy-MM}\dspbid-%d{yyyy-MM-dd-HH}.log">
+		<RollingRandomAccessFile name="topic_dspbid"
+			fileName="${LOG_HOME}\topic_dspbid.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\topic_dspbid-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -48,9 +48,9 @@
             </Policies>
 		</RollingRandomAccessFile>
 		<!-- winnotice -->
-		<RollingRandomAccessFile name="winnotice"
-			fileName="${LOG_HOME}\winnotice.log"
-			filePattern="${LOG_HOME}\$${date:yyyy-MM}\winnotice-%d{yyyy-MM-dd-HH}.log">
+		<RollingRandomAccessFile name="topic_winnotice"
+			fileName="${LOG_HOME}\topic_winnotice.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\topic_winnotice-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -59,9 +59,9 @@
             </Policies>
 		</RollingRandomAccessFile>
 		<!-- impression -->
-		<RollingRandomAccessFile name="impression"
-			fileName="${LOG_HOME}\impression.log"
-			filePattern="${LOG_HOME}\$${date:yyyy-MM}\impression-%d{yyyy-MM-dd-HH}.log">
+		<RollingRandomAccessFile name="topic_impression"
+			fileName="${LOG_HOME}\topic_impression.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\topic_impression-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -70,9 +70,9 @@
             </Policies>
 		</RollingRandomAccessFile>
 		<!-- click -->
-		<RollingRandomAccessFile name="click"
-			fileName="${LOG_HOME}\click.log"
-			filePattern="${LOG_HOME}\$${date:yyyy-MM}\click-%d{yyyy-MM-dd-HH}.log">
+		<RollingRandomAccessFile name="topic_click"
+			fileName="${LOG_HOME}\topic_click.log"
+			filePattern="${LOG_HOME}\$${date:yyyy-MM}\topic_click-%d{yyyy-MM-dd-HH}.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -91,20 +91,20 @@
 			<appender-ref ref="premiummad" />
 		</Logger>
 		
-		<Logger name="mediabid" additivity="false" level="all">
-			<appender-ref ref="mediabid" />
+		<Logger name="topic_mediabid" additivity="false" level="all">
+			<appender-ref ref="topic_mediabid" />
 		</Logger>
-		<Logger name="dspbid" additivity="false" level="all">
-			<appender-ref ref="dspbid" />
+		<Logger name="topic_dspbid" additivity="false" level="all">
+			<appender-ref ref="topic_dspbid" />
 		</Logger>
-		<Logger name="winnotice" additivity="false" level="all">
-			<appender-ref ref="winnotice" />
+		<Logger name="topic_winnotice" additivity="false" level="all">
+			<appender-ref ref="topic_winnotice" />
 		</Logger>
-		<Logger name="impression" additivity="false" level="all">
-			<appender-ref ref="impression" />
+		<Logger name="topic_impression" additivity="false" level="all">
+			<appender-ref ref="topic_impression" />
 		</Logger>
-		<Logger name="click" additivity="false" level="all">
-			<appender-ref ref="click" />
+		<Logger name="topic_click" additivity="false" level="all">
+			<appender-ref ref="topic_click" />
 		</Logger>
 	</loggers>
 </Configuration>

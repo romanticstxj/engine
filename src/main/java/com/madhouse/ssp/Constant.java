@@ -39,6 +39,14 @@ public final class Constant {
         public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
         //dspid，materialId,mediaId,adspaceId
         public static final String DSPID_MATERIALID_MEDIAID_ADSPACEID = "%d:%s:%d:%d";
+        
+        //KAFKA
+        public static final String KAFKA_MEDIA_BID = "KAFKA_MEDIA_BID"; 
+        public static final String KAFKA_DSP_BID = "KAFKA_DSP_BID";
+        public static final String KAFKA_WIN_NOTICE = "KAFKA_WIN_NOTICE";
+        public static final String KAFKA_IMPRESSION = "KAFKA_IMPRESSION";
+        public static final String KAFKA_CLICK = "KAFKA_CLICK";
+        
     }
 
     public static final class StatusCode {

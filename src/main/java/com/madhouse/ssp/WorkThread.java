@@ -90,7 +90,7 @@ public class WorkThread {
                 impressionTrack.setCost(Integer.parseInt(exts[2]));
 
                 impressionTrack.setStatus(Constant.StatusCode.OK);
-                LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack.build());
+                LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack);
 
                 resp.getOutputStream().write(this.image);
                 resp.setContentType("image/gif");
@@ -163,7 +163,7 @@ public class WorkThread {
                     clickTrack.setStatus(Constant.StatusCode.OK);
                 }
 
-                LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack.build());
+                LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack);
                 resp.setStatus(clickTrack.getStatus());
                 return;
             }

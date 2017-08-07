@@ -29,6 +29,7 @@ public class Kafka {
 	private String brokers;
 	private List<Topic> topics;
 	private Map<String, String> topicsMap = new HashMap<>();
+	private Map<String, String> kafkasMap = new HashMap<>();
 
 	public String getBrokers() {
 		return brokers;
@@ -45,12 +46,17 @@ public class Kafka {
 	public String getTopic(String type) {
 		return this.topicsMap.get(type);
 	}
+	
+	public String getkafka(String type) {
+        return this.kafkasMap.get(type);
+    }
 
 	public void setTopics(List<Topic> topics) {
 		this.topics = topics;
 		this.topicsMap.clear();
 		for (Topic topic : topics) {
 			this.topicsMap.put(topic.getType(), topic.getTopic());
+			this.kafkasMap.put(topic.getTopic(), topic.getType());
 		}
 	}
 }
