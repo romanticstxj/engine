@@ -10,13 +10,14 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 public final class Constant {
 
     public static final class CommonKey {
+        //deliverytype, targettype, targetinfo
+        public static final String TARGET_KEY = "set:%d:%d:%s:policys";
+        //valid check record
         public static final String BID_RECORD = "str:%s:%s:%s:%s:bid_record";
         public static final String IMP_RECORD = "str:%s:%s:%s:%s:imp_record";
         public static final String CLK_RECORD = "str:%s:%s:%s:%s:clk_record";
 
-        //deliverytype, targettype, targetinfo
-        public static final String TARGET_KEY = "set:%d:%d:%s:policys";
-
+        //metadata cache
         public static final String ALL_MEDIA = "set:all_media";
         public static final String MEDIA_META_DATA = "str:%s:media_info";
         public static final String ALL_PLACEMENT = "set:all_plcmt";
@@ -29,13 +30,12 @@ public final class Constant {
         public static final String DSP_META_DATA = "str:%s:dsp_info";
         public static final String ALL_MATERIAL = "set:all_material";
         public static final String MATERIAL_META_DATA = "str:%s:material_info";
-        
         public static final String MEDIA_MAPPING_DATA = "str:media_mapping_data";
         public static final String DSP_MAPPING_DATA = "str:dsp_mapping_data";
 
+        //engine control
         public static final String POLICY_CONTORL_TOTAL = "str:%d:policy_total";
         public static final String POLICY_CONTORL_DAILY = "str:%d:%s:policy_daily";
-
         public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
     }
 

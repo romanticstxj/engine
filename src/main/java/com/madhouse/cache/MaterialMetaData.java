@@ -58,6 +58,7 @@ public class MaterialMetaData {
         }
     }
 
+    private long id;
     private long dspId;
     private String materialId;
     private String name;
@@ -246,6 +247,14 @@ public class MaterialMetaData {
 
     public void setMediaMaterialKey(String mediaMaterialKey) {
         this.mediaMaterialKey = mediaMaterialKey;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
 

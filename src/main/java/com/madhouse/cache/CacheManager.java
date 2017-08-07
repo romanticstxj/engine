@@ -44,6 +44,8 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<String, HashSet<Long>>();
     //blocked policy
     private ConcurrentHashSet<Long> blockedPolicy = new ConcurrentHashSet<>();
+    //dspid:material_key:media_id:adspaceid, materialMetaData
+    private ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap = new ConcurrentHashMap<>();
 
     private Jedis redisMaster = null;
     private Jedis redisSlave = null;
@@ -76,6 +78,11 @@ public class CacheManager implements Runnable {
         }
 
         return null;
+    }
+
+    public MaterialMetaData getMaterialMetaData(long dspId, String materialId, long mediaId, long adspaceId) {
+        String key = String.format("%d:%s:%d:%d", dspId, materialId, mediaId, adspaceId);
+        return this.materialMetaDataMap.get(key);
     }
 
     public DSPMetaData getDSPMetaData(long id) {

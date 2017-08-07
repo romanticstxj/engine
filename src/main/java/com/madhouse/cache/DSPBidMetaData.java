@@ -12,6 +12,28 @@ public class DSPBidMetaData {
     private DSPBid.Builder dspBidBuilder;
     private DSPBaseHandler dspBaseHandler;
     private HttpRequestBase httpRequestBase;
+    private AuctionInfo auctionInfo;
+
+    public class AuctionInfo {
+        private int bidType;
+        private int auctionPrice;
+
+        public int getBidType() {
+            return bidType;
+        }
+
+        public void setBidType(int bidType) {
+            this.bidType = bidType;
+        }
+
+        public int getAuctionPrice() {
+            return auctionPrice;
+        }
+
+        public void setAuctionPrice(int auctionPrice) {
+            this.auctionPrice = auctionPrice;
+        }
+    }
 
     public HttpRequestBase getHttpRequestBase() {
         return httpRequestBase;
@@ -43,5 +65,13 @@ public class DSPBidMetaData {
 
     public void setDspMetaData(DSPMetaData dspMetaData) {
         this.dspMetaData = dspMetaData;
+    }
+
+    public AuctionInfo getAuctionInfo() {
+        return auctionInfo;
+    }
+
+    public void setAuctionInfo(AuctionInfo auctionInfo) {
+        this.auctionInfo = auctionInfo;
     }
 }

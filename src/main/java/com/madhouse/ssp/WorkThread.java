@@ -399,18 +399,17 @@ public class WorkThread {
                         }
 
                         if (!dspBidderList.isEmpty()) {
-                            Pair<DSPBidMetaData, Integer> winner = this.selectWinner(plcmtMetaData, policyMetaData, dspBidderList);
+                            DSPBidMetaData winner = this.selectWinner(plcmtMetaData, policyMetaData, dspBidderList);
                             if (winner != null) {
-                                DSPBidMetaData dspBidMetaData = winner.getLeft();
-                                int auctionPrice = winner.getRight();
-
+                                DSPBidMetaData dspBidMetaData = winner;
+                                dspBidMetaData.getDspBidBuilder().setWinner(1);
                                 int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
 
                                 if (mediaBaseHandler.packageResponse(mediaBidMetaData, resp, dspBidMetaData.getDspBidBuilder())) {
                                     if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                                        String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData, auctionPrice);
+                                        String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
                                         if (!StringUtils.isEmpty(url)) {
                                             final HttpGet httpGet = new HttpGet(url);
                                             final HttpClient httpClient = this.winNoticeHttpClient;
@@ -520,10 +519,10 @@ public class WorkThread {
         return policyMetaDatas;
     }
 
-    private Pair<DSPBidMetaData, Integer> selectWinner(PlcmtMetaData plcmtMetaData,
+    private DSPBidMetaData selectWinner(PlcmtMetaData plcmtMetaData,
                                                                    PolicyMetaData policyMetaData,
                                                                    List<DSPBidMetaData> dspBidderList) {
-        Pair<DSPBidMetaData, Integer> winner = null;
+        DSPBidMetaData winner = null;
 
         if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
             /*Map<DSPBidMetaData, Integer> selectedDspList = new HashMap<>();
@@ -542,7 +541,14 @@ public class WorkThread {
                 winner = Pair.of(dspBidMetaData, policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor());
             }*/
 
-            winner = Pair.of(dspBidderList.get(0), policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor());
+            DSPBidMetaData dspBidMetaData = dspBidderList.get(0);
+            DSPBidMetaData.AuctionInfo auctionInfo = dspBidMetaData.new AuctionInfo();
+            PolicyMetaData.AdspaceInfo adspaceInfo = policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId());
+
+            auctionInfo.setBidType(adspaceInfo.getBidType());
+            auctionInfo.setAuctionPrice(adspaceInfo.getBidFloor());
+            dspBidMetaData.setAuctionInfo(auctionInfo);
+            winner = dspBidMetaData;
         } else {
             dspBidderList.sort(new Comparator<DSPBidMetaData>() {
                 @Override
@@ -557,7 +563,13 @@ public class WorkThread {
                 price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
             }
 
-            winner = Pair.of(dspBidderList.get(0), price + 1);
+            DSPBidMetaData dspBidMetaData = dspBidderList.get(0);
+            DSPBidMetaData.AuctionInfo auctionInfo = dspBidMetaData.new AuctionInfo();
+
+            auctionInfo.setBidType(plcmtMetaData.getBidType());
+            auctionInfo.setAuctionPrice(price + 1);
+            dspBidMetaData.setAuctionInfo(auctionInfo);
+            winner = dspBidMetaData;
         }
 
         return winner;

@@ -378,7 +378,7 @@ public class MADRTBHandler extends DSPBaseHandler {
     }
 
     @Override
-    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData, int auctionPrice) {
+    public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
         try {
             DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
             String url = dspResponse.getNurl();
@@ -392,7 +392,7 @@ public class MADRTBHandler extends DSPBaseHandler {
                     .replace("${AUCTION_AD_ID}", StringUtil.toString(dspResponse.getAdid()));
 
             if (url.contains("${AUCTION_PRICE")) {
-                String text = String.format("%d_%d", auctionPrice, System.currentTimeMillis() / 1000);
+                String text = String.format("%d_%d", dspBidMetaData.getAuctionInfo().getAuctionPrice(), System.currentTimeMillis() / 1000);
                 byte[] key = StringUtil.hexToBytes(dspBidMetaData.getDspMetaData().getToken());
                 byte[] data = AESUtil.encryptECB(text.getBytes("utf-8"), key, AESUtil.Algorithm.AES);
                 return url.replace("${AUCTION_PRICE}", StringUtil.urlSafeBase64Encode(data));
