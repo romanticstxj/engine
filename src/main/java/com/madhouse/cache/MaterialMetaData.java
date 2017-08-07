@@ -58,166 +58,41 @@ public class MaterialMetaData {
         }
     }
 
-    public class MaterialMedia {
-        private String id;
-        private String url;
-        private int status;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-    }
-
     private long dspId;
     private String materialId;
     private String name;
-    private int adType;
+    private int layout;
     private String dealId;
     private String startDate;
     private String endDate;
+    private long mediaId;
+    private List<Long> adspaceIds;
     private int w;
     private int h;
     private String icon;
-    private String cover;
     private String title;
     private String desc;
+    private String cover;
     private List<String> adm;
     private int duration;
     private int actType;
     private String lpgUrl;
     private Monitor monitor;
-    private Map<Long, MaterialMedia> materialMediaMap;
 
-    public long getDspId() {
-        return dspId;
+    public Monitor getMonitor() {
+        return monitor;
     }
 
-    public void setDspId(long dspId) {
-        this.dspId = dspId;
+    public void setMonitor(Monitor monitor) {
+        this.monitor = monitor;
     }
 
-    public String getMaterialId() {
-        return materialId;
+    public String getLpgUrl() {
+        return lpgUrl;
     }
 
-    public void setMaterialId(String materialId) {
-        this.materialId = materialId;
-    }
-
-    public int getAdType() {
-        return adType;
-    }
-
-    public void setAdType(int adType) {
-        this.adType = adType;
-    }
-
-    public String getDealId() {
-        return dealId;
-    }
-
-    public void setDealId(String dealId) {
-        this.dealId = dealId;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public int getW() {
-        return w;
-    }
-
-    public void setW(int w) {
-        this.w = w;
-    }
-
-    public int getH() {
-        return h;
-    }
-
-    public void setH(int h) {
-        this.h = h;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public List<String> getAdm() {
-        return adm;
-    }
-
-    public void setAdm(List<String> adm) {
-        this.adm = adm;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setLpgUrl(String lpgUrl) {
+        this.lpgUrl = lpgUrl;
     }
 
     public int getActType() {
@@ -228,12 +103,116 @@ public class MaterialMetaData {
         this.actType = actType;
     }
 
-    public Monitor getMonitor() {
-        return monitor;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setMonitor(Monitor monitor) {
-        this.monitor = monitor;
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public List<String> getAdm() {
+        return adm;
+    }
+
+    public void setAdm(List<String> adm) {
+        this.adm = adm;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public void setH(int h) {
+        this.h = h;
+    }
+
+    public int getW() {
+        return w;
+    }
+
+    public void setW(int w) {
+        this.w = w;
+    }
+
+    public List<Long> getAdspaceIds() {
+        return adspaceIds;
+    }
+
+    public void setAdspaceIds(List<Long> adspaceIds) {
+        this.adspaceIds = adspaceIds;
+    }
+
+    public long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(long mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getDealId() {
+        return dealId;
+    }
+
+    public void setDealId(String dealId) {
+        this.dealId = dealId;
+    }
+
+    public int getLayout() {
+        return layout;
+    }
+
+    public void setLayout(int layout) {
+        this.layout = layout;
     }
 
     public String getName() {
@@ -244,20 +223,20 @@ public class MaterialMetaData {
         this.name = name;
     }
 
-    public Map<Long, MaterialMedia> getMaterialMediaMap() {
-        return materialMediaMap;
+    public String getMaterialId() {
+        return materialId;
     }
 
-    public void setMaterialMediaMap(Map<Long, MaterialMedia> materialMediaMap) {
-        this.materialMediaMap = materialMediaMap;
+    public void setMaterialId(String materialId) {
+        this.materialId = materialId;
     }
 
-    public String getLpgUrl() {
-        return lpgUrl;
+    public long getDspId() {
+        return dspId;
     }
 
-    public void setLpgUrl(String lpgUrl) {
-        this.lpgUrl = lpgUrl;
+    public void setDspId(long dspId) {
+        this.dspId = dspId;
     }
 }
 
