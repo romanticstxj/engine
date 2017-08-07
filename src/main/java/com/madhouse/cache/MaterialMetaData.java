@@ -66,7 +66,7 @@ public class MaterialMetaData {
     private String startDate;
     private String endDate;
     private long mediaId;
-    private List<Long> adspaceIds;
+    private long adspaceId;
     private int w;
     private int h;
     private String icon;
@@ -78,6 +78,7 @@ public class MaterialMetaData {
     private int actType;
     private String lpgUrl;
     private Monitor monitor;
+    private String mediaMaterialKey;
 
     public Monitor getMonitor() {
         return monitor;
@@ -167,12 +168,12 @@ public class MaterialMetaData {
         this.w = w;
     }
 
-    public List<Long> getAdspaceIds() {
-        return adspaceIds;
+    public long getAdspaceId() {
+        return adspaceId;
     }
 
-    public void setAdspaceIds(List<Long> adspaceIds) {
-        this.adspaceIds = adspaceIds;
+    public void setAdspaceId(long adspaceId) {
+        this.adspaceId = adspaceId;
     }
 
     public long getMediaId() {
@@ -237,6 +238,14 @@ public class MaterialMetaData {
 
     public void setDspId(long dspId) {
         this.dspId = dspId;
+    }
+
+    public String getMediaMaterialKey() {
+        return mediaMaterialKey;
+    }
+
+    public void setMediaMaterialKey(String mediaMaterialKey) {
+        this.mediaMaterialKey = mediaMaterialKey;
     }
 }
 
