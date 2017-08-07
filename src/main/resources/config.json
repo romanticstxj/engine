@@ -51,20 +51,20 @@
     "kafka": {
         "brokers": "127.0.0.1:6379;127.0.0.1:6379;127.0.0.1:6379",
         "topics": [{
-                "type": "mediabid",
-                "value": "topic_mediabid"
+                "type": "KAFKA_MEDIA_BID",
+                "topic": "topic_mediabid"
             }, {
-                "type": "dspbid",
-                "value": "topic_dspbid"
+                "type": "KAFKA_DSP_BID",
+                "topic": "topic_dspbid"
             }, {
-                "type": "winnotice",
-                "value": "topic_winnotice"
+                "type": "KAFKA_WIN_NOTICE",
+                "topic": "topic_winnotice"
             }, {
-                "type": "impression",
-                "value": "topic_impression"
+                "type": "KAFKA_IMPRESSION",
+                "topic": "topic_impression"
             }, {
-                "type": "click",
-                "value": "topic_click"
+                "type": "KAFKA_CLICK",
+                "topic": "topic_click"
             }
         ]
     },
