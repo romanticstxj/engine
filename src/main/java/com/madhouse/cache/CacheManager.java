@@ -7,8 +7,10 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.ConcurrentHashSet;
+
 import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
@@ -81,7 +83,7 @@ public class CacheManager implements Runnable {
     }
 
     public MaterialMetaData getMaterialMetaData(long dspId, String materialId, long mediaId, long adspaceId) {
-        String key = String.format("%d:%s:%d:%d", dspId, materialId, mediaId, adspaceId);
+        String key = String.format(Constant.CommonKey.DSPID_MATERIALID_MEDIAID_ADSPACEID, dspId, materialId, mediaId, adspaceId);
         return this.materialMetaDataMap.get(key);
     }
 
@@ -117,7 +119,9 @@ public class CacheManager implements Runnable {
         Object mediaMappingData = this.loadMediaMappingData();
         Object dspMappingData = this.loadDSPMappingData();
         Object policyTargetInfo = this.updatePolicyTargetInfo(policyMetaData);
-
+        Object materialMetaData = this.loadMaterialMappingData();
+        
+        this.materialMetaDataMap = (ConcurrentHashMap<String, MaterialMetaData>)materialMetaData;
         this.mediaMetaDataMap = (ConcurrentHashMap<Long, MediaMetaData>)mediaMetaData;
         this.plcmtMetaDataMap = (ConcurrentHashMap<String, PlcmtMetaData>)plcmtMetaData;
         this.adBlockMetaDataMap = (ConcurrentHashMap<Long, AdBlockMetaData>)adBlockMetaData;
@@ -128,6 +132,21 @@ public class CacheManager implements Runnable {
         this.policyTargetMap = (ConcurrentHashMap<String, HashSet<Long>>)policyTargetInfo;
 
         this.blockedPolicy.clear();
+    }
+
+    private Object loadMaterialMappingData() {
+        ConcurrentHashMap<String, MaterialMetaData> var = new ConcurrentHashMap<String, MaterialMetaData>();
+        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_MATERIAL);
+        for (String mediaId : set) {
+            String text = this.redisSlave.get(String.format(Constant.CommonKey.MATERIAL_META_DATA,mediaId));
+            if (!StringUtils.isEmpty(text)) {
+                MaterialMetaData mediaMetaData = JSON.parseObject(text, MaterialMetaData.class);
+                var.put(String.format(Constant.CommonKey.DSPID_MATERIALID_MEDIAID_ADSPACEID, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
+                
+            }
+        }
+        return var;
+        
     }
 
     private ConcurrentHashMap<Long, MediaMetaData> loadMediaMetaData() {
