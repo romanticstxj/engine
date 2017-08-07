@@ -45,17 +45,15 @@ public class ResourceManager {
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
     private final IPLocation ipTables = new IPLocation(ResourceManager.class.getClassLoader().getResource("locations.dat").getPath());
-    
     private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getResourceAsStream("/config.json")), Configuration.class);
 
-    private static final ResourceManager resourceManager = new ResourceManager();
     private ResourceManager(){};
     public static ResourceManager getInstance() {
         return resourceManager;
     }
+    private static final ResourceManager resourceManager = new ResourceManager();
 
-    public boolean init()
-    {
+    public boolean init() {
         {
             this.dspBaseHandlerMap.clear();
             this.dspBaseHandlerMap.put(Constant.DSPApiType.MADRTB, new MADRTBHandler());
@@ -83,8 +81,8 @@ public class ResourceManager {
         }
 
         this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 8, null);
-        for (Bid bid : configuration.getWebapp().getBids())
-        {
+
+        for (Bid bid : configuration.getWebapp().getBids()) {
 			if (!StringUtils.isEmpty(bid.getClassName())) {
 				try {
 					this.mediaApiType.put(bid.getPath(),(MediaBaseHandler) Class.forName(bid.getClassName()).newInstance());

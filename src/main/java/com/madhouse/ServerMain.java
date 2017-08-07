@@ -1,5 +1,6 @@
 package com.madhouse;
 
+import com.madhouse.cache.CacheManager;
 import com.madhouse.util.Utility;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
@@ -21,6 +22,11 @@ import java.util.List;
  */
 public class ServerMain {
 	public static void main(String[] args) {
+		//resource init
+		ResourceManager.getInstance().init();
+		//cache init
+		CacheManager.getInstance().init();
+
 		ServletHandler servletHandler = new ServletHandler(null);
 		WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
 		servletHandler.addHandler(webApp.getImpression(), new ImpressionServlet());

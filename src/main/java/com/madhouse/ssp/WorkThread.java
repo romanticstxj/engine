@@ -40,7 +40,7 @@ public class WorkThread {
                                     0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x4c, 0x01, 0x00, 0x3b};
 
     public boolean init() {
-        return ResourceManager.getInstance().init() && CacheManager.getInstance().init();
+        return true;
     }
 
     public void onImpression(HttpServletRequest req, HttpServletResponse resp) {
