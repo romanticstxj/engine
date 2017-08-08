@@ -39,7 +39,7 @@
                 "className": "com.madhouse.media.vamaker.VamakerHandler"
             }, {
                 "path": "/adcall/sohu/bidrequest",
-                "className": ""
+                "className": "com.madhouse.media.sohu.SohuHandler"
             }, {
                 "path": "/adcall/tencent/bidrequest",
                 "className": "com.madhouse.media.tencent.TencentHandler"
