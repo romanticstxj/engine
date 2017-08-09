@@ -70,9 +70,8 @@
 			"type": "int",
 			"name": "bidtype"
 		}, {
-			"type": ["null", "string"],
-			"name": "location",
-			"default": null
+			"type": "string",
+			"name": "location"
 		}, {
 			"name": "request",
 			"type": {
@@ -316,7 +315,10 @@
 		}, {
 			"type" : "int",
 			"name" : "price"
-		}
+		}, {
+			"type": "string",
+			"name": "location"
+        }
 	]
 }
 ,
@@ -366,6 +368,9 @@
 		}, {
 			"type": "int",
 			"name": "cost"
+		}, {
+			"type": "string",
+			"name": "location"
 		}
 	]
 }
@@ -420,6 +425,9 @@
 		}, {
 			"type": "int",
 			"name": "cost"
+		}, {
+			"type": "string",
+			"name": "location"
 		}
 	]
 }
@@ -453,6 +461,9 @@
 			"type": "int",
 			"name": "winner",
 			"default": 0
+		}, {
+			"type": "string",
+			"name": "location"
 		}, {
 			"name": "request",
 			"type": {
