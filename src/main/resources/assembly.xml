@@ -35,6 +35,7 @@
         <fileSet>
             <directory>src/main/resources</directory>
             <outputDirectory>/bin</outputDirectory>
+            <lineEnding>unix</lineEnding>
             <includes>
                 <include>*.sh</include>
             </includes>
