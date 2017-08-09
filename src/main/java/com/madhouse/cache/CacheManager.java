@@ -40,7 +40,7 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
     //adspaceId, mediaMappingMetaData
     private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
-    //dspid, <adspaceId, dspMappingMetaData>
+    //adspaceId, <dspId, dspMappingMetaData>
     private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
     //targeting index
     private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<String, HashSet<Long>>();
@@ -73,17 +73,17 @@ public class CacheManager implements Runnable {
         return this.mediaMappingMetaDataMap.get(adspaceId);
     }
 
-    public DSPMappingMetaData getDSPMapping(long dspid, long adspaceId) {
-        ConcurrentHashMap<Long, DSPMappingMetaData> var = this.dspMappingMetaDataMap.get(dspid);
+    public DSPMappingMetaData getDSPMapping(long dspId, long adspaceId) {
+        ConcurrentHashMap<Long, DSPMappingMetaData> var = this.dspMappingMetaDataMap.get(adspaceId);
         if (var != null) {
-            return var.get(adspaceId);
+            return var.get(dspId);
         }
 
         return null;
     }
 
     public MaterialMetaData getMaterialMetaData(long dspId, String materialId, long mediaId, long adspaceId) {
-        String key = String.format(Constant.CommonKey.DSPID_MATERIALID_MEDIAID_ADSPACEID, dspId, materialId, mediaId, adspaceId);
+        String key = String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, dspId, materialId, mediaId, adspaceId);
         return this.materialMetaDataMap.get(key);
     }
 
@@ -118,10 +118,9 @@ public class CacheManager implements Runnable {
         Object dspMetaData = this.loadDSPMetaData();
         Object mediaMappingData = this.loadMediaMappingData();
         Object dspMappingData = this.loadDSPMappingData();
-        Object policyTargetInfo = this.updatePolicyTargetInfo(policyMetaData);
         Object materialMetaData = this.loadMaterialMappingData();
-        
-        this.materialMetaDataMap = (ConcurrentHashMap<String, MaterialMetaData>)materialMetaData;
+        Object policyTargetInfo = this.updatePolicyTargetInfo(policyMetaData);
+
         this.mediaMetaDataMap = (ConcurrentHashMap<Long, MediaMetaData>)mediaMetaData;
         this.plcmtMetaDataMap = (ConcurrentHashMap<String, PlcmtMetaData>)plcmtMetaData;
         this.adBlockMetaDataMap = (ConcurrentHashMap<Long, AdBlockMetaData>)adBlockMetaData;
@@ -129,6 +128,7 @@ public class CacheManager implements Runnable {
         this.dspMetaDataMap = (ConcurrentHashMap<Long, DSPMetaData>)dspMetaData;
         this.mediaMappingMetaDataMap = (ConcurrentHashMap<Long, MediaMappingMetaData>)mediaMappingData;
         this.dspMappingMetaDataMap = (ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>)dspMappingData;
+        this.materialMetaDataMap = (ConcurrentHashMap<String, MaterialMetaData>)materialMetaData;
         this.policyTargetMap = (ConcurrentHashMap<String, HashSet<Long>>)policyTargetInfo;
 
         this.blockedPolicy.clear();
@@ -141,12 +141,10 @@ public class CacheManager implements Runnable {
             String text = this.redisSlave.get(String.format(Constant.CommonKey.MATERIAL_META_DATA,mediaId));
             if (!StringUtils.isEmpty(text)) {
                 MaterialMetaData mediaMetaData = JSON.parseObject(text, MaterialMetaData.class);
-                var.put(String.format(Constant.CommonKey.DSPID_MATERIALID_MEDIAID_ADSPACEID, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
-                
+                var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
             }
         }
         return var;
-        
     }
 
     private ConcurrentHashMap<Long, MediaMetaData> loadMediaMetaData() {
@@ -168,11 +166,10 @@ public class CacheManager implements Runnable {
 
         Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
         for (String id : set) {
-            String text = this.redisSlave.get(String.format(Constant.CommonKey.PLACEMENT_META_DATA,id));
+            String text = this.redisSlave.get(String.format(Constant.CommonKey.PLACEMENT_META_DATA, id));
             if (!StringUtils.isEmpty(text)) {
                 PlcmtMetaData metaData = JSON.parseObject(text, PlcmtMetaData.class);
                 var.put(String.valueOf(metaData.getId()), metaData);
-                
             }
         }
         return var;
@@ -195,16 +192,20 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<Long, AdBlockMetaData> loadAdBlockMetaData() {
         ConcurrentHashMap<Long, AdBlockMetaData> var = new ConcurrentHashMap<Long, AdBlockMetaData>();
 
-        String text = this.redisSlave.get(Constant.CommonKey.ADBLOCK_META_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<AdBlockMetaData> adBlockMetaDatas = JSON.parseArray(text, AdBlockMetaData.class);
-            for (AdBlockMetaData adBlockMetaData : adBlockMetaDatas) {
-                if (adBlockMetaData.getStatus() >= 0) {
-                    var.put(adBlockMetaData.getId(), adBlockMetaData);
+        Set<String> adblockIds = this.redisSlave.smembers(Constant.CommonKey.ALL_ADBLOCK);
+        if (!ObjectUtils.isEmpty(adblockIds)) {
+            for (String adblockId : adblockIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.ADBLOCK_META_DATA, adblockId));
+                if (!StringUtils.isEmpty(text)) {
+                    List<AdBlockMetaData> adBlockMetaDatas = JSON.parseArray(text, AdBlockMetaData.class);
+                    for (AdBlockMetaData adBlockMetaData : adBlockMetaDatas) {
+                        if (adBlockMetaData.getStatus() >= 0) {
+                            var.put(adBlockMetaData.getId(), adBlockMetaData);
+                        }
+                    }
                 }
             }
         }
-
         return var;
     }
 
@@ -216,7 +217,6 @@ public class CacheManager implements Runnable {
             if (!StringUtils.isEmpty(text)) {
                 DSPMetaData metaData = JSON.parseObject(text, DSPMetaData.class);
                 var.put(metaData.getId() , metaData);
-                
             }
         }
         return var;
@@ -225,11 +225,14 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<Long, MediaMappingMetaData> loadMediaMappingData() {
         ConcurrentHashMap<Long, MediaMappingMetaData> var = new ConcurrentHashMap<Long, MediaMappingMetaData>();
 
-        String text = this.redisSlave.get(Constant.CommonKey.MEDIA_MAPPING_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<MediaMappingMetaData> mediaMappingMetaDatas = JSON.parseArray(text, MediaMappingMetaData.class);
-            for (MediaMappingMetaData mediaMappingMetaData : mediaMappingMetaDatas) {
-                var.put(mediaMappingMetaData.getAdspaceId(), mediaMappingMetaData);
+        Set<String> adspaceIds = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
+        if (!ObjectUtils.isEmpty(adspaceIds)) {
+            for (String adspaceId : adspaceIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.MEDIA_MAPPING_DATA, adspaceId));
+                if (!StringUtils.isEmpty(text)) {
+                    MediaMappingMetaData mediaMappingMetaData = JSON.parseObject(text, MediaMappingMetaData.class);
+                    var.put(mediaMappingMetaData.getAdspaceId(), mediaMappingMetaData);
+                }
             }
         }
 
@@ -239,18 +242,25 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> loadDSPMappingData() {
         ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> var1 = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
 
-        String text = this.redisSlave.get(Constant.CommonKey.DSP_MAPPING_DATA);
-        if (!StringUtils.isEmpty(text)) {
-            List<DSPMappingMetaData> dspMappingMetaDatas = JSON.parseArray(text, DSPMappingMetaData.class);
-            for (DSPMappingMetaData dspMappingMetaData : dspMappingMetaDatas) {
-                ConcurrentHashMap<Long, DSPMappingMetaData> var2 = var1.get(dspMappingMetaData.getDspId());
+        Set<String> adspaceIds = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
+        Set<String> dspIds = this.redisSlave.smembers(Constant.CommonKey.ALL_DSP);
 
-                if (var2 == null) {
-                    var2 = new ConcurrentHashMap<>();
-                    var1.put(dspMappingMetaData.getDspId(), var2);
+        if (!ObjectUtils.isEmpty(adspaceIds) && !ObjectUtils.isEmpty(dspIds)) {
+            for (String adspaceId : adspaceIds) {
+                for (String dspId : dspIds) {
+                    String text = this.redisSlave.get(String.format(Constant.CommonKey.DSP_MAPPING_DATA, adspaceId, dspId));
+                    if (!StringUtils.isEmpty(text)) {
+                        DSPMappingMetaData dspMappingMetaData = JSON.parseObject(text, DSPMappingMetaData.class);
+                        ConcurrentHashMap<Long, DSPMappingMetaData> var2 = var1.get(dspMappingMetaData.getAdspaceId());
+
+                        if (var2 == null) {
+                            var2 = new ConcurrentHashMap<>();
+                            var1.put(dspMappingMetaData.getAdspaceId(), var2);
+                        }
+
+                        var2.put(dspMappingMetaData.getDspId(), dspMappingMetaData);
+                    }
                 }
-
-                var2.put(dspMappingMetaData.getAdspaceId(), dspMappingMetaData);
             }
         }
 

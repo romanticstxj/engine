@@ -30,15 +30,15 @@ public final class Constant {
         public static final String DSP_META_DATA = "str:%s:dsp_info";
         public static final String ALL_MATERIAL = "set:all_material";
         public static final String MATERIAL_META_DATA = "str:%s:material_info";
-        public static final String MEDIA_MAPPING_DATA = "str:media_mapping_data";
-        public static final String DSP_MAPPING_DATA = "str:dsp_mapping_data";
+        public static final String MEDIA_MAPPING_DATA = "str:%s:media_mapping_info";
+        public static final String DSP_MAPPING_DATA = "str:%s:%s:dsp_mapping_info";
 
         //engine control
         public static final String POLICY_CONTORL_TOTAL = "str:%d:policy_total";
         public static final String POLICY_CONTORL_DAILY = "str:%d:%s:policy_daily";
         public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
         //dspid，materialId,mediaId,adspaceId
-        public static final String DSPID_MATERIALID_MEDIAID_ADSPACEID = "%d:%s:%d:%d";
+        public static final String MATERIAL_MAPPING_DATA = "%d:%s:%d:%d";
         
         //KAFKA
         public static final String KAFKA_MEDIA_BID = "KAFKA_MEDIA_BID"; 
