@@ -2,6 +2,7 @@ package com.madhouse.media;
 
 import com.madhouse.cache.MediaBidMetaData;
 
+import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.LoggerUtil;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,7 @@ public abstract class MediaBaseHandler {
             mediaBid.setStatus(Constant.StatusCode.OK);
         }
 
+        LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
         return this.packageMediaResponse(mediaBidMetaData, resp);
     }
 
