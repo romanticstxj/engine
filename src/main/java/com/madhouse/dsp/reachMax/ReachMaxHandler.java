@@ -103,6 +103,12 @@ public class ReachMaxHandler extends DSPBaseHandler {
                 } else if (builder.getDid() != null) {
                     udidBuilder.setAndroidId(builder.getDid());
                 }
+                String imei = builder.getDid();
+                if (imei != null) {
+                    deviceBuilder = deviceBuilder.setUdid(udidBuilder.setImei(imei));
+                } else if (builder.getMac() != null) {
+                    deviceBuilder = deviceBuilder.setUdid(udidBuilder.setMac(builder.getMac()));
+                }
                 break;
             case Constant.OSType.IOS:
                 deviceBuilder.setOs(Os.IOS);

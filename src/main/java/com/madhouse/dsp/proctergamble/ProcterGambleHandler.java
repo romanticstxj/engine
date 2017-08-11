@@ -95,12 +95,20 @@ public class ProcterGambleHandler extends DSPBaseHandler {
             case Constant.OSType.ANDROID:
                 deviceBuilder.setOs(Os.ANDROID);
                 UdId.Builder udidBuilder = UdId.newBuilder();
-                String aid=builder.getDpid();
+                String aid = builder.getDpid();
                 if (aid != null) {
                     udidBuilder.setAndroidId(aid);
                 } else if (builder.getDid() != null) {
                     udidBuilder.setAndroidId(builder.getDid());
                 }
+                
+                String imei = builder.getDid();
+                if (imei != null) {
+                    deviceBuilder = deviceBuilder.setUdid(udidBuilder.setImei(imei));
+                } else if (builder.getMac() != null) {
+                    deviceBuilder = deviceBuilder.setUdid(udidBuilder.setMac(builder.getMac()));
+                }
+                
                 break;
             case Constant.OSType.IOS:
                 deviceBuilder.setOs(Os.IOS);
