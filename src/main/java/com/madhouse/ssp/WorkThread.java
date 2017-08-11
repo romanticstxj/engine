@@ -44,8 +44,9 @@ public class WorkThread {
     }
 
     public void onImpression(HttpServletRequest req, HttpServletResponse resp) {
-        try {
+        Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
 
+        try {
             String impid = req.getParameter("impid");
             String mid = req.getParameter("mid");
             String plcmtid = req.getParameter("plcmtid");
@@ -61,7 +62,6 @@ public class WorkThread {
             ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
 
             //bid redis check
-            Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
             if (!redisMaster.exists(recordKey)) {
                 impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
@@ -96,16 +96,20 @@ public class WorkThread {
                 resp.setContentType("image/gif");
                 resp.setContentLength(this.image.length);
                 resp.setStatus(impressionTrack.getStatus());
-                return;
             }
         } catch (Exception ex) {
             System.err.println(ex.toString());
+            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+        } finally {
+            if (redisMaster != null) {
+                redisMaster.close();
+            }
         }
-
-        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
     }
 
     public void onClick(HttpServletRequest req, HttpServletResponse resp) {
+        Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+
         try {
             String impid = req.getParameter("impid");
             String mid = req.getParameter("mid");
@@ -122,7 +126,6 @@ public class WorkThread {
             ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
 
             //bid redis check
-            Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
             String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
             if (!redisMaster.exists(recordKey)) {
                 clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
@@ -165,13 +168,15 @@ public class WorkThread {
 
                 LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack);
                 resp.setStatus(clickTrack.getStatus());
-                return;
             }
         } catch (Exception ex) {
             System.err.println(ex.toString());
+            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+        } finally {
+            if (redisMaster != null) {
+                redisMaster.close();
+            }
         }
-
-        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
     }
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
@@ -220,7 +225,7 @@ public class WorkThread {
             }
 
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
-                resp.setStatus(Constant.StatusCode.NO_CONTENT);
+                resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
@@ -246,16 +251,15 @@ public class WorkThread {
             }
 
             mediaBid.setLocation(location);
-
             //bidfloor, bidtype
             mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
             mediaBid.setBidtype(plcmtMetaData.getBidType());
 
             //get block metadata
-            long blockid = plcmtMetaData.getBlockId();
+            long adBlockId = plcmtMetaData.getBlockId();
             AdBlockMetaData adBlockMetaData = null;
-            if (blockid > 0) {
-                adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(blockid);
+            if (adBlockId > 0) {
+                adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(adBlockId);
                 if (adBlockMetaData == null) {
                     return;
                 }
@@ -519,29 +523,11 @@ public class WorkThread {
         return policyMetaDatas;
     }
 
-    private DSPBidMetaData selectWinner(PlcmtMetaData plcmtMetaData,
-                                                                   PolicyMetaData policyMetaData,
-                                                                   List<DSPBidMetaData> dspBidderList) {
+    private DSPBidMetaData selectWinner(PlcmtMetaData plcmtMetaData, PolicyMetaData policyMetaData, List<DSPBidMetaData> bidderList) {
         DSPBidMetaData winner = null;
 
         if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
-            /*Map<DSPBidMetaData, Integer> selectedDspList = new HashMap<>();
-            Map<Long, PolicyMetaData.DSPInfo> dspInfoMap = policyMetaData.getDspInfoMap();
-
-            for (DSPBidMetaData dspBidMetaData : dspBidderList) {
-                DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
-                int weight = dspInfoMap.get(dspMetaData.getId()).getWeight();
-                if (weight > 0) {
-                    selectedDspList.put(dspBidMetaData, weight);
-                }
-            }
-
-            if (!selectedDspList.isEmpty()) {
-                DSPBidMetaData dspBidMetaData = Utility.randomWithWeights(selectedDspList);
-                winner = Pair.of(dspBidMetaData, policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor());
-            }*/
-
-            DSPBidMetaData dspBidMetaData = dspBidderList.get(0);
+            DSPBidMetaData dspBidMetaData = bidderList.get(0);
             DSPBidMetaData.AuctionInfo auctionInfo = dspBidMetaData.new AuctionInfo();
             PolicyMetaData.AdspaceInfo adspaceInfo = policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId());
 
@@ -550,7 +536,7 @@ public class WorkThread {
             dspBidMetaData.setAuctionInfo(auctionInfo);
             winner = dspBidMetaData;
         } else {
-            dspBidderList.sort(new Comparator<DSPBidMetaData>() {
+            bidderList.sort(new Comparator<DSPBidMetaData>() {
                 @Override
                 public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
                     return o1.getDspBidBuilder().getResponse().getPrice() > o2.getDspBidBuilder().getResponse().getPrice() ? 1 : -1;
@@ -558,12 +544,12 @@ public class WorkThread {
             });
 
             int price = plcmtMetaData.getBidFloor();
-            if (dspBidderList.size() >= 2) {
-                DSPBidMetaData dspBidMetaData = dspBidderList.get(1);
+            if (bidderList.size() >= 2) {
+                DSPBidMetaData dspBidMetaData = bidderList.get(1);
                 price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
             }
 
-            DSPBidMetaData dspBidMetaData = dspBidderList.get(0);
+            DSPBidMetaData dspBidMetaData = bidderList.get(0);
             DSPBidMetaData.AuctionInfo auctionInfo = dspBidMetaData.new AuctionInfo();
 
             auctionInfo.setBidType(plcmtMetaData.getBidType());

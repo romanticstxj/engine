@@ -132,6 +132,14 @@ public class CacheManager implements Runnable {
         this.policyTargetMap = (ConcurrentHashMap<String, HashSet<Long>>)policyTargetInfo;
 
         this.blockedPolicy.clear();
+
+        if (this.redisMaster != null) {
+            this.redisMaster.close();
+        }
+
+        if (this.redisSlave != null) {
+            this.redisSlave.close();
+        }
     }
 
     private Object loadMaterialMappingData() {
