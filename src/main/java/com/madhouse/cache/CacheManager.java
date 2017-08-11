@@ -144,12 +144,15 @@ public class CacheManager implements Runnable {
 
     private Object loadMaterialMappingData() {
         ConcurrentHashMap<String, MaterialMetaData> var = new ConcurrentHashMap<String, MaterialMetaData>();
-        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_MATERIAL);
-        for (String mediaId : set) {
-            String text = this.redisSlave.get(String.format(Constant.CommonKey.MATERIAL_META_DATA,mediaId));
-            if (!StringUtils.isEmpty(text)) {
-                MaterialMetaData mediaMetaData = JSON.parseObject(text, MaterialMetaData.class);
-                var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
+
+        Set<String> materialIds = this.redisSlave.smembers(Constant.CommonKey.ALL_MATERIAL);
+        if (!ObjectUtils.isEmpty(materialIds)) {
+            for (String materialId : materialIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.MATERIAL_META_DATA, materialId));
+                if (!StringUtils.isEmpty(text)) {
+                    MaterialMetaData mediaMetaData = JSON.parseObject(text, MaterialMetaData.class);
+                    var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
+                }
             }
         }
         return var;
@@ -157,13 +160,16 @@ public class CacheManager implements Runnable {
 
     private ConcurrentHashMap<Long, MediaMetaData> loadMediaMetaData() {
         ConcurrentHashMap<Long, MediaMetaData> var = new ConcurrentHashMap<Long, MediaMetaData>();
-        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_MEDIA);
-        for (String mediaId : set) {
-            String text = this.redisSlave.get(String.format(Constant.CommonKey.MEDIA_META_DATA,mediaId));
-            if (!StringUtils.isEmpty(text)) {
-                MediaMetaData mediaMetaData = JSON.parseObject(text, MediaMetaData.class);
-                var.put(mediaMetaData.getId(), mediaMetaData);
-                
+
+        Set<String> mediaIds = this.redisSlave.smembers(Constant.CommonKey.ALL_MEDIA);
+        if (!ObjectUtils.isEmpty(mediaIds)) {
+            for (String mediaId : mediaIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.MEDIA_META_DATA, mediaId));
+                if (!StringUtils.isEmpty(text)) {
+                    MediaMetaData mediaMetaData = JSON.parseObject(text, MediaMetaData.class);
+                    var.put(mediaMetaData.getId(), mediaMetaData);
+
+                }
             }
         }
         return var;
@@ -172,12 +178,14 @@ public class CacheManager implements Runnable {
     private ConcurrentHashMap<String, PlcmtMetaData> loadPlcmtMetaData() {
         ConcurrentHashMap<String, PlcmtMetaData> var = new ConcurrentHashMap<String, PlcmtMetaData>();
 
-        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
-        for (String id : set) {
-            String text = this.redisSlave.get(String.format(Constant.CommonKey.PLACEMENT_META_DATA, id));
-            if (!StringUtils.isEmpty(text)) {
-                PlcmtMetaData metaData = JSON.parseObject(text, PlcmtMetaData.class);
-                var.put(String.valueOf(metaData.getId()), metaData);
+        Set<String> plcmtIds = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
+        if (!ObjectUtils.isEmpty(plcmtIds)) {
+            for (String plcmtId : plcmtIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.PLACEMENT_META_DATA, plcmtId));
+                if (!StringUtils.isEmpty(text)) {
+                    PlcmtMetaData metaData = JSON.parseObject(text, PlcmtMetaData.class);
+                    var.put(String.valueOf(metaData.getId()), metaData);
+                }
             }
         }
         return var;
@@ -185,13 +193,16 @@ public class CacheManager implements Runnable {
 
     private ConcurrentHashMap<Long, PolicyMetaData> loadPolicyMetaData() {
         ConcurrentHashMap<Long, PolicyMetaData> var = new ConcurrentHashMap<Long, PolicyMetaData>();
-        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_POLICY);
-        for (String mediaId : set) {
-            String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_META_DATA,mediaId));
-            if (!StringUtils.isEmpty(text)) {
-                PolicyMetaData metaData = JSON.parseObject(text, PolicyMetaData.class);
-                var.put(metaData.getId(), metaData);
-                
+
+        Set<String> policyIds = this.redisSlave.smembers(Constant.CommonKey.ALL_POLICY);
+        if (!ObjectUtils.isEmpty(policyIds)) {
+            for (String policyId : policyIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_META_DATA, policyId));
+                if (!StringUtils.isEmpty(text)) {
+                    PolicyMetaData metaData = JSON.parseObject(text, PolicyMetaData.class);
+                    var.put(metaData.getId(), metaData);
+
+                }
             }
         }
         return var;
@@ -219,14 +230,18 @@ public class CacheManager implements Runnable {
 
     private ConcurrentHashMap<Long, DSPMetaData> loadDSPMetaData() {
         ConcurrentHashMap<Long, DSPMetaData> var = new ConcurrentHashMap<Long, DSPMetaData>();
-        Set<String> set = this.redisSlave.smembers(Constant.CommonKey.ALL_DSP);
-        for (String mediaId : set) {
-            String text = this.redisSlave.get(String.format(Constant.CommonKey.DSP_META_DATA,mediaId));
-            if (!StringUtils.isEmpty(text)) {
-                DSPMetaData metaData = JSON.parseObject(text, DSPMetaData.class);
-                var.put(metaData.getId() , metaData);
+
+        Set<String> dspIds = this.redisSlave.smembers(Constant.CommonKey.ALL_DSP);
+        if (!ObjectUtils.isEmpty(dspIds)) {
+            for (String dspId : dspIds) {
+                String text = this.redisSlave.get(String.format(Constant.CommonKey.DSP_META_DATA, dspId));
+                if (!StringUtils.isEmpty(text)) {
+                    DSPMetaData metaData = JSON.parseObject(text, DSPMetaData.class);
+                    var.put(metaData.getId() , metaData);
+                }
             }
         }
+
         return var;
     }
 
