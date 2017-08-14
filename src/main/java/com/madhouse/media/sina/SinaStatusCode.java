@@ -22,11 +22,5 @@ public final class SinaStatusCode {
         public static final int _3G = 5;
         public static final int _4G = 6;
     }
-    //// 1 iphone 2 ipad 3 android
-    public static final class Devicetype{
-        public static final int IPHONE  = 1;
-        public static final int IPAD  = 2;
-        public static final int ANDROID  = 3;
-    }
 }
 
