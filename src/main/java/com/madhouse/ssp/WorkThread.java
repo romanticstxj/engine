@@ -187,6 +187,7 @@ public class WorkThread {
             //get media request handler
             MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
             if (mediaBaseHandler == null) {
+                logger.error("get media hanlder error.");
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -205,6 +206,7 @@ public class WorkThread {
 
             //parse media request
             if (!mediaBaseHandler.parseRequest(req, mediaBidMetaData, resp)) {
+                logger.error("parse media request error.");
                 return;
             }
 
@@ -214,17 +216,20 @@ public class WorkThread {
             //get placement metadata
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
             if (plcmtMetaData == null) {
+                logger.error("media adspace mapping error.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
             if (mediaMetaData == null) {
+                logger.error("get media metadata error.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
+                logger.warn("media or adspace is not allowed.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
@@ -246,6 +251,7 @@ public class WorkThread {
             //init location
             String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
             if (StringUtils.isEmpty(location)) {
+                logger.error("get user's location error.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
