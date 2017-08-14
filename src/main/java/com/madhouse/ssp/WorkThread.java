@@ -51,10 +51,12 @@ public class WorkThread {
             String mid = req.getParameter("mid");
             String plcmtid = req.getParameter("plcmtid");
             String policyid = req.getParameter("policyid");
+            String location = req.getParameter("location");
             String ext = req.getParameter("ext");
 
             //args check
-            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) || StringUtils.isEmpty(policyid) || StringUtils.isEmpty(ext)) {
+            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) ||
+                    StringUtils.isEmpty(policyid) || StringUtils.isEmpty(location) || StringUtils.isEmpty(ext)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -81,6 +83,7 @@ public class WorkThread {
             impressionTrack.setMediaid(Long.parseLong(mid));
             impressionTrack.setAdspaceid(Long.parseLong(plcmtid));
             impressionTrack.setPolicyid(Long.parseLong(policyid));
+            impressionTrack.setLocation(location);
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
@@ -115,10 +118,12 @@ public class WorkThread {
             String mid = req.getParameter("mid");
             String plcmtid = req.getParameter("plcmtid");
             String policyid = req.getParameter("policyid");
+            String location = req.getParameter("location");
             String ext = req.getParameter("ext");
 
             //args check
-            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) || StringUtils.isEmpty(policyid) || StringUtils.isEmpty(ext)) {
+            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) ||
+                    StringUtils.isEmpty(policyid) || StringUtils.isEmpty(location) || StringUtils.isEmpty(ext)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -145,6 +150,7 @@ public class WorkThread {
             clickTrack.setMediaid(Long.parseLong(mid));
             clickTrack.setAdspaceid(Long.parseLong(plcmtid));
             clickTrack.setPolicyid(Long.parseLong(policyid));
+            clickTrack.setLocation(location);
 
             String[] exts = ext.split(",");
             if (exts.length >= 3) {
