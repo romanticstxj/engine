@@ -214,13 +214,13 @@ public class WorkThread {
             //get placement metadata
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
             if (plcmtMetaData == null) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
             if (mediaMetaData == null) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
@@ -260,9 +260,6 @@ public class WorkThread {
             AdBlockMetaData adBlockMetaData = null;
             if (adBlockId > 0) {
                 adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(adBlockId);
-                if (adBlockMetaData == null) {
-                    return;
-                }
             }
 
             int[] deliveryTypes = {Constant.DeliveryType.PDB, Constant.DeliveryType.PD, Constant.DeliveryType.RTB};
@@ -309,7 +306,7 @@ public class WorkThread {
 
                             DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
                             if (dspBaseHandler == null) {
-                                logger.error("dspApiType[%d-%d] error.", dspMetaData.getId(), dspMetaData.getApiType());
+                                logger.error("get dsp handler [id=%d apitype=%d] error.", dspMetaData.getId(), dspMetaData.getApiType());
                                 continue;
                             }
 
@@ -383,7 +380,7 @@ public class WorkThread {
                             }
                         }
 
-                        List<DSPBidMetaData> dspBidderList = new LinkedList<DSPBidMetaData>();
+                        List<DSPBidMetaData> bidderList = new LinkedList<DSPBidMetaData>();
                         for (Map.Entry entry : selectedDspList.entrySet()) {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
                             DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
@@ -392,7 +389,7 @@ public class WorkThread {
                             if (httpResponse != null) {
                                 if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
                                     if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {
-                                        dspBidderList.add(dspBidMetaData);
+                                        bidderList.add(dspBidMetaData);
                                     }
                                 }
                             } else {
@@ -402,8 +399,8 @@ public class WorkThread {
                             dspBidMetaData.getHttpRequestBase().releaseConnection();
                         }
 
-                        if (!dspBidderList.isEmpty()) {
-                            DSPBidMetaData winner = this.selectWinner(plcmtMetaData, policyMetaData, dspBidderList);
+                        if (!bidderList.isEmpty()) {
+                            DSPBidMetaData winner = this.selectWinner(plcmtMetaData, policyMetaData, bidderList);
                             if (winner != null) {
                                 DSPBidMetaData dspBidMetaData = winner;
                                 dspBidMetaData.getDspBidBuilder().setWinner(1);

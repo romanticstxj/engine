@@ -49,7 +49,9 @@ public abstract class DSPBaseHandler {
                     .setPolicyid(policyMetaData.getId())
                     .setDeliverytype(policyMetaData.getDeliveryType())
                     .setTime(System.currentTimeMillis())
-                    .setRequestBuilder(dspRequest);
+                    .setRequestBuilder(dspRequest)
+                    .setStatus(Constant.StatusCode.NO_CONTENT)
+                    .setLocation(mediaBid.getLocation());
 
             return this.packageBidRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
         } catch (Exception e) {
