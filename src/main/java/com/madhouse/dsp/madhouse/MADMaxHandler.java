@@ -100,7 +100,8 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&lon=").append(StringUtil.toString(builder.getLon().toString()))
                 .append("&lat=").append(StringUtil.toString(builder.getLat().toString()))
                 .append("&cell=").append(StringUtil.toString(builder.getCell()))
-                .append("&mcell=").append(StringUtil.toString(builder.getCellmd5()));
+                .append("&mcell=").append(StringUtil.toString(builder.getCellmd5()))
+                .append("&dealid=").append(StringUtil.toString(builder.getDealid()));
         switch (builder.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
@@ -177,6 +178,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
         dspResponse.setAdm(madResponse.getAdm());
         dspResponse.setLpgurl(madResponse.getClickurl());
+        dspResponse.setDealid(madResponse.getDealid());
         Monitor.Builder monitor = Monitor.newBuilder();
         List<Track> tracks=new ArrayList<>();
         for (String track : madResponse.getImgtracking()) {

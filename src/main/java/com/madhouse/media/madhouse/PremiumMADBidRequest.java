@@ -158,7 +158,18 @@ public class PremiumMADBidRequest {
      * */
     private List<String> label;
     
+    /**
+     * PDB、PD模式的deal id
+     */
+    private String dealid;
     
+    
+    public String getDealid() {
+        return dealid;
+    }
+    public void setDealid(String dealid) {
+        this.dealid = dealid;
+    }
     public String getBid() {
         return bid;
     }

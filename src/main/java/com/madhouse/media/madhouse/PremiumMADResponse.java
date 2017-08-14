@@ -55,8 +55,17 @@ public class PremiumMADResponse {
     //品牌安全监测
     private List<String> securl;
     
+    //PDB、PD模式的deal id
+    private String dealid;
     
-    
+    public String getDealid() {
+        return dealid;
+    }
+
+    public void setDealid(String dealid) {
+        this.dealid = dealid;
+    }
+
     public String getBid() {
         return bid;
     }

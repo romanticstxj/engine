@@ -122,13 +122,17 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(!StringUtils.isEmpty(madBidRequest.getMcell())){
             mediaRequest.setCellmd5(madBidRequest.getMcell());
         }
+        //MD5加密的手机号码。
+        if(!StringUtils.isEmpty(madBidRequest.getMcell())){
+            mediaRequest.setCellmd5(madBidRequest.getMcell());
+        }
         //经度
         if(!StringUtils.isEmpty(madBidRequest.getLon())){
             mediaRequest.setLon(Float.parseFloat(madBidRequest.getLon()));
         }
-        //纬度
-        if(!StringUtils.isEmpty(madBidRequest.getLat())){
-            mediaRequest.setLat(Float.parseFloat(madBidRequest.getLat()));
+        //PDB、PD模式的deal id
+        if(!StringUtils.isEmpty(madBidRequest.getDealid())){
+            mediaRequest.setDealid(madBidRequest.getDealid());
         }
         //投放的媒体形式
         if(!StringUtils.isEmpty(madBidRequest.getMedia())){
@@ -391,6 +395,8 @@ public class PremiumMADHandler extends MediaBaseHandler {
             
             //品牌安全监测
             premiumMADResponse.setSecurl(mediaResponse.getMonitor().getSecurl());
+            //PDB、PD模式的deal id
+            premiumMADResponse.setDealid(StringUtils.isEmpty(mediaResponse.getDealid())?null:mediaResponse.getDealid());
             
         } else {
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey());
