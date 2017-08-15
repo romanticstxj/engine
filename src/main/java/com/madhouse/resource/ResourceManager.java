@@ -133,8 +133,8 @@ public class ResourceManager {
     public HttpClient getHttpClient(long dspId) {
         HttpClient client = this.httpClientMap.get(dspId);
 
-        synchronized (this) {
-            if (client == null) {
+        if (client == null) {
+            synchronized (this) {
                 client = new HttpClient();
                 this.httpClientMap.put(dspId, client);
             }
