@@ -325,9 +325,10 @@ public class WorkThread {
                             dspBidMetaData.setDspBaseHandler(dspBaseHandler);
                             HttpRequestBase httpRequestBase = dspBaseHandler.packageRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
                             if (httpRequestBase != null) {
-                                HttpClient httpClient = dspMetaData.getHttpClient();
+                                HttpClient httpClient = ResourceManager.getInstance().getHttpClient(dspMetaData.getId());
                                 httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
                                 this.multiHttpClient.addHttpClient(httpClient);
+                                dspBidMetaData.setHttpClient(httpClient);
                                 dspBidMetaData.setHttpRequestBase(httpRequestBase);
                                 selectedDspList.put(dspInfo.getId(), dspBidMetaData);
                             }
@@ -397,7 +398,7 @@ public class WorkThread {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
                             DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
                             DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
-                            HttpResponse httpResponse = dspMetaData.getHttpClient().getResp();
+                            HttpResponse httpResponse = dspBidMetaData.getHttpClient().getResp();
                             if (httpResponse != null) {
                                 if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
                                     if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {

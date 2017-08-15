@@ -1,8 +1,5 @@
 package com.madhouse.cache;
 
-import com.madhouse.dsp.DSPBaseHandler;
-import com.madhouse.util.httpclient.HttpClient;
-
 /**
  * Created by WUJUNFENG on 2017/5/23.
  */
@@ -14,7 +11,6 @@ public class DSPMetaData {
     private String token;
     private int apiType;
     private int status;
-    private HttpClient httpClient = new HttpClient();
 
     public long getId() {
         return id;
@@ -70,13 +66,5 @@ public class DSPMetaData {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public HttpClient getHttpClient() {
-        return httpClient;
-    }
-
-    public void setHttpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
     }
 }

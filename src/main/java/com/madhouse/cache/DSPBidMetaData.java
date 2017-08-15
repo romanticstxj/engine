@@ -2,6 +2,7 @@ package com.madhouse.cache;
 
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.ssp.avro.*;
+import com.madhouse.util.httpclient.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
@@ -12,6 +13,7 @@ public class DSPBidMetaData {
     private DSPBid.Builder dspBidBuilder;
     private DSPBaseHandler dspBaseHandler;
     private HttpRequestBase httpRequestBase;
+    private HttpClient httpClient;
     private AuctionInfo auctionInfo;
 
     public class AuctionInfo {
@@ -73,5 +75,13 @@ public class DSPBidMetaData {
 
     public void setAuctionInfo(AuctionInfo auctionInfo) {
         this.auctionInfo = auctionInfo;
+    }
+
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 }

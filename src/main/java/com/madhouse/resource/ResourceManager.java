@@ -1,10 +1,5 @@
 package com.madhouse.resource;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.madhouse.configuration.Redis;
@@ -17,8 +12,8 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.util.IPLocation;
 import com.madhouse.util.StringUtil;
 
+import com.madhouse.util.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.configuration.Bid;
@@ -27,7 +22,6 @@ import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.LoggerUtil;
-import com.madhouse.util.ObjectUtils;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -41,6 +35,7 @@ public class ResourceManager {
     private JedisPool jedisPoolMaster;
     private JedisPool jedisPoolSlave;
 
+    private ConcurrentHashMap<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
@@ -133,5 +128,18 @@ public class ResourceManager {
 
     public String getLocation(String ip) {
         return this.ipTables.getLocation(ip);
+    }
+
+    public HttpClient getHttpClient(long dspId) {
+        HttpClient client = this.httpClientMap.get(dspId);
+
+        synchronized (this) {
+            if (client == null) {
+                client = new HttpClient();
+                this.httpClientMap.put(dspId, client);
+            }
+        }
+
+        return client;
     }
 }
