@@ -43,10 +43,11 @@ public class ResourceManager {
     private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getResourceAsStream("/config.json")), Configuration.class);
 
     private ResourceManager(){};
+    private static final ResourceManager resourceManager = new ResourceManager();
+
     public static ResourceManager getInstance() {
         return resourceManager;
     }
-    private static final ResourceManager resourceManager = new ResourceManager();
 
     public boolean init() {
         {

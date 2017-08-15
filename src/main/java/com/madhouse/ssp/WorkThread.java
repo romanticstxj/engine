@@ -243,6 +243,7 @@ public class WorkThread {
             //init mediaid, adspaceid
             mediaRequest.setMediaid(mediaMetaData.getId());
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
+            mediaRequest.setAdtype(plcmtMetaData.getAdType());
 
             //init user ip
             if (!mediaRequest.hasIp()) {
@@ -284,14 +285,14 @@ public class WorkThread {
                 }
 
                 //get policy detail
-                List<Pair<PolicyMetaData, Integer>> policyMetaDatas = this.getPolicyMetaData(policyList);
+                Set<Pair<PolicyMetaData, Integer>> policyMetaDatas = this.getPolicyMetaData(policyList);
                 if (policyMetaDatas == null || policyMetaDatas.isEmpty()) {
                     continue;
                 }
 
-                int selectedIndex = -1;
-                while ((selectedIndex = Utility.randomWithWeights(policyMetaDatas)) != -1) {
-                    PolicyMetaData policyMetaData = policyMetaDatas.get(selectedIndex).getLeft();
+                Pair<PolicyMetaData, Integer> selectedPolicy = null;
+                while ((selectedPolicy = Utility.randomWithWeights(policyMetaDatas)) != null) {
+                    PolicyMetaData policyMetaData = selectedPolicy.getLeft();
 
                     this.multiHttpClient.reset();
 
@@ -442,7 +443,7 @@ public class WorkThread {
                         break;
                     }
 
-                    policyMetaDatas.remove(selectedIndex);
+                    policyMetaDatas.remove(selectedPolicy);
                 }
             }
         } catch (Exception ex) {
@@ -520,9 +521,9 @@ public class WorkThread {
         return new LinkedList<>(SetUtil.setDiff(SetUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
     }
 
-    private List<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
+    private Set<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
 
-        List<Pair<PolicyMetaData, Integer>> policyMetaDatas = new ArrayList<>(policyList.size());
+        Set<Pair<PolicyMetaData, Integer>> policyMetaDatas = new HashSet<>(policyList.size());
         for (long policyId : policyList) {
             PolicyMetaData policyMetaData = CacheManager.getInstance().getPolicyMetaData(policyId);
             if (policyMetaData != null) {

@@ -12,17 +12,17 @@ import java.util.*;
 public final class Utility {
     private static final Random random = new Random(System.currentTimeMillis());
 
-    public static <T> int randomWithWeights(Collection<Pair<T, Integer>> dataSource) {
+    public static <T> Pair<T, Integer> randomWithWeights(Collection<Pair<T, Integer>> dataSource) {
         if (dataSource == null || dataSource.isEmpty()) {
-            return -1;
+            return null;
         }
 
-        List<Pair<Integer, Integer>> weightsList = new ArrayList<>(dataSource.size());
+        List<Pair<Pair<T, Integer>, Integer>> weightsList = new ArrayList<>(dataSource.size());
 
         int index = 0;
         int maxLength = 0;
         for (Pair<T, Integer> data : dataSource) {
-            Pair<Integer, Integer> var1 = Pair.of(index++, maxLength);
+            Pair<Pair<T, Integer>, Integer> var1 = Pair.of(data, maxLength);
             weightsList.add(var1);
             maxLength += data.getRight();
         }
@@ -33,7 +33,7 @@ public final class Utility {
         int end = weightsList.size();
         while (end - start > 1) {
             int mid = (end + start) / 2;
-            Pair<Integer, Integer> var1 = weightsList.get(mid);
+            Pair<Pair<T, Integer>, Integer> var1 = weightsList.get(mid);
             if (value >= var1.getRight()) {
                 start = mid;
             } else {
