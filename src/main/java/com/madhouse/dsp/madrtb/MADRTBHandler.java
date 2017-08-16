@@ -392,7 +392,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                     .replace("${AUCTION_AD_ID}", StringUtil.toString(dspResponse.getAdid()));
 
             if (url.contains("${AUCTION_PRICE")) {
-                String text = String.format("%d_%d", dspBidMetaData.getAuctionInfo().getAuctionPrice(), System.currentTimeMillis() / 1000);
+                AuctionPriceInfo auctionPriceInfo = dspBidMetaData.getAuctionPriceInfo();
+                String text = String.format("%d_%d", auctionPriceInfo.getBidPrice(), System.currentTimeMillis() / 1000);
                 byte[] key = StringUtil.hexToBytes(dspBidMetaData.getDspMetaData().getToken());
                 byte[] data = AESUtil.encryptECB(text.getBytes("utf-8"), key, AESUtil.Algorithm.AES);
                 return url.replace("${AUCTION_PRICE}", StringUtil.urlSafeBase64Encode(data));
