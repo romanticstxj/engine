@@ -54,7 +54,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         String ua = mediaRequest.getUa();
         String device = mediaRequest.getModel();
         String pkgname = mediaRequest.getBundle();
-        String appname = mediaRequest.getName();
+        String appname = mediaMetaData.getName();
         try {
             if (ua != null) {
                 ua = URLEncoder.encode(ua, "UTF-8");
@@ -79,29 +79,29 @@ public class MADMaxHandler extends DSPBaseHandler {
         }
 
         sb.append("adspaceid=").append(adspaceId)
-                .append("&adtype=").append(StringUtil.toString(mediaRequest.getAdtype().toString()))
-                .append("&width=").append(mediaRequest.getW() != null ? mediaRequest.getW() : plcmtMetaData.getBanner().getW())
-                .append("&height=").append(mediaRequest.getH() != null ? mediaRequest.getH() : plcmtMetaData.getBanner().getH())
+                .append("&adtype=").append(plcmtMetaData.getAdType())
+                .append("&width=").append(plcmtMetaData.getW())
+                .append("&height=").append(plcmtMetaData.getH())
                 .append("&pkgname=").append(StringUtil.toString(pkgname))
                 .append("&conn=").append(StringUtil.toString(mediaRequest.getConnectiontype().toString()))
                 .append("&carrier=").append(StringUtil.toString(mediaRequest.getCarrier().toString()))
                 .append("&device=").append(StringUtil.toString(device))
                 .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequest().getId()))
-                .append("&appname=").append(StringUtil.toString(appname))
+                .append("&appname=").append(appname)
                 .append("&apitype=4")
-                .append("&pcat=").append(StringUtil.toString(mediaRequest.getCategory().toString()))
+                .append("&pcat=").append(mediaMetaData.getCategory())
                 .append("&osv=").append(StringUtil.toString(mediaRequest.getOsv()))
                 .append("&wma=").append(StringUtil.toString(mediaRequest.getMac()))
                 .append("&ua=").append(StringUtil.toString(ua))
                 .append("&ip=").append(StringUtil.toString(mediaRequest.getIp()))
-                .append("&pid=").append(StringUtil.toString(mediaRequest.getMediaid().toString()))
+                .append("&pid=").append(mediaRequest.getMediaid())
                 .append("&density=").append(StringUtil.toString(String.valueOf(mediaMetaData.getType())))
                 .append("&media=").append(StringUtil.toString(mediaRequest.getDpid()))
                 .append("&lon=").append(StringUtil.toString(mediaRequest.getLon().toString()))
                 .append("&lat=").append(StringUtil.toString(mediaRequest.getLat().toString()))
                 .append("&cell=").append(StringUtil.toString(mediaRequest.getCell()))
                 .append("&mcell=").append(StringUtil.toString(mediaRequest.getCellmd5()))
-                .append("&dealid=").append(StringUtil.toString(mediaRequest.getDealid()));
+                .append("&dealid=").append(policyMetaData.getDealId());
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
