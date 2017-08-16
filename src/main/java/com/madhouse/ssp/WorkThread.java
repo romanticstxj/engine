@@ -451,10 +451,10 @@ public class WorkThread {
                                         }
                                     }
                                 }
+
+                                return;
                             }
                         }
-
-                        break;
                     }
 
                     policyMetaDatas.remove(selectedPolicy);
