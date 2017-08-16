@@ -1,6 +1,6 @@
 {
     "webapp": {
-        "domain": "http://ssp.madhouse.cn/api",
+        "domain": "http://ssp.madhouse.cn",
         "port": 8181,
         "gZipOn": false,
         "expiredTime": 86400,
