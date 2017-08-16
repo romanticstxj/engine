@@ -40,7 +40,7 @@ public class MADMaxHandler extends DSPBaseHandler {
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
 
-        MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
+        MediaRequest.Builder mediaRequest =  mediaBidBuilder.getRequestBuilder();
         String urlTemplate = dspBidMetaData.getDspMetaData().getBidUrl();
 
         if (urlTemplate.contains("?")) {
@@ -51,10 +51,10 @@ public class MADMaxHandler extends DSPBaseHandler {
 
         StringBuilder sb = new StringBuilder(urlTemplate);
         // url编码
-        String ua = builder.getUa();
-        String device = builder.getModel();
-        String pkgname = builder.getBundle();
-        String appname = builder.getName();
+        String ua = mediaRequest.getUa();
+        String device = mediaRequest.getModel();
+        String pkgname = mediaRequest.getBundle();
+        String appname = mediaMetaData.getName();
         try {
             if (ua != null) {
                 ua = URLEncoder.encode(ua, "UTF-8");
@@ -79,48 +79,48 @@ public class MADMaxHandler extends DSPBaseHandler {
         }
 
         sb.append("adspaceid=").append(adspaceId)
-                .append("&adtype=").append(StringUtil.toString(builder.getAdtype().toString()))
-                .append("&width=").append(builder.getW() != null ? builder.getW() : plcmtMetaData.getBanner().getW())
-                .append("&height=").append(builder.getH() != null ? builder.getH() : plcmtMetaData.getBanner().getH())
+                .append("&adtype=").append(plcmtMetaData.getAdType())
+                .append("&width=").append(plcmtMetaData.getW())
+                .append("&height=").append(plcmtMetaData.getH())
                 .append("&pkgname=").append(StringUtil.toString(pkgname))
-                .append("&conn=").append(StringUtil.toString(builder.getConnectiontype().toString()))
-                .append("&carrier=").append(StringUtil.toString(builder.getCarrier().toString()))
+                .append("&conn=").append(StringUtil.toString(mediaRequest.getConnectiontype().toString()))
+                .append("&carrier=").append(StringUtil.toString(mediaRequest.getCarrier().toString()))
                 .append("&device=").append(StringUtil.toString(device))
                 .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequest().getId()))
-                .append("&appname=").append(StringUtil.toString(appname))
+                .append("&appname=").append(appname)
                 .append("&apitype=4")
-                .append("&pcat=").append(StringUtil.toString(builder.getCategory().toString()))
-                .append("&osv=").append(StringUtil.toString(builder.getOsv()))
-                .append("&wma=").append(StringUtil.toString(builder.getMac()))
+                .append("&pcat=").append(mediaMetaData.getCategory())
+                .append("&osv=").append(StringUtil.toString(mediaRequest.getOsv()))
+                .append("&wma=").append(StringUtil.toString(mediaRequest.getMac()))
                 .append("&ua=").append(StringUtil.toString(ua))
-                .append("&ip=").append(StringUtil.toString(builder.getIp()))
-                .append("&pid=").append(StringUtil.toString(builder.getMediaid().toString()))
+                .append("&ip=").append(StringUtil.toString(mediaRequest.getIp()))
+                .append("&pid=").append(mediaRequest.getMediaid())
                 .append("&density=").append(StringUtil.toString(String.valueOf(mediaMetaData.getType())))
-                .append("&media=").append(StringUtil.toString(builder.getDpid()))
-                .append("&lon=").append(StringUtil.toString(builder.getLon().toString()))
-                .append("&lat=").append(StringUtil.toString(builder.getLat().toString()))
-                .append("&cell=").append(StringUtil.toString(builder.getCell()))
-                .append("&mcell=").append(StringUtil.toString(builder.getCellmd5()))
-                .append("&dealid=").append(StringUtil.toString(builder.getDealid()));
-        switch (builder.getOs()) {
+                .append("&media=").append(StringUtil.toString(mediaRequest.getDpid()))
+                .append("&lon=").append(StringUtil.toString(mediaRequest.getLon().toString()))
+                .append("&lat=").append(StringUtil.toString(mediaRequest.getLat().toString()))
+                .append("&cell=").append(StringUtil.toString(mediaRequest.getCell()))
+                .append("&mcell=").append(StringUtil.toString(mediaRequest.getCellmd5()))
+                .append("&dealid=").append(policyMetaData.getDealId());
+        switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(StringUtil.toString(builder.getDid()))
-                   .append("&aid=").append(StringUtil.toString(builder.getDpid()))
-                   .append("&aaid=").append(StringUtil.toString(builder.getIfa()));
+                   .append("&imei=").append(StringUtil.toString(mediaRequest.getDid()))
+                   .append("&aid=").append(StringUtil.toString(mediaRequest.getDpid()))
+                   .append("&aaid=").append(StringUtil.toString(mediaRequest.getIfa()));
                 break;
             case Constant.OSType.IOS:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_IOS)
-                    .append("&idfa=").append(StringUtil.toString(builder.getIfa()))
-                    .append("&oid=").append(StringUtil.toString(builder.getDpid()));
+                    .append("&idfa=").append(StringUtil.toString(mediaRequest.getIfa()))
+                    .append("&oid=").append(StringUtil.toString(mediaRequest.getDpid()));
                 break;
             case Constant.OSType.WINDOWS_PHONE:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE)
-                .append("&uid=").append(StringUtil.toString(builder.getDpid()));
+                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpid()));
                 break;
             default:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_OTHERS)
-                .append("&uid=").append(StringUtil.toString(builder.getDpid()));
+                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpid()));
                 break;
         }
         String str = sb.toString().replace(" ", "%20");

@@ -43,10 +43,11 @@ public class ResourceManager {
     private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getResourceAsStream("/config.json")), Configuration.class);
 
     private ResourceManager(){};
+    private static final ResourceManager resourceManager = new ResourceManager();
+
     public static ResourceManager getInstance() {
         return resourceManager;
     }
-    private static final ResourceManager resourceManager = new ResourceManager();
 
     public boolean init() {
         {
@@ -131,10 +132,10 @@ public class ResourceManager {
     }
 
     public HttpClient getHttpClient(long dspId) {
-        HttpClient client = this.httpClientMap.get(dspId);
+        HttpClient client = null;
 
         synchronized (this) {
-            if (client == null) {
+            if ((client = this.httpClientMap.get(dspId)) == null) {
                 client = new HttpClient();
                 this.httpClientMap.put(dspId, client);
             }

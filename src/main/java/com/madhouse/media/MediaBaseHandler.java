@@ -1,7 +1,10 @@
 package com.madhouse.media;
 
+import com.madhouse.cache.AuctionPriceInfo;
 import com.madhouse.cache.MediaBidMetaData;
 
+import com.madhouse.configuration.Configuration;
+import com.madhouse.configuration.WebApp;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.LoggerUtil;
@@ -42,6 +45,11 @@ public abstract class MediaBaseHandler {
             mediaResponse.setLpgurl(dspResponse.getLpgurl());
             mediaResponse.setActtype(dspResponse.getActtype());
             mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitor()));
+
+            MediaBidMetaData.TrackingParam trackingParam = mediaBidMetaData.getTrackingParam();
+            Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
+            monitor.getImpurl().add(new Track(0, trackingParam.getImpressionTracking()));
+            monitor.getClkurl().add(trackingParam.getClickTracking());
 
             mediaBid.setResponseBuilder(mediaResponse);
             mediaBid.setStatus(Constant.StatusCode.OK);

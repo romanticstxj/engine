@@ -4,11 +4,13 @@ package com.madhouse.cache;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
+import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 
 import redis.clients.jedis.Jedis;
@@ -26,6 +28,8 @@ public class CacheManager implements Runnable {
     public static CacheManager getInstance() {
         return cacheManager;
     }
+
+    private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     private ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
     //dsp metadata
@@ -108,6 +112,8 @@ public class CacheManager implements Runnable {
     }
 
     public void run() {
+        logger.info("load metadata cache begin.");
+
         this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
         this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
@@ -140,6 +146,8 @@ public class CacheManager implements Runnable {
         if (this.redisSlave != null) {
             this.redisSlave.close();
         }
+
+        logger.info("load metadata cache end.");
     }
 
     private Object loadMaterialMappingData() {

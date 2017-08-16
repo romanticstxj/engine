@@ -243,6 +243,7 @@ public class WorkThread {
             //init mediaid, adspaceid
             mediaRequest.setMediaid(mediaMetaData.getId());
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
+            mediaRequest.setAdtype(plcmtMetaData.getAdType());
 
             //init user ip
             if (!mediaRequest.hasIp()) {
@@ -267,6 +268,20 @@ public class WorkThread {
             mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
             mediaBid.setBidtype(plcmtMetaData.getBidType());
 
+            MediaBidMetaData.TrackingParam trackingParam = mediaBidMetaData.new TrackingParam();
+            mediaBidMetaData.setTrackingParam(trackingParam);
+
+            trackingParam.setImpId(mediaBid.getImpid());
+            trackingParam.setMediaId(plcmtMetaData.getMediaId());
+            trackingParam.setAdspaceId(plcmtMetaData.getId());
+            trackingParam.setLocation(mediaBid.getLocation());
+            trackingParam.setTime(System.currentTimeMillis());
+
+            AuctionPriceInfo mediaIncome = new AuctionPriceInfo();
+            mediaIncome.setBidPrice(plcmtMetaData.getBidFloor());
+            mediaIncome.setBidType(plcmtMetaData.getBidType());
+            trackingParam.setMediaIncome(mediaIncome);
+
             //get block metadata
             long adBlockId = plcmtMetaData.getBlockId();
             AdBlockMetaData adBlockMetaData = null;
@@ -284,16 +299,17 @@ public class WorkThread {
                 }
 
                 //get policy detail
-                List<Pair<PolicyMetaData, Integer>> policyMetaDatas = this.getPolicyMetaData(policyList);
+                Set<Pair<PolicyMetaData, Integer>> policyMetaDatas = this.getPolicyMetaData(policyList);
                 if (policyMetaDatas == null || policyMetaDatas.isEmpty()) {
                     continue;
                 }
 
-                int selectedIndex = -1;
-                while ((selectedIndex = Utility.randomWithWeights(policyMetaDatas)) != -1) {
-                    PolicyMetaData policyMetaData = policyMetaDatas.get(selectedIndex).getLeft();
-
+                Pair<PolicyMetaData, Integer> selectedPolicy = null;
+                while ((selectedPolicy = Utility.randomWithWeights(policyMetaDatas)) != null) {
                     this.multiHttpClient.reset();
+
+                    PolicyMetaData policyMetaData = selectedPolicy.getLeft();
+                    trackingParam.setPolicyId(policyMetaData.getId());
 
                     Map<Long, DSPBidMetaData> selectedDspList = new HashMap<>();
                     for (Map.Entry entry : policyMetaData.getDspInfoMap().entrySet()) {
@@ -396,7 +412,6 @@ public class WorkThread {
                         List<DSPBidMetaData> bidderList = new LinkedList<DSPBidMetaData>();
                         for (Map.Entry entry : selectedDspList.entrySet()) {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
-                            DSPMetaData dspMetaData = dspBidMetaData.getDspMetaData();
                             DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
                             HttpResponse httpResponse = dspBidMetaData.getHttpClient().getResp();
                             if (httpResponse != null) {
@@ -413,9 +428,9 @@ public class WorkThread {
                         }
 
                         if (!bidderList.isEmpty()) {
-                            DSPBidMetaData winner = this.selectWinner(plcmtMetaData, policyMetaData, bidderList);
-                            if (winner != null) {
-                                DSPBidMetaData dspBidMetaData = winner;
+                            DSPBidMetaData dspBidMetaData = this.selectWinner(plcmtMetaData, policyMetaData, bidderList);
+                            if (dspBidMetaData != null) {
+                                trackingParam.setDspCost(dspBidMetaData.getAuctionPriceInfo());
                                 dspBidMetaData.getDspBidBuilder().setWinner(1);
                                 int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
@@ -436,13 +451,13 @@ public class WorkThread {
                                         }
                                     }
                                 }
+
+                                return;
                             }
                         }
-
-                        break;
                     }
 
-                    policyMetaDatas.remove(selectedIndex);
+                    policyMetaDatas.remove(selectedPolicy);
                 }
             }
         } catch (Exception ex) {
@@ -520,9 +535,9 @@ public class WorkThread {
         return new LinkedList<>(SetUtil.setDiff(SetUtil.multiSetInter(targetPolicy), CacheManager.getInstance().getBlockedPolicy()));
     }
 
-    private List<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
+    private Set<Pair<PolicyMetaData, Integer>> getPolicyMetaData(List<Long> policyList) {
 
-        List<Pair<PolicyMetaData, Integer>> policyMetaDatas = new ArrayList<>(policyList.size());
+        Set<Pair<PolicyMetaData, Integer>> policyMetaDatas = new HashSet<>(policyList.size());
         for (long policyId : policyList) {
             PolicyMetaData policyMetaData = CacheManager.getInstance().getPolicyMetaData(policyId);
             if (policyMetaData != null) {
@@ -538,12 +553,13 @@ public class WorkThread {
 
         if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
             DSPBidMetaData dspBidMetaData = bidderList.get(0);
-            DSPBidMetaData.AuctionInfo auctionInfo = dspBidMetaData.new AuctionInfo();
             PolicyMetaData.AdspaceInfo adspaceInfo = policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId());
 
+            AuctionPriceInfo auctionInfo = new AuctionPriceInfo();
             auctionInfo.setBidType(adspaceInfo.getBidType());
-            auctionInfo.setAuctionPrice(adspaceInfo.getBidFloor());
-            dspBidMetaData.setAuctionInfo(auctionInfo);
+            auctionInfo.setBidPrice(adspaceInfo.getBidFloor());
+            dspBidMetaData.setAuctionPriceInfo(auctionInfo);
+
             winner = dspBidMetaData;
         } else {
             bidderList.sort(new Comparator<DSPBidMetaData>() {
@@ -560,11 +576,12 @@ public class WorkThread {
             }
 
             DSPBidMetaData dspBidMetaData = bidderList.get(0);
-            DSPBidMetaData.AuctionInfo auctionInfo = dspBidMetaData.new AuctionInfo();
 
+            AuctionPriceInfo auctionInfo = new AuctionPriceInfo();
             auctionInfo.setBidType(plcmtMetaData.getBidType());
-            auctionInfo.setAuctionPrice(price + 1);
-            dspBidMetaData.setAuctionInfo(auctionInfo);
+            auctionInfo.setBidPrice(price + 1);
+            dspBidMetaData.setAuctionPriceInfo(auctionInfo);
+
             winner = dspBidMetaData;
         }
 

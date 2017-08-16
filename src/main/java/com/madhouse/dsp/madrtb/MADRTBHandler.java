@@ -45,7 +45,12 @@ public class MADRTBHandler extends DSPBaseHandler {
 
         if (mediaMetaData.getType() == Constant.MediaType.APP) {
             PremiumMADRTBProtocol.BidRequest.App.Builder app = PremiumMADRTBProtocol.BidRequest.App.newBuilder();
-            app.setId(Long.toString(mediaMetaData.getId()));
+            if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getDspMediaId())) {
+                app.setId(dspMappingMetaData.getDspMediaId());
+            } else {
+                app.setId(Long.toString(mediaMetaData.getId()));
+            }
+
             app.setBundle(mediaRequest.getBundle());
             app.addCat(Integer.toString(mediaMetaData.getCategory()));
             app.setName(mediaMetaData.getName());
@@ -54,7 +59,12 @@ public class MADRTBHandler extends DSPBaseHandler {
 
         if (mediaMetaData.getType() == Constant.MediaType.SITE) {
             PremiumMADRTBProtocol.BidRequest.Site.Builder site = PremiumMADRTBProtocol.BidRequest.Site.newBuilder();
-            site.setId(Long.toString(mediaMetaData.getId()));
+            if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getDspMediaId())) {
+                site.setId(dspMappingMetaData.getDspMediaId());
+            } else {
+                site.setId(Long.toString(mediaMetaData.getId()));
+            }
+
             site.addCat(Integer.toString(mediaMetaData.getCategory()));
             site.setName(mediaMetaData.getName());
             bidRequest.setSite(site);
@@ -106,8 +116,9 @@ public class MADRTBHandler extends DSPBaseHandler {
 
             if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
                 PremiumMADRTBProtocol.BidRequest.Impression.PMP.Builder pmp = PremiumMADRTBProtocol.BidRequest.Impression.PMP.newBuilder();
-                pmp.setPrivateAuction(1);
+                pmp.setPrivateAuction(Constant.AuctionType.PRIVATE_MARKETING);
                 PremiumMADRTBProtocol.BidRequest.Impression.PMP.Deal.Builder deal = PremiumMADRTBProtocol.BidRequest.Impression.PMP.Deal.newBuilder();
+                deal.setId(policyMetaData.getDealId());
                 deal.setAt(Constant.BidAt.FIXED_PRICE);
                 deal.setBidfloor(0);
                 pmp.addDeals(deal);
@@ -392,7 +403,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                     .replace("${AUCTION_AD_ID}", StringUtil.toString(dspResponse.getAdid()));
 
             if (url.contains("${AUCTION_PRICE")) {
-                String text = String.format("%d_%d", dspBidMetaData.getAuctionInfo().getAuctionPrice(), System.currentTimeMillis() / 1000);
+                AuctionPriceInfo auctionPriceInfo = dspBidMetaData.getAuctionPriceInfo();
+                String text = String.format("%d_%d", auctionPriceInfo.getBidPrice(), System.currentTimeMillis() / 1000);
                 byte[] key = StringUtil.hexToBytes(dspBidMetaData.getDspMetaData().getToken());
                 byte[] data = AESUtil.encryptECB(text.getBytes("utf-8"), key, AESUtil.Algorithm.AES);
                 return url.replace("${AUCTION_PRICE}", StringUtil.urlSafeBase64Encode(data));

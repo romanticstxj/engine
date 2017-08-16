@@ -39,14 +39,6 @@ public final class Constant {
         public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
         //dspid，materialId,mediaId,adspaceId
         public static final String MATERIAL_MAPPING_DATA = "%d:%s:%d:%d";
-        
-        //KAFKA
-        public static final String KAFKA_MEDIA_BID = "KAFKA_MEDIA_BID"; 
-        public static final String KAFKA_DSP_BID = "KAFKA_DSP_BID";
-        public static final String KAFKA_WIN_NOTICE = "KAFKA_WIN_NOTICE";
-        public static final String KAFKA_IMPRESSION = "KAFKA_IMPRESSION";
-        public static final String KAFKA_CLICK = "KAFKA_CLICK";
-        
     }
 
     public static final class StatusCode {
@@ -57,10 +49,6 @@ public final class Constant {
         public static final int NOT_ALLOWED = 405;
         public static final int REQUEST_TIMEOUT = 408;
         public static final int INTERNAL_ERROR = 500;
-    }
-
-    public static final class MeiaApiType {
-        public static final int MADHOUSE = 1;
     }
 
     public static final class DSPApiType {
@@ -199,12 +187,12 @@ public final class Constant {
         public static final int PING = 2;
     }
 
-    public static final class TopicType {
-        public static final String MEDIA_BID = "mediabid";
-        public static final String DSP_BID = "dspbid";
-        public static final String WINNOTICE = "winnotice";
-        public static final String IMPRESSION = "impression";
-        public static final String CLICK = "click";
+    public static final class KafkaTopicType {
+        public static final String KAFKA_MEDIA_BID = "KAFKA_MEDIA_BID";
+        public static final String KAFKA_DSP_BID = "KAFKA_DSP_BID";
+        public static final String KAFKA_WIN_NOTICE = "KAFKA_WIN_NOTICE";
+        public static final String KAFKA_IMPRESSION = "KAFKA_IMPRESSION";
+        public static final String KAFKA_CLICK = "KAFKA_CLICK";
     }
 
     public static final class TargetType {
@@ -230,5 +218,10 @@ public final class Constant {
         public static final int NO_REQUEST = -1;
         public static final int NORMAL = 0;
         public static final int DUPLICATE = 1;
+    }
+
+    public static final class AuctionType {
+        public static final int PUBLIC_MARKETING = 0;
+        public static final int PRIVATE_MARKETING = 1;
     }
 }
