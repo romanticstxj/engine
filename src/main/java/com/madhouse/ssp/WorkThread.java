@@ -360,12 +360,14 @@ public class WorkThread {
                         if (dspInfo.getStatus() > 0 && dspMetaData != null && dspMetaData.getStatus() > 0) {
 
                             //QPS Contorl
-                            String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
-                            redisMaster.set(qpsControl, "0", "NX", "EX", 3);
-                            long totalCount = redisMaster.incrBy(qpsControl, 1);
-                            if (totalCount >= dspMetaData.getMaxQPS()) {
-                                logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
-                                continue;
+                            if (dspMetaData.getMaxQPS() > 0) {
+                                String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
+                                redisMaster.set(qpsControl, "0", "NX", "EX", 3);
+                                long totalCount = redisMaster.incrBy(qpsControl, 1);
+                                if (totalCount >= dspMetaData.getMaxQPS()) {
+                                    logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
+                                    continue;
+                                }
                             }
 
                             DSPBidMetaData dspBidMetaData = new DSPBidMetaData();
