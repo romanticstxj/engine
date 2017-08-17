@@ -496,9 +496,9 @@ public class WorkThread {
             List<String> info = new LinkedList<>();
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
-            info.add(String.format("%d%02d", weekDay, hour));
+            info.add(String.format("%d-%02d", weekday, hour));
             targetInfo.add(Pair.of(Constant.TargetType.WEEKDAY_HOUR, info));
         }
 

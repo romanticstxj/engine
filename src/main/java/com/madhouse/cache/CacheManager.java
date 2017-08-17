@@ -420,13 +420,13 @@ public class CacheManager implements Runnable {
                 }
             }
 
-            //weekhour
-            if (!ObjectUtils.isEmpty(policyMetaData.getWeekDayHoursMap())) {
-                Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekDayHoursMap();
+            //weekdayHour
+            if (!ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
+                Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekdayHoursMap();
                 for (Map.Entry entry1 : weekHours.entrySet()) {
                     List<Integer> hours = (List<Integer>)entry1.getValue();
                     for (int hour : hours) {
-                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEKDAY_HOUR, String.format("%d%02d", (Integer)entry1.getKey(), hour));
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEKDAY_HOUR, String.format("%d-%02d", (Integer)entry1.getKey(), hour));
                         HashSet<Long> var2 = var.get(key);
                         if (var2 == null) {
                             var2 = new HashSet<>();
@@ -541,7 +541,7 @@ public class CacheManager implements Runnable {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
 
-            int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
             if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
@@ -561,10 +561,10 @@ public class CacheManager implements Runnable {
                 if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                     int pastHours = 0;
                     int totalHours = 24;
-                    if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHoursMap())) {
+                    if (ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
                         pastHours = currentHour + 1;
                     } else {
-                        List<Integer> hours = policyMetaData.getWeekDayHoursMap().get(weekDay);
+                        List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
                         if (ObjectUtils.isEmpty(hours)) {
                             return false;
                         }
