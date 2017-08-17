@@ -318,7 +318,7 @@ public class CacheManager implements Runnable {
                 continue;
             }
 
-            String str = this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), "0", "NX");
+            this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), "0", "NX");
             this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), "0", "NX", "EX", 86400);
 
             if (!StringUtils.isEmpty(policyMetaData.getEndDate())) {
@@ -334,8 +334,7 @@ public class CacheManager implements Runnable {
                     continue;
                 }
             }
-
-
+            
             //placement
             for (Map.Entry entry1 : policyMetaData.getAdspaceInfoMap().entrySet()) {
                 PolicyMetaData.AdspaceInfo adspaceInfo = (PolicyMetaData.AdspaceInfo)entry1.getValue();
