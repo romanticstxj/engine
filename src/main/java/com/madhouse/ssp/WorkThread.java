@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.zip.CRC32;
 
 
 /**
@@ -61,59 +62,73 @@ public class WorkThread {
         Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
 
         try {
-            String impid = req.getParameter("impid");
-            String mid = req.getParameter("mid");
-            String plcmtid = req.getParameter("plcmtid");
-            String policyid = req.getParameter("policyid");
-            String location = req.getParameter("location");
-            String ext = req.getParameter("ext");
+            String impId = req.getParameter("_impid");
+            String mId = req.getParameter("_mid");
+            String plcmtId = req.getParameter("_pid");
+            String location = req.getParameter("_loc");
+            String ext = req.getParameter("_ext");
+            String sign = req.getParameter("_sn");
 
             //args check
-            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) ||
-                    StringUtils.isEmpty(policyid) || StringUtils.isEmpty(location) || StringUtils.isEmpty(ext)) {
+            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mId) || StringUtils.isEmpty(plcmtId) ||
+                    StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
-            ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
+            CRC32 crc32 = new CRC32();
+            crc32.update(ext.getBytes("utf-8"));
+            if (Long.parseLong(sign) != crc32.getValue()) {
+                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                return;
+            }
 
-            //bid redis check
-            String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (!redisMaster.exists(recordKey)) {
+            String[] exts = ext.split(",");
+            String policyId = exts[0];
+            String dspId = exts[1];
+
+            ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
+            if (!redisMaster.exists(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId))) {
                 impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            recordKey = String.format(Constant.CommonKey.IMP_RECORD, impid, mid, plcmtid, policyid);
-            String ret = redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
-            if (!StringUtils.isEmpty(ret) && ret.substring(0, 2).compareTo("OK") != 0) {
+            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
 
             impressionTrack.setTime(System.currentTimeMillis());
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
-            impressionTrack.setImpid(impid);
-            impressionTrack.setMediaid(Long.parseLong(mid));
-            impressionTrack.setAdspaceid(Long.parseLong(plcmtid));
-            impressionTrack.setPolicyid(Long.parseLong(policyid));
+            impressionTrack.setImpid(impId);
+            impressionTrack.setMediaid(Long.parseLong(mId));
+            impressionTrack.setAdspaceid(Long.parseLong(plcmtId));
+            impressionTrack.setPolicyid(Long.parseLong(policyId));
             impressionTrack.setLocation(location);
+            impressionTrack.setExt(ext);
+            impressionTrack.setDspid(Long.parseLong(dspId));
 
-            String[] exts = ext.split(",");
-            if (exts.length >= 3) {
-                impressionTrack.setExt(ext);
-                impressionTrack.setDspid(Long.parseLong(exts[0]));
-                impressionTrack.setIncome(Integer.parseInt(exts[1]));
-                impressionTrack.setCost(Integer.parseInt(exts[2]));
-
-                impressionTrack.setStatus(Constant.StatusCode.OK);
-                LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack);
-
-                resp.getOutputStream().write(this.image);
-                resp.setContentType("image/gif");
-                resp.setContentLength(this.image.length);
-                resp.setStatus(impressionTrack.getStatus());
+            if (Integer.parseInt(exts[2]) == Constant.BidType.CPM) {
+                impressionTrack.setIncome(Integer.parseInt(exts[3]));
+            } else {
+                impressionTrack.setIncome(0);
             }
+
+            if (Integer.parseInt(exts[4]) == Constant.BidType.CPM) {
+                impressionTrack.setCost(Integer.parseInt(exts[5]));
+            } else {
+                impressionTrack.setCost(0);
+            }
+
+            impressionTrack.setStatus(Constant.StatusCode.OK);
+            LoggerUtil.getInstance().wirteImpressionTrackLog(ResourceManager.getInstance().getKafkaProducer(), impressionTrack);
+
+            resp.getOutputStream().write(this.image);
+            resp.setContentType("image/gif");
+            resp.setContentLength(this.image.length);
+            resp.setStatus(impressionTrack.getStatus());
+
         } catch (Exception ex) {
             System.err.println(ex.toString());
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -128,67 +143,80 @@ public class WorkThread {
         Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
 
         try {
-            String impid = req.getParameter("impid");
-            String mid = req.getParameter("mid");
-            String plcmtid = req.getParameter("plcmtid");
-            String policyid = req.getParameter("policyid");
-            String location = req.getParameter("location");
-            String ext = req.getParameter("ext");
+            String impId = req.getParameter("_impid");
+            String mId = req.getParameter("_mid");
+            String plcmtId = req.getParameter("_pid");
+            String location = req.getParameter("_loc");
+            String ext = req.getParameter("_ext");
+            String sign = req.getParameter("_sn");
 
             //args check
-            if (StringUtils.isEmpty(impid) || StringUtils.isEmpty(mid) || StringUtils.isEmpty(plcmtid) ||
-                    StringUtils.isEmpty(policyid) || StringUtils.isEmpty(location) || StringUtils.isEmpty(ext)) {
+            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mId) || StringUtils.isEmpty(plcmtId) ||
+                    StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
-            ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
+            CRC32 crc32 = new CRC32();
+            crc32.update(ext.getBytes("utf-8"));
+            if (Long.parseLong(sign) != crc32.getValue()) {
+                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                return;
+            }
 
-            //bid redis check
-            String recordKey = String.format(Constant.CommonKey.BID_RECORD, impid, mid, plcmtid, policyid);
-            if (!redisMaster.exists(recordKey)) {
+            String[] exts = ext.split(",");
+            String policyId = exts[0];
+            String dspId = exts[1];
+
+            ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
+            if (!redisMaster.exists(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId))) {
                 clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
             }
 
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            recordKey = String.format(Constant.CommonKey.CLK_RECORD, impid, mid, plcmtid, policyid);
-            String ret = redisMaster.set(recordKey, "1", "NX", "EX", expiredTime);
-            if (!StringUtils.isEmpty(ret) && ret.substring(0, 2).compareTo("OK") != 0) {
+            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
 
             clickTrack.setTime(System.currentTimeMillis());
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
-            clickTrack.setImpid(impid);
-            clickTrack.setMediaid(Long.parseLong(mid));
-            clickTrack.setAdspaceid(Long.parseLong(plcmtid));
-            clickTrack.setPolicyid(Long.parseLong(policyid));
+            clickTrack.setImpid(impId);
+            clickTrack.setMediaid(Long.parseLong(mId));
+            clickTrack.setAdspaceid(Long.parseLong(plcmtId));
+            clickTrack.setPolicyid(Long.parseLong(policyId));
             clickTrack.setLocation(location);
+            clickTrack.setExt(ext);
+            clickTrack.setDspid(Long.parseLong(dspId));
 
-            String[] exts = ext.split(",");
-            if (exts.length >= 3) {
-                clickTrack.setExt(ext);
-                clickTrack.setDspid(Long.parseLong(exts[0]));
-                clickTrack.setIncome(Integer.parseInt(exts[1]));
-                clickTrack.setCost(Integer.parseInt(exts[2]));
-
-                String url = URLDecoder.decode(HttpUtil.getParameter(req, "url"), "utf-8");
-
-                if (url.startsWith("http://") || url.startsWith("https://")) {
-                    resp.setHeader("Location", url);
-                    clickTrack.setStatus(Constant.StatusCode.REDIRECT);
-                } else {
-                    resp.getOutputStream().write(this.image);
-                    resp.setContentType("image/gif");
-                    resp.setContentLength(this.image.length);
-                    resp.setStatus(Constant.StatusCode.OK);
-                    clickTrack.setStatus(Constant.StatusCode.OK);
-                }
-
-                LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack);
-                resp.setStatus(clickTrack.getStatus());
+            if (Integer.parseInt(exts[2]) == Constant.BidType.CPC) {
+                clickTrack.setIncome(Integer.parseInt(exts[3]));
+            } else {
+                clickTrack.setIncome(0);
             }
+
+            if (Integer.parseInt(exts[4]) == Constant.BidType.CPC) {
+                clickTrack.setCost(Integer.parseInt(exts[5]));
+            } else {
+                clickTrack.setCost(0);
+            }
+
+            clickTrack.setStatus(Constant.StatusCode.OK);
+            LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack);
+
+            String url = req.getParameter("_url");
+            if (!StringUtils.isEmpty(url) && (url.startsWith("http://") || url.startsWith("https://"))) {
+                resp.setHeader("Location", url);
+                clickTrack.setStatus(Constant.StatusCode.REDIRECT);
+            } else {
+                resp.getOutputStream().write(this.image);
+                resp.setContentType("image/gif");
+                resp.setContentLength(this.image.length);
+                clickTrack.setStatus(Constant.StatusCode.OK);
+            }
+
+            resp.setStatus(clickTrack.getStatus());
         } catch (Exception ex) {
             System.err.println(ex.toString());
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -337,6 +365,7 @@ public class WorkThread {
                             redisMaster.set(qpsControl, "0", "NX", "EX", 3);
                             long totalCount = redisMaster.incrBy(qpsControl, 1);
                             if (totalCount >= dspMetaData.getMaxQPS()) {
+                                logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
                                 continue;
                             }
 
@@ -384,7 +413,8 @@ public class WorkThread {
                             HttpResponse httpResponse = dspBidMetaData.getHttpClient().getResponse();
                             if (httpResponse != null) {
                                 if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
-                                    if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {
+                                    if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB ||
+                                            dspBidMetaData.getDspBidBuilder().getResponse().getPrice() > plcmtMetaData.getBidFloor()) {
                                         bidderList.add(dspBidMetaData);
                                     }
                                 }
@@ -396,39 +426,48 @@ public class WorkThread {
                             dspBidMetaData.getHttpRequestBase().releaseConnection();
                         }
 
+
+                        DSPBidMetaData winner = null;
                         if (!bidderList.isEmpty()) {
-                            DSPBidMetaData dspBidMetaData = this.selectWinner(plcmtMetaData, policyMetaData, bidderList);
-                            if (dspBidMetaData != null) {
-                                trackingParam.setDspCost(dspBidMetaData.getAuctionPriceInfo());
-                                dspBidMetaData.getDspBidBuilder().setWinner(1);
+                            winner = this.selectWinner(plcmtMetaData, policyMetaData, bidderList);
+                            if (winner != null) {
+                                trackingParam.setDspCost(winner.getAuctionPriceInfo());
+                                winner.getDspBidBuilder().setWinner(1);
+
                                 int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
 
-                                if (mediaBaseHandler.packageResponse(mediaBidMetaData, resp, dspBidMetaData.getDspBidBuilder())) {
-                                    if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
-                                        String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
-                                        if (!StringUtils.isEmpty(url)) {
-                                            final HttpGet httpGet = new HttpGet(url);
-                                            final HttpClient httpClient = this.getHttpClient(dspBidMetaData.getDspMetaData().getId());
-                                            this.winNoticeService.submit(new Runnable() {
-                                                public void run() {
-                                                    httpClient.execute(httpGet, 150);
-                                                    httpGet.releaseConnection();
-                                                }
-                                            });
-                                        }
+                                if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
+                                    String url = winner.getDspBaseHandler().getWinNoticeUrl(winner);
+                                    if (!StringUtils.isEmpty(url)) {
+                                        final HttpGet httpGet = new HttpGet(url);
+                                        final HttpClient httpClient = this.getHttpClient(winner.getDspMetaData().getId());
+                                        this.winNoticeService.submit(new Runnable() {
+                                            public void run() {
+                                                httpClient.execute(httpGet, 150);
+                                                httpGet.releaseConnection();
+                                            }
+                                        });
                                     }
                                 }
-
-                                return;
                             }
                         }
+
+                        for (Map.Entry entry : selectedDspList.entrySet()) {
+                            DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
+                            LoggerUtil.getInstance().writeBidLog(ResourceManager.getInstance().getKafkaProducer(), dspBidMetaData.getDspBidBuilder());
+                        }
+
+                        mediaBaseHandler.packageResponse(mediaBidMetaData, resp, (winner != null) ? winner.getDspBidBuilder() : null);
+                        return;
                     }
 
                     policyMetaDatas.remove(selectedPolicy);
                 }
             }
+
+            mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null);
         } catch (Exception ex) {
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
         }

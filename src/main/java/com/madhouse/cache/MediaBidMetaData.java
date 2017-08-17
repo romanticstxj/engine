@@ -5,6 +5,8 @@ import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 
+import java.util.zip.CRC32;
+
 /**
  * Created by WUJUNFENG on 2017/6/20.
  */
@@ -37,74 +39,31 @@ public class MediaBidMetaData {
         this.trackingParam = trackingParam;
     }
 
-    public String getImpressionTracking() {
+    public String getImpressionTrackingUrl() {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
+        String requestUrl = webApp.getDomain() + webApp.getImpression();
         StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getImpression());
-        sb.append("?mediaid=")
-                .append(trackingParam.getMediaId())
-                .append("&plcmtid=")
-                .append(trackingParam.getAdspaceId())
-                .append("&policyid=")
-                .append(trackingParam.getPolicyId())
-                .append("&dspid=")
-                .append(trackingParam.getDspId())
-                .append("&location=")
-                .append(trackingParam.getLocation())
-                .append("&t=")
-                .append(trackingParam.getTime());
-
-
-        AuctionPriceInfo mediaIncome = trackingParam.getMediaIncome();
-        if (mediaIncome.getBidType() == Constant.BidType.CPM) {
-            sb.append("&income=")
-                    .append(mediaIncome.getBidPrice());
+        if (requestUrl.contains("?")) {
+            sb.append("&");
         } else {
-            sb.append("&income=0");
+            sb.append("?");
         }
 
-        AuctionPriceInfo dspCost = trackingParam.getDspCost();
-        if (dspCost.getBidType() == Constant.BidType.CPM) {
-            sb.append("&cost=")
-                    .append(dspCost.getBidPrice());
-        } else {
-            sb.append("&cost=0");
-        }
-
+        sb.append(this.trackingParam.toString());
         return sb.toString();
     }
 
-    public String getClickTracking() {
+    public String getClickTrackingUrl() {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
-        StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getImpression());
-        sb.append("?mediaid=")
-                .append(trackingParam.getMediaId())
-                .append("&plcmtid=")
-                .append(trackingParam.getAdspaceId())
-                .append("&policyid=")
-                .append(trackingParam.getPolicyId())
-                .append("&dspid=")
-                .append(trackingParam.getDspId())
-                .append("&location=")
-                .append(trackingParam.getLocation())
-                .append("&t=")
-                .append(trackingParam.getTime());
-
-        AuctionPriceInfo mediaIncome = trackingParam.getMediaIncome();
-        if (mediaIncome.getBidType() == Constant.BidType.CPC) {
-            sb.append("&income=")
-                    .append(mediaIncome.getBidPrice());
+        String requestUrl = webApp.getDomain() + webApp.getImpression();
+        StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getClick());
+        if (requestUrl.contains("?")) {
+            sb.append("&");
         } else {
-            sb.append("&income=0");
+            sb.append("?");
         }
 
-        AuctionPriceInfo dspCost = trackingParam.getDspCost();
-        if (dspCost.getBidType() == Constant.BidType.CPC) {
-            sb.append("&cost=")
-                    .append(dspCost.getBidPrice());
-        } else {
-            sb.append("&cost=0");
-        }
-
+        sb.append(this.trackingParam.toString());
         return sb.toString();
     }
 
@@ -189,6 +148,44 @@ public class MediaBidMetaData {
 
         public void setDspCost(AuctionPriceInfo dspCost) {
             this.dspCost = dspCost;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            String ext = String.format("%d,%d,%d,%d,%d,%d,%d",
+                    getPolicyId(),
+                    getDspId(),
+                    getMediaIncome().getBidType(),
+                    getMediaIncome().getBidPrice(),
+                    getDspCost().getBidType(),
+                    getDspCost().getBidPrice(),
+                    getTime());
+
+            long sign = 0;
+
+            try {
+                CRC32 crc32 = new CRC32();
+                crc32.update(ext.getBytes("utf-8"));
+                sign = crc32.getValue();
+            } catch (Exception ex) {
+                System.err.println(ex.toString());
+            }
+
+            sb.append("_impid=")
+                    .append(getImpId())
+                    .append("&_mid=")
+                    .append(getMediaId())
+                    .append("&_pid=")
+                    .append(getAdspaceId())
+                    .append("&_loc=")
+                    .append(getLocation())
+                    .append("&_ext=")
+                    .append(ext)
+                    .append("&_sn=")
+                    .append(sign);
+
+            return sb.toString();
         }
     }
 }
