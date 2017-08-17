@@ -310,10 +310,20 @@ public class CacheManager implements Runnable {
         for (Map.Entry entry : policyMetaDataMap.entrySet()) {
             PolicyMetaData policyMetaData = (PolicyMetaData)entry.getValue();
 
-            if (currentDate.compareTo(policyMetaData.getStartDate()) < 0 || (!StringUtils.isEmpty(policyMetaData.getEndDate()) && currentDate.compareTo(policyMetaData.getEndDate()) > 0)) {
+            //未开始、或已结束
+            if (currentDate.compareTo(policyMetaData.getStartDate()) < 0 ||
+                    (!StringUtils.isEmpty(policyMetaData.getEndDate()) && currentDate.compareTo(policyMetaData.getEndDate()) > 0)) {
                 continue;
             }
 
+            //无截至日期、按总量的匀速投放
+            if (StringUtils.isEmpty(policyMetaData.getEndDate()) &&
+                    policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL &&
+                    policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+                continue;
+            }
+
+            //无有效广告位或有效DSP
             if (ObjectUtils.isEmpty(policyMetaData.getAdspaceInfoMap()) || ObjectUtils.isEmpty(policyMetaData.getDspInfoMap())) {
                 continue;
             }
@@ -334,7 +344,7 @@ public class CacheManager implements Runnable {
                     continue;
                 }
             }
-            
+
             //placement
             for (Map.Entry entry1 : policyMetaData.getAdspaceInfoMap().entrySet()) {
                 PolicyMetaData.AdspaceInfo adspaceInfo = (PolicyMetaData.AdspaceInfo)entry1.getValue();
@@ -465,7 +475,7 @@ public class CacheManager implements Runnable {
 
     public boolean policyQuantityControl(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
         try {
-            if (StringUtils.isEmpty(policyMetaData.getEndDate()) || policyMetaData.getControlType() == Constant.PolicyControlType.NONE) {
+            if (policyMetaData.getControlType() == Constant.PolicyControlType.NONE) {
                 return true;
             }
 
