@@ -205,8 +205,8 @@ public final class Constant {
 
     public static final class PolicyControlType {
         public static final int NONE = 0;
-        public static final int TOTAL = 1;
-        public static final int DAILY = 2;
+        public static final int DAILY = 1;
+        public static final int TOTAL = 2;
     }
 
     public static final class PolicyControlMethod {

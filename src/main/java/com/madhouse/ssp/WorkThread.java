@@ -228,10 +228,9 @@ public class WorkThread {
     }
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
-            Jedis redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+        Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
 
+        try {
             //get media request handler
             MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
             if (mediaBaseHandler == null) {
@@ -470,6 +469,10 @@ public class WorkThread {
             mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null);
         } catch (Exception ex) {
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
+        } finally {
+            if (redisMaster != null) {
+                redisMaster.close();
+            }
         }
     }
 
