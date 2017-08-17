@@ -70,7 +70,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         }
         
         
-        App.Builder appBuilder = getApp(builder, adspaceId);
+        App.Builder appBuilder = getApp(builder, adspaceId,mediaMetaData);
         if (appBuilder == null) {
             return null;
         }
@@ -188,21 +188,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
     
     
     private AdSlot.Builder getAdslot(MediaRequest.Builder builder, PlcmtMetaData plcmtMetaData, String adspaceId) {
-        // adSlot
-        int width = 0;
-        if(builder.hasW()){
-            width = plcmtMetaData.getW();
-        } else {
-            width = builder.getW();
-        }
-        int height = 0;
-        if(builder.hasH()){
-            height = plcmtMetaData.getH();
-        } else {
-            height = builder.getH();
-        }
-        
-        AdSlot.Builder adSlotBuilder = AdSlot.newBuilder().setId(adspaceId).setSize(Size.newBuilder().setWidth(width).setHeight(height));
+        AdSlot.Builder adSlotBuilder = AdSlot.newBuilder().setId(adspaceId).setSize(Size.newBuilder().setWidth(plcmtMetaData.getW()).setHeight(plcmtMetaData.getH()));
         //optional
         AdSlot.StaticInfo adSlotStaticInfo;
 
@@ -219,7 +205,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         return adSlotBuilder;
     }
 
-    private App.Builder getApp(com.madhouse.ssp.avro.MediaRequest.Builder builder, String adspaceId) {
+    private App.Builder getApp(com.madhouse.ssp.avro.MediaRequest.Builder builder, String adspaceId, MediaMetaData mediaMetaData) {
         App.Builder appBuilder = App.newBuilder();
         appBuilder.setId(adspaceId);
         App.StaticInfo.Builder appStaticInfoBuilder = App.StaticInfo.newBuilder();
@@ -231,7 +217,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
                 logger.error(adspaceId + "pkgname error is:" + e.toString());
             }
         }
-        String appname = builder.getName();
+        String appname = mediaMetaData.getName();
         if (appname != null && appname.length() > 0) {
             try {
                 appStaticInfoBuilder.setName(URLEncoder.encode(appname, "UTF-8"));
@@ -239,11 +225,10 @@ public class ReachMaxHandler extends DSPBaseHandler {
                 logger.error(adspaceId + "appname error is:" + e.toString());
             }
         }
-        String category = builder.getCategory().toString();
-        if (category != null && category.length() > 0) {
+        int category = mediaMetaData.getCategory();
+        if (StringUtils.isEmpty(category+"")) {
             try {
-                int categorie = Integer.parseInt(category);
-                appStaticInfoBuilder.addCategories(categorie);
+                appStaticInfoBuilder.addCategories(category);
             } catch (Exception e) {
                 logger.error(adspaceId + "pcat error is:" + e.toString());
             }
