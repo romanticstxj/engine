@@ -501,12 +501,15 @@ public class CacheManager implements Runnable {
             } else {
                 if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                     int pastHours = 0;
-                    int totalHours = 0;
+                    int totalHours = 24;
                     if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
                         pastHours = currentHour + 1;
-                        totalHours = 24;
                     } else {
                         List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
+                        if (ObjectUtils.isEmpty(hours)) {
+                            return false;
+                        }
+
                         for (int hour : hours) {
                             if (hour <= currentHour) {
                                 pastHours += 1;
