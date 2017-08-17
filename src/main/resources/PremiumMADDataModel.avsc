@@ -455,15 +455,19 @@
 			"type": "long",
 			"name": "adspaceid"
 		}, {
+			"type": "string",
+			"name": "location"
+		}, {
 			"type": "int",
 			"name": "status"
 		}, {
 			"type": "int",
-			"name": "winner",
+			"name": "executetime",
 			"default": 0
 		}, {
-			"type": "string",
-			"name": "location"
+			"type": "int",
+			"name": "winner",
+			"default": 0
 		}, {
 			"name": "request",
 			"type": {

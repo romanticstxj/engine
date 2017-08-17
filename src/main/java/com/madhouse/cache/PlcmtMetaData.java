@@ -27,7 +27,7 @@ public class PlcmtMetaData {
     private String adspaceKey;
     private int status;
 
-    public class Image {
+    public static class Image {
         private int w;
         private int h;
         private List<String> mimes;
@@ -57,7 +57,7 @@ public class PlcmtMetaData {
         }
     }
 
-    public class Video {
+    public static class Video {
         private int w;
         private int h;
         private int minDuraion;
@@ -123,7 +123,7 @@ public class PlcmtMetaData {
         }
     }
 
-    public class Native {
+    public static class Native {
         private Image icon;
         private Image cover;
         private Image image;

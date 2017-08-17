@@ -33,7 +33,7 @@ public class PolicyMetaData {
 
     private int status;
 
-    public class AdspaceInfo {
+    public static class AdspaceInfo {
         private long id;
         private int status;
         private int bidType;
@@ -81,7 +81,7 @@ public class PolicyMetaData {
         }
     }
 
-    public class DSPInfo {
+    public static class DSPInfo {
         private long id;
         private int status;
 

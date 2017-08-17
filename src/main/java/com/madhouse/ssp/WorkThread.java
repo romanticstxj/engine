@@ -354,66 +354,20 @@ public class WorkThread {
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(new Date());
-
-                        int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
-                        int currentHour = cal.get(Calendar.HOUR_OF_DAY);
                         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 
-                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
-                            if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                                if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
-                                    int pastDays = Utility.dateDiff(StringUtil.toDate(currentDate), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
-                                    int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                        long totalCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                        long dailyCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
-                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-                                    if (count >= ((double)policyMetaData.getMaxCount() * pastDays / totalDays)) {
-                                        CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                                    }
-                                } else {
-                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                                    if (count >= policyMetaData.getMaxCount()) {
-                                        CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                                    }
-                                }
-                            } else {
-                                if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
-                                    int pastHours = 0;
-                                    int totalHours = 0;
-                                    if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
-                                        pastHours = currentHour + 1;
-                                        totalHours = 24;
-                                    } else {
-                                        List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
-                                        for (int hour : hours) {
-                                            if (hour <= currentHour) {
-                                                pastHours += 1;
-                                            } else {
-                                                break;
-                                            }
-                                        }
-
-                                        totalHours = hours.size();
-                                    }
-
-                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-                                    if (count >= ((double)policyMetaData.getMaxCount() * pastHours / totalHours)) {
-                                        CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                                    }
-                                } else {
-                                    long count = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-                                    if (count >= policyMetaData.getMaxCount()) {
-                                        CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                                    }
-                                }
-
-                            }
+                        if (!CacheManager.getInstance().policyQuantityControl(policyMetaData, totalCount, dailyCount)) {
+                            CacheManager.getInstance().blockPolicy(policyMetaData.getId());
                         }
 
                         List<DSPBidMetaData> bidderList = new LinkedList<DSPBidMetaData>();
                         for (Map.Entry entry : selectedDspList.entrySet()) {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
                             DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
-                            HttpResponse httpResponse = dspBidMetaData.getHttpClient().getResp();
+                            HttpResponse httpResponse = dspBidMetaData.getHttpClient().getResponse();
                             if (httpResponse != null) {
                                 if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
                                     if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB || dspBidMetaData.getDspBidBuilder().getResponse().getPrice() >= plcmtMetaData.getBidFloor()) {
@@ -424,6 +378,7 @@ public class WorkThread {
                                 dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
                             }
 
+                            dspBidMetaData.getDspBidBuilder().setExecutetime((int)dspBidMetaData.getHttpClient().getExecuteTime());
                             dspBidMetaData.getHttpRequestBase().releaseConnection();
                         }
 

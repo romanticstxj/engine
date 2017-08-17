@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/7/10.
  */
 public class MaterialMetaData {
-    public class Monitor {
+    public static class Monitor {
         public class Track {
             private int startDelay;
             private String url;
