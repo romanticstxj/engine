@@ -421,8 +421,8 @@ public class CacheManager implements Runnable {
             }
 
             //weekhour
-            if (!ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
-                Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekDayHours();
+            if (!ObjectUtils.isEmpty(policyMetaData.getWeekDayHoursMap())) {
+                Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekDayHoursMap();
                 for (Map.Entry entry1 : weekHours.entrySet()) {
                     List<Integer> hours = (List<Integer>)entry1.getValue();
                     for (int hour : hours) {
@@ -561,10 +561,10 @@ public class CacheManager implements Runnable {
                 if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                     int pastHours = 0;
                     int totalHours = 24;
-                    if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
+                    if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHoursMap())) {
                         pastHours = currentHour + 1;
                     } else {
-                        List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
+                        List<Integer> hours = policyMetaData.getWeekDayHoursMap().get(weekDay);
                         if (ObjectUtils.isEmpty(hours)) {
                             return false;
                         }
