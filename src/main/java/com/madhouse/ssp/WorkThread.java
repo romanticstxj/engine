@@ -22,6 +22,7 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,10 +31,13 @@ import java.util.concurrent.Executors;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public class WorkThread {
-    private MultiHttpClient multiHttpClient = new MultiHttpClient();
-    private HttpClient winNoticeHttpClient = new HttpClient();
     private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+
+    private MultiHttpClient multiHttpClient = new MultiHttpClient();
+    private Map<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
+
     private ExecutorService winNoticeService = Executors.newCachedThreadPool();
+
     private final byte[] image = {  0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
                                     (byte)0x80, 0x01, 0x00, 0x00, 0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, 0x21,
                                     (byte)0xf9, 0x04, 0x01, 0x00, 0x00, 0x01, 0x00, 0x2c, 0x00, 0x00,
@@ -41,6 +45,16 @@ public class WorkThread {
 
     public boolean init() {
         return true;
+    }
+
+    public HttpClient getHttpClient(long dspId) {
+        HttpClient client = this.httpClientMap.get(dspId);
+        if (client == null) {
+            client = new HttpClient();
+            this.httpClientMap.put(dspId, client);
+        }
+
+        return client;
     }
 
     public void onImpression(HttpServletRequest req, HttpServletResponse resp) {
@@ -268,7 +282,7 @@ public class WorkThread {
             mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
             mediaBid.setBidtype(plcmtMetaData.getBidType());
 
-            MediaBidMetaData.TrackingParam trackingParam = mediaBidMetaData.new TrackingParam();
+            MediaBidMetaData.TrackingParam trackingParam = new MediaBidMetaData.TrackingParam();
             mediaBidMetaData.setTrackingParam(trackingParam);
 
             trackingParam.setImpId(mediaBid.getImpid());
@@ -341,7 +355,7 @@ public class WorkThread {
                             dspBidMetaData.setDspBaseHandler(dspBaseHandler);
                             HttpRequestBase httpRequestBase = dspBaseHandler.packageRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
                             if (httpRequestBase != null) {
-                                HttpClient httpClient = ResourceManager.getInstance().getHttpClient(dspMetaData.getId());
+                                HttpClient httpClient = this.getHttpClient(dspMetaData.getId());
                                 httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
                                 this.multiHttpClient.addHttpClient(httpClient);
                                 dspBidMetaData.setHttpClient(httpClient);
@@ -396,7 +410,7 @@ public class WorkThread {
                                         String url = dspBidMetaData.getDspBaseHandler().getWinNoticeUrl(dspBidMetaData);
                                         if (!StringUtils.isEmpty(url)) {
                                             final HttpGet httpGet = new HttpGet(url);
-                                            final HttpClient httpClient = this.winNoticeHttpClient;
+                                            final HttpClient httpClient = this.getHttpClient(dspBidMetaData.getDspMetaData().getId());
                                             this.winNoticeService.submit(new Runnable() {
                                                 public void run() {
                                                     httpClient.execute(httpGet, 150);

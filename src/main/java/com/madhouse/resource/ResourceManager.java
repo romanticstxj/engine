@@ -35,7 +35,6 @@ public class ResourceManager {
     private JedisPool jedisPoolMaster;
     private JedisPool jedisPoolSlave;
 
-    private ConcurrentHashMap<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
@@ -129,18 +128,5 @@ public class ResourceManager {
 
     public String getLocation(String ip) {
         return this.ipTables.getLocation(ip);
-    }
-
-    public HttpClient getHttpClient(long dspId) {
-        HttpClient client = null;
-
-        synchronized (this) {
-            if ((client = this.httpClientMap.get(dspId)) == null) {
-                client = new HttpClient();
-                this.httpClientMap.put(dspId, client);
-            }
-        }
-
-        return client;
     }
 }

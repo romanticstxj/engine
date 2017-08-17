@@ -46,10 +46,9 @@ public abstract class MediaBaseHandler {
             mediaResponse.setActtype(dspResponse.getActtype());
             mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitor()));
 
-            MediaBidMetaData.TrackingParam trackingParam = mediaBidMetaData.getTrackingParam();
             Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
-            monitor.getImpurl().add(new Track(0, trackingParam.getImpressionTracking()));
-            monitor.getClkurl().add(trackingParam.getClickTracking());
+            monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTracking()));
+            monitor.getClkurl().add(mediaBidMetaData.getClickTracking());
 
             mediaBid.setResponseBuilder(mediaResponse);
             mediaBid.setStatus(Constant.StatusCode.OK);
