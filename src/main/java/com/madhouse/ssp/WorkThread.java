@@ -130,7 +130,7 @@ public class WorkThread {
             resp.setStatus(impressionTrack.getStatus());
 
         } catch (Exception ex) {
-            System.err.println(ex.toString());
+            logger.error(ex.toString());
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
         } finally {
             if (redisMaster != null) {
@@ -218,7 +218,7 @@ public class WorkThread {
 
             resp.setStatus(clickTrack.getStatus());
         } catch (Exception ex) {
-            System.err.println(ex.toString());
+            logger.error(ex.toString());
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
         } finally {
             if (redisMaster != null) {
