@@ -13,17 +13,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
+import com.madhouse.media.momo.MomoBidRequest.Device;
+import com.madhouse.media.momo.MomoBidRequest.Impression;
 import com.madhouse.media.momo.MomoExchange.BidRequest;
 import com.madhouse.media.momo.MomoExchange.BidResponse;
+import com.madhouse.media.momo.MomoResponse.Bid;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.Track;
+import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 
 
@@ -34,15 +39,34 @@ public class MomoHandler extends MediaBaseHandler {
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         
         try {
-            MomoExchange.BidRequest bidRequest = MomoExchange.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("Momo Request params is : {}", bidRequest.toString());
-            int status = validateRequiredParam(bidRequest);
-            if(Constant.StatusCode.OK == status){
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(bidRequest);
-                if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
-                    mediaBidMetaData.setRequestObject(bidRequest);
-                    return true;
+          //开屏是json格式，信息流是protofu格式
+            if(null != req.getContentType()){
+                MediaRequest mediaRequest =new MediaRequest();
+                if(req.getContentType().equalsIgnoreCase("application/json")){
+                    String bytes = HttpUtil.getRequestPostBytes(req);
+                    MomoBidRequest bidRequest = JSON.parseObject(bytes, MomoBidRequest.class);
+                    logger.info("Momo Request params is : {}",JSON.toJSONString(bidRequest));
+                    int status = validateParam(bidRequest);
+                    if(Constant.StatusCode.OK == status){
+                        mediaRequest = conversionToPremiumMADData(bidRequest);
+                        if(mediaRequest != null){
+                            mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                            mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.JSON,bidRequest});
+                            return true;
+                        }
+                    }
+                }else{
+                    MomoExchange.BidRequest bidRequest = MomoExchange.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
+                    logger.info("Momo Request params is : {}", bidRequest.toString());
+                    int status = validateRequiredParam(bidRequest);
+                    if(Constant.StatusCode.OK == status){
+                        mediaRequest = conversionToPremiumMADDataModel(bidRequest);
+                        if(mediaRequest != null){
+                            mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                            mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.JSON,bidRequest});
+                            return true;
+                        }
+                    }
                 }
             }
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
@@ -54,11 +78,134 @@ public class MomoHandler extends MediaBaseHandler {
         }
     }
     
-    /** 
-    * TODO (这里用一句话描述这个方法的作用)
-    * @param bidRequest
-    * @return
-    */
+   
+
+    private int validateParam(MomoBidRequest bidRequest) {
+        if (ObjectUtils.isNotEmpty(bidRequest)) {
+            String id = bidRequest.getId();
+            if (null == id){
+                logger.debug("MomoBidRequest.id is null");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+            
+            if(null == bidRequest.getVersion()){
+                logger.debug("{}:MomoBidRequest.Version is null",id);
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+            
+            if(null == bidRequest.getImp() && bidRequest.getImp().size()==0){
+                logger.debug("{}:MomoBidRequest.Imp is null",id);
+                return Constant.StatusCode.BAD_REQUEST;
+            }else{
+                 MomoBidRequest.Impression imp = bidRequest.getImp().get(0);
+                 if (ObjectUtils.isEmpty(imp)) {
+                     logger.debug("{}:MomoBidRequest.Imp is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
+                 if (StringUtils.isEmpty(imp.getId())) {
+                     logger.debug("{}:MomoBidRequest.Imp.id is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
+                 if (StringUtils.isEmpty(imp.getSplash_format())) {
+                     logger.debug("{}:MomoBidRequest.Imp.Splash_format is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
+                 if(null == imp.getCampaign()){
+                     logger.debug("{}:MomoBidRequest.Imp.campaign is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }else{
+                     MomoBidRequest.Impression.Campaign campaign = imp.getCampaign();
+                     if(null == campaign.getCampaign_id()){
+                         logger.debug("{}:MomoBidRequest.Imp.campaign.id is null",id);
+                         return Constant.StatusCode.BAD_REQUEST;
+                     }
+                     if(null == campaign.getCampaign_begin_date()){
+                         logger.debug("{}:MomoBidRequest.Imp.campaign.begin_date is null",id);
+                         return Constant.StatusCode.BAD_REQUEST;
+                     }
+                     if(null == campaign.getCampaign_end_date()){
+                         logger.debug("{}:MomoBidRequest.Imp.campaign.end_date is null",id);
+                         return Constant.StatusCode.BAD_REQUEST;
+                     }
+                 }
+                 return Constant.StatusCode.OK;
+            }
+        }
+        return  Constant.StatusCode.BAD_REQUEST;
+    }
+    
+    private MediaRequest conversionToPremiumMADData(MomoBidRequest bidRequest) {
+        MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
+        mediaRequest.setBid(bidRequest.getId());
+        
+        Impression imp = bidRequest.getImp().get(0);
+        Device device = bidRequest.getDevice();
+        
+        
+        mediaRequest.setAdtype(6);//开屏
+        
+        
+        
+        int w = imp.getW();
+        int h = imp.getH();
+        if(w != 0){
+            mediaRequest.setW(w);
+        }
+        if(h != 0){
+            mediaRequest.setH(h);
+        }
+        String os = device.getOs();//"1"为iOS,"2"为安卓
+        if(os.equals(MomoStatusCode.Os.OS_IOS)){//ios
+            mediaRequest.setOs(Constant.OSType.IOS);
+            mediaRequest.setDid(device.getDid());
+            mediaRequest.setDidmd5(device.getDidmd5());
+        }else if(os.equals(os.equals(MomoStatusCode.Os.OS_ANDROID))){//安卓
+            mediaRequest.setOs(Constant.OSType.ANDROID);
+            mediaRequest.setIfa(device.getDid());
+        }
+        //"WIFI" "CELL_UNKNOWN
+        String connection = device.getConnection_type();
+        if(connection.equals(MomoStatusCode.ConnectionType.WIFI)){
+            mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
+        }else if(connection.equals(os.equals(MomoStatusCode.Os.OS_ANDROID))){
+            mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
+        }
+        String ua = device.getUa();
+        if (!StringUtils.isEmpty(ua)) {
+            mediaRequest.setUa(ua);
+        }
+        String ip = device.getIp();
+        if (!StringUtils.isEmpty(ip)) {
+            mediaRequest.setIp(ip);
+        }
+        if(ObjectUtils.isNotEmpty(device.getGeo().getLon()+"")){
+            mediaRequest.setLat((float)device.getGeo().getLon());
+        }
+        if(ObjectUtils.isNotEmpty(device.getGeo().getLon()+"")){
+            mediaRequest.setLon((float)device.getGeo().getLat());
+        }
+        mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
+        mediaRequest.setType(Constant.MediaType.APP);
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        
+        String adspaceKey = new StringBuffer().append("MM:").append(w).append(":").append(h).toString();
+        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
+        if (plcmtMetaData != null) {
+            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        } else {
+            plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("MM:0:0");
+            if(plcmtMetaData != null){
+                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            }else{
+                return null;
+            }
+        }
+        
+        logger.info("Momorequest convert mediaRequest is : {}", mediaRequest.toString());
+        return mediaRequest.build();
+    }
+    
+    
     private MediaRequest conversionToPremiumMADDataModel(BidRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
@@ -147,7 +294,7 @@ public class MomoHandler extends MediaBaseHandler {
                 mediaRequest.setConnectiontype(Constant.ConnectionType._4G);
                 break;
         }
-        if("ios".equalsIgnoreCase(device.getOs().toLowerCase())){
+        if(MomoStatusCode.Os.OS_IOS_P.equalsIgnoreCase(device.getOs().toLowerCase())){
             mediaRequest.setOs(Constant.OSType.IOS);
             String did = device.getDid();
             if(!StringUtils.isEmpty(did)){
@@ -255,11 +402,18 @@ public class MomoHandler extends MediaBaseHandler {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData);
-                    if(null != bidResponse){
-                        resp.getOutputStream().write(bidResponse.toByteArray());
-                        resp.setStatus(Constant.StatusCode.OK);
-                        return true;
+                    
+                    Object[] objType = (Object[])mediaBidMetaData.getRequestObject();
+                    
+                    if(MomoStatusCode.Type.PROTOBUF.equals(objType[0])){
+                        MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(BidRequest)objType[1]);
+                        if(null != bidResponse){
+                            resp.getOutputStream().write(bidResponse.toByteArray());
+                            resp.setStatus(Constant.StatusCode.OK);
+                            return true;
+                        }
+                    } else if (MomoStatusCode.Type.JSON.equals(objType[0])){
+                        MomoResponse response= convertToMomoBidResponse(mediaBidMetaData,(MomoBidRequest)objType[1]);
                     }
                 } else {
                     resp.setStatus(mediaBid.getStatus());
@@ -275,12 +429,51 @@ public class MomoHandler extends MediaBaseHandler {
         return false;
     }
 
-    private BidResponse convertToMomoResponse(MediaBidMetaData mediaBidMetaData) {
+    private MomoResponse convertToMomoBidResponse(MediaBidMetaData mediaBidMetaData, MomoBidRequest momoBidRequest) {
+        
+        MomoResponse momoBidResponse = new MomoResponse();
+        MomoResponse.Bid bid = momoBidResponse.new Bid(); 
+        MomoResponse.Bid.Image image = bid.new Image();
+        MomoResponse.Bid.Gif gif = bid.new Gif();
+        MomoResponse.Bid.Video video = bid.new Video();
+        
+        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        
+        
+        bid.setImpid(momoBidRequest.getImp().get(0).getId());
+        bid.setCrid(mediaResponse.getCrid());
+        bid.setClick_url(mediaResponse.getLpgurl());
+        
+        List<Bid> bidList = new ArrayList<Bid>();
+        List<String> impTrackers = new ArrayList<String>();
+        for (Track track : mediaResponse.getMonitor().getImpurl()) {
+            impTrackers.add(track.getUrl());
+        }
+        
+        bid.setImptrackers(impTrackers);
+        bid.setClicktrackers(mediaResponse.getMonitor().getClkurl());
+        
+        image.setUrl(mediaResponse.getAdm().get(0));
+        
+        if(mediaResponse.getAdm().get(0).contains(".gif")){
+            gif.setUrl(mediaResponse.getCover());
+        } else if(mediaResponse.getAdm().get(0).contains(".mp4")){
+            video.setUrl(mediaResponse.getCover());
+        }
+        bidList.add(bid);
+        momoBidResponse.setBid(bidList);
+        momoBidResponse.setId(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid());
+        
+        return momoBidResponse;
+    }
+
+
+
+    private BidResponse convertToMomoResponse(MediaBidMetaData mediaBidMetaData, MomoExchange.BidRequest bidRequest) {
         
         
         MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
         MediaRequest mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequest();
-        MomoExchange.BidRequest bidRequest = (BidRequest)mediaBidMetaData.getRequestObject();
         
         MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
         nativeCreativeBuilder.setTitle(mediaResponse.getTitle());

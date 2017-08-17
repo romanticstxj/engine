@@ -116,8 +116,8 @@ public class IflytekHandler extends DSPBaseHandler {
             Long date = new Date().getTime();
             iflytek.setTs(date.toString());
             
-            iflytek.setAdw(builder.getW() > 0 ? String.valueOf(builder.getW()) :String.valueOf(plcmtMetaData.getW()));
-            iflytek.setAdh(builder.getH() > 0 ? String.valueOf(builder.getH()) : String.valueOf(plcmtMetaData.getH()));
+            iflytek.setAdw(String.valueOf(plcmtMetaData.getW()));
+            iflytek.setAdh(String.valueOf(plcmtMetaData.getH()));
             iflytek.setDvh("480");
             iflytek.setDvw("320");
             //横竖屏
@@ -163,7 +163,7 @@ public class IflytekHandler extends DSPBaseHandler {
             // mac 地址
             iflytek.setMac(builder.getMac());
             
-            iflytek.setAppname(builder.getName());
+            iflytek.setAppname(mediaMetaData.getName());
             iflytek.setPkgname(builder.getBundle());
             if (!checkParameter(iflytek)) {
                 return null;
