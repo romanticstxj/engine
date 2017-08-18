@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.mtdp.DPAds.BidRequest;
@@ -66,17 +67,17 @@ public class MTDPHandler extends MediaBaseHandler {
             adspaceKey = new StringBuffer().append("DP:").append(imp.getSlotId()).append(":").append(bidRequest.getDevice().getOs().toLowerCase()).toString();
             mediaRequest.setTest(Constant.Test.REAL);
         }
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData= CacheManager.getInstance().getMediaMapping(adspaceKey);
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else { 
             if (isSandbox) {//sandbox环境
-                plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("sandbox:DP:0:0");
+                mappingMetaData = CacheManager.getInstance().getMediaMapping("sandbox:DP:0:0");
             } else {
-                plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("DP:0:0");
+                mappingMetaData = CacheManager.getInstance().getMediaMapping("DP:0:0");
             }
-            if(plcmtMetaData != null){
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
                 return null;
             }
@@ -112,7 +113,7 @@ public class MTDPHandler extends MediaBaseHandler {
             }
             String dpidmd5 = device.getDpidmd5();
             if(!StringUtils.isEmpty(dpidmd5)){
-                mediaRequest.setDid(URLEncoder.encode(dpidmd5, "UTF-8"));
+                mediaRequest.setDidmd5(URLEncoder.encode(dpidmd5, "UTF-8"));
             }
         } else if ("android".equalsIgnoreCase(device.getOs())) {
             mediaRequest.setOs(Constant.OSType.IOS);

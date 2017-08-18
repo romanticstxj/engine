@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.tencent.GPBForDSP.Request;
 import com.madhouse.media.tencent.GPBForDSP.Request.App;
@@ -58,13 +58,13 @@ public class TencentHandler extends MediaBaseHandler {
         sb.append("TENC:");
         String TencAdspaceId = bidRequest.getImpression(0).getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
         sb.append(TencAdspaceId).append(":");
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(sb.toString());
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else { 
-             plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("TENC:0:");
-            if(plcmtMetaData != null){
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            mappingMetaData = CacheManager.getInstance().getMediaMapping("TENC:0:");
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
                 return null;
             }
@@ -175,7 +175,7 @@ public class TencentHandler extends MediaBaseHandler {
             mediaRequest.setLon(device.getGeo().getLongitude());
         }
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
-        return null;
+        return mediaRequest.build();
     }
 
     private int validateRequiredParam(Request bidRequest) {

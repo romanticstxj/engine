@@ -28,16 +28,16 @@ public class PremiumMADHandler extends MediaBaseHandler {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
             logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
-            if(Constant.StatusCode.OK != status){
-                PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
-                premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
-                premiumMADResponse.setReturncode(String.valueOf(status));
-                return outputStreamWrite(premiumMADResponse,resp);
-            } else {
+            if(Constant.StatusCode.OK == status){
                 MediaRequest request = conversionToPremiumMADDataModel(mediaRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequest(request);
                 mediaBidMetaData.setRequestObject(request);
                 return true;
+            } else {
+                PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
+                premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
+                premiumMADResponse.setReturncode(String.valueOf(status));
+                return outputStreamWrite(premiumMADResponse,resp);
             }
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
@@ -122,9 +122,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(!StringUtils.isEmpty(madBidRequest.getMcell())){
             mediaRequest.setCellmd5(madBidRequest.getMcell());
         }
-        //MD5加密的手机号码。
-        if(!StringUtils.isEmpty(madBidRequest.getMcell())){
-            mediaRequest.setCellmd5(madBidRequest.getMcell());
+        //纬度
+        if(!StringUtils.isEmpty(madBidRequest.getLat())){
+            mediaRequest.setLat(Float.parseFloat(madBidRequest.getLat()));
         }
         //经度
         if(!StringUtils.isEmpty(madBidRequest.getLon())){

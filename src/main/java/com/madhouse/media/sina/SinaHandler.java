@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.sina.SinaBidRequest.Device.Geo;
 import com.madhouse.ssp.Constant;
@@ -86,13 +86,13 @@ public class SinaHandler extends MediaBaseHandler {
             mediaRequest.setIfa(device.getExt().getIdfa());
             
         }
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(sb.toString());
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
-            plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("SINA:0:0");
-            if(plcmtMetaData != null){
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            mappingMetaData = CacheManager.getInstance().getMediaMapping("SINA:0:0");
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
                 return null;
             }

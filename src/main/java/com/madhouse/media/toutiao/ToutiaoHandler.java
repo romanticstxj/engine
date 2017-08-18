@@ -9,18 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
-import com.madhouse.media.madhouse.PremiumMADResponse;
 import com.madhouse.media.toutiao.TOUTIAOAds.AdType;
-import com.madhouse.media.toutiao.TOUTIAOAds.Bid;
 import com.madhouse.media.toutiao.TOUTIAOAds.BidRequest;
-import com.madhouse.media.toutiao.TOUTIAOAds.MaterialMeta;
 import com.madhouse.media.toutiao.TOUTIAOAds.SeatBid;
-import com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
@@ -75,7 +70,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         TOUTIAOAds.AdType adtypeObj = getAdType(bidRequest);
         if (adtypeObj != null) {
             mediaRequest.setAdtype(adtypeObj.getNumber());
-            PlcmtMetaData plcmtMetaData =  CacheManager.getInstance().getPlcmtMetaData(new StringBuffer("TT:")
+            MediaMappingMetaData mappingMetaData =  CacheManager.getInstance().getMediaMapping(new StringBuffer("TT:")
                         .append(adSlot.getChannelId())
                         .append(":")
                         .append(deal.getId())
@@ -83,11 +78,11 @@ public class ToutiaoHandler extends MediaBaseHandler {
                         .append(adtypeObj.getNumber())
                         .append(":")
                         .append(device.getOs().toLowerCase()).toString());
-            if (plcmtMetaData != null) {
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            if (mappingMetaData != null) {
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
                 mediaRequest.setTest(Constant.Test.REAL);
-                mediaRequest.setW(plcmtMetaData.getW());
-                mediaRequest.setH(plcmtMetaData.getH());
+                mediaRequest.setW(banner.getWidth());
+                mediaRequest.setH(banner.getHeight());
             }
         }
         String supplierAdspaceKey = "";
@@ -102,11 +97,11 @@ public class ToutiaoHandler extends MediaBaseHandler {
             }
         }
         if (supplierAdspaceKey != null) {
-            PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(supplierAdspaceKey);
-            if (plcmtMetaData != null) {
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
-                mediaRequest.setW(plcmtMetaData.getW());
-                mediaRequest.setH(plcmtMetaData.getH());
+            MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(supplierAdspaceKey);
+            if (mappingMetaData != null) {
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+                mediaRequest.setW(banner.getWidth());
+                mediaRequest.setH(banner.getHeight());
             }else{
                 return null; 
             }

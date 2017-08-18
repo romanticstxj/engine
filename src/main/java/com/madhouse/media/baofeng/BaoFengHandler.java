@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.baofeng.BaoFengResponse.PV;
@@ -41,13 +44,14 @@ public class BaoFengHandler extends MediaBaseHandler {
             int status = validateRequiredParam(baoFengBidRequest, resp);
             if (status == Constant.StatusCode.OK) {
                 MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
-                mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
-                mediaBidMetaData.setRequestObject(baoFengBidRequest);
-                if (StringUtils.isEmpty(mediaRequest.getAdspacekey())) {
+                if (ObjectUtils.isEmpty(mediaRequest)) {
                     resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
                 }
+                mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                mediaBidMetaData.setRequestObject(baoFengBidRequest);
+                return true;
             } else {
                 resp.setStatus(status);
                 return false;
@@ -57,8 +61,6 @@ public class BaoFengHandler extends MediaBaseHandler {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
-
-        return true;
     }
     // TODO
     @Override
@@ -276,7 +278,6 @@ public class BaoFengHandler extends MediaBaseHandler {
         // 这里2对应exchange的adtype 1=文字链 2=Banner 3=图形文字链 4=全屏 5=插页 6=开屏  
         mediaRequest.setAdtype(2);
         // app名称，暴风没有提供app包名
-        mediaRequest.setBundle(app.getName());
         mediaRequest.setName(app.getName());
         // 设备类型，1=iPhone；2=iPad；3=android
         switch (device.getDevicetype()){
@@ -307,9 +308,11 @@ public class BaoFengHandler extends MediaBaseHandler {
         }
         
         if (adspaceKey != null) {
-            PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
-            if (plcmtMetaData != null) {
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            MediaMappingMetaData mappingMetaData=CacheManager.getInstance().getMediaMapping(adspaceKey);
+            if (mappingMetaData != null) {
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+            }else{
+                return null; 
             }
         }
 

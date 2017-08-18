@@ -12,12 +12,10 @@ import org.eclipse.jetty.util.UrlEncoded;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.vamaker.VamakerRTB.VamRequest;
-import com.madhouse.media.vamaker.VamakerRTB.VamResponse;
 import com.madhouse.media.vamaker.VamakerRTB.VamResponse.Builder;
-import com.madhouse.media.xiaomi.XiaoMiResponse;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
@@ -66,9 +64,9 @@ public class VamakerHandler extends MediaBaseHandler {
         }
         logger.warn("crid not found:{}", sb.toString());
         
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(sb.toString());
-        if (null != plcmtMetaData) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (null != mappingMetaData) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         }else{
             return null;
         }

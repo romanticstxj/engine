@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.momo.MomoBidRequest.Device;
 import com.madhouse.media.momo.MomoBidRequest.Impression;
@@ -140,20 +140,10 @@ public class MomoHandler extends MediaBaseHandler {
         
         Impression imp = bidRequest.getImp().get(0);
         Device device = bidRequest.getDevice();
-        
-        
         mediaRequest.setAdtype(6);//开屏
+        mediaRequest.setW(imp.getW());
+        mediaRequest.setH(imp.getH());
         
-        
-        
-        int w = imp.getW();
-        int h = imp.getH();
-        if(w != 0){
-            mediaRequest.setW(w);
-        }
-        if(h != 0){
-            mediaRequest.setH(h);
-        }
         String os = device.getOs();//"1"为iOS,"2"为安卓
         if(os.equals(MomoStatusCode.Os.OS_IOS)){//ios
             mediaRequest.setOs(Constant.OSType.IOS);
@@ -167,7 +157,7 @@ public class MomoHandler extends MediaBaseHandler {
         String connection = device.getConnection_type();
         if(connection.equals(MomoStatusCode.ConnectionType.WIFI)){
             mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
-        }else if(connection.equals(os.equals(MomoStatusCode.Os.OS_ANDROID))){
+        }else if(connection.equals(os.equals(MomoStatusCode.ConnectionType.CELL_UNKNOWN))){
             mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
         }
         String ua = device.getUa();
@@ -187,15 +177,16 @@ public class MomoHandler extends MediaBaseHandler {
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setType(Constant.MediaType.APP);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        //开屏样式（SPLASH_IMG，SPLASH_GIF，SPLASH_VIDEO）
+        String adspaceKey = new StringBuffer().append("MM:").append(imp.getSplash_format()).append(":").append(os).toString();
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
         
-        String adspaceKey = new StringBuffer().append("MM:").append(w).append(":").append(h).toString();
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
-            plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("MM:0:0");
-            if(plcmtMetaData != null){
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            mappingMetaData = CacheManager.getInstance().getMediaMapping("MM:0:0");
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
                 return null;
             }
@@ -224,13 +215,13 @@ public class MomoHandler extends MediaBaseHandler {
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String campainType = getCampainType(imp.getNative());
         String adspaceKey = new StringBuffer().append("MM:").append(imp.getSlotid()).append(":").append(bidRequest.getDevice().getOs().toLowerCase()).append(":").append(campainType).toString();
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
-            plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("MM:0:0");
-            if(plcmtMetaData != null){
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            mappingMetaData = CacheManager.getInstance().getMediaMapping("MM:0:0");
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
                 return null;
             }

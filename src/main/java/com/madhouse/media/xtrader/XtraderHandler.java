@@ -10,9 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
-import com.madhouse.media.tencent.GPBForDSP;
 import com.madhouse.media.tencent.TencentStatusCode;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
@@ -88,17 +87,17 @@ public class XtraderHandler extends MediaBaseHandler {
             adspaceKey = "LJ:" + showtype + ":" + device.getOs().toLowerCase();
             mediaRequest.setTest(Constant.Test.REAL);
         }
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
             if (isSandbox) {//sandbox环境
-                plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("sandbox:LJ:0:0");
+                mappingMetaData = CacheManager.getInstance().getMediaMapping("sandbox:LJ:0:0");
             } else {
-                plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("LJ:0:0");
+                mappingMetaData = CacheManager.getInstance().getMediaMapping("LJ:0:0");
             }
-            if(plcmtMetaData != null){
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
                 return null;
             }

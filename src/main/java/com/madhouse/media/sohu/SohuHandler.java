@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.sohu.SohuRTB.Request;
 import com.madhouse.media.sohu.SohuRTB.Request.Device;
@@ -159,9 +159,9 @@ public class SohuHandler extends MediaBaseHandler {
         }
         StringBuilder sb = new StringBuilder();
         sb.append("SH:").append(bidRequest.getImpression(0).getPid()).append(":").append(SohuStatusCode.Os.ANDROID);
-        PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(sb.toString());
-        if (plcmtMetaData != null) {
-            mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
             return null;
         }

@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.PlcmtMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.xiaomi.request.AdTemplate;
 import com.madhouse.media.xiaomi.request.App;
@@ -235,17 +235,17 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 adspaceKey = new StringBuffer().append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
                 mediaRequest.setTest(Constant.Test.REAL);
             }
-            PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(adspaceKey);
-            if (plcmtMetaData != null) {
-                mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+            MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
+            if (mappingMetaData != null) {
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             } else {
                 if (isSandbox) {//sandbox环境
-                    plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("sandbox:XM:0:0");
+                    mappingMetaData = CacheManager.getInstance().getMediaMapping("sandbox:XM:0:0");
                 } else {
-                    plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData("XM:0:0");
+                    mappingMetaData = CacheManager.getInstance().getMediaMapping("XM:0:0");
                 }
-                if(plcmtMetaData != null){
-                    mediaRequest.setAdspacekey(plcmtMetaData.getAdspaceKey());
+                if(mappingMetaData != null){
+                    mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
                 }else{
                     return null;
                 }
