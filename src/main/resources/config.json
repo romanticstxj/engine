@@ -2,6 +2,7 @@
     "webapp": {
         "domain": "http://ssp.madhouse.cn",
         "port": 8181,
+        "wokerId": 10,
         "gZipOn": false,
         "expiredTime": 86400,
         "bids": [{
