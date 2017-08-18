@@ -226,8 +226,8 @@ public class WorkThread {
             LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack);
 
             String url = req.getParameter("_url");
-            if (!StringUtils.isEmpty(url) && (url.startsWith("http://") || url.startsWith("https://"))) {
-                resp.setHeader("Location", url);
+            if (!StringUtils.isEmpty(url)) {
+                resp.setHeader("Location", URLDecoder.decode(url, "utf-8"));
                 clickTrack.setStatus(Constant.StatusCode.REDIRECT);
             } else {
                 resp.getOutputStream().write(this.image);
