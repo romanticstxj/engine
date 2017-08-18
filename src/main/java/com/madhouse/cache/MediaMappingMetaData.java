@@ -5,6 +5,7 @@ package com.madhouse.cache;
  */
 public class MediaMappingMetaData {
     private long adspaceId;
+    private String adspaceKey;
     private String mappingKey;
 
     public long getAdspaceId() {
@@ -21,5 +22,13 @@ public class MediaMappingMetaData {
 
     public void setMappingKey(String mappingKey) {
         this.mappingKey = mappingKey;
+    }
+
+    public String getAdspaceKey() {
+        return adspaceKey;
+    }
+
+    public void setAdspaceKey(String adspaceKey) {
+        this.adspaceKey = adspaceKey;
     }
 }

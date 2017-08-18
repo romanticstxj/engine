@@ -32,29 +32,106 @@ public class CacheManager implements Runnable {
     private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     private ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
-    //dsp metadata
-    private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
-    //media metadata
-    private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
-    //placement metadata
-    private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
-    //adblock metadata
-    private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
-    //policy metadata
-    private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
-    //adspaceId, mediaMappingMetaData
-    private ConcurrentHashMap<Long, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<Long, MediaMappingMetaData>();
-    //adspaceId, <dspId, dspMappingMetaData>
-    private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
-    //targeting index
-    private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<String, HashSet<Long>>();
+    public class MetaData {
+        //dsp metadata
+        private ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap = new ConcurrentHashMap<Long, DSPMetaData>();
+        //media metadata
+        private ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap = new ConcurrentHashMap<Long, MediaMetaData>();
+        //placement metadata
+        private ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap = new ConcurrentHashMap<String, PlcmtMetaData>();
+        //adblock metadata
+        private ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap = new ConcurrentHashMap<Long, AdBlockMetaData>();
+        //policy metadata
+        private ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = new ConcurrentHashMap<Long, PolicyMetaData>();
+        //adspaceKey, mediaMappingMetaData
+        private ConcurrentHashMap<String, MediaMappingMetaData> mediaMappingMetaDataMap = new ConcurrentHashMap<String, MediaMappingMetaData>();
+        //adspaceId, <dspId, dspMappingMetaData>
+        private ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap = new ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>();
+        //targeting index
+        private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<String, HashSet<Long>>();
+        //dspid:material_key:media_id:adspaceid, materialMetaData
+        private ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap = new ConcurrentHashMap<>();
+
+        public ConcurrentHashMap<Long, DSPMetaData> getDspMetaDataMap() {
+            return dspMetaDataMap;
+        }
+
+        public void setDspMetaDataMap(ConcurrentHashMap<Long, DSPMetaData> dspMetaDataMap) {
+            this.dspMetaDataMap = dspMetaDataMap;
+        }
+
+        public ConcurrentHashMap<Long, MediaMetaData> getMediaMetaDataMap() {
+            return mediaMetaDataMap;
+        }
+
+        public void setMediaMetaDataMap(ConcurrentHashMap<Long, MediaMetaData> mediaMetaDataMap) {
+            this.mediaMetaDataMap = mediaMetaDataMap;
+        }
+
+        public ConcurrentHashMap<String, PlcmtMetaData> getPlcmtMetaDataMap() {
+            return plcmtMetaDataMap;
+        }
+
+        public void setPlcmtMetaDataMap(ConcurrentHashMap<String, PlcmtMetaData> plcmtMetaDataMap) {
+            this.plcmtMetaDataMap = plcmtMetaDataMap;
+        }
+
+        public ConcurrentHashMap<Long, AdBlockMetaData> getAdBlockMetaDataMap() {
+            return adBlockMetaDataMap;
+        }
+
+        public void setAdBlockMetaDataMap(ConcurrentHashMap<Long, AdBlockMetaData> adBlockMetaDataMap) {
+            this.adBlockMetaDataMap = adBlockMetaDataMap;
+        }
+
+        public ConcurrentHashMap<Long, PolicyMetaData> getPolicyMetaDataMap() {
+            return policyMetaDataMap;
+        }
+
+        public void setPolicyMetaDataMap(ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap) {
+            this.policyMetaDataMap = policyMetaDataMap;
+        }
+
+        public ConcurrentHashMap<String, MediaMappingMetaData> getMediaMappingMetaDataMap() {
+            return mediaMappingMetaDataMap;
+        }
+
+        public void setMediaMappingMetaDataMap(ConcurrentHashMap<String, MediaMappingMetaData> mediaMappingMetaDataMap) {
+            this.mediaMappingMetaDataMap = mediaMappingMetaDataMap;
+        }
+
+        public ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> getDspMappingMetaDataMap() {
+            return dspMappingMetaDataMap;
+        }
+
+        public void setDspMappingMetaDataMap(ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>> dspMappingMetaDataMap) {
+            this.dspMappingMetaDataMap = dspMappingMetaDataMap;
+        }
+
+        public ConcurrentHashMap<String, HashSet<Long>> getPolicyTargetMap() {
+            return policyTargetMap;
+        }
+
+        public void setPolicyTargetMap(ConcurrentHashMap<String, HashSet<Long>> policyTargetMap) {
+            this.policyTargetMap = policyTargetMap;
+        }
+
+        public ConcurrentHashMap<String, MaterialMetaData> getMaterialMetaDataMap() {
+            return materialMetaDataMap;
+        }
+
+        public void setMaterialMetaDataMap(ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap) {
+            this.materialMetaDataMap = materialMetaDataMap;
+        }
+    }
+
     //blocked policy
     private ConcurrentHashSet<Long> blockedPolicy = new ConcurrentHashSet<>();
-    //dspid:material_key:media_id:adspaceid, materialMetaData
-    private ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap = new ConcurrentHashMap<>();
 
     private Jedis redisMaster = null;
     private Jedis redisSlave = null;
+
+    private MetaData metaData = new MetaData();
 
     public boolean init() {
         this.scheduledExecutor.scheduleAtFixedRate(this, 0, 180, TimeUnit.SECONDS);
@@ -62,23 +139,19 @@ public class CacheManager implements Runnable {
     }
 
     public HashSet<Long> getPolicyTargetInfo(String key) {
-        return policyTargetMap.get(key);
+        return metaData.policyTargetMap.get(key);
     }
 
     public ConcurrentHashMap<String, HashSet<Long>> getPolicyTargetMap() {
-        return policyTargetMap;
+        return metaData.policyTargetMap;
     }
 
-    public void setPolicyTargetMap(ConcurrentHashMap<String, HashSet<Long>> policyTargetMap) {
-        this.policyTargetMap = policyTargetMap;
-    }
-
-    public MediaMappingMetaData getMediaMapping(long adspaceId) {
-        return this.mediaMappingMetaDataMap.get(adspaceId);
+    public MediaMappingMetaData getMediaMapping(String mappingKey) {
+        return this.metaData.getMediaMappingMetaDataMap().get(mappingKey);
     }
 
     public DSPMappingMetaData getDSPMapping(long dspId, long adspaceId) {
-        ConcurrentHashMap<Long, DSPMappingMetaData> var = this.dspMappingMetaDataMap.get(adspaceId);
+        ConcurrentHashMap<Long, DSPMappingMetaData> var = this.metaData.getDspMappingMetaDataMap().get(adspaceId);
         if (var != null) {
             return var.get(dspId);
         }
@@ -88,27 +161,27 @@ public class CacheManager implements Runnable {
 
     public MaterialMetaData getMaterialMetaData(long dspId, String materialId, long mediaId, long adspaceId) {
         String key = String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, dspId, materialId, mediaId, adspaceId);
-        return this.materialMetaDataMap.get(key);
+        return this.metaData.getMaterialMetaDataMap().get(key);
     }
 
     public DSPMetaData getDSPMetaData(long id) {
-        return this.dspMetaDataMap.get(id);
+        return this.metaData.getDspMetaDataMap().get(id);
     }
 
     public MediaMetaData getMediaMetaData(long id) {
-        return this.mediaMetaDataMap.get(id);
+        return this.metaData.getMediaMetaDataMap().get(id);
     }
 
     public PlcmtMetaData getPlcmtMetaData(String key) {
-        return this.plcmtMetaDataMap.get(key);
+        return this.metaData.getPlcmtMetaDataMap().get(key);
     }
 
     public AdBlockMetaData getAdBlockMetaData(long id) {
-        return this.adBlockMetaDataMap.get(id);
+        return this.metaData.getAdBlockMetaDataMap().get(id);
     }
 
     public PolicyMetaData getPolicyMetaData(long id) {
-        return this.policyMetaDataMap.get(id);
+        return this.metaData.getPolicyMetaDataMap().get(id);
     }
 
     public void run() {
@@ -117,26 +190,18 @@ public class CacheManager implements Runnable {
         this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
         this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
-        Object mediaMetaData = this.loadMediaMetaData();
-        Object plcmtMetaData = this.loadPlcmtMetaData();
-        Object adBlockMetaData = this.loadAdBlockMetaData();
-        Object policyMetaData = this.loadPolicyMetaData();
-        Object dspMetaData = this.loadDSPMetaData();
-        Object mediaMappingData = this.loadMediaMappingData();
-        Object dspMappingData = this.loadDSPMappingData();
-        Object materialMetaData = this.loadMaterialMappingData();
-        Object policyTargetInfo = this.updatePolicyTargetInfo(policyMetaData);
+        MetaData var = new MetaData();
+        var.setMediaMetaDataMap(this.loadMediaMetaData());
+        var.setPlcmtMetaDataMap(this.loadPlcmtMetaData());
+        var.setAdBlockMetaDataMap(this.loadAdBlockMetaData());
+        var.setPolicyMetaDataMap(this.loadPolicyMetaData());
+        var.setDspMetaDataMap(this.loadDSPMetaData());
+        var.setMediaMappingMetaDataMap(this.loadMediaMappingData());
+        var.setDspMappingMetaDataMap(this.loadDSPMappingData());
+        var.setMaterialMetaDataMap(this.loadMaterialMappingData());
+        var.setPolicyTargetMap(this.updatePolicyTargetInfo(var.getPolicyMetaDataMap()));
 
-        this.mediaMetaDataMap = (ConcurrentHashMap<Long, MediaMetaData>)mediaMetaData;
-        this.plcmtMetaDataMap = (ConcurrentHashMap<String, PlcmtMetaData>)plcmtMetaData;
-        this.adBlockMetaDataMap = (ConcurrentHashMap<Long, AdBlockMetaData>)adBlockMetaData;
-        this.policyMetaDataMap = (ConcurrentHashMap<Long, PolicyMetaData>)policyMetaData;
-        this.dspMetaDataMap = (ConcurrentHashMap<Long, DSPMetaData>)dspMetaData;
-        this.mediaMappingMetaDataMap = (ConcurrentHashMap<Long, MediaMappingMetaData>)mediaMappingData;
-        this.dspMappingMetaDataMap = (ConcurrentHashMap<Long, ConcurrentHashMap<Long, DSPMappingMetaData>>)dspMappingData;
-        this.materialMetaDataMap = (ConcurrentHashMap<String, MaterialMetaData>)materialMetaData;
-        this.policyTargetMap = (ConcurrentHashMap<String, HashSet<Long>>)policyTargetInfo;
-
+        this.metaData = var;
         this.blockedPolicy.clear();
 
         if (this.redisMaster != null) {
@@ -150,7 +215,7 @@ public class CacheManager implements Runnable {
         logger.info("load metadata cache end.");
     }
 
-    private Object loadMaterialMappingData() {
+    private ConcurrentHashMap<String, MaterialMetaData> loadMaterialMappingData() {
         ConcurrentHashMap<String, MaterialMetaData> var = new ConcurrentHashMap<String, MaterialMetaData>();
 
         Set<String> materialIds = this.redisSlave.smembers(Constant.CommonKey.ALL_MATERIAL);
@@ -209,7 +274,6 @@ public class CacheManager implements Runnable {
                 if (!StringUtils.isEmpty(text)) {
                     PolicyMetaData metaData = JSON.parseObject(text, PolicyMetaData.class);
                     var.put(metaData.getId(), metaData);
-
                 }
             }
         }
@@ -253,8 +317,8 @@ public class CacheManager implements Runnable {
         return var;
     }
 
-    private ConcurrentHashMap<Long, MediaMappingMetaData> loadMediaMappingData() {
-        ConcurrentHashMap<Long, MediaMappingMetaData> var = new ConcurrentHashMap<Long, MediaMappingMetaData>();
+    private ConcurrentHashMap<String, MediaMappingMetaData> loadMediaMappingData() {
+        ConcurrentHashMap<String, MediaMappingMetaData> var = new ConcurrentHashMap<String, MediaMappingMetaData>();
 
         Set<String> adspaceIds = this.redisSlave.smembers(Constant.CommonKey.ALL_PLACEMENT);
         if (!ObjectUtils.isEmpty(adspaceIds)) {
@@ -262,7 +326,7 @@ public class CacheManager implements Runnable {
                 String text = this.redisSlave.get(String.format(Constant.CommonKey.MEDIA_MAPPING_DATA, adspaceId));
                 if (!StringUtils.isEmpty(text)) {
                     MediaMappingMetaData mediaMappingMetaData = JSON.parseObject(text, MediaMappingMetaData.class);
-                    var.put(mediaMappingMetaData.getAdspaceId(), mediaMappingMetaData);
+                    var.put(mediaMappingMetaData.getMappingKey(), mediaMappingMetaData);
                 }
             }
         }
@@ -298,32 +362,27 @@ public class CacheManager implements Runnable {
         return var1;
     }
 
-    private ConcurrentHashMap<String, HashSet<Long>> updatePolicyTargetInfo(Object metaData) {
+    private ConcurrentHashMap<String, HashSet<Long>> updatePolicyTargetInfo(ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap) {
         ConcurrentHashMap<String, HashSet<Long>> var = new ConcurrentHashMap<>();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 
-        ConcurrentHashMap<Long, PolicyMetaData> policyMetaDataMap = (ConcurrentHashMap<Long, PolicyMetaData>)metaData;
-
         for (Map.Entry entry : policyMetaDataMap.entrySet()) {
             PolicyMetaData policyMetaData = (PolicyMetaData)entry.getValue();
 
-            //未开始、或已结束
             if (currentDate.compareTo(policyMetaData.getStartDate()) < 0 ||
                     (!StringUtils.isEmpty(policyMetaData.getEndDate()) && currentDate.compareTo(policyMetaData.getEndDate()) > 0)) {
                 continue;
             }
 
-            //无截至日期、按总量的匀速投放
             if (StringUtils.isEmpty(policyMetaData.getEndDate()) &&
                     policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL &&
                     policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                 continue;
             }
 
-            //无有效广告位或有效DSP
             if (ObjectUtils.isEmpty(policyMetaData.getAdspaceInfoMap()) || ObjectUtils.isEmpty(policyMetaData.getDspInfoMap())) {
                 continue;
             }
@@ -361,13 +420,13 @@ public class CacheManager implements Runnable {
                 }
             }
 
-            //weekhour
-            if (!ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
-                Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekDayHours();
+            //weekdayHour
+            if (!ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
+                Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekdayHoursMap();
                 for (Map.Entry entry1 : weekHours.entrySet()) {
                     List<Integer> hours = (List<Integer>)entry1.getValue();
                     for (int hour : hours) {
-                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEKDAY_HOUR, String.format("%d%02d", (Integer)entry1.getKey(), hour));
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.WEEKDAY_HOUR, String.format("%d-%02d", (Integer)entry1.getKey(), hour));
                         HashSet<Long> var2 = var.get(key);
                         if (var2 == null) {
                             var2 = new HashSet<>();
@@ -482,7 +541,7 @@ public class CacheManager implements Runnable {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
 
-            int weekDay = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
             if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
@@ -501,12 +560,15 @@ public class CacheManager implements Runnable {
             } else {
                 if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
                     int pastHours = 0;
-                    int totalHours = 0;
-                    if (ObjectUtils.isEmpty(policyMetaData.getWeekDayHours())) {
+                    int totalHours = 24;
+                    if (ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
                         pastHours = currentHour + 1;
-                        totalHours = 24;
                     } else {
-                        List<Integer> hours = policyMetaData.getWeekDayHours().get(weekDay);
+                        List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
+                        if (ObjectUtils.isEmpty(hours)) {
+                            return false;
+                        }
+
                         for (int hour : hours) {
                             if (hour <= currentHour) {
                                 pastHours += 1;

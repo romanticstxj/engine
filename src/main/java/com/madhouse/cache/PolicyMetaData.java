@@ -3,6 +3,7 @@ package com.madhouse.cache;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,19 +20,44 @@ public class PolicyMetaData {
     private String endDate;
 
     //targeting info
-    private Map<Integer, List<Integer>> weekDayHours;
+    private List<WeekdayHours> weekdayHoursList;
     private List<String> location;
     private List<Integer> os;
     private List<Integer> connectionType;
 
-    private Map<Long, DSPInfo> dspInfoMap;
-    private Map<Long, AdspaceInfo> adspaceInfoMap;
+    private List<DSPInfo> dspInfoList;
+    private List<AdspaceInfo> adspaceInfoList;
+
+    private Map<Integer, List<Integer>> weekdayHoursMap = new HashMap<>();
+    private Map<Long, DSPInfo> dspInfoMap = new HashMap<>();
+    private Map<Long, AdspaceInfo> adspaceInfoMap = new HashMap<>();
 
     private int controlType;
     private int maxCount;
     private int controlMethod;
 
     private int status;
+
+    public static class WeekdayHours {
+        private int weekDay;
+        private List<Integer> hours;
+
+        public int getWeekDay() {
+            return weekDay;
+        }
+
+        public void setWeekDay(int weekDay) {
+            this.weekDay = weekDay;
+        }
+
+        public List<Integer> getHours() {
+            return hours;
+        }
+
+        public void setHours(List<Integer> hours) {
+            this.hours = hours;
+        }
+    }
 
     public static class AdspaceInfo {
         private long id;
@@ -151,12 +177,12 @@ public class PolicyMetaData {
         this.endDate = endDate;
     }
 
-    public Map<Integer, List<Integer>> getWeekDayHours() {
-        return weekDayHours;
+    public Map<Integer, List<Integer>> getWeekdayHoursMap() {
+        return weekdayHoursMap;
     }
 
-    public void setWeekDayHours(Map<Integer, List<Integer>> weekDayHours) {
-        this.weekDayHours = weekDayHours;
+    public void setWeekdayHoursMap(Map<Integer, List<Integer>> weekdayHoursMap) {
+        this.weekdayHoursMap = weekdayHoursMap;
     }
 
     public List<String> getLocation() {
@@ -229,5 +255,44 @@ public class PolicyMetaData {
 
     public void setControlMethod(int controlMethod) {
         this.controlMethod = controlMethod;
+    }
+
+    public List<WeekdayHours> getWeekdayHoursList() {
+        return weekdayHoursList;
+    }
+
+    public void setWeekdayHoursList(List<WeekdayHours> weekdayHoursList) {
+        this.weekdayHoursList = weekdayHoursList;
+
+        this.weekdayHoursMap.clear();
+        for (WeekdayHours weekdayHours : this.weekdayHoursList) {
+            this.weekdayHoursMap.put(weekdayHours.getWeekDay(), weekdayHours.getHours());
+        }
+    }
+
+    public List<DSPInfo> getDspInfoList() {
+        return dspInfoList;
+    }
+
+    public void setDspInfoList(List<DSPInfo> dspInfoList) {
+        this.dspInfoList = dspInfoList;
+
+        this.dspInfoMap.clear();
+        for (DSPInfo dspInfo : this.dspInfoList) {
+            this.dspInfoMap.put(dspInfo.getId(), dspInfo);
+        }
+    }
+
+    public List<AdspaceInfo> getAdspaceInfoList() {
+        return adspaceInfoList;
+    }
+
+    public void setAdspaceInfoList(List<AdspaceInfo> adspaceInfoList) {
+        this.adspaceInfoList = adspaceInfoList;
+
+        this.adspaceInfoMap.clear();
+        for (AdspaceInfo adspaceInfo : this.adspaceInfoList) {
+            this.adspaceInfoMap.put(adspaceInfo.getId(), adspaceInfo);
+        }
     }
 }
