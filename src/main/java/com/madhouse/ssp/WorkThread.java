@@ -63,7 +63,7 @@ public class WorkThread {
 
         try {
             String impId = req.getParameter("_impid");
-            String mId = req.getParameter("_mid");
+            String mediaId = req.getParameter("_mid");
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
@@ -71,7 +71,7 @@ public class WorkThread {
             String sign = req.getParameter("_sn");
 
             //args check
-            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mId) || StringUtils.isEmpty(plcmtId) ||
+            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mediaId) || StringUtils.isEmpty(plcmtId) ||
                     StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
@@ -80,7 +80,7 @@ public class WorkThread {
             ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
             StringBuilder sb = new StringBuilder()
                     .append(impId)
-                    .append(mId)
+                    .append(mediaId)
                     .append(plcmtId)
                     .append(location)
                     .append(ext)
@@ -103,7 +103,7 @@ public class WorkThread {
                 impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mediaId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
             if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -112,7 +112,7 @@ public class WorkThread {
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setImpid(impId);
-            impressionTrack.setMediaid(Long.parseLong(mId));
+            impressionTrack.setMediaid(Long.parseLong(mediaId));
             impressionTrack.setAdspaceid(Long.parseLong(plcmtId));
             impressionTrack.setPolicyid(Long.parseLong(policyId));
             impressionTrack.setLocation(location);
@@ -154,7 +154,7 @@ public class WorkThread {
 
         try {
             String impId = req.getParameter("_impid");
-            String mId = req.getParameter("_mid");
+            String mediaId = req.getParameter("_mid");
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
@@ -162,7 +162,7 @@ public class WorkThread {
             String sign = req.getParameter("_sn");
 
             //args check
-            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mId) || StringUtils.isEmpty(plcmtId) ||
+            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mediaId) || StringUtils.isEmpty(plcmtId) ||
                     StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
@@ -171,7 +171,7 @@ public class WorkThread {
             ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
             StringBuilder sb = new StringBuilder()
                     .append(impId)
-                    .append(mId)
+                    .append(mediaId)
                     .append(plcmtId)
                     .append(location)
                     .append(ext)
@@ -194,7 +194,7 @@ public class WorkThread {
                 clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            String ret = redisMaster.set(String.format(Constant.CommonKey.CLK_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(String.format(Constant.CommonKey.CLK_RECORD, impId, mediaId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
             if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -203,7 +203,7 @@ public class WorkThread {
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setImpid(impId);
-            clickTrack.setMediaid(Long.parseLong(mId));
+            clickTrack.setMediaid(Long.parseLong(mediaId));
             clickTrack.setAdspaceid(Long.parseLong(plcmtId));
             clickTrack.setPolicyid(Long.parseLong(policyId));
             clickTrack.setLocation(location);
