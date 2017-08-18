@@ -1,8 +1,8 @@
 #!/bin/bash
 source /etc/profile
 
-BASE_DIR=/services/apps/premiummad-engine
-SYSTEM_LOG=/services/logs/premiummad-engine/log.txt
+BASE_DIR=/services/apps/engine
+SYSTEM_LOG=/services/logs/engine/log.txt
 SERVER_NAME="com.madhouse.ServerMain"
 STARTUP_CLASS="com.madhouse.ServerMain"
 CHECK_PID=`ps -ef|grep $SERVER_NAME |grep -v grep | awk '{print $2}' `

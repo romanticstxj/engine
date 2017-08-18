@@ -26,7 +26,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         
         try {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
-            logger.info("BaoFengBidRequest Request params is : {}",JSON.toJSONString(mediaRequest));
+            logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             if(Constant.StatusCode.OK != status){
                 PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
@@ -143,7 +143,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     }
     private int validateRequiredParam(PremiumMADBidRequest mediaRequest) {
 
-        if (ObjectUtils.isEmpty(mediaRequest)) {
+        if (ObjectUtils.isNotEmpty(mediaRequest)) {
             // 必填参数
             String bid = mediaRequest.getBid();
             if (StringUtils.isEmpty(bid)) {
@@ -350,7 +350,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             return false;
         }
         logger.debug(sb.toString());
-        return true;
+        return false;
     }
     
     
