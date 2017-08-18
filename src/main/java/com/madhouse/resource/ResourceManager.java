@@ -10,6 +10,7 @@ import com.madhouse.dsp.reachMax.ReachMaxHandler;
 import com.madhouse.dsp.vamaker.VamakerHandler;
 import com.madhouse.ssp.Constant;
 import com.madhouse.util.IPLocation;
+import com.madhouse.util.IdWoker;
 import com.madhouse.util.StringUtil;
 
 import com.madhouse.util.httpclient.HttpClient;
@@ -34,6 +35,7 @@ public class ResourceManager {
     private KafkaProducer kafkaProducer;
     private JedisPool jedisPoolMaster;
     private JedisPool jedisPoolSlave;
+    private IdWoker idWoker;
 
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
@@ -75,8 +77,6 @@ public class ResourceManager {
             }
         }
 
-        this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 8, null);
-
         for (Bid bid : configuration.getWebapp().getBids()) {
 			if (!StringUtils.isEmpty(bid.getClassName())) {
 				try {
@@ -87,6 +87,8 @@ public class ResourceManager {
 			}
         }
 
+        this.idWoker = new IdWoker(this.getConfiguration().getWebapp().getWokerId());
+        this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 8, null);
         return this.kafkaProducer.start(LoggerUtil.getInstance());
     }
 
@@ -128,5 +130,9 @@ public class ResourceManager {
 
     public String getLocation(String ip) {
         return this.ipTables.getLocation(ip);
+    }
+    
+    public String nextId() {
+        return Long.toString(this.idWoker.nextId());
     }
 }

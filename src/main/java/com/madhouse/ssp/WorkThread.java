@@ -63,37 +63,47 @@ public class WorkThread {
 
         try {
             String impId = req.getParameter("_impid");
-            String mId = req.getParameter("_mid");
+            String mediaId = req.getParameter("_mid");
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
+            String bidTime = req.getParameter("_bt");
             String sign = req.getParameter("_sn");
 
             //args check
-            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mId) || StringUtils.isEmpty(plcmtId) ||
+            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mediaId) || StringUtils.isEmpty(plcmtId) ||
                     StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
+            ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
+            StringBuilder sb = new StringBuilder()
+                    .append(impId)
+                    .append(mediaId)
+                    .append(plcmtId)
+                    .append(location)
+                    .append(ext)
+                    .append(bidTime);
+
             CRC32 crc32 = new CRC32();
-            crc32.update(ext.getBytes("utf-8"));
-            if (Long.parseLong(sign) != crc32.getValue()) {
+            crc32.update(sb.toString().getBytes("utf-8"));
+            String[] exts = ext.split(",");
+            if (Long.parseLong(sign) != crc32.getValue() || exts == null || exts.length < 6) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
-            String[] exts = ext.split(",");
             String policyId = exts[0];
             String dspId = exts[1];
 
             ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
-            if (!redisMaster.exists(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId))) {
-                impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
+            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
+            if ((System.currentTimeMillis() - Long.parseLong(bidTime)) / 1000 > expiredTime) {
+                impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mediaId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
             if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -102,7 +112,7 @@ public class WorkThread {
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setImpid(impId);
-            impressionTrack.setMediaid(Long.parseLong(mId));
+            impressionTrack.setMediaid(Long.parseLong(mediaId));
             impressionTrack.setAdspaceid(Long.parseLong(plcmtId));
             impressionTrack.setPolicyid(Long.parseLong(policyId));
             impressionTrack.setLocation(location);
@@ -144,37 +154,47 @@ public class WorkThread {
 
         try {
             String impId = req.getParameter("_impid");
-            String mId = req.getParameter("_mid");
+            String mediaId = req.getParameter("_mid");
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
+            String bidTime = req.getParameter("_bt");
             String sign = req.getParameter("_sn");
 
             //args check
-            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mId) || StringUtils.isEmpty(plcmtId) ||
+            if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mediaId) || StringUtils.isEmpty(plcmtId) ||
                     StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
+            ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
+            StringBuilder sb = new StringBuilder()
+                    .append(impId)
+                    .append(mediaId)
+                    .append(plcmtId)
+                    .append(location)
+                    .append(ext)
+                    .append(bidTime);
+
             CRC32 crc32 = new CRC32();
-            crc32.update(ext.getBytes("utf-8"));
-            if (Long.parseLong(sign) != crc32.getValue()) {
+            crc32.update(sb.toString().getBytes("utf-8"));
+            String[] exts = ext.split(",");
+            if (Long.parseLong(sign) != crc32.getValue() || exts == null || exts.length < 6) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
-            String[] exts = ext.split(",");
             String policyId = exts[0];
             String dspId = exts[1];
 
             ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
-            if (!redisMaster.exists(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId))) {
-                clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
+            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
+            if ((System.currentTimeMillis() - Long.parseLong(bidTime)) / 1000 > expiredTime) {
+                clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(String.format(Constant.CommonKey.CLK_RECORD, impId, mediaId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
             if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -183,7 +203,7 @@ public class WorkThread {
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setImpid(impId);
-            clickTrack.setMediaid(Long.parseLong(mId));
+            clickTrack.setMediaid(Long.parseLong(mediaId));
             clickTrack.setAdspaceid(Long.parseLong(plcmtId));
             clickTrack.setPolicyid(Long.parseLong(policyId));
             clickTrack.setLocation(location);
@@ -206,8 +226,8 @@ public class WorkThread {
             LoggerUtil.getInstance().writeClickTrackLog(ResourceManager.getInstance().getKafkaProducer(), clickTrack);
 
             String url = req.getParameter("_url");
-            if (!StringUtils.isEmpty(url) && (url.startsWith("http://") || url.startsWith("https://"))) {
-                resp.setHeader("Location", url);
+            if (!StringUtils.isEmpty(url)) {
+                resp.setHeader("Location", URLDecoder.decode(url, "utf-8"));
                 clickTrack.setStatus(Constant.StatusCode.REDIRECT);
             } else {
                 resp.getOutputStream().write(this.image);
@@ -316,7 +336,7 @@ public class WorkThread {
             trackingParam.setMediaId(plcmtMetaData.getMediaId());
             trackingParam.setAdspaceId(plcmtMetaData.getId());
             trackingParam.setLocation(mediaBid.getLocation());
-            trackingParam.setTime(System.currentTimeMillis());
+            trackingParam.setBidTime(System.currentTimeMillis());
 
             AuctionPriceInfo mediaIncome = new AuctionPriceInfo();
             mediaIncome.setBidPrice(plcmtMetaData.getBidFloor());
@@ -364,7 +384,7 @@ public class WorkThread {
                                 String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
                                 redisMaster.set(qpsControl, "0", "NX", "EX", 3);
                                 long totalCount = redisMaster.incrBy(qpsControl, 1);
-                                if (totalCount >= dspMetaData.getMaxQPS()) {
+                                if (totalCount > dspMetaData.getMaxQPS()) {
                                     logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
                                     continue;
                                 }
@@ -435,9 +455,11 @@ public class WorkThread {
                                 trackingParam.setDspCost(winner.getAuctionPriceInfo());
                                 winner.getDspBidBuilder().setWinner(1);
 
+/*
                                 int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
+*/
 
                                 if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                     String url = winner.getDspBaseHandler().getWinNoticeUrl(winner);
