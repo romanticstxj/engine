@@ -326,6 +326,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                             for (String url : bid.getAdmList()) {
                                 dspResponse.getAdm().add(url);
                             }
+
+                            dspResponse.setCover(bid.getCover());
                         } else {
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
                                 if (asset.hasTitle()) {

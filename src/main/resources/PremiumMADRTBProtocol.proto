@@ -237,15 +237,16 @@ message BidResponse
             optional string adid = 4;
             optional string cid = 5;
             optional string crid = 6;
-            optional int32 duration = 7;
+            optional string cover = 7;
             repeated string adm = 8;
-            optional NativeResponse adm_native = 9;
-            optional string admid = 10;
-            optional string dealid = 11;
-            optional string nurl = 12;
-            optional string lpgurl = 13;
-            optional int32 acttype = 14;
-            optional Monitor monitor = 15;
+            optional int32 duration = 9;
+            optional NativeResponse adm_native = 10;
+            optional string admid = 11;
+            optional string dealid = 12;
+            optional string nurl = 13;
+            optional string lpgurl = 14;
+            optional int32 acttype = 15;
+            optional Monitor monitor = 16;
             
             message NativeResponse
             {
