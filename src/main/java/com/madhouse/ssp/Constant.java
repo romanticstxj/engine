@@ -217,7 +217,8 @@ public final class Constant {
     public static final class InvalidType {
         public static final int NO_REQUEST = -1;
         public static final int NORMAL = 0;
-        public static final int DUPLICATE = 1;
+        public static final int EXPIRED = 1;
+        public static final int DUPLICATE = 2;
     }
 
     public static final class AuctionType {

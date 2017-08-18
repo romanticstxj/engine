@@ -76,23 +76,28 @@ public class WorkThread {
                 return;
             }
 
+            ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
+            String[] exts = ext.split(",");
+
             CRC32 crc32 = new CRC32();
             crc32.update(ext.getBytes("utf-8"));
-            if (Long.parseLong(sign) != crc32.getValue()) {
+
+            if (Long.parseLong(sign) != crc32.getValue() || exts.length < 7) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
-            String[] exts = ext.split(",");
             String policyId = exts[0];
             String dspId = exts[1];
 
             ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
-            if (!redisMaster.exists(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId))) {
-                impressionTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
+
+            long bidTime = Long.parseLong(exts[exts.length - 1]);
+            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
+            if ((System.currentTimeMillis() - bidTime) / 1000 > expiredTime) {
+                impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
             String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
             if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
@@ -157,24 +162,29 @@ public class WorkThread {
                 return;
             }
 
+            ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
+            String[] exts = ext.split(",");
+
             CRC32 crc32 = new CRC32();
             crc32.update(ext.getBytes("utf-8"));
-            if (Long.parseLong(sign) != crc32.getValue()) {
+
+            if (Long.parseLong(sign) != crc32.getValue() || exts.length < 7) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
 
-            String[] exts = ext.split(",");
             String policyId = exts[0];
             String dspId = exts[1];
 
             ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
-            if (!redisMaster.exists(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId))) {
-                clickTrack.setInvalid(Constant.InvalidType.NO_REQUEST);
+
+            long bidTime = Long.parseLong(exts[exts.length - 1]);
+            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
+            if ((System.currentTimeMillis() - bidTime) / 1000 > expiredTime) {
+                clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
+            String ret = redisMaster.set(String.format(Constant.CommonKey.CLK_RECORD, impId, mId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
             if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
                 clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
@@ -316,7 +326,7 @@ public class WorkThread {
             trackingParam.setMediaId(plcmtMetaData.getMediaId());
             trackingParam.setAdspaceId(plcmtMetaData.getId());
             trackingParam.setLocation(mediaBid.getLocation());
-            trackingParam.setTime(System.currentTimeMillis());
+            trackingParam.setBidTime(System.currentTimeMillis());
 
             AuctionPriceInfo mediaIncome = new AuctionPriceInfo();
             mediaIncome.setBidPrice(plcmtMetaData.getBidFloor());
@@ -435,9 +445,11 @@ public class WorkThread {
                                 trackingParam.setDspCost(winner.getAuctionPriceInfo());
                                 winner.getDspBidBuilder().setWinner(1);
 
+/*
                                 int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
                                 String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
                                 redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
+*/
 
                                 if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                     String url = winner.getDspBaseHandler().getWinNoticeUrl(winner);

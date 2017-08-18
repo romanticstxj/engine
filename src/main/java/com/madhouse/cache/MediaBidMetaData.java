@@ -4,6 +4,7 @@ import com.madhouse.configuration.WebApp;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
+import com.madhouse.util.StringUtil;
 
 import java.util.zip.CRC32;
 
@@ -76,7 +77,7 @@ public class MediaBidMetaData {
         private String location;
         private AuctionPriceInfo mediaIncome;
         private AuctionPriceInfo dspCost;
-        private long time;
+        private long bidTime;
 
         public String getImpId() {
             return impId;
@@ -126,12 +127,12 @@ public class MediaBidMetaData {
             this.location = location;
         }
 
-        public long getTime() {
-            return time;
+        public long getBidTime() {
+            return bidTime;
         }
 
-        public void setTime(long time) {
-            this.time = time;
+        public void setBidTime(long bidTime) {
+            this.bidTime = bidTime;
         }
 
         public AuctionPriceInfo getMediaIncome() {
@@ -160,30 +161,28 @@ public class MediaBidMetaData {
                     getMediaIncome().getBidPrice(),
                     getDspCost().getBidType(),
                     getDspCost().getBidPrice(),
-                    getTime());
-
-            long sign = 0;
+                    getBidTime());
 
             try {
                 CRC32 crc32 = new CRC32();
                 crc32.update(ext.getBytes("utf-8"));
-                sign = crc32.getValue();
+                long sign = crc32.getValue();
+
+                sb.append("_impid=")
+                        .append(getImpId())
+                        .append("&_mid=")
+                        .append(getMediaId())
+                        .append("&_pid=")
+                        .append(getAdspaceId())
+                        .append("&_loc=")
+                        .append(getLocation())
+                        .append("&_ext=")
+                        .append(StringUtil.urlSafeBase64Encode(ext.getBytes("utf-8")))
+                        .append("&_sn=")
+                        .append(sign);
             } catch (Exception ex) {
                 System.err.println(ex.toString());
             }
-
-            sb.append("_impid=")
-                    .append(getImpId())
-                    .append("&_mid=")
-                    .append(getMediaId())
-                    .append("&_pid=")
-                    .append(getAdspaceId())
-                    .append("&_loc=")
-                    .append(getLocation())
-                    .append("&_ext=")
-                    .append(ext)
-                    .append("&_sn=")
-                    .append(sign);
 
             return sb.toString();
         }
