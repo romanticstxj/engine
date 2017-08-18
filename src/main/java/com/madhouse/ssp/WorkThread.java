@@ -67,6 +67,7 @@ public class WorkThread {
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
+            String bidTime = req.getParameter("_bt");
             String sign = req.getParameter("_sn");
 
             //args check
@@ -77,12 +78,18 @@ public class WorkThread {
             }
 
             ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
-            String[] exts = ext.split(",");
+            StringBuilder sb = new StringBuilder()
+                    .append(impId)
+                    .append(mId)
+                    .append(plcmtId)
+                    .append(location)
+                    .append(ext)
+                    .append(bidTime);
 
             CRC32 crc32 = new CRC32();
-            crc32.update(ext.getBytes("utf-8"));
-
-            if (Long.parseLong(sign) != crc32.getValue() || exts.length < 7) {
+            crc32.update(sb.toString().getBytes("utf-8"));
+            String[] exts = ext.split(",");
+            if (Long.parseLong(sign) != crc32.getValue() || exts == null || exts.length < 6) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -91,10 +98,8 @@ public class WorkThread {
             String dspId = exts[1];
 
             ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
-
-            long bidTime = Long.parseLong(exts[exts.length - 1]);
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - bidTime) / 1000 > expiredTime) {
+            if ((System.currentTimeMillis() - Long.parseLong(bidTime)) / 1000 > expiredTime) {
                 impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -153,6 +158,7 @@ public class WorkThread {
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
+            String bidTime = req.getParameter("_bt");
             String sign = req.getParameter("_sn");
 
             //args check
@@ -163,12 +169,18 @@ public class WorkThread {
             }
 
             ext = new String(StringUtil.urlSafeBase64Decode(ext), "utf-8");
-            String[] exts = ext.split(",");
+            StringBuilder sb = new StringBuilder()
+                    .append(impId)
+                    .append(mId)
+                    .append(plcmtId)
+                    .append(location)
+                    .append(ext)
+                    .append(bidTime);
 
             CRC32 crc32 = new CRC32();
-            crc32.update(ext.getBytes("utf-8"));
-
-            if (Long.parseLong(sign) != crc32.getValue() || exts.length < 7) {
+            crc32.update(sb.toString().getBytes("utf-8"));
+            String[] exts = ext.split(",");
+            if (Long.parseLong(sign) != crc32.getValue() || exts == null || exts.length < 6) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -177,10 +189,8 @@ public class WorkThread {
             String dspId = exts[1];
 
             ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
-
-            long bidTime = Long.parseLong(exts[exts.length - 1]);
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - bidTime) / 1000 > expiredTime) {
+            if ((System.currentTimeMillis() - Long.parseLong(bidTime)) / 1000 > expiredTime) {
                 clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 

@@ -5,6 +5,7 @@ import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.zip.CRC32;
 
@@ -78,6 +79,7 @@ public class MediaBidMetaData {
         private AuctionPriceInfo mediaIncome;
         private AuctionPriceInfo dspCost;
         private long bidTime;
+        private String trackingParams = null;
 
         public String getImpId() {
             return impId;
@@ -153,22 +155,32 @@ public class MediaBidMetaData {
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            String ext = String.format("%d,%d,%d,%d,%d,%d,%d",
-                    getPolicyId(),
-                    getDspId(),
-                    getMediaIncome().getBidType(),
-                    getMediaIncome().getBidPrice(),
-                    getDspCost().getBidType(),
-                    getDspCost().getBidPrice(),
-                    getBidTime());
+            if (!StringUtils.isEmpty(this.trackingParams)) {
+                return this.trackingParams;
+            }
 
             try {
+                String ext = String.format("%d,%d,%d,%d,%d,%d",
+                        getPolicyId(),
+                        getDspId(),
+                        getMediaIncome().getBidType(),
+                        getMediaIncome().getBidPrice(),
+                        getDspCost().getBidType(),
+                        getDspCost().getBidPrice());
+
+                StringBuilder sb = new StringBuilder()
+                        .append(getImpId())
+                        .append(getMediaId())
+                        .append(getAdspaceId())
+                        .append(getLocation())
+                        .append(ext)
+                        .append(getBidTime());
+
                 CRC32 crc32 = new CRC32();
-                crc32.update(ext.getBytes("utf-8"));
+                crc32.update(sb.toString().getBytes("utf-8"));
                 long sign = crc32.getValue();
 
-                sb.append("_impid=")
+                sb = new StringBuilder().append("_impid=")
                         .append(getImpId())
                         .append("&_mid=")
                         .append(getMediaId())
@@ -178,13 +190,17 @@ public class MediaBidMetaData {
                         .append(getLocation())
                         .append("&_ext=")
                         .append(StringUtil.urlSafeBase64Encode(ext.getBytes("utf-8")))
+                        .append("&_bt=")
+                        .append(getBidTime())
                         .append("&_sn=")
                         .append(sign);
+
+                this.trackingParams = sb.toString();
             } catch (Exception ex) {
                 System.err.println(ex.toString());
             }
 
-            return sb.toString();
+            return this.trackingParams;
         }
     }
 }
