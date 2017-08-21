@@ -11,6 +11,7 @@ public class DSPMetaData {
     private String token;
     private int apiType;
     private int status;
+    private int timeout;
 
     public long getId() {
         return id;
@@ -66,5 +67,13 @@ public class DSPMetaData {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

@@ -408,7 +408,8 @@ public class WorkThread {
                             HttpRequestBase httpRequestBase = dspBaseHandler.packageRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
                             if (httpRequestBase != null) {
                                 HttpClient httpClient = this.getHttpClient(dspMetaData.getId());
-                                httpClient.setHttpRequest(httpRequestBase, mediaMetaData.getTimeout());
+                                int timeout = dspMetaData.getTimeout() > 0 ? dspMetaData.getTimeout() : mediaMetaData.getTimeout();
+                                httpClient.setHttpRequest(httpRequestBase, timeout);
                                 this.multiHttpClient.addHttpClient(httpClient);
                                 dspBidMetaData.setHttpClient(httpClient);
                                 dspBidMetaData.setHttpRequestBase(httpRequestBase);
