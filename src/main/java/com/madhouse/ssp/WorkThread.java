@@ -248,6 +248,8 @@ public class WorkThread {
     }
 
     public void onBid(HttpServletRequest req, HttpServletResponse resp) {
+
+        long t1 = System.currentTimeMillis();
         Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
 
         try {
@@ -416,15 +418,17 @@ public class WorkThread {
                     }
 
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(new Date());
-                        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTime(new Date());
+                            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
 
-                        long totalCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                        long dailyCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                            long totalCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                            long dailyCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
-                        if (!CacheManager.getInstance().policyQuantityControl(policyMetaData, totalCount, dailyCount)) {
-                            CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            if (!CacheManager.getInstance().policyQuantityControl(policyMetaData, totalCount, dailyCount)) {
+                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            }
                         }
 
                         List<DSPBidMetaData> bidderList = new LinkedList<DSPBidMetaData>();
@@ -497,6 +501,8 @@ public class WorkThread {
             if (redisMaster != null) {
                 redisMaster.close();
             }
+
+            logger.debug("media bid cost time: {}ms", System.currentTimeMillis() - t1);
         }
     }
 

@@ -395,15 +395,15 @@ public class CacheManager implements Runnable {
                 continue;
             }
 
-            this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), "0", "NX");
-            this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), "0", "NX", "EX", 86400);
-
-            if (!StringUtils.isEmpty(policyMetaData.getEndDate())) {
-                int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(currentDate)) + 1;
-                this.redisMaster.expire(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), totalDays * 86400);
-            }
-
             if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
+                this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), "0", "NX");
+                this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), "0", "NX", "EX", 86400);
+
+                if (!StringUtils.isEmpty(policyMetaData.getEndDate())) {
+                    int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(currentDate)) + 1;
+                    this.redisMaster.expire(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), totalDays * 86400);
+                }
+
                 String totalCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                 String dailyCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
