@@ -20,25 +20,29 @@
 					]
 				}
 			},
-			"name": "impurl"
+			"name": "impurl",
+			"default": null
 		}, {
 			"type": {
 				"type": "array",
 				"items": "string"
 			},
-			"name": "clkurl"
+			"name": "clkurl",
+			"default": null
 		}, {
 			"type": {
 				"type": "array",
 				"items": "string"
 			},
-			"name": "securl"
+			"name": "securl",
+			"default": null
 		}, {
          	"type": {
          		"type": "array",
          		"items": "string"
          	},
-         	"name": "exts"
+         	"name": "exts",
+         	"default": null
         }
 	]
 }
