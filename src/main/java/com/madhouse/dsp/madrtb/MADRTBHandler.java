@@ -22,8 +22,8 @@ import org.apache.http.util.EntityUtils;
 public class MADRTBHandler extends DSPBaseHandler {
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
-        DSPRequest dspRequest = dspBidMetaData.getDspBidBuilder().getRequest();
-        MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+        DSPRequest.Builder dspRequest = dspBidMetaData.getDspBidBuilder().getRequestBuilder();
+        MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
         HttpPost httpPost = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
         httpPost.setHeader("x-madrtb-version", "1.2");
@@ -72,22 +72,22 @@ public class MADRTBHandler extends DSPBaseHandler {
 
         {
             PremiumMADRTBProtocol.BidRequest.Device.Builder device = PremiumMADRTBProtocol.BidRequest.Device.newBuilder();
-            device.setIp(mediaRequest.getIp());
-            device.setUa(mediaRequest.getUa());
-            device.setDid(mediaRequest.getDid());
-            device.setDidmd5(mediaRequest.getDidmd5());
-            device.setDpid(mediaRequest.getDpid());
-            device.setDpidmd5(mediaRequest.getDpidmd5());
-            device.setIfa(mediaRequest.getIfa());
-            device.setMac1(mediaRequest.getMac());
-            device.setMac1Md5(mediaRequest.getMacmd5());
+            device.setIp(StringUtil.toString(mediaRequest.getIp()));
+            device.setUa(StringUtil.toString(mediaRequest.getUa()));
+            device.setDid(StringUtil.toString(mediaRequest.getDid()));
+            device.setDidmd5(StringUtil.toString(mediaRequest.getDidmd5()));
+            device.setDpid(StringUtil.toString(mediaRequest.getDpid()));
+            device.setDpidmd5(StringUtil.toString(mediaRequest.getDpidmd5()));
+            device.setIfa(StringUtil.toString(mediaRequest.getIfa()));
+            device.setMac1(StringUtil.toString(mediaRequest.getMac()));
+            device.setMac1Md5(StringUtil.toString(mediaRequest.getMacmd5()));
             device.setDevicetype(mediaRequest.getDevicetype());
             device.setConnectiontype(mediaRequest.getConnectiontype());
             device.setCarrier(mediaRequest.getCarrier());
-            device.setMake(mediaRequest.getMake());
-            device.setModel(mediaRequest.getModel());
+            device.setMake(StringUtil.toString(mediaRequest.getMake()));
+            device.setModel(StringUtil.toString(mediaRequest.getModel()));
             device.setOs(mediaRequest.getOs());
-            device.setOsv(mediaRequest.getOsv());
+            device.setOsv(StringUtil.toString(mediaRequest.getOsv()));
             PremiumMADRTBProtocol.BidRequest.Device.Geo.Builder geo = PremiumMADRTBProtocol.BidRequest.Device.Geo.newBuilder();
             geo.setLon(mediaRequest.getLon());
             geo.setLat(mediaRequest.getLat());
@@ -118,7 +118,7 @@ public class MADRTBHandler extends DSPBaseHandler {
                 PremiumMADRTBProtocol.BidRequest.Impression.PMP.Builder pmp = PremiumMADRTBProtocol.BidRequest.Impression.PMP.newBuilder();
                 pmp.setPrivateAuction(Constant.AuctionType.PRIVATE_MARKETING);
                 PremiumMADRTBProtocol.BidRequest.Impression.PMP.Deal.Builder deal = PremiumMADRTBProtocol.BidRequest.Impression.PMP.Deal.newBuilder();
-                deal.setId(policyMetaData.getDealId());
+                deal.setId(StringUtil.toString(policyMetaData.getDealId()));
                 deal.setAt(Constant.BidAt.FIXED_PRICE);
                 deal.setBidfloor(0);
                 pmp.addDeals(deal);
