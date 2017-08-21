@@ -139,19 +139,21 @@ public class MADMaxHandler extends DSPBaseHandler {
                 case HttpServletResponse.SC_METHOD_NOT_ALLOWED :    //405
                 case HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED : //407
                 case HttpServletResponse.SC_REQUEST_TIMEOUT : //408
-                    if (madResponse == null && madResponse.getReturncode() == null &&
-                            madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_METHOD_NOT_ALLOWED ) &&
-                            madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED)) {
-                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
-                    } else if (madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_REQUEST_TIMEOUT)){
-                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
-                    } else if (madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_INTERNAL_SERVER_ERROR )){
-                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-                    }  else if (madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_OK)){
-                        DSPResponse.Builder response= convertMADMaxResponse(madResponse,dspBidMetaData);
-                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
-                        dspBidMetaData.getDspBidBuilder().setResponse(response.build());
-                        return true;
+                    if (madResponse != null && madResponse.getReturncode() != null) {
+                        int returnCode = Integer.parseInt(madResponse.getReturncode());
+                        if (returnCode == HttpServletResponse.SC_METHOD_NOT_ALLOWED ||
+                                returnCode == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED) {
+                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
+                        } else if (returnCode == HttpServletResponse.SC_REQUEST_TIMEOUT){
+                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
+                        } else if (returnCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR ){
+                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
+                        }  else if (returnCode == HttpServletResponse.SC_OK){
+                            DSPResponse.Builder response= convertMADMaxResponse(madResponse,dspBidMetaData);
+                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
+                            dspBidMetaData.getDspBidBuilder().setResponseBuilder(response);
+                            return true;
+                        }
                     }
                     break;
                 case HttpServletResponse.SC_INTERNAL_SERVER_ERROR : //500
@@ -176,7 +178,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setCover(madResponse.getCover());
         dspResponse.setTitle(madResponse.getDisplaytitle());
         dspResponse.setDesc(madResponse.getDisplaytext());
-        dspResponse.setDuration(Integer.parseInt(madResponse.getDuration().toString()));
+        dspResponse.setDuration(StringUtils.isEmpty(madResponse.getDuration()) ? 0 : Integer.parseInt(madResponse.getDuration().toString()));
         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
         dspResponse.setAdm(madResponse.getAdm());
         dspResponse.setLpgurl(madResponse.getClickurl());

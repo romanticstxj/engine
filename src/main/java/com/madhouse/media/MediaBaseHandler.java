@@ -29,8 +29,8 @@ public abstract class MediaBaseHandler {
         MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
 
         mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
-        if (dspBid != null && dspBid.getStatus() == Constant.StatusCode.OK && dspBid.getResponse() != null) {
-            DSPResponse dspResponse = dspBid.getResponse();
+        if (dspBid != null && dspBid.getStatus() == Constant.StatusCode.OK && dspBid.getRequestBuilder() != null) {
+            DSPResponse.Builder dspResponse = dspBid.getResponseBuilder();
             MediaResponse.Builder mediaResponse = MediaResponse.newBuilder();
             mediaResponse.setDspid(dspBid.getDspid());
             mediaResponse.setAdmid(dspResponse.getAdmid());
@@ -44,7 +44,7 @@ public abstract class MediaBaseHandler {
             mediaResponse.setDuration(dspResponse.getDuration());
             mediaResponse.setLpgurl(dspResponse.getLpgurl());
             mediaResponse.setActtype(dspResponse.getActtype());
-            mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitor()));
+            mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitorBuilder()));
 
             Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
             monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl()));
