@@ -265,7 +265,7 @@ public class CacheManager implements Runnable {
                 String text = this.redisSlave.get(String.format(Constant.CommonKey.PLACEMENT_META_DATA, plcmtId));
                 if (!StringUtils.isEmpty(text)) {
                     PlcmtMetaData metaData = JSON.parseObject(text, PlcmtMetaData.class);
-                    var.put(String.valueOf(metaData.getId()), metaData);
+                    var.put(String.valueOf(metaData.getAdspaceKey()), metaData);
                 }
             }
         }
