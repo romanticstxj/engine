@@ -207,7 +207,7 @@ public class IflytekHandler extends DSPBaseHandler {
                 logger.warn("iflytek return the ad is 'no fill':{}", iflytekResponse.getRc());
                 return false;
             }
-            dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequest().getId()));
+            dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
             dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
             String[] imprurl = null;
             String[] thclkurl = null;

@@ -26,6 +26,7 @@ import com.madhouse.media.momo.MomoResponse.Bid;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
@@ -453,7 +454,7 @@ public class MomoHandler extends MediaBaseHandler {
         }
         bidList.add(bid);
         momoBidResponse.setBid(bidList);
-        momoBidResponse.setId(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid());
+        momoBidResponse.setId(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
         
         return momoBidResponse;
     }
@@ -464,7 +465,7 @@ public class MomoHandler extends MediaBaseHandler {
         
         
         MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
-        MediaRequest mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequest();
+        Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         
         MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
         nativeCreativeBuilder.setTitle(mediaResponse.getTitle());
@@ -494,7 +495,7 @@ public class MomoHandler extends MediaBaseHandler {
         MomoExchange.BidResponse.SeatBid.Bid.Builder bidBuilder = MomoExchange.BidResponse.SeatBid.Bid.newBuilder();
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
         bidBuilder.setImpid(bidRequest.getImpList().get(0).getId());
-        bidBuilder.setPrice(mediaBidMetaData.getMediaBidBuilder().getRequest().getBidfloor());
+        bidBuilder.setPrice(mediaRequest.getBidfloor());
         bidBuilder.setCid(mediaResponse.getCid());
         bidBuilder.setAdid(mediaResponse.getAdmid());   //广告位id
         bidBuilder.setCrid(mediaResponse.getCrid());  //物料id

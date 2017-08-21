@@ -284,9 +284,9 @@ public class MADRTBHandler extends DSPBaseHandler {
                     if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
                         PremiumMADRTBProtocol.BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
                         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
-                        dspResponse.setId(dspBid.getRequest().getId());
+                        dspResponse.setId(dspBid.getRequestBuilder().getId());
                         dspResponse.setBidid(bid.getId());
-                        dspResponse.setImpid(dspBid.getRequest().getImpid());
+                        dspResponse.setImpid(dspBid.getRequestBuilder().getImpid());
                         dspResponse.setAdid(bid.getAdid());
                         dspResponse.setCid(bid.getCid());
                         dspResponse.setCrid(bid.getCrid());

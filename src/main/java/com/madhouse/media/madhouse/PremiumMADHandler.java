@@ -357,11 +357,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(Constant.StatusCode.OK == status){
             MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
             premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequest().getAdspacekey());
-            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequest().getBid());
+            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
+            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
             premiumMADResponse.setCid(mediaResponse.getCid());
-            premiumMADResponse.setAdwidth(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getW()));
-            premiumMADResponse.setAdheight(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequest().getH()));
+            premiumMADResponse.setAdwidth(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW()));
+            premiumMADResponse.setAdheight(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH()));
             
             if(mediaResponse.getDuration() > 0){
                 premiumMADResponse.setDuration(String.valueOf(mediaResponse.getDuration()));

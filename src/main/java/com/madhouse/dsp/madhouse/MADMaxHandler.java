@@ -168,7 +168,7 @@ public class MADMaxHandler extends DSPBaseHandler {
     private Builder convertMADMaxResponse(PremiumMADResponse madResponse, DSPBidMetaData dspBidMetaData) {
         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
         dspResponse.setCid(madResponse.getCid());
-        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequest().getId()));
+        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
         dspResponse.setBidid(madResponse.getBid());
         dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid().toString());
         dspResponse.setAdmid(madResponse.getAdspaceid());
