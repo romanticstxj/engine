@@ -250,7 +250,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                     if (ad != null && ad.getMaterialMeta() != null) {
                         MaterialMeta materialMeta = ad.getMaterialMeta();
                         //dspResponse.setCid(value)
-                        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequest().getId()));
+                        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
                         dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
                         
                         dspResponse.setLpgurl(materialMeta.getClickUrl());
