@@ -14,6 +14,7 @@ import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
@@ -291,7 +292,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         
         if(status == Constant.StatusCode.OK){
             MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
-            MediaRequest mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequest();
+            Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
             moWeatherBidResponse.setCode(Constant.StatusCode.OK);
             data.setPrice(mediaRequest.getBidfloor().toString());
             data.setChargingtype("1");

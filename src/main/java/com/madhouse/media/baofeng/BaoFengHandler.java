@@ -92,13 +92,13 @@ public class BaoFengHandler extends MediaBaseHandler {
         BaoFengResponse baoFengResponse = new BaoFengResponse();
         
         // 广告高度
-        Integer adheight = mediaBidMetaData.getMediaBidBuilder().getRequest().getH();
+        Integer adheight = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH();
         
         // 广告位宽度
-        Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequest().getW();
+        Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW();
         
         // 广告流水唯一标识
-        String bid = mediaBidMetaData.getMediaBidBuilder().getRequest().getBid();
+        String bid = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid();
 
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         

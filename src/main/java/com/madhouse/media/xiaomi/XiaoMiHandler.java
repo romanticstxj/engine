@@ -24,8 +24,10 @@ import com.madhouse.media.xiaomi.request.XiaoMiBidRequest;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.Track;
+import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
@@ -40,7 +42,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         }
         try {
             req.setCharacterEncoding("UTF-8");
-            String bytes = getRequestPostBytes(req);
+            String bytes = HttpUtil.getRequestPostBytes(req);
             
             XiaoMiBidRequest bidRequest = JSON.parseObject(bytes, XiaoMiBidRequest.class);
             logger.info("XiaoMi Request params is : {}", JSON.toJSONString(bidRequest));
@@ -288,7 +290,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
     private XiaoMiResponse convertToXiaoMiResponse(MediaBidMetaData mediaBidMetaData) {
         XiaoMiResponse bidResponse = new XiaoMiResponse();
         MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
-        MediaRequest mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequest();
+        Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         
         XiaoMiBidRequest bidRequest =(XiaoMiBidRequest)mediaBidMetaData.getRequestObject();
         
@@ -378,20 +380,4 @@ public class XiaoMiHandler extends MediaBaseHandler {
         return bidResponse;
     }
 
-    public static String getRequestPostBytes(HttpServletRequest request) throws IOException {
-        int contentLength = request.getContentLength();
-        if (contentLength <= 0) {
-            return null;
-        }
-        byte buffer[] = new byte[contentLength];
-        for (int i = 0; i < contentLength; ) {
-
-            int readlen = request.getInputStream().read(buffer, i, contentLength - i);
-            if (readlen == -1) {
-                break;
-            }
-            i += readlen;
-        }
-        return new String(buffer);
-    }
 }

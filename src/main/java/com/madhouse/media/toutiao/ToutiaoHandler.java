@@ -19,6 +19,7 @@ import com.madhouse.media.toutiao.TOUTIAOAds.SeatBid;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
@@ -46,7 +47,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 }
             } 
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-            TOUTIAOAds.BidResponse.Builder builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
+            TOUTIAOAds.BidResponse.Builder builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
             return outputStreamWrite(builder, resp);
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
@@ -318,17 +319,17 @@ public class ToutiaoHandler extends MediaBaseHandler {
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 if(!StringUtils.isEmpty(mediaBidMetaData.getMediaBidBuilder().getResponse().getAdmid())){
                     resp.setStatus(Constant.StatusCode.OK);
-                    builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.OK);
+                    builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.OK);
                 } else {
                     resp.setStatus(Constant.StatusCode.NO_CONTENT);
-                    builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
+                    builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
                 }
             } else if(mediaBid.getStatus() == Constant.StatusCode.NO_CONTENT) {
                 resp.setStatus(Constant.StatusCode.NO_CONTENT);
-                builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
+                builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
             }else {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequest(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
+                builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
             }
             return outputStreamWrite(builder, resp);
         }
@@ -346,18 +347,18 @@ public class ToutiaoHandler extends MediaBaseHandler {
         logger.debug(builder.toString());
         return true;
     }
-    private TOUTIAOAds.BidResponse.Builder convertToutiaoResponse(TOUTIAOAds.BidRequest bidRequest,MediaRequest mediaRequest,MediaBidMetaData mediaBidMetaData,int code) {
+    private TOUTIAOAds.BidResponse.Builder convertToutiaoResponse(TOUTIAOAds.BidRequest bidRequest,Builder builder,MediaBidMetaData mediaBidMetaData,int code) {
         TOUTIAOAds.BidResponse.Builder bidResposeBuilder = TOUTIAOAds.BidResponse.newBuilder();
         bidResposeBuilder.setRequestId(bidRequest.getRequestId());
         if(Constant.StatusCode.OK == code){
-            bidResposeBuilder.addSeatbids(getSeatBid(bidRequest, mediaRequest, mediaBidMetaData));
+            bidResposeBuilder.addSeatbids(getSeatBid(bidRequest, builder, mediaBidMetaData));
         } else {
             bidResposeBuilder.setErrorCode(code);
         }
         logger.info("Toutiao Response params is : {}", bidResposeBuilder.toString());
         return bidResposeBuilder;
     }
-    private SeatBid getSeatBid(BidRequest bidRequest, MediaRequest mediaRequest,MediaBidMetaData mediaBidMetaData) {
+    private SeatBid getSeatBid(BidRequest bidRequest, Builder builder,MediaBidMetaData mediaBidMetaData) {
         TOUTIAOAds.SeatBid.Builder seatBidBuilder = TOUTIAOAds.SeatBid.newBuilder();
         TOUTIAOAds.MaterialMeta.Builder materialMetaBuilder = TOUTIAOAds.MaterialMeta.newBuilder();
         TOUTIAOAds.MaterialMeta.ExternalMeta.Builder externalMetaBuilder = TOUTIAOAds.MaterialMeta.ExternalMeta.newBuilder();
@@ -368,20 +369,20 @@ public class ToutiaoHandler extends MediaBaseHandler {
         bidBuilder.setId(String.valueOf(id)); 
         bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid()));
         bidBuilder.setAdslotId(bidRequest.getAdslots(0).getId());
-        bidBuilder.setPrice( mediaRequest.getBidfloor());
+        bidBuilder.setPrice( builder.getBidfloor());
         
         for (AdType adtype : bidRequest.getAdslots(0).getAdTypeList()) {
-            if(mediaRequest.getAdtype() == adtype.getNumber()){
+            if(builder.getAdtype() == adtype.getNumber()){
                 materialMetaBuilder.setAdType(adtype);
             }
         }
-        imageMetaBuilder.setHeight(mediaRequest.getH());
-        imageMetaBuilder.setWidth(mediaRequest.getW());
+        imageMetaBuilder.setHeight(builder.getH());
+        imageMetaBuilder.setWidth(builder.getW());
         imageMetaBuilder.setUrl(mediaResponse.getAdm().get(0));
         materialMetaBuilder.setImageBanner(imageMetaBuilder);
 
         //win的竞价成功通知
-        materialMetaBuilder.setNurl(ToutiaoStatusCode.Url.URL.replace("{adspaceid}", mediaRequest.getAdspacekey()));
+        materialMetaBuilder.setNurl(ToutiaoStatusCode.Url.URL.replace("{adspaceid}", builder.getAdspacekey()));
         //信息流落地页广告和详情页图文为必须返回
         materialMetaBuilder.setSource(StringUtils.isEmpty(mediaResponse.getDesc()) ? "" : mediaResponse.getDesc());
         materialMetaBuilder.setTitle(StringUtils.isEmpty(mediaResponse.getTitle()) ? "" : mediaResponse.getTitle());
