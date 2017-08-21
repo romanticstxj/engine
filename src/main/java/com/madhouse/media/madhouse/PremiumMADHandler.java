@@ -343,6 +343,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             .append("}");
         try {
             resp.getOutputStream().write(sb.toString().getBytes("utf-8"));
+            resp.setHeader("Content-Type", "application/json; charset=utf-8");
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
