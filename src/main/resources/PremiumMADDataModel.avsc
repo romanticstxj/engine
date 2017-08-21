@@ -220,7 +220,7 @@
 		}, {
 			"name": "response",
 			"default": null,
-			"type": {
+			"type": ["null", {
 				"type": "record",
 				"name": "MediaResponse",
 				"fields": [{
@@ -285,7 +285,7 @@
 						"type": "Monitor"
 					}
 				]
-			}
+			}]
 		}
 	]
 }
@@ -514,7 +514,7 @@
 		}, {
 			"name": "response",
 			"default": null,
-			"type": {
+			"type": ["null", {
 				"type": "record",
 				"name": "DSPResponse",
 				"fields": [{
@@ -595,7 +595,7 @@
 						"type": "Monitor"
 					}
 				]
-			}
+			}]
 		}
 	]
 }
