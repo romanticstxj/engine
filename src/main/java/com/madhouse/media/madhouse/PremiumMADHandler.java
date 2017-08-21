@@ -1,16 +1,20 @@
 package com.madhouse.media.madhouse;
 
 import java.util.LinkedList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
@@ -29,8 +33,8 @@ public class PremiumMADHandler extends MediaBaseHandler {
             logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             if(Constant.StatusCode.OK == status){
-                MediaRequest request = conversionToPremiumMADDataModel(mediaRequest);
-                mediaBidMetaData.getMediaBidBuilder().setRequest(request);
+                MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
+                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
                 mediaBidMetaData.setRequestObject(request);
                 return true;
             } else {
@@ -50,7 +54,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     * @param madBidRequest
     * @return
     */
-    private MediaRequest conversionToPremiumMADDataModel(PremiumMADBidRequest madBidRequest) {
+    private Builder conversionToPremiumMADDataModel(PremiumMADBidRequest madBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         //广告请求流水号
         mediaRequest.setBid(madBidRequest.getBid());
@@ -139,7 +143,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
         }
         logger.info("PremiumMAD convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
-        return mediaRequest.build();
+        return mediaRequest;
     }
     private int validateRequiredParam(PremiumMADBidRequest mediaRequest) {
 
@@ -271,12 +275,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
             String osv = mediaRequest.getOsv();
             if (StringUtils.isEmpty(osv)) {
                 logger.debug("{}:osv is missing", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
-            }
-            try {
-                Integer.parseInt(osv); //是否合法
-            } catch (Exception e) {
-                logger.debug("{}:osv is not correct _EX", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String ua = mediaRequest.getUa();

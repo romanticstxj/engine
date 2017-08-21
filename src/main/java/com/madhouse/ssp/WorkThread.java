@@ -503,7 +503,7 @@ public class WorkThread {
     private List<Long> policyTargeting(MediaBid.Builder mediaBidBuilder, int deliveryType) {
         List<Pair<Integer, List<String>>> targetInfo = new LinkedList<>();
 
-        MediaRequest mediaRequest = mediaBidBuilder.getRequest();
+        MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
         //placement
         {
