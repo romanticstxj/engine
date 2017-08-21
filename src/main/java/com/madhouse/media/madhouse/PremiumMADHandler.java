@@ -101,7 +101,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         mediaRequest.setDevicetype(Integer.parseInt(madBidRequest.getDevicetype()));
         String mac = madBidRequest.getWma();
         if(!StringUtils.isEmpty(mac)){
-            mediaRequest.setOsv(mac);
+            mediaRequest.setMac(mac);
         }
         //操作系统的版本
         if(!StringUtils.isEmpty(madBidRequest.getOsv())){
