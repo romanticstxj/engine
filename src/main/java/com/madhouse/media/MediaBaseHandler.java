@@ -55,6 +55,7 @@ public abstract class MediaBaseHandler {
         }
 
         LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
+        resp.setHeader("Connection", "keep-alive");
         return this.packageMediaResponse(mediaBidMetaData, resp);
     }
 
