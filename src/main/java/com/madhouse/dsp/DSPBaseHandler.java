@@ -31,13 +31,19 @@ public abstract class DSPBaseHandler {
     public final HttpRequestBase packageRequest(MediaBid.Builder mediaBid, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
 
         try {
+            String tagId = plcmtMetaData.getAdspaceKey();
+            DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
+            if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
+                tagId = dspMappingMetaData.getMappingKey();
+            }
+
             MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
             DSPRequest.Builder dspRequest = DSPRequest.newBuilder()
                     .setId(StringUtil.getUUID())
                     .setImpid(mediaBid.getImpid())
                     .setAdtype(plcmtMetaData.getAdType())
                     .setLayout(plcmtMetaData.getLayout())
-                    .setTagid(plcmtMetaData.getAdspaceKey())
+                    .setTagid(tagId)
                     .setDealid(policyMetaData.getDealId())
                     .setTest(mediaRequest.getTest())
                     .setBidfloor(policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())

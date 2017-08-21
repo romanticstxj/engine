@@ -74,7 +74,7 @@ public class MADMaxHandler extends DSPBaseHandler {
 
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
         String adspaceId = plcmtMetaData.getAdspaceKey();
-        if (dspBidMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
+        if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
 
@@ -86,7 +86,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&conn=").append(StringUtil.toString(mediaRequest.getConnectiontype().toString()))
                 .append("&carrier=").append(StringUtil.toString(mediaRequest.getCarrier().toString()))
                 .append("&device=").append(StringUtil.toString(device))
-                .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequest().getId()))
+                .append("&bid=").append(StringUtil.toString(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()))
                 .append("&appname=").append(appname)
                 .append("&apitype=4")
                 .append("&pcat=").append(mediaMetaData.getCategory())
@@ -96,12 +96,12 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&ip=").append(StringUtil.toString(mediaRequest.getIp()))
                 .append("&pid=").append(mediaRequest.getMediaid())
                 .append("&density=").append(StringUtil.toString(String.valueOf(mediaMetaData.getType())))
-                .append("&media=").append(StringUtil.toString(mediaRequest.getDpid()))
+                .append("&media=").append(mediaMetaData.getType())
                 .append("&lon=").append(StringUtil.toString(mediaRequest.getLon().toString()))
                 .append("&lat=").append(StringUtil.toString(mediaRequest.getLat().toString()))
                 .append("&cell=").append(StringUtil.toString(mediaRequest.getCell()))
                 .append("&mcell=").append(StringUtil.toString(mediaRequest.getCellmd5()))
-                .append("&dealid=").append(policyMetaData.getDealId());
+                .append("&dealid=").append(StringUtil.toString(policyMetaData.getDealId()));
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
@@ -133,13 +133,15 @@ public class MADMaxHandler extends DSPBaseHandler {
     @Override
     public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         try {
-            PremiumMADResponse madResponse = JSON.parseObject(JSON.parseObject(ObjectUtils.toEntityString(httpResponse.getEntity())).getString(dspBidMetaData.getDspBidBuilder().getRequest().getTagid().toString()), PremiumMADResponse.class);
+            PremiumMADResponse madResponse = JSON.parseObject(JSON.parseObject(ObjectUtils.toEntityString(httpResponse.getEntity())).getString(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getTagid()), PremiumMADResponse.class);
             switch (httpResponse.getStatusLine().getStatusCode()){
                 case HttpServletResponse.SC_OK ://200
                 case HttpServletResponse.SC_METHOD_NOT_ALLOWED :    //405
                 case HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED : //407
                 case HttpServletResponse.SC_REQUEST_TIMEOUT : //408
-                    if (madResponse == null && madResponse.getReturncode() == null && madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_METHOD_NOT_ALLOWED ) && madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED)) {
+                    if (madResponse == null && madResponse.getReturncode() == null &&
+                            madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_METHOD_NOT_ALLOWED ) &&
+                            madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED)) {
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
                     } else if (madResponse.getReturncode() == String.valueOf(HttpServletResponse.SC_REQUEST_TIMEOUT)){
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
