@@ -356,7 +356,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     private PremiumMADResponse convertToPremiumMADResponse(MediaBidMetaData mediaBidMetaData, int status) {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         if(Constant.StatusCode.OK == status){
-            MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
+            com.madhouse.ssp.avro.MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
             premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
@@ -386,14 +386,14 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setClickurl(mediaResponse.getLpgurl());
             // 点击监播
             premiumMADResponse.setImgtracking(new LinkedList<>());
-            for (Track track : mediaResponse.getMonitor().getImpurl()) {
+            for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
                 premiumMADResponse.getImgtracking().add(track.getUrl());
             }
             //点击监播地址
-            premiumMADResponse.setThclkurl(mediaResponse.getMonitor().getClkurl());
+            premiumMADResponse.setThclkurl(mediaResponse.getMonitorBuilder().getClkurl());
             
             //品牌安全监测
-            premiumMADResponse.setSecurl(mediaResponse.getMonitor().getSecurl());
+            premiumMADResponse.setSecurl(mediaResponse.getMonitorBuilder().getSecurl());
             //PDB、PD模式的deal id
             premiumMADResponse.setDealid(StringUtils.isEmpty(mediaResponse.getDealid())?null:mediaResponse.getDealid());
             

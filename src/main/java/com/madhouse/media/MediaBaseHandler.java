@@ -34,7 +34,7 @@ public abstract class MediaBaseHandler {
             MediaResponse.Builder mediaResponse = MediaResponse.newBuilder();
             mediaResponse.setDspid(dspBid.getDspid());
             mediaResponse.setAdmid(dspResponse.getAdmid());
-            mediaResponse.setLayout(dspBid.getRequest().getLayout());
+            mediaResponse.setLayout(dspBid.getRequestBuilder().getLayout());
             mediaResponse.setTitle(dspResponse.getTitle());
             mediaResponse.setDesc(dspResponse.getDesc());
             mediaResponse.setIcon(dspResponse.getIcon());
