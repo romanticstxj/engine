@@ -372,6 +372,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 premiumMADResponse.setIcon(mediaResponse.getIcon());
                 premiumMADResponse.setCover(mediaResponse.getCover());
             }
+            
             if (mediaResponse.getTitle() != null) {
                 premiumMADResponse.setDisplaytitle(mediaResponse.getTitle());
             }
@@ -398,7 +399,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             //品牌安全监测
             premiumMADResponse.setSecurl(mediaResponse.getMonitorBuilder().getSecurl());
             //PDB、PD模式的deal id
-            premiumMADResponse.setDealid(StringUtils.isEmpty(mediaResponse.getDealid())?null:mediaResponse.getDealid());
+            premiumMADResponse.setDealid(StringUtils.isEmpty(mediaRequest.getDealid()) ? null : mediaRequest.getDealid());
             
         } else {
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
