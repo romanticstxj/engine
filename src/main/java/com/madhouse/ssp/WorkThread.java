@@ -67,7 +67,7 @@ public class WorkThread {
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
-            String bidTime = req.getParameter("_bt");
+            String bidTime = req.getParameter("_ts");
             String sign = req.getParameter("_sn");
 
             //args check
@@ -82,7 +82,6 @@ public class WorkThread {
                     .append(impId)
                     .append(mediaId)
                     .append(plcmtId)
-                    .append(location)
                     .append(ext)
                     .append(bidTime);
 
@@ -158,7 +157,7 @@ public class WorkThread {
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
-            String bidTime = req.getParameter("_bt");
+            String bidTime = req.getParameter("_ts");
             String sign = req.getParameter("_sn");
 
             //args check
@@ -173,7 +172,6 @@ public class WorkThread {
                     .append(impId)
                     .append(mediaId)
                     .append(plcmtId)
-                    .append(location)
                     .append(ext)
                     .append(bidTime);
 
@@ -457,6 +455,7 @@ public class WorkThread {
                         if (!bidderList.isEmpty()) {
                             winner = this.selectWinner(plcmtMetaData, policyMetaData, bidderList);
                             if (winner != null) {
+                                trackingParam.setDspId(winner.getDspMetaData().getId());
                                 trackingParam.setDspCost(winner.getAuctionPriceInfo());
                                 winner.getDspBidBuilder().setWinner(1);
 

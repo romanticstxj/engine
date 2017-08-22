@@ -22,7 +22,7 @@ public class StringUtil {
     public static final Random random = new Random();
 
     public static final String getUUID() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     public static final String toString(String str) {
