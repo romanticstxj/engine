@@ -19,6 +19,7 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaResponse;
+import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.util.ObjectUtils;
 
 public class TencentHandler extends MediaBaseHandler {
@@ -262,31 +263,31 @@ public class TencentHandler extends MediaBaseHandler {
         GPBForDSP.Response.SeatBid.Builder seatBuilder =GPBForDSP.Response.SeatBid.newBuilder();
         
         GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
-        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         if(null != mediaResponse){
             responseBuiler.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
             bidResponseBuilder.setAdid(mediaResponse.getAdmid());
-            if (mediaResponse.getMonitor() != null && mediaResponse.getMonitor().getImpurl() != null && mediaResponse.getMonitor().getImpurl().size() > 0) {
-                if (mediaResponse.getMonitor().getImpurl().size() >= 2) {
-                    bidResponseBuilder.setExt2(mediaResponse.getMonitor().getImpurl().get(0).getUrl());//设置为dsp的监测
+            if (mediaResponse.getMonitorBuilder() != null && mediaResponse.getMonitorBuilder().getImpurl() != null && mediaResponse.getMonitorBuilder().getImpurl().size() > 0) {
+                if (mediaResponse.getMonitorBuilder().getImpurl().size() >= 2) {
+                    bidResponseBuilder.setExt2(mediaResponse.getMonitorBuilder().getImpurl().get(0).getUrl());//设置为dsp的监测
                 }
-                bidResponseBuilder.addDispExts(mediaResponse.getMonitor().getImpurl().get(mediaResponse.getMonitor().getImpurl().size() - 1).getUrl());//取最后一个（exchange自己的建波）
+                bidResponseBuilder.addDispExts(mediaResponse.getMonitorBuilder().getImpurl().get(mediaResponse.getMonitorBuilder().getImpurl().size() - 1).getUrl());//取最后一个（exchange自己的建波）
             }
             //如果有落地页就取值，如果没有，判断thclkurl的大小，如果size=2，第一条设置为ClickMonitor，第二条设置为ext2，；如果size=1，则只设置为ext2的值
-            if (mediaResponse.getMonitor().getClkurl() != null ) {
+            if (mediaResponse.getMonitorBuilder().getClkurl() != null ) {
                 if (mediaResponse.getLpgurl() != null && mediaResponse.getLpgurl() != "") {
                     bidResponseBuilder.setExt(mediaResponse.getLpgurl());//落地页地址
                 } else {
-                    if (mediaResponse.getMonitor().getClkurl().size() >=2){
-                        bidResponseBuilder.setExt(mediaResponse.getMonitor().getClkurl().get(0));
+                    if (mediaResponse.getMonitorBuilder().getClkurl().size() >=2){
+                        bidResponseBuilder.setExt(mediaResponse.getMonitorBuilder().getClkurl().get(0));
                     }
                 }
                 
-                if (mediaResponse.getMonitor().getClkurl().size() >= 0) {
-                    bidResponseBuilder.addClickExts(mediaResponse.getMonitor().getClkurl().get(mediaResponse.getMonitor().getClkurl().size() - 1));
+                if (mediaResponse.getMonitorBuilder().getClkurl().size() >= 0) {
+                    bidResponseBuilder.addClickExts(mediaResponse.getMonitorBuilder().getClkurl().get(mediaResponse.getMonitorBuilder().getClkurl().size() - 1));
                 }
             }
             seatBuilder.addBid(bidResponseBuilder);//与request中的impression对应，可以对多个impression回复参与竞价，也可以对其中一部分回复参与竞价

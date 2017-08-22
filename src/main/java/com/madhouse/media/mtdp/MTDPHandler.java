@@ -217,7 +217,7 @@ public class MTDPHandler extends MediaBaseHandler {
     }
 
     private DPAds.BidResponse convertToMTDPResponse(MediaBidMetaData mediaBidMetaData) {
-        MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         
         DPAds.BidRequest bidRequest = (DPAds.BidRequest) mediaBidMetaData.getRequestObject();
@@ -239,13 +239,13 @@ public class MTDPHandler extends MediaBaseHandler {
         bid.setCrid(mediaResponse.getCrid());
         bid.setSlotId(bidRequest.getImp(0).getSlotId());
         bid.addLandingmacro(mediaResponse.getLpgurl());
-        List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
+        List<Track> imgtracking = mediaResponse.getMonitorBuilder().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             for (Track track : imgtracking) {
                 bid.getImpmacroList().add(track.getUrl());
             }
         }
-        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitorBuilder().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
             for (String thclk : thclkurl) {
                 bid.getClickmacroList().add(thclk);

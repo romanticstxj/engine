@@ -388,10 +388,10 @@ public class ToutiaoHandler extends MediaBaseHandler {
         materialMetaBuilder.setTitle(StringUtils.isEmpty(mediaResponse.getTitle()) ? "" : mediaResponse.getTitle());
         externalMetaBuilder.setUrl(mediaResponse.getLpgurl());
         materialMetaBuilder.setExternal(externalMetaBuilder);        
-        for (String clk : mediaResponse.getMonitor().getClkurl()) {
+        for (String clk : mediaResponse.getMonitorBuilder().getClkurl()) {
             materialMetaBuilder.addClickUrl(clk);
         }
-        for (com.madhouse.ssp.avro.Track imp : mediaResponse.getMonitor().getImpurl()) {
+        for (com.madhouse.ssp.avro.Track imp : mediaResponse.getMonitorBuilder().getImpurl()) {
             materialMetaBuilder.addShowUrl(imp.getUrl());
         }
         bidBuilder.setCreative(materialMetaBuilder);

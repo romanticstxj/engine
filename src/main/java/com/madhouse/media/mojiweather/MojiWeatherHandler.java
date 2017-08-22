@@ -292,7 +292,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
         
         if(status == Constant.StatusCode.OK){
-            MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
+            MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
             moWeatherBidResponse.setCode(Constant.StatusCode.OK);
             data.setPrice(mediaRequest.getBidfloor().toString());
@@ -326,7 +326,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             data.setUrlSeparator(";");
             //点击监播
             StringBuffer sb_clk = new StringBuffer();
-            for (Track clk : mediaResponse.getMonitor().getImpurl()) {
+            for (Track clk : mediaResponse.getMonitorBuilder().getImpurl()) {
                 sb_clk.append(clk.getUrl()).append(data.getUrlSeparator());
             }
             if (sb_clk.length() > 1) {
@@ -336,7 +336,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
             //展示监播
             StringBuffer sb_imp = new StringBuffer();
-            for (String imp : mediaResponse.getMonitor().getClkurl()) {
+            for (String imp : mediaResponse.getMonitorBuilder().getClkurl()) {
                 sb_imp.append(imp).append(data.getUrlSeparator());
             }
             if (sb_imp.length() > 1) {

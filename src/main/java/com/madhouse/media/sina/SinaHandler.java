@@ -19,6 +19,7 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaResponse;
+import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
@@ -231,17 +232,17 @@ public class SinaHandler extends MediaBaseHandler {
         
         SinaBidRequest sinaRequest = (SinaBidRequest) mediaBidMetaData.getRequestObject();
 
-        MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
+        Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         SinaResponse.Seatbid seatbid = response.new Seatbid();
         SinaResponse.Seatbid.Bid bid = seatbid.new Bid();
         SinaResponse.Seatbid.Bid.Ext ext = bid.new Ext();
         
         ext.setLandingid(mediaResponse.getLpgurl());
-        for (Track track : mediaResponse.getMonitor().getImpurl()) {
+        for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
             ext.getPm().add(track.getUrl());
         } 
         
-        ext.setCm(mediaResponse.getMonitor().getClkurl());
+        ext.setCm(mediaResponse.getMonitorBuilder().getClkurl());
         
         bid.setExt(ext);
         bid.setAdm(mediaResponse.getAdm().get(0));
