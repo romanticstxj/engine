@@ -140,7 +140,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 case HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED : //407
                 case HttpServletResponse.SC_REQUEST_TIMEOUT : //408
                     if (madResponse != null && madResponse.getReturncode() != null) {
-                        int returnCode = Integer.parseInt(madResponse.getReturncode());
+                        int returnCode = madResponse.getReturncode();
                         if (returnCode == HttpServletResponse.SC_METHOD_NOT_ALLOWED ||
                                 returnCode == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED) {
                             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -178,7 +178,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setCover(madResponse.getCover());
         dspResponse.setTitle(madResponse.getDisplaytitle());
         dspResponse.setDesc(madResponse.getDisplaytext());
-        dspResponse.setDuration(StringUtils.isEmpty(madResponse.getDuration()) ? 0 : Integer.parseInt(madResponse.getDuration().toString()));
+        dspResponse.setDuration(madResponse.getDuration() != null ? madResponse.getDuration() : 0);
         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
         dspResponse.setAdm(madResponse.getAdm());
         dspResponse.setLpgurl(madResponse.getClickurl());

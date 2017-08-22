@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PremiumMADResponse {
     
-    private String returncode;
+    private Integer returncode;
     
     //广告位ID。
     private String adspaceid;
@@ -16,14 +16,14 @@ public class PremiumMADResponse {
     
     private String cid;
     
-    private String adwidth;
+    private Integer adwidth;
     
-    private String adheight;
+    private Integer adheight;
     
-    private String adtype;
+    private Integer adtype;
     
     //视频接口必返回 视频素材的时长，单位为秒。
-    private String duration;
+    private Integer duration;
     
     //信息流广告icon。
     private String icon;
@@ -82,38 +82,38 @@ public class PremiumMADResponse {
         this.cid = cid;
     }
 
-    public String getAdwidth() {
+    public Integer getReturncode() {
+        return returncode;
+    }
+
+    public void setReturncode(Integer returncode) {
+        this.returncode = returncode;
+    }
+
+    public Integer getAdwidth() {
         return adwidth;
     }
 
-    public void setAdwidth(String adwidth) {
+    public void setAdwidth(Integer adwidth) {
         this.adwidth = adwidth;
     }
 
-    public String getAdheight() {
+    public Integer getAdheight() {
         return adheight;
     }
 
-    public void setAdheight(String adheight) {
+    public void setAdheight(Integer adheight) {
         this.adheight = adheight;
     }
 
-    public String getAdtype() {
+    public Integer getAdtype() {
         return adtype;
     }
 
-    public void setAdtype(String adtype) {
+    public void setAdtype(Integer adtype) {
         this.adtype = adtype;
     }
 
-    public String getReturncode() {
-        return returncode;
-    }
-    
-    public void setReturncode(String returncode) {
-        this.returncode = returncode;
-    }
-    
     public String getAdspaceid() {
         return adspaceid;
     }
@@ -129,15 +129,15 @@ public class PremiumMADResponse {
     public void setSource(String source) {
         this.source = source;
     }
-    
-    public String getDuration() {
+
+    public Integer getDuration() {
         return duration;
     }
-    
-    public void setDuration(String duration) {
+
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
-    
+
     public String getIcon() {
         return icon;
     }

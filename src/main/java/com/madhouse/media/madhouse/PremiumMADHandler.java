@@ -40,7 +40,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             } else {
                 PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
                 premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
-                premiumMADResponse.setReturncode(String.valueOf(status));
+                premiumMADResponse.setReturncode(status);
                 return outputStreamWrite(premiumMADResponse,resp);
             }
         } catch (Exception e) {
@@ -356,16 +356,19 @@ public class PremiumMADHandler extends MediaBaseHandler {
     private PremiumMADResponse convertToPremiumMADResponse(MediaBidMetaData mediaBidMetaData, int status) {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         if(Constant.StatusCode.OK == status){
+            MediaRequest.Builder mediaRequest = (MediaRequest.Builder)mediaBidMetaData.getRequestObject();
+
             MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-            premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
+            premiumMADResponse.setReturncode(Constant.StatusCode.OK);
+            premiumMADResponse.setAdtype(mediaRequest.getAdtype());
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
             premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
             premiumMADResponse.setCid(mediaResponse.getCid());
-            premiumMADResponse.setAdwidth(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW()));
-            premiumMADResponse.setAdheight(String.valueOf(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH()));
+            premiumMADResponse.setAdwidth(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW());
+            premiumMADResponse.setAdheight(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH());
             
             if(mediaResponse.getDuration() > 0){
-                premiumMADResponse.setDuration(String.valueOf(mediaResponse.getDuration()));
+                premiumMADResponse.setDuration(mediaResponse.getDuration());
                 premiumMADResponse.setIcon(mediaResponse.getIcon());
                 premiumMADResponse.setCover(mediaResponse.getCover());
             }
@@ -399,7 +402,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             
         } else {
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
-            premiumMADResponse.setReturncode(String.valueOf(status));
+            premiumMADResponse.setReturncode(status);
         }
         logger.info("premiumMAD Response params is : {}", JSON.toJSONString(premiumMADResponse));
         return premiumMADResponse;
