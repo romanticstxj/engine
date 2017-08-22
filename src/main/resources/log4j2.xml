@@ -5,7 +5,7 @@
 	ALL : Log4j能够自动检测修改配置文件和重新配置本身, -->
 <Configuration status="TRACE">
 	<Properties>
-		<Property name="LOG_HOME">/services/logs/premiummad-engine</Property>
+		<Property name="LOG_HOME">/services/logs/engine</Property>
 	</Properties>
 	<Appenders>
 
