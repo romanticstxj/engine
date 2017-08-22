@@ -172,7 +172,6 @@ public class MediaBidMetaData {
                         .append(getImpId())
                         .append(getMediaId())
                         .append(getAdspaceId())
-                        .append(getLocation())
                         .append(ext)
                         .append(getBidTime());
 
@@ -190,7 +189,7 @@ public class MediaBidMetaData {
                         .append(getLocation())
                         .append("&_ext=")
                         .append(StringUtil.urlSafeBase64Encode(ext.getBytes("utf-8")))
-                        .append("&_bt=")
+                        .append("&_ts=")
                         .append(getBidTime())
                         .append("&_sn=")
                         .append(sign);

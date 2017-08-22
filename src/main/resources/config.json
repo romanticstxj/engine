@@ -1,6 +1,6 @@
 {
     "webapp": {
-        "domain": "http://ssp.madhouse.cn",
+        "domain": "http://localhost:8181",
         "port": 8181,
         "wokerId": 10,
         "gZipOn": false,

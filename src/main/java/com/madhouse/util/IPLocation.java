@@ -2,10 +2,7 @@ package com.madhouse.util;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -14,17 +11,16 @@ import java.util.ArrayList;
 public class IPLocation {
     private ArrayList<Pair<Long, String>> iptables = null;
 
-    public IPLocation(String filePath) {
-        this.iptables = this.loadIPBFile(filePath);
+    public IPLocation(InputStream inputStream) {
+        this.iptables = this.loadIPBFile(inputStream);
     }
 
-    private ArrayList loadIPBFile(String filePath) {
+    private ArrayList loadIPBFile(InputStream inputStream) {
         try {
             ArrayList<Pair<Long, String>> iptables = new ArrayList<Pair<Long, String>>();
-            File file = new File(filePath);
 
-            if (file.isFile() && file.exists()) {
-                InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "utf-8");
+            if (inputStream != null) {
+                InputStreamReader reader = new InputStreamReader(inputStream, "utf-8");
                 BufferedReader bufferedReader = new BufferedReader(reader);
 
                 String text = null;
