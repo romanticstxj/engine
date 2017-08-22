@@ -189,7 +189,7 @@ public class VamakerHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     VamakerRTB.VamResponse.Builder vamResponse = convertToVamakerResponse(mediaBidMetaData);
                     if(null != vamResponse){
-                        resp.setContentType("application/octet-stream");
+                        resp.setContentType("application/octet-stream;charset=UTF-8");
                         resp.getOutputStream().write(vamResponse.build().toByteArray());
                         return true;
                     }
@@ -211,7 +211,7 @@ public class VamakerHandler extends MediaBaseHandler {
         VamakerRTB.VamResponse.Builder bidResposeBuilder = VamakerRTB.VamResponse.newBuilder();
         VamakerRTB.VamResponse.Bid.Builder bidBuilder = VamakerRTB.VamResponse.Bid.newBuilder();
         VamakerRTB.VamRequest bidRequest=(VamRequest)mediaBidMetaData.getRequestObject();
-        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         
         
         bidResposeBuilder.setId(bidRequest.getId());
@@ -220,14 +220,14 @@ public class VamakerHandler extends MediaBaseHandler {
         
         
         VamakerRTB.VamResponse.Bid.Mobile.Builder mobileBuilder = VamakerRTB.VamResponse.Bid.Mobile.newBuilder();
-        List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
+        List<Track> imgtracking = mediaResponse.getMonitorBuilder().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             for (Track track : imgtracking) {
                 mobileBuilder.addShowUrls(track.getUrl());
             }
         }
         mobileBuilder.addClickUrls(UrlEncoded.encodeString(String.valueOf(mediaResponse.getLayout())));//第一个是landingpage，还要对整个urldecode，其余的都是建波
-        List<String> thclkurls = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurls = mediaResponse.getMonitorBuilder().getClkurl();
         if (thclkurls != null && thclkurls.size() != 0) {
             for (String thclkurl : thclkurls) {
                 mobileBuilder.addShowUrls(thclkurl);

@@ -356,7 +356,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     private PremiumMADResponse convertToPremiumMADResponse(MediaBidMetaData mediaBidMetaData, int status) {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         if(Constant.StatusCode.OK == status){
-            com.madhouse.ssp.avro.MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+            MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             premiumMADResponse.setReturncode(String.valueOf(Constant.StatusCode.OK));
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
             premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());

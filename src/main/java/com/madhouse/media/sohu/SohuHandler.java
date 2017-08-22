@@ -175,8 +175,8 @@ public class SohuHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     SohuRTB.Response.Builder  bidResponse = convertToSohuResponse(mediaBidMetaData);
                     if(null != bidResponse){
-                        resp.setContentType("application/octet-stream");
-                        resp.getOutputStream().write(JSON.toJSONString(bidResponse).getBytes());
+                        resp.setContentType("application/octet-stream;charset=UTF-8");
+                        resp.getOutputStream().write(bidResponse.build().toByteArray());
                         resp.setStatus(Constant.StatusCode.OK);
                         return true;
                     }
@@ -196,7 +196,7 @@ public class SohuHandler extends MediaBaseHandler {
     private Builder convertToSohuResponse(MediaBidMetaData mediaBidMetaData) {
         SohuRTB.Response.Builder bidResponseBuiler = SohuRTB.Response.newBuilder();
         SohuRTB.Request bidRequest = (Request) mediaBidMetaData.getRequestObject();
-        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         bidResponseBuiler.setBidid(bidRequest.getBidid());
         bidResponseBuiler.setVersion(bidRequest.getVersion());
         SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();  
@@ -206,7 +206,7 @@ public class SohuHandler extends MediaBaseHandler {
         bidBuilder.setAdurl(mediaResponse.getAdm().get(0));
         
         //exchange 自己的展示和点击监播
-        List<Track> tracks= mediaResponse.getMonitor().getImpurl();
+        List<Track> tracks= mediaResponse.getMonitorBuilder().getImpurl();
         if (tracks != null && tracks.size() > 0) {
             if (tracks.size() >= 2) {
                 bidBuilder.setDisplayPara(tracks.get(0).getUrl());
@@ -215,7 +215,7 @@ public class SohuHandler extends MediaBaseHandler {
         }
         
         //如果有落地页就取值，如果没有，判断thclkurl的大小，如果size=2，第一条设置为ClickMonitor，第二条设置为ext2，；如果size=1，则只设置为ext2的值
-        List<String> list = mediaResponse.getMonitor().getClkurl();
+        List<String> list = mediaResponse.getMonitorBuilder().getClkurl();
         if (list != null) {
             if (mediaResponse.getLpgurl() != null && mediaResponse.getLpgurl() != "") {
                 bidBuilder.setClickPara(mediaResponse.getLpgurl());//落地页地址

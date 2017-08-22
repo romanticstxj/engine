@@ -72,6 +72,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                 try {
                     BaoFengResponse baoFengResponse = convertToBaofengResponse(mediaBidMetaData);
                     if (baoFengResponse != null) {
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(baoFengResponse).getBytes("utf-8"));
                         resp.setStatus(Constant.StatusCode.OK);
                         logger.debug("_Status_" + Constant.StatusCode.OK);
@@ -120,12 +121,12 @@ public class BaoFengHandler extends MediaBaseHandler {
 
         // 展示监播
         List<String> imgtracking = new LinkedList<>();
-        for (Track track : mediaResponse.getMonitor().getImpurl()) {
+        for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
             imgtracking.add(track.getUrl());
         }
 
         // 点击监播
-        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitorBuilder().getClkurl();
         // 暴风没有区分第三方点击和
         ArrayList<BaoFengResponse.Img> imgList = new ArrayList<>();
         BaoFengResponse.Img img = baoFengResponse.new Img();

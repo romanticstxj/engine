@@ -400,12 +400,19 @@ public class MomoHandler extends MediaBaseHandler {
                     if(MomoStatusCode.Type.PROTOBUF.equals(objType[0])){
                         MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(BidRequest)objType[1]);
                         if(null != bidResponse){
+                            resp.setContentType("application/octet-stream;charset=UTF-8");
                             resp.getOutputStream().write(bidResponse.toByteArray());
                             resp.setStatus(Constant.StatusCode.OK);
                             return true;
                         }
                     } else if (MomoStatusCode.Type.JSON.equals(objType[0])){
                         MomoResponse response= convertToMomoBidResponse(mediaBidMetaData,(MomoBidRequest)objType[1]);
+                        if(null != response){
+                            resp.setHeader("Content-Type", "application/json; charset=utf-8");
+                            resp.getOutputStream().write(JSON.toJSONString(response).getBytes());
+                            resp.setStatus(Constant.StatusCode.OK);
+                            return true;
+                        }
                     }
                 } else {
                     resp.setStatus(mediaBid.getStatus());
@@ -429,7 +436,7 @@ public class MomoHandler extends MediaBaseHandler {
         MomoResponse.Bid.Gif gif = bid.new Gif();
         MomoResponse.Bid.Video video = bid.new Video();
         
-        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         
         
         bid.setImpid(momoBidRequest.getImp().get(0).getId());
@@ -438,12 +445,12 @@ public class MomoHandler extends MediaBaseHandler {
         
         List<Bid> bidList = new ArrayList<Bid>();
         List<String> impTrackers = new ArrayList<String>();
-        for (Track track : mediaResponse.getMonitor().getImpurl()) {
+        for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
             impTrackers.add(track.getUrl());
         }
         
         bid.setImptrackers(impTrackers);
-        bid.setClicktrackers(mediaResponse.getMonitor().getClkurl());
+        bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
         
         image.setUrl(mediaResponse.getAdm().get(0));
         
@@ -464,7 +471,7 @@ public class MomoHandler extends MediaBaseHandler {
     private BidResponse convertToMomoResponse(MediaBidMetaData mediaBidMetaData, MomoExchange.BidRequest bidRequest) {
         
         
-        MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         
         MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
@@ -504,13 +511,13 @@ public class MomoHandler extends MediaBaseHandler {
         /**
          *组装点击和展示监播url
          */
-        List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
+        List<Track> imgtracking = mediaResponse.getMonitorBuilder().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             for (Track track : imgtracking) {
                 bidBuilder.addClicktrackers(track.getUrl().toString());
             }
         }
-        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitorBuilder().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
             for (String thclk : thclkurl) {
                 bidBuilder.addImptrackers(thclk.toString());

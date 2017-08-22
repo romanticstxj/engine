@@ -17,6 +17,7 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaResponse;
+import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
@@ -214,6 +215,7 @@ public class XtraderHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     XtraderResponse  bidResponse = convertToXtraderResponse(mediaBidMetaData);
                     if(null != bidResponse){
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(bidResponse).getBytes());
                         resp.setStatus(Constant.StatusCode.OK);
                         return true;
@@ -234,17 +236,17 @@ public class XtraderHandler extends MediaBaseHandler {
 
     private XtraderResponse convertToXtraderResponse(MediaBidMetaData mediaBidMetaData) {
         XtraderBidRequest xtraderRequest = (XtraderBidRequest) mediaBidMetaData.getRequestObject();
-        MediaResponse mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponse();
+        Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         XtraderResponse response = new XtraderResponse();  
         XtraderResponse.Seatbid seatbid = response.new Seatbid();
         XtraderResponse.Seatbid.Bid bid = seatbid.new Bid();
         XtraderResponse.Seatbid.Bid.Ext ext = bid.new Ext();
         
         ext.setLdp(mediaResponse.getLpgurl());
-        for (Track track : mediaResponse.getMonitor().getImpurl()) {
+        for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
             ext.getPm().add(track.getUrl());
         }
-        ext.setCm(mediaResponse.getMonitor().getClkurl());
+        ext.setCm(mediaResponse.getMonitorBuilder().getClkurl());
         bid.setExt(ext);
         bid.setAdm(mediaResponse.getAdm().get(0));
         String impid = xtraderRequest.getImp().get(0).getId();

@@ -271,6 +271,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     XiaoMiResponse xiaoMiResponse = convertToXiaoMiResponse(mediaBidMetaData);
                     if(null != xiaoMiResponse){
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(xiaoMiResponse).getBytes());
                         return true;
                     }
@@ -289,7 +290,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
     }
     private XiaoMiResponse convertToXiaoMiResponse(MediaBidMetaData mediaBidMetaData) {
         XiaoMiResponse bidResponse = new XiaoMiResponse();
-        MediaResponse mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponse();
+        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         
         XiaoMiBidRequest bidRequest =(XiaoMiBidRequest)mediaBidMetaData.getRequestObject();
@@ -346,7 +347,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         bid.setLandingurl(mediaResponse.getLpgurl());
         bid.setTemplateid(bidRequest.getImp()[0].getTemplates()[0].getId());
 
-        List<Track> imgtracking = mediaResponse.getMonitor().getImpurl();
+        List<Track> imgtracking = mediaResponse.getMonitorBuilder().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             String[] impurl = new String[imgtracking.size()];
             for (int i = 0; i < imgtracking.size(); i++) {
@@ -357,7 +358,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
             }
             bid.setImpurl(impurl);
         }
-        List<String> thclkurl = mediaResponse.getMonitor().getClkurl();
+        List<String> thclkurl = mediaResponse.getMonitorBuilder().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
             String[] curl = new String[thclkurl.size()];
             for (int i = 0; i < thclkurl.size(); i++) {
