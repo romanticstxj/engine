@@ -54,9 +54,14 @@ public abstract class MediaBaseHandler {
             mediaBid.setStatus(Constant.StatusCode.OK);
         }
 
-        LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
+
         resp.setHeader("Connection", "keep-alive");
-        return this.packageMediaResponse(mediaBidMetaData, resp);
+        if (this.packageMediaResponse(mediaBidMetaData, resp)) {
+            LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
+            return true;
+        }
+
+        return false;
     }
 
     public abstract boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp);
