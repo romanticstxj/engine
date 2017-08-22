@@ -72,6 +72,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                 try {
                     BaoFengResponse baoFengResponse = convertToBaofengResponse(mediaBidMetaData);
                     if (baoFengResponse != null) {
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(baoFengResponse).getBytes("utf-8"));
                         resp.setStatus(Constant.StatusCode.OK);
                         logger.debug("_Status_" + Constant.StatusCode.OK);

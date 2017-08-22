@@ -198,6 +198,7 @@ public class MTDPHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     DPAds.BidResponse bidResponse = convertToMTDPResponse(mediaBidMetaData);
                     if(null != bidResponse){
+                        resp.setContentType("application/octet-stream;charset=UTF-8");
                         resp.getOutputStream().write(bidResponse.toByteArray());
                         resp.setStatus(Constant.StatusCode.OK);
                         return true;

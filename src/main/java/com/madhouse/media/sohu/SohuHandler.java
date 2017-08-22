@@ -175,8 +175,8 @@ public class SohuHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     SohuRTB.Response.Builder  bidResponse = convertToSohuResponse(mediaBidMetaData);
                     if(null != bidResponse){
-                        resp.setContentType("application/octet-stream");
-                        resp.getOutputStream().write(JSON.toJSONString(bidResponse).getBytes());
+                        resp.setContentType("application/octet-stream;charset=UTF-8");
+                        resp.getOutputStream().write(bidResponse.build().toByteArray());
                         resp.setStatus(Constant.StatusCode.OK);
                         return true;
                     }

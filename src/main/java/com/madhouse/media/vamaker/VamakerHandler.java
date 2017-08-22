@@ -189,7 +189,7 @@ public class VamakerHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     VamakerRTB.VamResponse.Builder vamResponse = convertToVamakerResponse(mediaBidMetaData);
                     if(null != vamResponse){
-                        resp.setContentType("application/octet-stream");
+                        resp.setContentType("application/octet-stream;charset=UTF-8");
                         resp.getOutputStream().write(vamResponse.build().toByteArray());
                         return true;
                     }

@@ -265,6 +265,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
     }
     private boolean outputStreamWrite(HttpServletResponse resp, MojiWeatherResponse moWeatherResponse)  {
         try {
+            resp.setHeader("Content-Type", "application/json; charset=utf-8");
             resp.getOutputStream().write(JSON.toJSONString(moWeatherResponse).getBytes());
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);

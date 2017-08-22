@@ -271,6 +271,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     XiaoMiResponse xiaoMiResponse = convertToXiaoMiResponse(mediaBidMetaData);
                     if(null != xiaoMiResponse){
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(xiaoMiResponse).getBytes());
                         return true;
                     }

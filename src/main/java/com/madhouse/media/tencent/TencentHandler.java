@@ -238,7 +238,7 @@ public class TencentHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     GPBForDSP.Response bidResponse = convertToTencentResponse(mediaBidMetaData);
                     if(null != bidResponse){
-                        resp.setContentType("application/octet-stream");
+                        resp.setContentType("application/octet-stream;charset=UTF-8");
                         resp.getOutputStream().write(bidResponse.toByteArray());
                         resp.setStatus(Constant.StatusCode.OK);
                         return true;

@@ -214,6 +214,7 @@ public class XtraderHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     XtraderResponse  bidResponse = convertToXtraderResponse(mediaBidMetaData);
                     if(null != bidResponse){
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(bidResponse).getBytes());
                         resp.setStatus(Constant.StatusCode.OK);
                         return true;

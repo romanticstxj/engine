@@ -205,7 +205,13 @@ public class SinaHandler extends MediaBaseHandler {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     SinaResponse result = convertToSinaResponse(mediaBidMetaData);
-                
+                    if (result != null) {
+                        resp.setHeader("Content-Type", "application/json; charset=utf-8");
+                        resp.getOutputStream().write(JSON.toJSONString(result).getBytes("utf-8"));
+                        resp.setStatus(Constant.StatusCode.OK);
+                        logger.debug("_Status_" + Constant.StatusCode.OK);
+                        return true;
+                    }
                 } else {
                     resp.setStatus(mediaBid.getStatus());
                     return false;

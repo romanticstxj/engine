@@ -400,12 +400,19 @@ public class MomoHandler extends MediaBaseHandler {
                     if(MomoStatusCode.Type.PROTOBUF.equals(objType[0])){
                         MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(BidRequest)objType[1]);
                         if(null != bidResponse){
+                            resp.setContentType("application/octet-stream;charset=UTF-8");
                             resp.getOutputStream().write(bidResponse.toByteArray());
                             resp.setStatus(Constant.StatusCode.OK);
                             return true;
                         }
                     } else if (MomoStatusCode.Type.JSON.equals(objType[0])){
                         MomoResponse response= convertToMomoBidResponse(mediaBidMetaData,(MomoBidRequest)objType[1]);
+                        if(null != response){
+                            resp.setHeader("Content-Type", "application/json; charset=utf-8");
+                            resp.getOutputStream().write(JSON.toJSONString(response).getBytes());
+                            resp.setStatus(Constant.StatusCode.OK);
+                            return true;
+                        }
                     }
                 } else {
                     resp.setStatus(mediaBid.getStatus());
