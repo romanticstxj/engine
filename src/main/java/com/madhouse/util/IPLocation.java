@@ -15,6 +15,18 @@ public class IPLocation {
         this.iptables = this.loadIPBFile(inputStream);
     }
 
+    public IPLocation(String path) {
+        File file = new File(path);
+        if (file != null && file.exists()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                this.iptables = this.loadIPBFile(fileInputStream);
+            } catch (Exception ex) {
+                System.err.println(ex.toString());
+            }
+        }
+    }
+
     private ArrayList loadIPBFile(InputStream inputStream) {
         try {
             ArrayList<Pair<Long, String>> iptables = new ArrayList<Pair<Long, String>>();
