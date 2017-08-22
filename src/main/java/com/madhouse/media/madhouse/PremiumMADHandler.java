@@ -356,23 +356,23 @@ public class PremiumMADHandler extends MediaBaseHandler {
     private PremiumMADResponse convertToPremiumMADResponse(MediaBidMetaData mediaBidMetaData, int status) {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         if(Constant.StatusCode.OK == status){
-            MediaRequest.Builder mediaRequest = (MediaRequest.Builder)mediaBidMetaData.getRequestObject();
-
+            MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
             MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+
             premiumMADResponse.setReturncode(Constant.StatusCode.OK);
             premiumMADResponse.setAdtype(mediaRequest.getAdtype());
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
-            premiumMADResponse.setBid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
+            premiumMADResponse.setAdspaceid(mediaRequest.getAdspacekey());
+            premiumMADResponse.setBid(mediaRequest.getBid());
             premiumMADResponse.setCid(mediaResponse.getCid());
-            premiumMADResponse.setAdwidth(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW());
-            premiumMADResponse.setAdheight(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH());
+            premiumMADResponse.setAdwidth(mediaRequest.getW());
+            premiumMADResponse.setAdheight(mediaRequest.getH());
             
             if(mediaResponse.getDuration() > 0){
                 premiumMADResponse.setDuration(mediaResponse.getDuration());
                 premiumMADResponse.setIcon(mediaResponse.getIcon());
                 premiumMADResponse.setCover(mediaResponse.getCover());
             }
-            
+
             if (mediaResponse.getTitle() != null) {
                 premiumMADResponse.setDisplaytitle(mediaResponse.getTitle());
             }
