@@ -14,8 +14,8 @@ public final class Constant {
         public static final String TARGET_KEY = "set:%d:%d:%s:policys";
         //valid check record
         public static final String BID_RECORD = "str:%s:%s:%s:%s:bid_record";
-        public static final String IMP_RECORD = "str:%s:%s:%s:%s:imp_record";
-        public static final String CLK_RECORD = "str:%s:%s:%s:%s:clk_record";
+        public static final String IMP_RECORD = "str:%s:imp_record";
+        public static final String CLK_RECORD = "str:%s:clk_record";
 
         //metadata cache
         public static final String ALL_MEDIA = "set:all_media";
