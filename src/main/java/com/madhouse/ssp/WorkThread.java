@@ -397,7 +397,7 @@ public class WorkThread {
 
                             DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
                             if (dspBaseHandler == null) {
-                                logger.error("get dsp handler [id=%d apitype=%d] error.", dspMetaData.getId(), dspMetaData.getApiType());
+                                logger.error("get dsp handler [id={} apitype={}] error.", dspMetaData.getId(), dspMetaData.getApiType());
                                 continue;
                             }
 
@@ -445,10 +445,11 @@ public class WorkThread {
                                 dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
                             }
 
-                            dspBidMetaData.getDspBidBuilder().setExecutetime((int)dspBidMetaData.getHttpClient().getExecuteTime());
+                            int executeTime = (int)dspBidMetaData.getHttpClient().getExecuteTime();
+                            dspBidMetaData.getDspBidBuilder().setExecutetime(executeTime);
+                            logger.debug("DSP[id={}] execute time: {}ms", dspBidMetaData.getDspMetaData().getId(), executeTime);
                             dspBidMetaData.getHttpRequestBase().releaseConnection();
                         }
-
 
                         DSPBidMetaData winner = null;
                         if (!bidderList.isEmpty()) {
@@ -496,6 +497,7 @@ public class WorkThread {
             mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null);
         } catch (Exception ex) {
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
+            logger.error(ex.toString());
         } finally {
             if (redisMaster != null) {
                 redisMaster.close();

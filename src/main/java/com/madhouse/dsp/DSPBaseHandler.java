@@ -69,7 +69,13 @@ public abstract class DSPBaseHandler {
     }
 
     public final boolean parseResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
-        return this.parseBidResponse(httpResponse, dspBidMetaData);
+        try {
+            return this.parseBidResponse(httpResponse, dspBidMetaData);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+        }
+
+        return false;
     }
 
     protected abstract HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData);
