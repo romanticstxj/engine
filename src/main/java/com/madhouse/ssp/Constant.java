@@ -52,8 +52,9 @@ public final class Constant {
     }
 
     public static final class DSPApiType {
-        public static final int MADRTB = 1;
-        public static final int MADAPI = 2;
+        public static final int MAD_RTB = 1;
+        public static final int MAD_API = 2;
+        public static final int MAD_PROTO = 3;
         public static final int VAMAKER = 11;
         public static final int PG = 12;
         public static final int ADSAGE = 13;

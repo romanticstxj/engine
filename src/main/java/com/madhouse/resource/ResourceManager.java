@@ -53,8 +53,8 @@ public class ResourceManager {
     public boolean init() {
         {
             this.dspBaseHandlerMap.clear();
-            this.dspBaseHandlerMap.put(Constant.DSPApiType.MADRTB, new MADRTBHandler());
-            this.dspBaseHandlerMap.put(Constant.DSPApiType.MADAPI, new MADMaxHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.MAD_RTB, new MADRTBHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.MAD_API, new MADMaxHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.PG, new ProcterGambleHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.VAMAKER, new VamakerHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.REACHMAX, new ReachMaxHandler());
