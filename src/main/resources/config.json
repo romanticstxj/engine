@@ -1,6 +1,6 @@
 {
     "webapp": {
-        "domain": "http://localhost:8181",
+        "domain": "http://172.16.25.47:8181",
         "port": 8181,
         "wokerId": 10,
         "gZipOn": false,

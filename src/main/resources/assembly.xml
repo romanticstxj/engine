@@ -30,6 +30,7 @@
             <outputDirectory>/conf</outputDirectory>
             <includes>
                 <include>*.json</include>
+                <include>log4j2.xml</include>
             </includes>
         </fileSet>
         <fileSet>

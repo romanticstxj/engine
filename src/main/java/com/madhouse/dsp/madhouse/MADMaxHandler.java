@@ -50,7 +50,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         String ua = mediaRequest.getUa();
         String device = mediaRequest.getModel();
         String pkgname = mediaRequest.getBundle();
-        String appname = mediaMetaData.getName();
+        String appname = mediaRequest.getName();
         try {
             if (ua != null) {
                 ua = URLEncoder.encode(ua, "UTF-8");
@@ -76,8 +76,8 @@ public class MADMaxHandler extends DSPBaseHandler {
 
         sb.append("adspaceid=").append(adspaceId)
                 .append("&adtype=").append(plcmtMetaData.getAdType())
-                .append("&width=").append(plcmtMetaData.getW())
-                .append("&height=").append(plcmtMetaData.getH())
+                .append("&width=").append(mediaRequest.getW())
+                .append("&height=").append(mediaRequest.getH())
                 .append("&pkgname=").append(StringUtil.toString(pkgname))
                 .append("&conn=").append(StringUtil.toString(mediaRequest.getConnectiontype().toString()))
                 .append("&carrier=").append(StringUtil.toString(mediaRequest.getCarrier().toString()))

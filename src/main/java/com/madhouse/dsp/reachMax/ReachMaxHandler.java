@@ -70,7 +70,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         }
         
         
-        App.Builder appBuilder = getApp(builder, adspaceId,mediaMetaData);
+        App.Builder appBuilder = getApp(builder, adspaceId);
         if (appBuilder == null) {
             return null;
         }
@@ -188,7 +188,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
     
     
     private AdSlot.Builder getAdslot(MediaRequest.Builder builder, PlcmtMetaData plcmtMetaData, String adspaceId) {
-        AdSlot.Builder adSlotBuilder = AdSlot.newBuilder().setId(adspaceId).setSize(Size.newBuilder().setWidth(plcmtMetaData.getW()).setHeight(plcmtMetaData.getH()));
+        AdSlot.Builder adSlotBuilder = AdSlot.newBuilder().setId(adspaceId).setSize(Size.newBuilder().setWidth(builder.getW()).setHeight(builder.getH()));
         //optional
         AdSlot.StaticInfo adSlotStaticInfo;
 
@@ -205,7 +205,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         return adSlotBuilder;
     }
 
-    private App.Builder getApp(com.madhouse.ssp.avro.MediaRequest.Builder builder, String adspaceId, MediaMetaData mediaMetaData) {
+    private App.Builder getApp(com.madhouse.ssp.avro.MediaRequest.Builder builder, String adspaceId) {
         App.Builder appBuilder = App.newBuilder();
         appBuilder.setId(adspaceId);
         App.StaticInfo.Builder appStaticInfoBuilder = App.StaticInfo.newBuilder();
@@ -217,7 +217,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
                 logger.error(adspaceId + "pkgname error is:" + e.toString());
             }
         }
-        String appname = mediaMetaData.getName();
+        String appname = builder.getName();
         if (appname != null && appname.length() > 0) {
             try {
                 appStaticInfoBuilder.setName(URLEncoder.encode(appname, "UTF-8"));
@@ -225,7 +225,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
                 logger.error(adspaceId + "appname error is:" + e.toString());
             }
         }
-        int category = mediaMetaData.getCategory();
+        int category = builder.getCategory();
         if (StringUtils.isEmpty(category+"")) {
             try {
                 appStaticInfoBuilder.addCategories(category);

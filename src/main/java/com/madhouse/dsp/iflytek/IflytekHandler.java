@@ -116,8 +116,8 @@ public class IflytekHandler extends DSPBaseHandler {
             Long date = new Date().getTime();
             iflytek.setTs(date.toString());
             
-            iflytek.setAdw(String.valueOf(plcmtMetaData.getW()));
-            iflytek.setAdh(String.valueOf(plcmtMetaData.getH()));
+            iflytek.setAdw(String.valueOf(builder.getW()));
+            iflytek.setAdh(String.valueOf(builder.getH()));
             iflytek.setDvh("480");
             iflytek.setDvw("320");
             //横竖屏
@@ -163,12 +163,12 @@ public class IflytekHandler extends DSPBaseHandler {
             // mac 地址
             iflytek.setMac(builder.getMac());
             
-            iflytek.setAppname(mediaMetaData.getName());
+            iflytek.setAppname(builder.getName());
             iflytek.setPkgname(builder.getBundle());
             if (!checkParameter(iflytek)) {
                 return null;
             }
-            request.setHeader(HTTP.CONTENT_TYPE, HTTP.OCTET_STREAM_TYPE);
+            request.setHeader(HTTP.CONTENT_TYPE, "application/octet-stream");
             request.setHeader("X-protocol-ver", IflytekStatusCode.X_PROTOCOL_VER);
             request.setHeader("Accept-Encoding", "none");
             if(plcmtMetaData.isEnableHttps()){
