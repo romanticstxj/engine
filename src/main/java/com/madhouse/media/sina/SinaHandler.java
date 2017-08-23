@@ -248,7 +248,7 @@ public class SinaHandler extends MediaBaseHandler {
         bid.setAdm(mediaResponse.getAdm().get(0));
         // TODO DSP对该次出价分配的ID
         String impid = sinaRequest.getImp().get(0).getId();
-        bid.setId(impid);
+        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
         bid.setImpid(impid);
         bid.setNurl("");
         bid.setPrice((float) sinaRequest.getImp().get(0).getBidfloor());

@@ -365,8 +365,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         TOUTIAOAds.MaterialMeta.ImageMeta.Builder imageMetaBuilder = TOUTIAOAds.MaterialMeta.ImageMeta.newBuilder();
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         TOUTIAOAds.Bid.Builder bidBuilder = TOUTIAOAds.Bid.newBuilder();
-        Long id = Math.round(Math.random() * 89999999 + 10000000);
-        bidBuilder.setId(String.valueOf(id)); 
+        bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid()); 
         bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid()));
         bidBuilder.setAdslotId(bidRequest.getAdslots(0).getId());
         bidBuilder.setPrice( builder.getBidfloor());

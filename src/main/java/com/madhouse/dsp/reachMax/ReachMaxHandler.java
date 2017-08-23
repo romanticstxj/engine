@@ -37,6 +37,7 @@ import com.madhouse.dsp.proctergamble.PGMadAds.Size;
 import com.madhouse.dsp.proctergamble.PGMadAds.Version;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid.Builder;
+import com.madhouse.ssp.avro.DSPRequest;
 import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.Monitor;
@@ -250,8 +251,9 @@ public class ReachMaxHandler extends DSPBaseHandler {
                     if (ad != null && ad.getMaterialMeta() != null) {
                         MaterialMeta materialMeta = ad.getMaterialMeta();
                         //dspResponse.setCid(value)
-                        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
-                        dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
+                        DSPRequest.Builder dspRequest = dspBidMetaData.getDspBidBuilder().getRequestBuilder();
+                        dspResponse.setId(dspRequest.getId());
+                        dspResponse.setImpid(dspRequest.getImpid());
                         
                         dspResponse.setLpgurl(materialMeta.getClickUrl());
                         dspResponse.setDesc(materialMeta.getDescription1());

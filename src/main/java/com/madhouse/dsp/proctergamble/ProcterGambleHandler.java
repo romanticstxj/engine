@@ -38,9 +38,11 @@ import com.madhouse.dsp.proctergamble.PGMadAds.Version;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.MediaBid.Builder;
+import com.madhouse.ssp.avro.DSPRequest;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.Monitor;
 import com.madhouse.ssp.avro.Track;
+import com.madhouse.util.StringUtil;
 
 public class ProcterGambleHandler extends DSPBaseHandler {
 
@@ -248,10 +250,12 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                 if (ads != null && ads.size() != 0) { // 只取第一个广告
                     Ad ad = ads.get(0);
                     if (ad != null && ad.getMaterialMeta() != null) {
+                        DSPRequest.Builder dspRequest = dspBidMetaData.getDspBidBuilder().getRequestBuilder();
                         MaterialMeta materialMeta = ad.getMaterialMeta();
                         //dspResponse.setCid(value)
-                        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
-                        dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
+                        
+                        dspResponse.setId(dspRequest.getId());
+                        dspResponse.setImpid(dspRequest.getImpid());
                         
                         dspResponse.setLpgurl(materialMeta.getClickUrl());
                         dspResponse.setDesc(materialMeta.getDescription1());

@@ -1,6 +1,5 @@
 package com.madhouse.media.xiaomi;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -301,6 +300,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         
         
         XiaoMiResponse.Bid bid = bidResponse.new Bid();
+        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
         bid.setImpid(bidRequest.getImp()[0].getId());
         bid.setPrice(mediaRequest.getBidfloor());//Bid price as CPM; 必须高于底价,否则竞价失败 ;必须字段,单位为分
         bid.setAdid(mediaRequest.getAdspacekey());
@@ -377,6 +377,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
 
         XiaoMiResponse.SeatBid[] setBids = {seatBid};//目前仅支持长度为1
         bidResponse.setSeatbid(setBids);
+        bidResponse.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
         logger.info("XiaoMi Response params is : {}", JSON.toJSONString(bidResponse));
         return bidResponse;
     }
