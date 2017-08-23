@@ -441,7 +441,7 @@ public class WorkThread {
                             }
                         }
 
-                        List<DSPBidMetaData> bidderList = new LinkedList<DSPBidMetaData>();
+                        List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());
                         for (Map.Entry entry : selectedDspList.entrySet()) {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
                             DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
@@ -616,17 +616,35 @@ public class WorkThread {
 
             winner = dspBidMetaData;
         } else {
+            //price desc, executeTime asc
             bidderList.sort(new Comparator<DSPBidMetaData>() {
                 @Override
                 public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
-                    return o1.getDspBidBuilder().getResponse().getPrice() > o2.getDspBidBuilder().getResponse().getPrice() ? 1 : -1;
+                    DSPBid.Builder left = o1.getDspBidBuilder();
+                    DSPBid.Builder right = o2.getDspBidBuilder();
+
+                    if (left.getResponse().getPrice() > right.getResponse().getPrice()) {
+                        return -1;
+                    } else if (left.getResponse().getPrice() == right.getResponse().getPrice()) {
+                        if (left.getExecutetime() < right.getExecutetime()) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    }
+
+                    return 1;
                 }
             });
-            
+
             int price = plcmtMetaData.getBidFloor();
-            if (bidderList.size() >= 2) {
-                DSPBidMetaData dspBidMetaData = bidderList.get(1);
-                price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
+            int maxPrice = bidderList.get(0).getDspBidBuilder().getResponse().getPrice();
+            for (int i = 1; i < bidderList.size(); ++i) {
+                DSPBidMetaData dspBidMetaData = bidderList.get(i);
+                if (dspBidMetaData.getDspBidBuilder().getResponse().getPrice() < maxPrice) {
+                    price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
+                    break;
+                }
             }
 
             DSPBidMetaData dspBidMetaData = bidderList.get(0);
