@@ -53,7 +53,7 @@ public class MADRTBHandler extends DSPBaseHandler {
 
             app.setBundle(mediaRequest.getBundle());
             app.addCat(Integer.toString(mediaMetaData.getCategory()));
-            app.setName(mediaMetaData.getName());
+            app.setName(mediaRequest.getName());
             bidRequest.setApp(app);
         }
 
@@ -66,7 +66,7 @@ public class MADRTBHandler extends DSPBaseHandler {
             }
 
             site.addCat(Integer.toString(mediaMetaData.getCategory()));
-            site.setName(mediaMetaData.getName());
+            site.setName(mediaRequest.getName());
             bidRequest.setSite(site);
         }
 
