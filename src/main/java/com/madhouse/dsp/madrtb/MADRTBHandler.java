@@ -130,8 +130,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                     PlcmtMetaData.Image var = plcmtMetaData.getBanner();
                     PremiumMADRTBProtocol.BidRequest.Impression.Banner.Builder banner = PremiumMADRTBProtocol.BidRequest.Impression.Banner.newBuilder();
                     banner.setLayout(plcmtMetaData.getLayout());
-                    banner.setW(var.getW());
-                    banner.setH(var.getH());
+                    banner.setW(mediaRequest.getW());
+                    banner.setH(mediaRequest.getH());
                     banner.addAllMimes(var.getMimes());
                     impression.setBanner(banner);
                     break;
@@ -140,8 +140,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                 case Constant.PlcmtType.VIDEO: {
                     PlcmtMetaData.Video var = plcmtMetaData.getVideo();
                     PremiumMADRTBProtocol.BidRequest.Impression.Video.Builder video = PremiumMADRTBProtocol.BidRequest.Impression.Video.newBuilder();
-                    video.setW(var.getW());
-                    video.setH(var.getH());
+                    video.setW(mediaRequest.getW());
+                    video.setH(mediaRequest.getH());
                     video.setLinearity(var.getLinearity());
                     video.setStartdelay(var.getStartDelay());
                     video.setMinduration(var.getMinDuraion());
