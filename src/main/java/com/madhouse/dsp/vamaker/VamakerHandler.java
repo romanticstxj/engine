@@ -102,8 +102,8 @@ public class VamakerHandler extends DSPBaseHandler {
         sb.append("&_dev=").append(StringUtils.isEmpty(builder.getMake())?"UNKNOWN":builder.getMake());
         //设备型号，
         sb.append("&_md=").append(StringUtils.isEmpty(builder.getModel())?"UNKNOWN":builder.getModel());
-        sb.append("&_adw=").append(plcmtMetaData.getW());
-        sb.append("&_adh=").append(plcmtMetaData.getH());
+        sb.append("&_adw=").append(builder.getW());
+        sb.append("&_adh=").append(builder.getH());
         
         if (StringUtils.isNotEmpty(builder.getLon().toString())) {
             sb.append("&_lon=").append(builder.getLon());
