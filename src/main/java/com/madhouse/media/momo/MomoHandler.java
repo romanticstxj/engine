@@ -531,6 +531,7 @@ public class MomoHandler extends MediaBaseHandler {
         MomoExchange.BidResponse.Builder bidResposeBuilder = MomoExchange.BidResponse.newBuilder();
         bidResposeBuilder.setId(bidRequest.getId());
         bidResposeBuilder.addSeatbid(seatBidBuilder);
+        bidResposeBuilder.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
         
         logger.info("MoMO Response params is : {}", bidResposeBuilder.toString());
         return bidResposeBuilder.build();

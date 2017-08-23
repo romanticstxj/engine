@@ -144,7 +144,7 @@ public class VamakerHandler extends DSPBaseHandler {
             dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
             dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
             dspResponse.setAdid(vamakerResponse.getAdid());
-            dspResponse.setBidid(String.valueOf(dspBidMetaData.getDspMetaData().getId()));
+            dspResponse.setBidid("");
             dspResponse.setLpgurl(vamakerResponse.getLp());
             dspResponse.setDesc(vamakerResponse.getDesc());
             dspResponse.setTitle(vamakerResponse.getTitle());

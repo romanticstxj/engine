@@ -250,7 +250,7 @@ public class XtraderHandler extends MediaBaseHandler {
         bid.setExt(ext);
         bid.setAdm(mediaResponse.getAdm().get(0));
         String impid = xtraderRequest.getImp().get(0).getId();
-        bid.setId(impid);
+        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
         bid.setImpid(impid);
         bid.setNurl("");
         bid.setCrid("");
