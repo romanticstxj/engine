@@ -71,8 +71,19 @@ public class PremiumMADHandler extends MediaBaseHandler {
         switch (madBidRequest.getOs()) {
             case PremiumMADStatusCode.PremiumMadOs.OS_ANDROID:
                 mediaRequest.setOs(Constant.OSType.ANDROID);
-                mediaRequest.setDid(madBidRequest.getImei());
-                mediaRequest.setDpid(madBidRequest.getAid());
+
+                if (madBidRequest.getImei().length() > 20) {
+                    mediaRequest.setDidmd5(madBidRequest.getImei());
+                } else {
+                    mediaRequest.setDid(madBidRequest.getImei());
+                }
+
+                if (!StringUtils.isEmpty(madBidRequest.getAid()) && madBidRequest.getAid().length() > 20) {
+                    mediaRequest.setDpidmd5(madBidRequest.getAid());
+                } else {
+                    mediaRequest.setDpid(madBidRequest.getAid());
+                }
+
                 mediaRequest.setIfa(madBidRequest.getAaid());
                 break;
             case PremiumMADStatusCode.PremiumMadOs.OS_IOS:

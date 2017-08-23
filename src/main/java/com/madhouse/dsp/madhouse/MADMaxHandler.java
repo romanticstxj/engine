@@ -74,6 +74,16 @@ public class MADMaxHandler extends DSPBaseHandler {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
 
+        String imei = mediaRequest.getDid();
+        if (StringUtils.isEmpty(imei)) {
+            imei = mediaRequest.getDidmd5();
+        }
+
+        String aid = mediaRequest.getDpid();
+        if (StringUtils.isEmpty(aid)) {
+            aid = mediaRequest.getDpidmd5();
+        }
+
         sb.append("adspaceid=").append(adspaceId)
                 .append("&adtype=").append(plcmtMetaData.getAdType())
                 .append("&width=").append(mediaRequest.getW())
@@ -101,8 +111,8 @@ public class MADMaxHandler extends DSPBaseHandler {
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(StringUtil.toString(mediaRequest.getDid()))
-                   .append("&aid=").append(StringUtil.toString(mediaRequest.getDpid()))
+                   .append("&imei=").append(imei)
+                   .append("&aid=").append(aid)
                    .append("&aaid=").append(StringUtil.toString(mediaRequest.getIfa()));
                 break;
             case Constant.OSType.IOS:
