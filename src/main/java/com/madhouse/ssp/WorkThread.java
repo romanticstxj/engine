@@ -605,56 +605,58 @@ public class WorkThread {
     private DSPBidMetaData selectWinner(PlcmtMetaData plcmtMetaData, PolicyMetaData policyMetaData, List<DSPBidMetaData> bidderList) {
         DSPBidMetaData winner = null;
 
-        if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
-            DSPBidMetaData dspBidMetaData = bidderList.get(0);
-            PolicyMetaData.AdspaceInfo adspaceInfo = policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId());
+        if (bidderList != null && !bidderList.isEmpty()) {
+            if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
+                DSPBidMetaData dspBidMetaData = bidderList.get(0);
+                PolicyMetaData.AdspaceInfo adspaceInfo = policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId());
 
-            AuctionPriceInfo auctionInfo = new AuctionPriceInfo();
-            auctionInfo.setBidType(adspaceInfo.getBidType());
-            auctionInfo.setBidPrice(adspaceInfo.getBidFloor());
-            dspBidMetaData.setAuctionPriceInfo(auctionInfo);
+                AuctionPriceInfo auctionInfo = new AuctionPriceInfo();
+                auctionInfo.setBidType(adspaceInfo.getBidType());
+                auctionInfo.setBidPrice(adspaceInfo.getBidFloor());
+                dspBidMetaData.setAuctionPriceInfo(auctionInfo);
 
-            winner = dspBidMetaData;
-        } else {
-            //price desc, executeTime asc
-            bidderList.sort(new Comparator<DSPBidMetaData>() {
-                @Override
-                public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
-                    DSPBid.Builder left = o1.getDspBidBuilder();
-                    DSPBid.Builder right = o2.getDspBidBuilder();
+                winner = dspBidMetaData;
+            } else {
+                //price desc, executeTime asc
+                bidderList.sort(new Comparator<DSPBidMetaData>() {
+                    @Override
+                    public int compare(DSPBidMetaData o1, DSPBidMetaData o2) {
+                        DSPBid.Builder left = o1.getDspBidBuilder();
+                        DSPBid.Builder right = o2.getDspBidBuilder();
 
-                    if (left.getResponse().getPrice() > right.getResponse().getPrice()) {
-                        return -1;
-                    } else if (left.getResponse().getPrice() == right.getResponse().getPrice()) {
-                        if (left.getExecutetime() < right.getExecutetime()) {
+                        if (left.getResponse().getPrice() > right.getResponse().getPrice()) {
                             return -1;
-                        } else {
-                            return 1;
+                        } else if (left.getResponse().getPrice() == right.getResponse().getPrice()) {
+                            if (left.getExecutetime() < right.getExecutetime()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
                         }
+
+                        return 1;
                     }
+                });
 
-                    return 1;
+                int price = plcmtMetaData.getBidFloor();
+                int maxPrice = bidderList.get(0).getDspBidBuilder().getResponse().getPrice();
+                for (int i = 1; i < bidderList.size(); ++i) {
+                    DSPBidMetaData dspBidMetaData = bidderList.get(i);
+                    if (dspBidMetaData.getDspBidBuilder().getResponse().getPrice() < maxPrice) {
+                        price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
+                        break;
+                    }
                 }
-            });
 
-            int price = plcmtMetaData.getBidFloor();
-            int maxPrice = bidderList.get(0).getDspBidBuilder().getResponse().getPrice();
-            for (int i = 1; i < bidderList.size(); ++i) {
-                DSPBidMetaData dspBidMetaData = bidderList.get(i);
-                if (dspBidMetaData.getDspBidBuilder().getResponse().getPrice() < maxPrice) {
-                    price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
-                    break;
-                }
+                DSPBidMetaData dspBidMetaData = bidderList.get(0);
+
+                AuctionPriceInfo auctionInfo = new AuctionPriceInfo();
+                auctionInfo.setBidType(plcmtMetaData.getBidType());
+                auctionInfo.setBidPrice(price + 1);
+                dspBidMetaData.setAuctionPriceInfo(auctionInfo);
+
+                winner = dspBidMetaData;
             }
-
-            DSPBidMetaData dspBidMetaData = bidderList.get(0);
-
-            AuctionPriceInfo auctionInfo = new AuctionPriceInfo();
-            auctionInfo.setBidType(plcmtMetaData.getBidType());
-            auctionInfo.setBidPrice(price + 1);
-            dspBidMetaData.setAuctionPriceInfo(auctionInfo);
-
-            winner = dspBidMetaData;
         }
 
         return winner;
