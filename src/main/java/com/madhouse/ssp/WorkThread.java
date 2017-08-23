@@ -102,10 +102,12 @@ public class WorkThread {
                 impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            String ret = redisMaster.set(String.format(Constant.CommonKey.IMP_RECORD, impId, mediaId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
-            if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
+            long count = redisMaster.incr(String.format(Constant.CommonKey.IMP_RECORD, impId));
+            if (count > 1) {
                 impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
+
+            redisMaster.expire(String.format(Constant.CommonKey.IMP_RECORD, impId), 86400);
 
             impressionTrack.setTime(System.currentTimeMillis());
             impressionTrack.setIp(HttpUtil.getRealIp(req));
@@ -192,10 +194,12 @@ public class WorkThread {
                 clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
-            String ret = redisMaster.set(String.format(Constant.CommonKey.CLK_RECORD, impId, mediaId, plcmtId, policyId), "1", "NX", "EX", expiredTime);
-            if (StringUtils.isEmpty(ret) || ret.compareTo("OK") != 0) {
+            long count = redisMaster.incr(String.format(Constant.CommonKey.CLK_RECORD, impId));
+            if (count > 1) {
                 clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
             }
+
+            redisMaster.expire(String.format(Constant.CommonKey.CLK_RECORD, impId), 86400);
 
             clickTrack.setTime(System.currentTimeMillis());
             clickTrack.setIp(HttpUtil.getRealIp(req));
@@ -286,6 +290,14 @@ public class WorkThread {
                 logger.error("media adspace mapping error.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
+            }
+
+            if (!mediaRequest.hasW() || mediaRequest.getW() <= 0) {
+                mediaRequest.setW(plcmtMetaData.getW());
+            }
+
+            if (!mediaRequest.hasH() || mediaRequest.getH() <= 0) {
+                mediaRequest.setH(plcmtMetaData.getH());
             }
 
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
@@ -610,7 +622,7 @@ public class WorkThread {
                     return o1.getDspBidBuilder().getResponse().getPrice() > o2.getDspBidBuilder().getResponse().getPrice() ? 1 : -1;
                 }
             });
-
+            
             int price = plcmtMetaData.getBidFloor();
             if (bidderList.size() >= 2) {
                 DSPBidMetaData dspBidMetaData = bidderList.get(1);

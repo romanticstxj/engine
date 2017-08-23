@@ -14,8 +14,8 @@ public final class Constant {
         public static final String TARGET_KEY = "set:%d:%d:%s:policys";
         //valid check record
         public static final String BID_RECORD = "str:%s:%s:%s:%s:bid_record";
-        public static final String IMP_RECORD = "str:%s:%s:%s:%s:imp_record";
-        public static final String CLK_RECORD = "str:%s:%s:%s:%s:clk_record";
+        public static final String IMP_RECORD = "str:%s:imp_record";
+        public static final String CLK_RECORD = "str:%s:clk_record";
 
         //metadata cache
         public static final String ALL_MEDIA = "set:all_media";
@@ -52,8 +52,9 @@ public final class Constant {
     }
 
     public static final class DSPApiType {
-        public static final int MADRTB = 1;
-        public static final int MADAPI = 2;
+        public static final int MAD_RTB = 1;
+        public static final int MAD_API = 2;
+        public static final int MAD_PROTO = 3;
         public static final int VAMAKER = 11;
         public static final int PG = 12;
         public static final int ADSAGE = 13;

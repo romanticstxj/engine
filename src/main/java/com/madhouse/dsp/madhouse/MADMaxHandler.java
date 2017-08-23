@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -24,12 +25,7 @@ import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.media.madhouse.PremiumMADResponse;
 import com.madhouse.media.madhouse.PremiumMADStatusCode;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.DSPResponse.Builder;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.Monitor;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
@@ -168,11 +164,13 @@ public class MADMaxHandler extends DSPBaseHandler {
         }
     }
     private Builder convertMADMaxResponse(PremiumMADResponse madResponse, DSPBidMetaData dspBidMetaData) {
+        DSPRequest.Builder dspRequest = dspBidMetaData.getDspBidBuilder().getRequestBuilder();
+
         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
         dspResponse.setCid(madResponse.getCid());
-        dspResponse.setId(String.valueOf(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId()));
-        dspResponse.setBidid(madResponse.getBid());
-        dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid().toString());
+        dspResponse.setId(dspRequest.getId());
+        dspResponse.setBidid(StringUtil.toString(madResponse.getBidid()));
+        dspResponse.setImpid(dspRequest.getImpid());
         dspResponse.setAdmid(madResponse.getAdspaceid());
         dspResponse.setIcon(madResponse.getIcon());
         dspResponse.setCover(madResponse.getCover());

@@ -11,9 +11,14 @@ public class PremiumMADResponse {
     
     //标识广告来源
     private String source;
-    
+
+    //请求ID
     private String bid;
-    
+
+    //Bid ID
+    private String bidid;
+
+    //广告活动ID
     private String cid;
     
     private Integer adwidth;
@@ -216,5 +221,13 @@ public class PremiumMADResponse {
     
     public void setSecurl(List<String> securl) {
         this.securl = securl;
+    }
+
+    public String getBidid() {
+        return bidid;
+    }
+
+    public void setBidid(String bidid) {
+        this.bidid = bidid;
     }
 }
