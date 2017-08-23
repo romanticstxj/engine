@@ -169,7 +169,6 @@ public class MADRTBHandler extends DSPBaseHandler {
                         image.setH(icon.getH());
                         image.addAllMimes(icon.getMimes());
                         asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
                         asset.setImage(image);
                         nativeRequest.addAssets(asset);
                     }
@@ -183,28 +182,25 @@ public class MADRTBHandler extends DSPBaseHandler {
                         image.setH(cover.getH());
                         image.addAllMimes(cover.getMimes());
                         asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
                         asset.setImage(image);
                         nativeRequest.addAssets(asset);
                     }
 
-                    if (var1.getTitle() >= 0) {
+                    if (var1.getTitle() > 0) {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Title.Builder title = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Title.newBuilder();
                         title.setLen(var1.getTitle());
                         asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
                         asset.setTitle(title);
                         nativeRequest.addAssets(asset);
                     }
 
-                    if (var1.getDesc() >= 0) {
+                    if (var1.getDesc() > 0) {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder data = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
                         data.setType(Constant.NativeDescType.DESC);
                         data.setLen(var1.getDesc());
                         asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
                         asset.setData(data);
                         nativeRequest.addAssets(asset);
                     }
@@ -219,7 +215,6 @@ public class MADRTBHandler extends DSPBaseHandler {
                         video.setMinduration(var2.getMinDuraion());
                         video.setMaxduration(var2.getMaxDuration());
                         asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
                         asset.setVideo(video);
                         nativeRequest.addAssets(asset);
                     } else {
@@ -231,7 +226,6 @@ public class MADRTBHandler extends DSPBaseHandler {
                         image.setH(var2.getH());
                         image.addAllMimes(var2.getMimes());
                         asset.setId(Integer.toString(id++));
-                        asset.setRequired(true);
                         asset.setImage(image);
                         nativeRequest.addAssets(asset);
                     }
