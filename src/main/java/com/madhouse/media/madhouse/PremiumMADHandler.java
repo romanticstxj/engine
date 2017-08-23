@@ -363,6 +363,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setAdtype(mediaRequest.getAdtype());
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspacekey());
             premiumMADResponse.setBid(mediaRequest.getBid());
+            premiumMADResponse.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
             premiumMADResponse.setCid(mediaResponse.getCid());
             premiumMADResponse.setAdwidth(mediaRequest.getW());
             premiumMADResponse.setAdheight(mediaRequest.getH());
