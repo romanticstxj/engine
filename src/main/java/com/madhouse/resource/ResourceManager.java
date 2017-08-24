@@ -3,6 +3,7 @@ package com.madhouse.resource;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.madhouse.configuration.Redis;
+import com.madhouse.dsp.iflytek.IflytekHandler;
 import com.madhouse.dsp.madhouse.MADMaxHandler;
 import com.madhouse.dsp.madrtb.MADRTBHandler;
 import com.madhouse.dsp.proctergamble.ProcterGambleHandler;
@@ -55,9 +56,10 @@ public class ResourceManager {
             this.dspBaseHandlerMap.clear();
             this.dspBaseHandlerMap.put(Constant.DSPApiType.MAD_RTB, new MADRTBHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.MAD_API, new MADMaxHandler());
-            this.dspBaseHandlerMap.put(Constant.DSPApiType.PG, new ProcterGambleHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.VAMAKER, new VamakerHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.PG, new ProcterGambleHandler());
             this.dspBaseHandlerMap.put(Constant.DSPApiType.REACHMAX, new ReachMaxHandler());
+            this.dspBaseHandlerMap.put(Constant.DSPApiType.IFLYTEK, new IflytekHandler());
         }
 
         {
