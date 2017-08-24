@@ -24807,18 +24807,18 @@ public final class PremiumMADRTBProtocol {
             getCidBytes();
 
         /**
-         * <code>optional string crid = 6;</code>
+         * <code>optional string icon = 6;</code>
          */
-        boolean hasCrid();
+        boolean hasIcon();
         /**
-         * <code>optional string crid = 6;</code>
+         * <code>optional string icon = 6;</code>
          */
-        java.lang.String getCrid();
+        java.lang.String getIcon();
         /**
-         * <code>optional string crid = 6;</code>
+         * <code>optional string icon = 6;</code>
          */
         com.google.protobuf.ByteString
-            getCridBytes();
+            getIconBytes();
 
         /**
          * <code>optional string cover = 7;</code>
@@ -25037,7 +25037,7 @@ public final class PremiumMADRTBProtocol {
                 case 50: {
                   com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000020;
-                  crid_ = bs;
+                  icon_ = bs;
                   break;
                 }
                 case 58: {
@@ -31864,19 +31864,19 @@ public final class PremiumMADRTBProtocol {
           }
         }
 
-        public static final int CRID_FIELD_NUMBER = 6;
-        private java.lang.Object crid_;
+        public static final int ICON_FIELD_NUMBER = 6;
+        private java.lang.Object icon_;
         /**
-         * <code>optional string crid = 6;</code>
+         * <code>optional string icon = 6;</code>
          */
-        public boolean hasCrid() {
+        public boolean hasIcon() {
           return ((bitField0_ & 0x00000020) == 0x00000020);
         }
         /**
-         * <code>optional string crid = 6;</code>
+         * <code>optional string icon = 6;</code>
          */
-        public java.lang.String getCrid() {
-          java.lang.Object ref = crid_;
+        public java.lang.String getIcon() {
+          java.lang.Object ref = icon_;
           if (ref instanceof java.lang.String) {
             return (java.lang.String) ref;
           } else {
@@ -31884,22 +31884,22 @@ public final class PremiumMADRTBProtocol {
                 (com.google.protobuf.ByteString) ref;
             java.lang.String s = bs.toStringUtf8();
             if (bs.isValidUtf8()) {
-              crid_ = s;
+              icon_ = s;
             }
             return s;
           }
         }
         /**
-         * <code>optional string crid = 6;</code>
+         * <code>optional string icon = 6;</code>
          */
         public com.google.protobuf.ByteString
-            getCridBytes() {
-          java.lang.Object ref = crid_;
+            getIconBytes() {
+          java.lang.Object ref = icon_;
           if (ref instanceof java.lang.String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (java.lang.String) ref);
-            crid_ = b;
+            icon_ = b;
             return b;
           } else {
             return (com.google.protobuf.ByteString) ref;
@@ -32223,7 +32223,7 @@ public final class PremiumMADRTBProtocol {
           price_ = 0;
           adid_ = "";
           cid_ = "";
-          crid_ = "";
+          icon_ = "";
           cover_ = "";
           adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           duration_ = 0;
@@ -32264,7 +32264,7 @@ public final class PremiumMADRTBProtocol {
             output.writeBytes(5, getCidBytes());
           }
           if (((bitField0_ & 0x00000020) == 0x00000020)) {
-            output.writeBytes(6, getCridBytes());
+            output.writeBytes(6, getIconBytes());
           }
           if (((bitField0_ & 0x00000040) == 0x00000040)) {
             output.writeBytes(7, getCoverBytes());
@@ -32327,7 +32327,7 @@ public final class PremiumMADRTBProtocol {
           }
           if (((bitField0_ & 0x00000020) == 0x00000020)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(6, getCridBytes());
+              .computeBytesSize(6, getIconBytes());
           }
           if (((bitField0_ & 0x00000040) == 0x00000040)) {
             size += com.google.protobuf.CodedOutputStream
@@ -32503,7 +32503,7 @@ public final class PremiumMADRTBProtocol {
             bitField0_ = (bitField0_ & ~0x00000008);
             cid_ = "";
             bitField0_ = (bitField0_ & ~0x00000010);
-            crid_ = "";
+            icon_ = "";
             bitField0_ = (bitField0_ & ~0x00000020);
             cover_ = "";
             bitField0_ = (bitField0_ & ~0x00000040);
@@ -32584,7 +32584,7 @@ public final class PremiumMADRTBProtocol {
             if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
               to_bitField0_ |= 0x00000020;
             }
-            result.crid_ = crid_;
+            result.icon_ = icon_;
             if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
               to_bitField0_ |= 0x00000040;
             }
@@ -32673,9 +32673,9 @@ public final class PremiumMADRTBProtocol {
               cid_ = other.cid_;
               onChanged();
             }
-            if (other.hasCrid()) {
+            if (other.hasIcon()) {
               bitField0_ |= 0x00000020;
-              crid_ = other.crid_;
+              icon_ = other.icon_;
               onChanged();
             }
             if (other.hasCover()) {
@@ -33088,24 +33088,24 @@ public final class PremiumMADRTBProtocol {
             return this;
           }
 
-          private java.lang.Object crid_ = "";
+          private java.lang.Object icon_ = "";
           /**
-           * <code>optional string crid = 6;</code>
+           * <code>optional string icon = 6;</code>
            */
-          public boolean hasCrid() {
+          public boolean hasIcon() {
             return ((bitField0_ & 0x00000020) == 0x00000020);
           }
           /**
-           * <code>optional string crid = 6;</code>
+           * <code>optional string icon = 6;</code>
            */
-          public java.lang.String getCrid() {
-            java.lang.Object ref = crid_;
+          public java.lang.String getIcon() {
+            java.lang.Object ref = icon_;
             if (!(ref instanceof java.lang.String)) {
               com.google.protobuf.ByteString bs =
                   (com.google.protobuf.ByteString) ref;
               java.lang.String s = bs.toStringUtf8();
               if (bs.isValidUtf8()) {
-                crid_ = s;
+                icon_ = s;
               }
               return s;
             } else {
@@ -33113,53 +33113,53 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional string crid = 6;</code>
+           * <code>optional string icon = 6;</code>
            */
           public com.google.protobuf.ByteString
-              getCridBytes() {
-            java.lang.Object ref = crid_;
+              getIconBytes() {
+            java.lang.Object ref = icon_;
             if (ref instanceof String) {
               com.google.protobuf.ByteString b = 
                   com.google.protobuf.ByteString.copyFromUtf8(
                       (java.lang.String) ref);
-              crid_ = b;
+              icon_ = b;
               return b;
             } else {
               return (com.google.protobuf.ByteString) ref;
             }
           }
           /**
-           * <code>optional string crid = 6;</code>
+           * <code>optional string icon = 6;</code>
            */
-          public Builder setCrid(
+          public Builder setIcon(
               java.lang.String value) {
             if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000020;
-            crid_ = value;
+            icon_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string crid = 6;</code>
+           * <code>optional string icon = 6;</code>
            */
-          public Builder clearCrid() {
+          public Builder clearIcon() {
             bitField0_ = (bitField0_ & ~0x00000020);
-            crid_ = getDefaultInstance().getCrid();
+            icon_ = getDefaultInstance().getIcon();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string crid = 6;</code>
+           * <code>optional string icon = 6;</code>
            */
-          public Builder setCridBytes(
+          public Builder setIconBytes(
               com.google.protobuf.ByteString value) {
             if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000020;
-            crid_ = value;
+            icon_ = value;
             onChanged();
             return this;
           }
@@ -35626,7 +35626,7 @@ public final class PremiumMADRTBProtocol {
       "\005\032\213\n\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
       "e.rtb.BidResponse.SeatBid.Bid\032\307\t\n\003Bid\022\n\n" +
       "\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022" +
-      "\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004crid\030\006 \001(\t" +
+      "\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004icon\030\006 \001(\t" +
       "\022\r\n\005cover\030\007 \001(\t\022\013\n\003adm\030\010 \003(\t\022\020\n\010duration" +
       "\030\t \001(\005\022L\n\nadm_native\030\n \001(\01328.com.madhous" +
       "e.rtb.BidResponse.SeatBid.Bid.NativeResp" +
@@ -35806,7 +35806,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_descriptor,
-        new java.lang.String[] { "Id", "Impid", "Price", "Adid", "Cid", "Crid", "Cover", "Adm", "Duration", "AdmNative", "Admid", "Dealid", "Nurl", "Lpgurl", "Acttype", "Monitor", });
+        new java.lang.String[] { "Id", "Impid", "Price", "Adid", "Cid", "Icon", "Cover", "Adm", "Duration", "AdmNative", "Admid", "Dealid", "Nurl", "Lpgurl", "Acttype", "Monitor", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_fieldAccessorTable = new
