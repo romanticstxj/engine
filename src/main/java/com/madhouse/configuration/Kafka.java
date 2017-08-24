@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Kafka {
-	public class Topic {
+	public static class Topic {
 		private String type;
 		private String topic;
 
