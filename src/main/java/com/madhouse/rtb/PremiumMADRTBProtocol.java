@@ -13882,20 +13882,29 @@ public final class PremiumMADRTBProtocol {
           com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>optional float lon = 1;</code>
+         * <code>optional int32 type = 1;</code>
+         */
+        boolean hasType();
+        /**
+         * <code>optional int32 type = 1;</code>
+         */
+        int getType();
+
+        /**
+         * <code>optional float lon = 2;</code>
          */
         boolean hasLon();
         /**
-         * <code>optional float lon = 1;</code>
+         * <code>optional float lon = 2;</code>
          */
         float getLon();
 
         /**
-         * <code>optional float lat = 2;</code>
+         * <code>optional float lat = 3;</code>
          */
         boolean hasLat();
         /**
-         * <code>optional float lat = 2;</code>
+         * <code>optional float lat = 3;</code>
          */
         float getLat();
       }
@@ -13951,13 +13960,18 @@ public final class PremiumMADRTBProtocol {
                   }
                   break;
                 }
-                case 13: {
+                case 8: {
                   bitField0_ |= 0x00000001;
-                  lon_ = input.readFloat();
+                  type_ = input.readInt32();
                   break;
                 }
                 case 21: {
                   bitField0_ |= 0x00000002;
+                  lon_ = input.readFloat();
+                  break;
+                }
+                case 29: {
+                  bitField0_ |= 0x00000004;
                   lat_ = input.readFloat();
                   break;
                 }
@@ -14001,37 +14015,53 @@ public final class PremiumMADRTBProtocol {
         }
 
         private int bitField0_;
-        public static final int LON_FIELD_NUMBER = 1;
-        private float lon_;
+        public static final int TYPE_FIELD_NUMBER = 1;
+        private int type_;
         /**
-         * <code>optional float lon = 1;</code>
+         * <code>optional int32 type = 1;</code>
          */
-        public boolean hasLon() {
+        public boolean hasType() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>optional float lon = 1;</code>
+         * <code>optional int32 type = 1;</code>
+         */
+        public int getType() {
+          return type_;
+        }
+
+        public static final int LON_FIELD_NUMBER = 2;
+        private float lon_;
+        /**
+         * <code>optional float lon = 2;</code>
+         */
+        public boolean hasLon() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional float lon = 2;</code>
          */
         public float getLon() {
           return lon_;
         }
 
-        public static final int LAT_FIELD_NUMBER = 2;
+        public static final int LAT_FIELD_NUMBER = 3;
         private float lat_;
         /**
-         * <code>optional float lat = 2;</code>
+         * <code>optional float lat = 3;</code>
          */
         public boolean hasLat() {
-          return ((bitField0_ & 0x00000002) == 0x00000002);
+          return ((bitField0_ & 0x00000004) == 0x00000004);
         }
         /**
-         * <code>optional float lat = 2;</code>
+         * <code>optional float lat = 3;</code>
          */
         public float getLat() {
           return lat_;
         }
 
         private void initFields() {
+          type_ = 0;
           lon_ = 0F;
           lat_ = 0F;
         }
@@ -14049,10 +14079,13 @@ public final class PremiumMADRTBProtocol {
                             throws java.io.IOException {
           getSerializedSize();
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            output.writeFloat(1, lon_);
+            output.writeInt32(1, type_);
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            output.writeFloat(2, lat_);
+            output.writeFloat(2, lon_);
+          }
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            output.writeFloat(3, lat_);
           }
           getUnknownFields().writeTo(output);
         }
@@ -14065,11 +14098,15 @@ public final class PremiumMADRTBProtocol {
           size = 0;
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeFloatSize(1, lon_);
+              .computeInt32Size(1, type_);
           }
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeFloatSize(2, lat_);
+              .computeFloatSize(2, lon_);
+          }
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeFloatSize(3, lat_);
           }
           size += getUnknownFields().getSerializedSize();
           memoizedSerializedSize = size;
@@ -14188,10 +14225,12 @@ public final class PremiumMADRTBProtocol {
 
           public Builder clear() {
             super.clear();
-            lon_ = 0F;
+            type_ = 0;
             bitField0_ = (bitField0_ & ~0x00000001);
-            lat_ = 0F;
+            lon_ = 0F;
             bitField0_ = (bitField0_ & ~0x00000002);
+            lat_ = 0F;
+            bitField0_ = (bitField0_ & ~0x00000004);
             return this;
           }
 
@@ -14223,9 +14262,13 @@ public final class PremiumMADRTBProtocol {
             if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
               to_bitField0_ |= 0x00000001;
             }
-            result.lon_ = lon_;
+            result.type_ = type_;
             if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
               to_bitField0_ |= 0x00000002;
+            }
+            result.lon_ = lon_;
+            if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+              to_bitField0_ |= 0x00000004;
             }
             result.lat_ = lat_;
             result.bitField0_ = to_bitField0_;
@@ -14244,6 +14287,9 @@ public final class PremiumMADRTBProtocol {
 
           public Builder mergeFrom(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Device.Geo other) {
             if (other == com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Device.Geo.getDefaultInstance()) return this;
+            if (other.hasType()) {
+              setType(other.getType());
+            }
             if (other.hasLon()) {
               setLon(other.getLon());
             }
@@ -14277,33 +14323,65 @@ public final class PremiumMADRTBProtocol {
           }
           private int bitField0_;
 
-          private float lon_ ;
+          private int type_ ;
           /**
-           * <code>optional float lon = 1;</code>
+           * <code>optional int32 type = 1;</code>
            */
-          public boolean hasLon() {
+          public boolean hasType() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
           }
           /**
-           * <code>optional float lon = 1;</code>
+           * <code>optional int32 type = 1;</code>
+           */
+          public int getType() {
+            return type_;
+          }
+          /**
+           * <code>optional int32 type = 1;</code>
+           */
+          public Builder setType(int value) {
+            bitField0_ |= 0x00000001;
+            type_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int32 type = 1;</code>
+           */
+          public Builder clearType() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            type_ = 0;
+            onChanged();
+            return this;
+          }
+
+          private float lon_ ;
+          /**
+           * <code>optional float lon = 2;</code>
+           */
+          public boolean hasLon() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+          }
+          /**
+           * <code>optional float lon = 2;</code>
            */
           public float getLon() {
             return lon_;
           }
           /**
-           * <code>optional float lon = 1;</code>
+           * <code>optional float lon = 2;</code>
            */
           public Builder setLon(float value) {
-            bitField0_ |= 0x00000001;
+            bitField0_ |= 0x00000002;
             lon_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional float lon = 1;</code>
+           * <code>optional float lon = 2;</code>
            */
           public Builder clearLon() {
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
             lon_ = 0F;
             onChanged();
             return this;
@@ -14311,31 +14389,31 @@ public final class PremiumMADRTBProtocol {
 
           private float lat_ ;
           /**
-           * <code>optional float lat = 2;</code>
+           * <code>optional float lat = 3;</code>
            */
           public boolean hasLat() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
+            return ((bitField0_ & 0x00000004) == 0x00000004);
           }
           /**
-           * <code>optional float lat = 2;</code>
+           * <code>optional float lat = 3;</code>
            */
           public float getLat() {
             return lat_;
           }
           /**
-           * <code>optional float lat = 2;</code>
+           * <code>optional float lat = 3;</code>
            */
           public Builder setLat(float value) {
-            bitField0_ |= 0x00000002;
+            bitField0_ |= 0x00000004;
             lat_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional float lat = 2;</code>
+           * <code>optional float lat = 3;</code>
            */
           public Builder clearLat() {
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
             lat_ = 0F;
             onChanged();
             return this;
@@ -35542,7 +35620,7 @@ public final class PremiumMADRTBProtocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\033PremiumMADRTBProtocol.proto\022\020com.madho" +
-      "use.rtb\"\257\030\n\nBidRequest\022\n\n\002id\030\001 \001(\t\0224\n\003im" +
+      "use.rtb\"\275\030\n\nBidRequest\022\n\n\002id\030\001 \001(\t\0224\n\003im" +
       "p\030\002 \003(\0132\'.com.madhouse.rtb.BidRequest.Im" +
       "pression\022/\n\003app\030\003 \001(\0132 .com.madhouse.rtb" +
       ".BidRequest.AppH\000\0221\n\004site\030\004 \001(\0132!.com.ma" +
@@ -35596,7 +35674,7 @@ public final class PremiumMADRTBProtocol {
       "sionOneof\032\213\001\n\004User\022\n\n\002id\030\001 \001(\t\022\013\n\003yob\030\002 " +
       "\001(\005\022\016\n\006gender\030\003 \001(\t\0223\n\004tags\030\004 \003(\0132%.com." +
       "madhouse.rtb.BidRequest.User.Tag\032%\n\003Tag\022" +
-      "\n\n\002id\030\001 \001(\t\022\022\n\nsimilarity\030\002 \001(\005\032\234\003\n\006Devi" +
+      "\n\n\002id\030\001 \001(\t\022\022\n\nsimilarity\030\002 \001(\005\032\252\003\n\006Devi" +
       "ce\022\n\n\002ua\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014\n\004ipv6\030\003 \001(\t" +
       "\022\013\n\003did\030\004 \001(\t\022\016\n\006didmd5\030\005 \001(\t\022\014\n\004dpid\030\006 " +
       "\001(\t\022\017\n\007dpidmd5\030\007 \001(\t\022\013\n\003mac\030\010 \001(\t\022\016\n\006mac" +
@@ -35606,56 +35684,56 @@ public final class PremiumMADRTBProtocol {
       "\030\020 \001(\005\022\013\n\003osv\030\021 \001(\t\022\020\n\010language\030\022 \001(\t\022\014\n" +
       "\004make\030\023 \001(\t\022\r\n\005model\030\024 \001(\t\022\013\n\003hwv\030\025 \001(\t\022" +
       "4\n\003geo\030\026 \001(\0132\'.com.madhouse.rtb.BidReque" +
-      "st.Device.Geo\032\037\n\003Geo\022\013\n\003lon\030\001 \001(\002\022\013\n\003lat" +
-      "\030\002 \001(\002\032\327\001\n\003App\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t" +
-      "\022\013\n\003ver\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022\017\n\007pagecat\030\005 " +
-      "\003(\t\022\022\n\nsectioncat\030\006 \003(\t\022\016\n\006bundle\030\007 \001(\t\022" +
-      "\014\n\004paid\030\010 \001(\005\022\020\n\010storeurl\030\t \001(\t\022\020\n\010keywo",
-      "rds\030\n \003(\t\0225\n\007content\030\013 \001(\0132$.com.madhous" +
-      "e.rtb.BidRequest.Content\032\326\001\n\004Site\022\n\n\002id\030" +
-      "\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\016\n\006domain\030\003 \001(\t\022\013\n\003c" +
-      "at\030\004 \003(\t\022\017\n\007pagecat\030\005 \003(\t\022\022\n\nsectioncat\030" +
-      "\006 \003(\t\022\014\n\004page\030\007 \001(\t\022\013\n\003ref\030\010 \001(\t\022\016\n\006mobi" +
-      "le\030\t \001(\005\022\020\n\010keywords\030\n \001(\t\0225\n\007content\030\013 " +
-      "\001(\0132$.com.madhouse.rtb.BidRequest.Conten" +
-      "t\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022" +
-      "\020\n\010keywords\030\003 \003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nM" +
-      "ediaOneof\"\373\n\n\013BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n",
-      "\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 \003(\0132%.com.madh" +
-      "ouse.rtb.BidResponse.SeatBid\022\013\n\003nbr\030\004 \001(" +
-      "\005\032\213\n\n\007SeatBid\0226\n\003bid\030\001 \003(\0132).com.madhous" +
-      "e.rtb.BidResponse.SeatBid.Bid\032\307\t\n\003Bid\022\n\n" +
-      "\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022" +
-      "\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t\022\014\n\004icon\030\006 \001(\t" +
-      "\022\r\n\005cover\030\007 \001(\t\022\013\n\003adm\030\010 \003(\t\022\020\n\010duration" +
-      "\030\t \001(\005\022L\n\nadm_native\030\n \001(\01328.com.madhous" +
-      "e.rtb.BidResponse.SeatBid.Bid.NativeResp" +
-      "onse\022\r\n\005admid\030\013 \001(\t\022\016\n\006dealid\030\014 \001(\t\022\014\n\004n",
-      "url\030\r \001(\t\022\016\n\006lpgurl\030\016 \001(\t\022\017\n\007acttype\030\017 \001" +
-      "(\005\022B\n\007monitor\030\020 \001(\01321.com.madhouse.rtb.B" +
-      "idResponse.SeatBid.Bid.Monitor\032\261\005\n\016Nativ" +
-      "eResponse\022\013\n\003ver\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>" +
-      ".com.madhouse.rtb.BidResponse.SeatBid.Bi" +
-      "d.NativeResponse.Asset\032\301\004\n\005Asset\022\n\n\002id\030\001" +
-      " \001(\t\022\020\n\010required\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D." +
-      "com.madhouse.rtb.BidResponse.SeatBid.Bid" +
-      ".NativeResponse.Asset.TitleH\000\022U\n\005image\030\004" +
-      " \001(\0132D.com.madhouse.rtb.BidResponse.Seat",
-      "Bid.Bid.NativeResponse.Asset.ImageH\000\022U\n\005" +
-      "video\030\005 \001(\0132D.com.madhouse.rtb.BidRespon" +
-      "se.SeatBid.Bid.NativeResponse.Asset.Vide" +
-      "oH\000\022S\n\004data\030\006 \001(\0132C.com.madhouse.rtb.Bid" +
-      "Response.SeatBid.Bid.NativeResponse.Asse" +
-      "t.DataH\000\032\025\n\005Title\022\014\n\004text\030\001 \001(\t\0328\n\005Image" +
-      "\022\014\n\004type\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003" +
-      "url\030\004 \003(\t\032<\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005" +
-      "\022\013\n\003url\030\003 \001(\t\022\020\n\010duration\030\004 \001(\005\032#\n\004Data\022" +
-      "\014\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOne",
-      "of\032\252\001\n\007Monitor\022G\n\006impurl\030\001 \003(\01327.com.mad" +
-      "house.rtb.BidResponse.SeatBid.Bid.Monito" +
-      "r.Track\022\016\n\006clkurl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\022" +
-      "\014\n\004exts\030\013 \003(\t\032(\n\005Track\022\022\n\nstartdelay\030\001 \001" +
-      "(\005\022\013\n\003url\030\002 \001(\t"
+      "st.Device.Geo\032-\n\003Geo\022\014\n\004type\030\001 \001(\005\022\013\n\003lo" +
+      "n\030\002 \001(\002\022\013\n\003lat\030\003 \001(\002\032\327\001\n\003App\022\n\n\002id\030\001 \001(\t" +
+      "\022\014\n\004name\030\002 \001(\t\022\013\n\003ver\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t" +
+      "\022\017\n\007pagecat\030\005 \003(\t\022\022\n\nsectioncat\030\006 \003(\t\022\016\n" +
+      "\006bundle\030\007 \001(\t\022\014\n\004paid\030\010 \001(\005\022\020\n\010storeurl\030",
+      "\t \001(\t\022\020\n\010keywords\030\n \003(\t\0225\n\007content\030\013 \001(\013" +
+      "2$.com.madhouse.rtb.BidRequest.Content\032\326" +
+      "\001\n\004Site\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\016\n\006dom" +
+      "ain\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022\017\n\007pagecat\030\005 \003(\t\022" +
+      "\022\n\nsectioncat\030\006 \003(\t\022\014\n\004page\030\007 \001(\t\022\013\n\003ref" +
+      "\030\010 \001(\t\022\016\n\006mobile\030\t \001(\005\022\020\n\010keywords\030\n \001(\t" +
+      "\0225\n\007content\030\013 \001(\0132$.com.madhouse.rtb.Bid" +
+      "Request.Content\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r" +
+      "\n\005title\030\002 \001(\t\022\020\n\010keywords\030\003 \003(\t\022\020\n\010chann" +
+      "els\030\004 \003(\tB\014\n\nMediaOneof\"\373\n\n\013BidResponse\022",
+      "\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 " +
+      "\003(\0132%.com.madhouse.rtb.BidResponse.SeatB" +
+      "id\022\013\n\003nbr\030\004 \001(\005\032\213\n\n\007SeatBid\0226\n\003bid\030\001 \003(\013" +
+      "2).com.madhouse.rtb.BidResponse.SeatBid." +
+      "Bid\032\307\t\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r" +
+      "\n\005price\030\003 \001(\005\022\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t" +
+      "\022\014\n\004icon\030\006 \001(\t\022\r\n\005cover\030\007 \001(\t\022\013\n\003adm\030\010 \003" +
+      "(\t\022\020\n\010duration\030\t \001(\005\022L\n\nadm_native\030\n \001(\013" +
+      "28.com.madhouse.rtb.BidResponse.SeatBid." +
+      "Bid.NativeResponse\022\r\n\005admid\030\013 \001(\t\022\016\n\006dea",
+      "lid\030\014 \001(\t\022\014\n\004nurl\030\r \001(\t\022\016\n\006lpgurl\030\016 \001(\t\022" +
+      "\017\n\007acttype\030\017 \001(\005\022B\n\007monitor\030\020 \001(\01321.com." +
+      "madhouse.rtb.BidResponse.SeatBid.Bid.Mon" +
+      "itor\032\261\005\n\016NativeResponse\022\013\n\003ver\030\001 \001(\t\022N\n\006" +
+      "assets\030\002 \003(\0132>.com.madhouse.rtb.BidRespo" +
+      "nse.SeatBid.Bid.NativeResponse.Asset\032\301\004\n" +
+      "\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010required\030\002 \001(\010\022U\n\005" +
+      "title\030\003 \001(\0132D.com.madhouse.rtb.BidRespon" +
+      "se.SeatBid.Bid.NativeResponse.Asset.Titl" +
+      "eH\000\022U\n\005image\030\004 \001(\0132D.com.madhouse.rtb.Bi",
+      "dResponse.SeatBid.Bid.NativeResponse.Ass" +
+      "et.ImageH\000\022U\n\005video\030\005 \001(\0132D.com.madhouse" +
+      ".rtb.BidResponse.SeatBid.Bid.NativeRespo" +
+      "nse.Asset.VideoH\000\022S\n\004data\030\006 \001(\0132C.com.ma" +
+      "dhouse.rtb.BidResponse.SeatBid.Bid.Nativ" +
+      "eResponse.Asset.DataH\000\032\025\n\005Title\022\014\n\004text\030" +
+      "\001 \001(\t\0328\n\005Image\022\014\n\004type\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022" +
+      "\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003(\t\032<\n\005Video\022\t\n\001w\030\001 " +
+      "\001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url\030\003 \001(\t\022\020\n\010duration\030" +
+      "\004 \001(\005\032#\n\004Data\022\014\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001",
+      "(\tB\014\n\nAssetOneof\032\252\001\n\007Monitor\022G\n\006impurl\030\001" +
+      " \003(\01327.com.madhouse.rtb.BidResponse.Seat" +
+      "Bid.Bid.Monitor.Track\022\016\n\006clkurl\030\002 \003(\t\022\016\n" +
+      "\006securl\030\003 \003(\t\022\014\n\004exts\030\013 \003(\t\032(\n\005Track\022\022\n\n" +
+      "startdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -35770,7 +35848,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidRequest_Device_Geo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidRequest_Device_Geo_descriptor,
-        new java.lang.String[] { "Lon", "Lat", });
+        new java.lang.String[] { "Type", "Lon", "Lat", });
     internal_static_com_madhouse_rtb_BidRequest_App_descriptor =
       internal_static_com_madhouse_rtb_BidRequest_descriptor.getNestedTypes().get(3);
     internal_static_com_madhouse_rtb_BidRequest_App_fieldAccessorTable = new

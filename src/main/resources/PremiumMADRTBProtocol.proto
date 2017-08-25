@@ -172,8 +172,9 @@ message BidRequest
         
         message Geo 
         {
-            optional float lon = 1;
-            optional float lat = 2;
+			optional int32 type = 1;
+            optional float lon = 2;
+            optional float lat = 3;
         }
     }
     

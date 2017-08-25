@@ -86,10 +86,10 @@ public class HttpUtil {
 
             if (httpClient.executeMethod(getMethod) == HttpStatus.SC_OK) {
                 String filePath = localPath;
-                if (!filePath.endsWith("\\")) {
-                    filePath += "\\";
+                if (!filePath.endsWith("\\") && !filePath.endsWith("/")) {
+                    filePath += "/";
                 }
-
+                
                 String fileName = url;
                 int pos = url.lastIndexOf("/");
                 if (pos > 0) {
