@@ -39,7 +39,7 @@ public class StringUtil {
         for (byte b : data) {
             String str = Integer.toString(b & 0xff, 16);
             if (str.length() < 2) {
-                str = "0" + str;
+                sb.append("0");
             }
 
             sb.append(str);
