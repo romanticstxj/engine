@@ -16,6 +16,8 @@ import java.util.Map;
  * Created by WUJUNFENG on 2017/6/9.
  */
 public class HttpUtil {
+    private static HttpClient httpClient = new HttpClient();
+
     public static String getRealIp(HttpServletRequest req) {
         String ip = req.getHeader("X-Real-IP");
         if (ip != null) {
@@ -80,7 +82,6 @@ public class HttpUtil {
         GetMethod getMethod = null;
 
         try {
-            HttpClient httpClient = new HttpClient();
             getMethod = new GetMethod(url);
 
             if (httpClient.executeMethod(getMethod) == HttpStatus.SC_OK) {
