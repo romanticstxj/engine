@@ -163,14 +163,13 @@ public class XtraderHandler extends MediaBaseHandler {
             mediaRequest.setIp(device.getIp());
         }
 
-        Geo.Builder geo = Geo.newBuilder();
-        if (!StringUtils.isEmpty(device.getGeo().getLat()+"")) {
+        if (!StringUtils.isEmpty(device.getGeo().getLat()+"") && !StringUtils.isEmpty(device.getGeo().getLon()+"")) {
+            Geo.Builder geo = Geo.newBuilder();
             geo.setLat(device.getGeo().getLat());
-        }
-        if (!StringUtils.isEmpty(device.getGeo().getLon()+"")) {
             geo.setLon(device.getGeo().getLon());
+            mediaRequest.setGeoBuilder(geo);
         }
-        mediaRequest.setGeoBuilder(geo);
+
         mediaRequest.setType(ObjectUtils.isEmpty(xtraderBidRequest.getSite()) ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest.build();
     }

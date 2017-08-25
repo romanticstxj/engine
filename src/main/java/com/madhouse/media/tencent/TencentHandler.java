@@ -171,14 +171,15 @@ public class TencentHandler extends MediaBaseHandler {
             mediaRequest.setIp(device.getIp());
         }
 
-        Geo.Builder geo = Geo.newBuilder();
-        if (!device.getGeo().hasLongitude()) {
-            geo.setLat(device.getGeo().getLatitude());
+        if (device.getGeo() != null) {
+            if (device.getGeo().hasLongitude() && device.getGeo().hasLongitude()) {
+                Geo.Builder geo = Geo.newBuilder();
+                geo.setLat(device.getGeo().getLatitude());
+                geo.setLon(device.getGeo().getLongitude());
+                mediaRequest.setGeoBuilder(geo);
+            }
         }
-        if (!device.getGeo().hasLongitude()) {
-            geo.setLon(device.getGeo().getLongitude());
-        }
-        mediaRequest.setGeoBuilder(geo);
+
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest.build();
     }

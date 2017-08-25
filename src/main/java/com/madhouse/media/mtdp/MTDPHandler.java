@@ -135,14 +135,13 @@ public class MTDPHandler extends MediaBaseHandler {
             mediaRequest.setIp(ip);
         }
 
-        Geo.Builder geo = Geo.newBuilder();
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
+        if(ObjectUtils.isNotEmpty(device.getGeo())) {
+            Geo.Builder geo = Geo.newBuilder();
             geo.setLon((float) device.getGeo().getLon());
-        }
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLat())){
             geo.setLat((float) device.getGeo().getLat());
+            mediaRequest.setGeoBuilder(geo);
         }
-        mediaRequest.setGeoBuilder(geo);
+
         DPAds.BidRequest.Site site = bidRequest.getSite();
         mediaRequest.setType(site !=null ? Constant.MediaType.APP : Constant.MediaType.SITE);
         logger.info("MTDPrequest convert mediaRequest is : {}", mediaRequest.toString());

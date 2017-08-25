@@ -260,14 +260,13 @@ public class MomoHandler extends MediaBaseHandler {
             mediaRequest.setIp(ip);
         }
 
-        Geo.Builder geo = Geo.newBuilder();
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
+        if(ObjectUtils.isNotEmpty(device.getGeo())) {
+            Geo.Builder geo = Geo.newBuilder();
             geo.setLat((float)device.getGeo().getLon());
-        }
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
             geo.setLon((float)device.getGeo().getLat());
+            mediaRequest.setGeoBuilder(geo);
         }
-        mediaRequest.setGeoBuilder(geo);
+
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         
         switch (device.getConnectiontype()) {

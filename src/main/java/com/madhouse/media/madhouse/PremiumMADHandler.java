@@ -137,17 +137,14 @@ public class PremiumMADHandler extends MediaBaseHandler {
             mediaRequest.setCellmd5(madBidRequest.getMcell());
         }
 
-        Geo.Builder geo = Geo.newBuilder();
-        //纬度
-        if(!StringUtils.isEmpty(madBidRequest.getLat())){
+        if(!StringUtils.isEmpty(madBidRequest.getLat()) && !StringUtils.isEmpty(madBidRequest.getLon())) {
+            Geo.Builder geo = Geo.newBuilder();
+            //纬度
             geo.setLat(Float.parseFloat(madBidRequest.getLat()));
-        }
-        //经度
-        if(!StringUtils.isEmpty(madBidRequest.getLon())){
+            //经度
             geo.setLon(Float.parseFloat(madBidRequest.getLon()));
+            mediaRequest.setGeoBuilder(geo);
         }
-
-        mediaRequest.setGeoBuilder(geo);
 
         //PDB、PD模式的deal id
         if(!StringUtils.isEmpty(madBidRequest.getDealid())){
