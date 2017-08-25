@@ -3,6 +3,7 @@ package com.madhouse.media.tencent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.Geo;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -169,12 +170,15 @@ public class TencentHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(device.getIp())) {
             mediaRequest.setIp(device.getIp());
         }
+
+        Geo.Builder geo = Geo.newBuilder();
         if (!device.getGeo().hasLongitude()) {
-            mediaRequest.setLat(device.getGeo().getLatitude());
+            geo.setLat(device.getGeo().getLatitude());
         }
         if (!device.getGeo().hasLongitude()) {
-            mediaRequest.setLon(device.getGeo().getLongitude());
+            geo.setLon(device.getGeo().getLongitude());
         }
+        mediaRequest.setGeoBuilder(geo);
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest.build();
     }

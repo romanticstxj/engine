@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,11 +18,7 @@ import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.mtdp.DPAds.BidRequest;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
-import com.madhouse.ssp.avro.MediaResponse;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 
 public class MTDPHandler extends MediaBaseHandler {
@@ -137,13 +134,15 @@ public class MTDPHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(ip)) {
             mediaRequest.setIp(ip);
         }
+
+        Geo.Builder geo = Geo.newBuilder();
         if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
-            mediaRequest.setLat((float)device.getGeo().getLon());
+            geo.setLon((float) device.getGeo().getLon());
         }
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
-            mediaRequest.setLon((float)device.getGeo().getLat());
+        if(ObjectUtils.isNotEmpty(device.getGeo().getLat())){
+            geo.setLat((float) device.getGeo().getLat());
         }
-        
+        mediaRequest.setGeoBuilder(geo);
         DPAds.BidRequest.Site site = bidRequest.getSite();
         mediaRequest.setType(site !=null ? Constant.MediaType.APP : Constant.MediaType.SITE);
         logger.info("MTDPrequest convert mediaRequest is : {}", mediaRequest.toString());

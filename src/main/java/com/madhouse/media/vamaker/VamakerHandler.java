@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.UrlEncoded;
@@ -17,10 +18,6 @@ import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.vamaker.VamakerRTB.VamRequest;
 import com.madhouse.media.vamaker.VamakerRTB.VamResponse.Builder;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.MediaResponse;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
@@ -120,8 +117,10 @@ public class VamakerHandler extends MediaBaseHandler {
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         VamakerRTB.VamRequest.Mobile.Point point = mobile.getCorner();
         if (point != null) {
-            mediaRequest.setLon(point.getLongitude());
-            mediaRequest.setLat(point.getLatitude());
+            Geo.Builder geo = Geo.newBuilder();
+            geo.setLon(point.getLongitude());
+            geo.setLat(point.getLatitude());
+            mediaRequest.setGeoBuilder(geo);
         }
         String osv = mobile.getOsVersion();
         if (!StringUtils.isEmpty(osv)) {

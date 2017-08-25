@@ -6,17 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
-import com.madhouse.ssp.avro.MediaResponse;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
@@ -107,14 +104,18 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(mojiWeatherBidRequest.getDevice())) {
             mediaRequest.setModel(mojiWeatherBidRequest.getDevice());
         }
+
+        Geo.Builder geo = Geo.newBuilder();
         //经度
         if(!StringUtils.isEmpty(mojiWeatherBidRequest.getLon())){
-            mediaRequest.setLon(Float.parseFloat(mojiWeatherBidRequest.getLon()));
+            geo.setLon(Float.parseFloat(mojiWeatherBidRequest.getLon()));
         }
         //纬度
         if(!StringUtils.isEmpty(mojiWeatherBidRequest.getLat())){
-            mediaRequest.setLat(Float.parseFloat(mojiWeatherBidRequest.getLat()));
+            geo.setLat(Float.parseFloat(mojiWeatherBidRequest.getLat()));
         }
+
+        mediaRequest.setGeoBuilder(geo);
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("mojiWeather convert mediaRequest is :{}", JSON.toJSONString(mediaRequest));
         return mediaRequest.build();

@@ -160,12 +160,14 @@ public class SinaHandler extends MediaBaseHandler {
         mediaRequest.setBidfloor(imp.getBidfloor());
         Geo geo = device.getGeo();
         if (geo != null) {
+            com.madhouse.ssp.avro.Geo.Builder vargeo = com.madhouse.ssp.avro.Geo.newBuilder();
             if(ObjectUtils.isNotEmpty(geo.getLat()+"")){
-                mediaRequest.setLat((float)geo.getLat());
+                vargeo.setLat((float)geo.getLat());
             }
             if(ObjectUtils.isNotEmpty(geo.getLon()+"")){
-                mediaRequest.setLon((float)geo.getLon());
+                vargeo.setLon((float)geo.getLon());
             }
+            mediaRequest.setGeoBuilder(vargeo);
         }
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setType(Constant.MediaType.APP);

@@ -88,10 +88,14 @@ public class MADRTBHandler extends DSPBaseHandler {
             device.setModel(StringUtil.toString(mediaRequest.getModel()));
             device.setOs(mediaRequest.getOs());
             device.setOsv(StringUtil.toString(mediaRequest.getOsv()));
-            PremiumMADRTBProtocol.BidRequest.Device.Geo.Builder geo = PremiumMADRTBProtocol.BidRequest.Device.Geo.newBuilder();
-            geo.setLon(mediaRequest.getLon());
-            geo.setLat(mediaRequest.getLat());
-            device.setGeo(geo);
+
+            if (mediaRequest.getGeoBuilder() != null) {
+                PremiumMADRTBProtocol.BidRequest.Device.Geo.Builder geo = PremiumMADRTBProtocol.BidRequest.Device.Geo.newBuilder();
+                geo.setLon(mediaRequest.getGeoBuilder().getLon());
+                geo.setLat(mediaRequest.getGeoBuilder().getLat());
+                device.setGeo(geo);
+            }
+
             bidRequest.setDevice(device);
         }
 

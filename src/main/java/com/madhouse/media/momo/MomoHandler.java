@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,11 +25,7 @@ import com.madhouse.media.momo.MomoExchange.BidRequest;
 import com.madhouse.media.momo.MomoExchange.BidResponse;
 import com.madhouse.media.momo.MomoResponse.Bid;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
-import com.madhouse.ssp.avro.MediaResponse;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 
@@ -169,12 +166,16 @@ public class MomoHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(ip)) {
             mediaRequest.setIp(ip);
         }
+
+        Geo.Builder geo = Geo.newBuilder();
         if(ObjectUtils.isNotEmpty(device.getGeo().getLon()+"")){
-            mediaRequest.setLat((float)device.getGeo().getLon());
+            geo.setLat((float)device.getGeo().getLon());
         }
         if(ObjectUtils.isNotEmpty(device.getGeo().getLon()+"")){
-            mediaRequest.setLon((float)device.getGeo().getLat());
+            geo.setLon((float)device.getGeo().getLat());
         }
+
+        mediaRequest.setGeoBuilder(geo);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setType(Constant.MediaType.APP);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
@@ -258,13 +259,15 @@ public class MomoHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(ip)) {
             mediaRequest.setIp(ip);
         }
+
+        Geo.Builder geo = Geo.newBuilder();
         if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
-            mediaRequest.setLat((float)device.getGeo().getLon());
+            geo.setLat((float)device.getGeo().getLon());
         }
         if(ObjectUtils.isNotEmpty(device.getGeo().getLon())){
-            mediaRequest.setLon((float)device.getGeo().getLat());
+            geo.setLon((float)device.getGeo().getLat());
         }
-        
+        mediaRequest.setGeoBuilder(geo);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         
         switch (device.getConnectiontype()) {
