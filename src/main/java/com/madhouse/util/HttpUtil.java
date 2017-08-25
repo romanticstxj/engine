@@ -99,7 +99,15 @@ public class HttpUtil {
                 filePath += fileName;
                 File file = new File(filePath);
                 OutputStream outputStream = new FileOutputStream(file);
-                outputStream.write(getMethod.getResponseBody());
+                InputStream inputStream = getMethod.getResponseBodyAsStream();
+
+                int len = 0;
+                byte[] buffer = new byte[4096];
+                while ((len = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, len);
+                }
+
+                inputStream.close();
                 outputStream.flush();
                 outputStream.close();
 
