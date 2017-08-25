@@ -283,17 +283,17 @@ public class MADRTBHandler extends DSPBaseHandler {
                         PremiumMADRTBProtocol.BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
                         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
                         dspResponse.setId(dspBid.getRequestBuilder().getId());
-                        dspResponse.setBidid(bid.getId());
+                        dspResponse.setBidid(StringUtil.toString(bid.getId()));
                         dspResponse.setImpid(dspBid.getRequestBuilder().getImpid());
-                        dspResponse.setAdid(bid.getAdid());
-                        dspResponse.setCid(bid.getCid());
-                        dspResponse.setIcon(bid.getIcon());
+                        dspResponse.setAdid(StringUtil.toString(bid.getAdid()));
+                        dspResponse.setCid(StringUtil.toString(bid.getCid()));
+                        dspResponse.setIcon(StringUtil.toString(bid.getIcon()));
                         dspResponse.setPrice(bid.getPrice());
-                        dspResponse.setNurl(bid.getNurl());
-                        dspResponse.setAdmid(bid.getAdmid());
+                        dspResponse.setNurl(StringUtil.toString(bid.getNurl()));
+                        dspResponse.setAdmid(StringUtil.toString(bid.getAdmid()));
                         dspResponse.setDuration(bid.getDuration());
-                        dspResponse.setDealid(bid.getDealid());
-                        dspResponse.setLpgurl(bid.getLpgurl());
+                        dspResponse.setDealid(StringUtil.toString(bid.getDealid()));
+                        dspResponse.setLpgurl(StringUtil.toString(bid.getLpgurl()));
                         dspResponse.setActtype(bid.getActtype());
 
                         if (bid.getMonitor() != null) {
@@ -301,10 +301,10 @@ public class MADRTBHandler extends DSPBaseHandler {
                             dspResponse.setMonitorBuilder(monitor);
 
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : bid.getMonitor().getImpurlList()) {
-                                Track.Builder track1 = Track.newBuilder();
-                                track1.setStartdelay(track.getStartdelay());
-                                track1.setUrl(track.getUrl());
-                                monitor.getImpurl().add(track1.build());
+                                Track.Builder var = Track.newBuilder();
+                                var.setStartdelay(track.getStartdelay());
+                                var.setUrl(track.getUrl());
+                                monitor.getImpurl().add(var.build());
                             }
 
                             for (String url : bid.getMonitor().getClkurlList()) {
@@ -329,17 +329,17 @@ public class MADRTBHandler extends DSPBaseHandler {
                         } else {
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
                                 if (asset.hasTitle()) {
-                                    dspResponse.setTitle(asset.getTitle().getText());
+                                    dspResponse.setTitle(StringUtil.toString(asset.getTitle().getText()));
                                     continue;
                                 }
 
                                 if (asset.hasData()) {
-                                    dspResponse.setDesc(asset.getData().getValue());
+                                    dspResponse.setDesc(StringUtil.toString(asset.getData().getValue()));
                                     continue;
                                 }
 
                                 if (asset.hasVideo()) {
-                                    dspResponse.getAdm().add(asset.getVideo().getUrl());
+                                    dspResponse.getAdm().add(StringUtil.toString(asset.getVideo().getUrl()));
                                     dspResponse.setDuration(asset.getVideo().getDuration());
                                     continue;
                                 }
@@ -347,12 +347,12 @@ public class MADRTBHandler extends DSPBaseHandler {
                                 if (asset.hasImage()) {
                                     switch (asset.getImage().getType()) {
                                         case Constant.NativeImageType.ICON: {
-                                            dspResponse.setIcon(asset.getImage().getUrl(0));
+                                            dspResponse.setIcon(StringUtil.toString(asset.getImage().getUrl(0)));
                                             break;
                                         }
 
                                         case Constant.NativeImageType.COVER: {
-                                            dspResponse.setCover(asset.getImage().getUrl(0));
+                                            dspResponse.setCover(StringUtil.toString(asset.getImage().getUrl(0)));
                                             break;
                                         }
 
