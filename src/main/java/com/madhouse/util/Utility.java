@@ -19,7 +19,6 @@ public final class Utility {
 
         List<Pair<Pair<T, Integer>, Integer>> weightsList = new ArrayList<>(dataSource.size());
 
-        int index = 0;
         int maxLength = 0;
         for (Pair<T, Integer> data : dataSource) {
             Pair<Pair<T, Integer>, Integer> var1 = Pair.of(data, maxLength);

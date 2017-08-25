@@ -1,8 +1,15 @@
 package com.madhouse.util;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+
+
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -67,5 +74,44 @@ public class HttpUtil {
             i += readlen;
         }
         return new String(buffer);
+    }
+
+    public static String downloadFile(String url, String localPath) {
+        GetMethod getMethod = null;
+
+        try {
+            HttpClient httpClient = new HttpClient();
+            getMethod = new GetMethod(url);
+
+            if (httpClient.executeMethod(getMethod) == HttpStatus.SC_OK) {
+                String filePath = localPath;
+                if (!filePath.endsWith("\\")) {
+                    filePath += "\\";
+                }
+
+                String fileName = url;
+                int pos = url.lastIndexOf("/");
+                if (pos > 0) {
+                    fileName = url.substring(pos + 1);
+                }
+
+                filePath += fileName;
+                File file = new File(filePath);
+                OutputStream outputStream = new FileOutputStream(file);
+                outputStream.write(getMethod.getResponseBody());
+                outputStream.flush();
+                outputStream.close();
+
+                return filePath;
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        } finally {
+            if (getMethod != null) {
+                getMethod.releaseConnection();
+            }
+        }
+
+        return null;
     }
 }

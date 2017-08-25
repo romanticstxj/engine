@@ -428,7 +428,7 @@ public class WorkThread {
                     }
 
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
-                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
+                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE && policyMetaData.getMaxCount() > 0) {
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(new Date());
                             String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
@@ -470,12 +470,6 @@ public class WorkThread {
                                 trackingParam.setDspId(winner.getDspMetaData().getId());
                                 trackingParam.setDspCost(winner.getAuctionPriceInfo());
                                 winner.getDspBidBuilder().setWinner(1);
-
-/*
-                                int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-                                String recordKey = String.format(Constant.CommonKey.BID_RECORD, mediaBid.getImpid(), Long.toString(mediaMetaData.getId()), Long.toString(plcmtMetaData.getId()), Long.toString(policyMetaData.getId()));
-                                redisMaster.set(recordKey, Long.toString(System.currentTimeMillis()), "NX", "EX", expiredTime);
-*/
 
                                 if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {
                                     String url = winner.getDspBaseHandler().getWinNoticeUrl(winner);
