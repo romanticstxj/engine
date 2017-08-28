@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
@@ -39,23 +40,24 @@ public class ToutiaoHandler extends MediaBaseHandler {
             logger.info("ToutiaoHandler params is {} "+bidRequest.toString());
             int status =  validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
-                MediaRequest request = conversionToPremiumMADDataModel(isSandbox,bidRequest);
+                MediaRequest.Builder request = conversionToPremiumMADDataModel(isSandbox,bidRequest);
                 if(request != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(request);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
             } 
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             TOUTIAOAds.BidResponse.Builder builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
-            return outputStreamWrite(builder, resp);
+            outputStreamWrite(builder, resp);
+            return false;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
     }
-    private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         
@@ -87,7 +89,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             }
         }
         String supplierAdspaceKey = "";
-        if(!StringUtils.isEmpty(mediaRequest.getAdspacekey())){
+        if(StringUtils.isEmpty(mediaRequest.getAdspacekey())){
             if (isSandbox) {// sandbox环境
                 supplierAdspaceKey = "sandbox:TT:0:0";
                 //模拟竞价，不计费
@@ -97,7 +99,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 mediaRequest.setTest(Constant.Test.REAL);
             }
         }
-        if (supplierAdspaceKey != null) {
+        if (!"".equals(supplierAdspaceKey)) {
             MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(supplierAdspaceKey);
             if (mappingMetaData != null) {
                 mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
@@ -206,8 +208,8 @@ public class ToutiaoHandler extends MediaBaseHandler {
             mediaRequest.setLat((float)geo.getLat());
         }
         mediaRequest.setType(Constant.MediaType.APP);
-        logger.info("Toutiao convert mediaRequest is : {}", mediaRequest.toString());
-        return mediaRequest.build();
+        logger.info("Toutiao convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
+        return mediaRequest;
     }
     /**
      * 根据广告位的宽度和高度返回今日头条的广告类型，头条只会传1，2，6，如果有多个，就随机取一个
@@ -311,29 +313,32 @@ public class ToutiaoHandler extends MediaBaseHandler {
     }
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        TOUTIAOAds.BidResponse.Builder builder;
-        resp.setContentType("application/octet-stream;charset=UTF-8");
+        TOUTIAOAds.BidResponse.Builder builder = TOUTIAOAds.BidResponse.newBuilder();
         TOUTIAOAds.BidRequest bidRequest = (TOUTIAOAds.BidRequest) mediaBidMetaData.getRequestObject();
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-            if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                if(!StringUtils.isEmpty(mediaBidMetaData.getMediaBidBuilder().getResponse().getAdmid())){
-                    resp.setStatus(Constant.StatusCode.OK);
-                    builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.OK);
-                } else {
+            try {
+                if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                    if(!StringUtils.isEmpty(mediaBidMetaData.getMediaBidBuilder().getResponseBuilder().getAdmid())){
+                        resp.setStatus(Constant.StatusCode.OK);
+                        builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.OK);
+                    } else {
+                        resp.setStatus(Constant.StatusCode.NO_CONTENT);
+                        builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
+                    }
+                } else if(mediaBid.getStatus() == Constant.StatusCode.NO_CONTENT) {
                     resp.setStatus(Constant.StatusCode.NO_CONTENT);
                     builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
+                }else {
+                    resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                    builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
                 }
-            } else if(mediaBid.getStatus() == Constant.StatusCode.NO_CONTENT) {
-                resp.setStatus(Constant.StatusCode.NO_CONTENT);
-                builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
-            }else {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-                builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.BAD_REQUEST);
+            } catch (Exception e) {
+                logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
+                return outputStreamWrite(builder, resp);
             }
-            return outputStreamWrite(builder, resp);
         }
-        return false;
+        return outputStreamWrite(builder, resp);
         
     }
     private boolean outputStreamWrite(TOUTIAOAds.BidResponse.Builder builder, HttpServletResponse resp)  {
@@ -366,7 +371,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         TOUTIAOAds.Bid.Builder bidBuilder = TOUTIAOAds.Bid.newBuilder();
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid()); 
-        bidBuilder.setAdid(Long.parseLong(mediaResponse.getAdmid()));
+        bidBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? Long.parseLong(mediaResponse.getCrid()):0);
         bidBuilder.setAdslotId(bidRequest.getAdslots(0).getId());
         bidBuilder.setPrice( builder.getBidfloor());
         
@@ -393,7 +398,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         for (com.madhouse.ssp.avro.Track imp : mediaResponse.getMonitorBuilder().getImpurl()) {
             materialMetaBuilder.addShowUrl(imp.getUrl());
         }
-        bidBuilder.setCreative(materialMetaBuilder);
+        bidBuilder.setCreative(materialMetaBuilder.build());
         seatBidBuilder.addAds(bidBuilder);
         return seatBidBuilder.build();
     }

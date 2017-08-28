@@ -97,6 +97,7 @@ public class SohuHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(ua)) {
             mediaRequest.setUa(ua);
         }
+        mediaRequest.setAdtype(2);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         //网络类型(不区分大小写)：2G，3G，4G，WIFI 
@@ -203,6 +204,9 @@ public class SohuHandler extends MediaBaseHandler {
         seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
         //bid对象
         SohuRTB.Response.Bid.Builder bidBuilder = SohuRTB.Response.Bid.newBuilder();
+        //在底价上加一分
+        bidBuilder.setPrice(bidRequest.getImpression(0).getBidFloor()+1);
+        
         bidBuilder.setAdurl(mediaResponse.getAdm().get(0));
         
         //exchange 自己的展示和点击监播

@@ -293,9 +293,11 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         
         if(status == Constant.StatusCode.OK){
             MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+            MojiWeatherBidRequest bidRequest= (MojiWeatherBidRequest)mediaBidMetaData.getRequestObject();
             Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
             moWeatherBidResponse.setCode(Constant.StatusCode.OK);
-            data.setPrice(mediaRequest.getBidfloor().toString());
+            //在底价上加一分
+            data.setPrice(String.valueOf(bidRequest.getBasic_price()+1));
             data.setChargingtype("1");
             
             //判断是否信息流，2视频 或1 图文
