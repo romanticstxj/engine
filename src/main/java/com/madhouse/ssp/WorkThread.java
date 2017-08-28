@@ -393,7 +393,7 @@ public class WorkThread {
                             //QPS Contorl
                             if (dspMetaData.getMaxQPS() > 0) {
                                 String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
-                                redisMaster.set(qpsControl, "0", "NX", "EX", 3);
+                                redisMaster.set(qpsControl, "0", "NX", "EX", 15);
                                 long totalCount = redisMaster.incrBy(qpsControl, 1);
                                 if (totalCount > dspMetaData.getMaxQPS()) {
                                     logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
@@ -588,7 +588,7 @@ public class WorkThread {
         Set<Pair<PolicyMetaData, Integer>> policyMetaDatas = new HashSet<>(policyList.size());
         for (long policyId : policyList) {
             PolicyMetaData policyMetaData = CacheManager.getInstance().getPolicyMetaData(policyId);
-            if (policyMetaData != null) {
+            if (policyMetaData != null && policyMetaData.getWeight() > 0) {
                 policyMetaDatas.add(Pair.of(policyMetaData, policyMetaData.getWeight()));
             }
         }

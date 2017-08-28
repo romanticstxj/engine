@@ -161,21 +161,14 @@ public class StringUtil {
 
     public static final String getMD5(byte[] input) {
         if (input != null && input.length >= 0) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                md.update(input);
-                byte[] data = md.digest();
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
+            return StringUtil.getMD5(input, 0, input.length);
         }
         return null;
     }
 
     public static final String base64Encode(byte[] input) {
         if (input != null && input.length > 0) {
-            return new BASE64Encoder().encode(input);
+            return StringUtil.base64Encode(input, 0, input.length);
         }
 
         return null;
@@ -183,9 +176,33 @@ public class StringUtil {
 
     public static final String base64Encode(byte[] input, int off, int len) {
         if (input != null && input.length >= off + len) {
-            byte[] buffer = new byte[len];
-            System.arraycopy(input, off, buffer, 0, len);
-            return new BASE64Encoder().encode(buffer);
+            if (off == 0 && len == input.length) {
+                return new BASE64Encoder().encode(input).replace("\r\n", "");
+            } else {
+                byte[] buffer = new byte[len];
+                System.arraycopy(input, off, buffer, 0, len);
+                return new BASE64Encoder().encode(buffer).replace("\r\n", "");
+            }
+        }
+
+        return null;
+    }
+
+    public static final String base64Encode(InputStream is) {
+        if (is != null) {
+            try {
+                StringBuilder sb = new StringBuilder();
+
+                int len = 0;
+                byte[] buffer = new byte[3072];
+                while ((len = is.read(buffer)) > 0) {
+                    sb.append(StringUtil.base64Encode(buffer, 0, len));
+                }
+
+                return sb.toString();
+            } catch (Exception ex) {
+                System.err.println(ex.toString());
+            }
         }
 
         return null;
