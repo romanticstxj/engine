@@ -18,7 +18,6 @@ import com.madhouse.media.sina.SinaBidRequest.Device.Geo;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
@@ -60,15 +59,7 @@ public class SinaHandler extends MediaBaseHandler {
         // 广告请求唯一id
         mediaRequest.setBid(sinaBidRequest.getId());
         
-        mediaRequest.setW(imp.getBanner().getW());
-        
-        mediaRequest.setH(imp.getBanner().getH());
-        
-        if(null !=imp.getBanner()){
-            mediaRequest.setAdtype(2);
-        }else if(null !=imp.getFeed()){
-            mediaRequest.setAdtype(3);
-        }
+        mediaRequest.setAdtype(2);
         
         mediaRequest.setName(app.getName());
         
@@ -78,26 +69,24 @@ public class SinaHandler extends MediaBaseHandler {
         sb.append(imp.getTagid()).append(":");
         // 操作系统的类型
         String os = device.getOs(); 
-        if (SinaStatusCode.Os.OS_ANDROID.equals(os)) {
+        if (SinaStatusCode.Os.OS_ANDROID.equalsIgnoreCase(os)) {
             sb.append(SinaStatusCode.Os.OS_ANDROID);
             mediaRequest.setDid(device.getExt().getImei());
-            
-        } else if(SinaStatusCode.Os.OS_IOS.equals(os)){
+            mediaRequest.setOs(Constant.OSType.ANDROID);
+        } else if(SinaStatusCode.Os.OS_IOS.equalsIgnoreCase(os)){
             sb.append(SinaStatusCode.Os.OS_IOS);
             mediaRequest.setIfa(device.getExt().getIdfa());
-            
+            mediaRequest.setOs(Constant.OSType.IOS);
         }
-        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
-        if (mappingMetaData != null) {
-            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-        } else {
-            mappingMetaData = CacheManager.getInstance().getMediaMapping("SINA:0:0");
-            if(mappingMetaData != null){
-                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-            }else{
-                return null;
-            }
+        
+        if(null !=imp.getBanner()){
+            mediaRequest.setW(imp.getBanner().getW());
+            mediaRequest.setH(imp.getBanner().getH());
+            sb.append("banner");
+        }else{
+             sb.append("feed");
         }
+        
         //0—未知，1—Ethernet，2—wifi，3—蜂窝网络，未知代，4—蜂窝网络，2G，5—蜂窝网络，3G，6—蜂窝网络，4G。
         switch (device.getConnectionType()) {
             case SinaStatusCode.ConnectionType.UNKNOWN:
@@ -171,6 +160,18 @@ public class SinaHandler extends MediaBaseHandler {
         }
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setType(Constant.MediaType.APP);
+        
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+        } else {
+            mappingMetaData = CacheManager.getInstance().getMediaMapping("SINA:0:0");
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+            }else{
+                return null;
+            }
+        }
         return mediaRequest.build();
     }
 

@@ -44,6 +44,9 @@
             }, {
                 "path": "/adcall/tencent/bidrequest",
                 "className": "com.madhouse.media.tencent.TencentHandler"
+            }, {
+                "path": "/adcall/sina/bidrequest",
+                "className": "com.madhouse.media.sina.SinaHandler"
             }
         ],
         "impression": "/adcall/impression",
@@ -65,7 +68,7 @@
                 "topic": "topic_impression"
             }, {
                 "type": "KAFKA_CLICK",
-                "topic": "topic_click_dev"
+                "topic": "topic_click"
             }
         ]
     },

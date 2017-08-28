@@ -22,19 +22,19 @@ import com.madhouse.cache.MediaMetaData;
 import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.cache.PolicyMetaData;
 import com.madhouse.dsp.DSPBaseHandler;
-import com.madhouse.dsp.proctergamble.PGMadAds.Ad;
-import com.madhouse.dsp.proctergamble.PGMadAds.AdSlot;
-import com.madhouse.dsp.proctergamble.PGMadAds.App;
-import com.madhouse.dsp.proctergamble.PGMadAds.BidRequest;
-import com.madhouse.dsp.proctergamble.PGMadAds.BidResponse;
-import com.madhouse.dsp.proctergamble.PGMadAds.CreativeType;
-import com.madhouse.dsp.proctergamble.PGMadAds.Device;
-import com.madhouse.dsp.proctergamble.PGMadAds.Ad.MaterialMeta;
-import com.madhouse.dsp.proctergamble.PGMadAds.Device.Os;
-import com.madhouse.dsp.proctergamble.PGMadAds.Device.UdId;
-import com.madhouse.dsp.proctergamble.PGMadAds.Network;
-import com.madhouse.dsp.proctergamble.PGMadAds.Size;
-import com.madhouse.dsp.proctergamble.PGMadAds.Version;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Ad;
+import com.madhouse.dsp.reachMax.ReachMaxAds.AdSlot;
+import com.madhouse.dsp.reachMax.ReachMaxAds.App;
+import com.madhouse.dsp.reachMax.ReachMaxAds.BidRequest;
+import com.madhouse.dsp.reachMax.ReachMaxAds.BidResponse;
+import com.madhouse.dsp.reachMax.ReachMaxAds.CreativeType;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Device;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Ad.MaterialMeta;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Device.Os;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Device.UdId;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Network;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Size;
+import com.madhouse.dsp.reachMax.ReachMaxAds.Version;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid.Builder;
 import com.madhouse.ssp.avro.DSPRequest;
@@ -91,7 +91,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         request.setEntity(new ByteArrayEntity(pg.build().toByteArray()));
         return request;
     }
-    private com.madhouse.dsp.proctergamble.PGMadAds.Device.Builder getDevice(com.madhouse.ssp.avro.MediaRequest.Builder builder) {
+    private com.madhouse.dsp.reachMax.ReachMaxAds.Device.Builder getDevice(com.madhouse.ssp.avro.MediaRequest.Builder builder) {
         // Type
         Device.Builder deviceBuilder = Device.newBuilder().setType(Device.Type.PHONE);
         switch (builder.getOs()) {
@@ -173,7 +173,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         return deviceBuilder;
     }
 
-    private com.madhouse.dsp.proctergamble.PGMadAds.Network.Builder getNetwork(com.madhouse.ssp.avro.MediaRequest.Builder builder, String location) {
+    private com.madhouse.dsp.reachMax.ReachMaxAds.Network.Builder getNetwork(com.madhouse.ssp.avro.MediaRequest.Builder builder, String location) {
         
         // 网络类型
         Network.Builder networkBuilder = Network.newBuilder();
@@ -261,6 +261,15 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspResponse.setIcon(materialMeta.getIconUrl());
                         
                         Monitor.Builder monitor = Monitor.newBuilder();
+                        
+                        //点击监测
+                        List<String> clicks =new ArrayList<>();
+                        if(null != materialMeta.getClickTrackingList()) {
+                            for (String url : materialMeta.getClickTrackingList()) {
+                                clicks.add(url);
+                            }
+                        }
+                        
                         List<Track> tracks=new ArrayList<>();
                         for (int i = 0; i < materialMeta.getWinNoticeUrlCount(); i++) {
                             String noticeurl = materialMeta.getWinNoticeUrl(i);
@@ -277,6 +286,9 @@ public class ReachMaxHandler extends DSPBaseHandler {
                             }
                             tracks.add(new Track(0, noticeurl));
                         }
+                        
+                        
+                        monitor.setClkurl(clicks);
                         monitor.setImpurl(tracks);
                         dspResponse.setMonitorBuilder(monitor);
                         dspResponse.getAdm().add(materialMeta.getMediaUrl());
