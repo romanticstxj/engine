@@ -3,7 +3,6 @@ package com.madhouse.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -11,6 +10,7 @@ import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -39,7 +39,7 @@ public class StringUtil {
         for (byte b : data) {
             String str = Integer.toString(b & 0xff, 16);
             if (str.length() < 2) {
-                str = "0" + str;
+                sb.append("0");
             }
 
             sb.append(str);
@@ -68,7 +68,7 @@ public class StringUtil {
 
     public static final String urlSafeBase64Encode(byte[] data) {
         try {
-            String text = new BASE64Encoder().encode(data);
+            String text = base64Encode(data);
 
             int pos = text.indexOf("=");
             if (pos > 0) {
@@ -94,14 +94,15 @@ public class StringUtil {
                 text += new String("====").substring(mod);
             }
 
-            return new BASE64Decoder().decodeBuffer(text);
+            return base64Decode(text);
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return null;
         }
+
+        return null;
     }
 
-    public static String readFile(InputStream is) {
+    public static final String readFile(InputStream is) {
         try {
             return IOUtils.toString(is);
         } catch (IOException e) {
@@ -110,13 +111,33 @@ public class StringUtil {
         return null;
     }
 
-    public static String getMD5(String str) {
+    public static final String getMD5(InputStream is) {
+        if (is != null) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+
+                int len = 0;
+                byte[] buffer = new byte[4096];
+                if ((len = is.read(buffer)) > 0) {
+                    md.update(buffer, 0, len);
+                }
+
+                byte[] data = md.digest();
+                return bytesToHex(data);
+            } catch (Exception e) {
+                System.err.println(e.toString());
+            }
+        }
+        return null;
+    }
+
+    public static final String getMD5(String str) {
         if (str != null) {
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 byte[] data = md.digest(str.getBytes());
                 return bytesToHex(data);
-            } catch (NoSuchAlgorithmException e) {
+            } catch (Exception e) {
                 System.err.println(e.toString());
             }
         }
@@ -124,7 +145,65 @@ public class StringUtil {
         return null;
     }
 
-    public static Date toDate(String date) {
+    public static final String getMD5(byte[] input, int off, int len) {
+        if (input != null && input.length >= off + len) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(input, off, len);
+                byte[] data = md.digest();
+                return bytesToHex(data);
+            } catch (Exception e) {
+                System.err.println(e.toString());
+            }
+        }
+        return null;
+    }
+
+    public static final String getMD5(byte[] input) {
+        if (input != null && input.length >= 0) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(input);
+                byte[] data = md.digest();
+                return bytesToHex(data);
+            } catch (Exception e) {
+                System.err.println(e.toString());
+            }
+        }
+        return null;
+    }
+
+    public static final String base64Encode(byte[] input) {
+        if (input != null && input.length > 0) {
+            return new BASE64Encoder().encode(input);
+        }
+
+        return null;
+    }
+
+    public static final String base64Encode(byte[] input, int off, int len) {
+        if (input != null && input.length >= off + len) {
+            byte[] buffer = new byte[len];
+            System.arraycopy(input, off, buffer, 0, len);
+            return new BASE64Encoder().encode(buffer);
+        }
+
+        return null;
+    }
+
+    public static final byte[] base64Decode(String str) {
+        try {
+            if (!StringUtils.isEmpty(str)) {
+                return new BASE64Decoder().decodeBuffer(str);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        }
+
+        return null;
+    }
+
+    public static final Date toDate(String date) {
         SimpleDateFormat df = null;
 
         if (date.contains("-")) {

@@ -3,7 +3,7 @@ package com.madhouse.configuration;
 import java.util.List;
 
 public class Redis {
-	public class Config {
+	public static class Config {
 		private String passwd;
 		private String host;
 		private int port;

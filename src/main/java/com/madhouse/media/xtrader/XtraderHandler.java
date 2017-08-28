@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.*;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -14,11 +15,7 @@ import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.tencent.TencentStatusCode;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.MediaResponse.Builder;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 
@@ -165,12 +162,14 @@ public class XtraderHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(device.getIp())) {
             mediaRequest.setIp(device.getIp());
         }
-        if (!StringUtils.isEmpty(device.getGeo().getLat()+"")) {
-            mediaRequest.setLat(device.getGeo().getLat());
+
+        if (!StringUtils.isEmpty(device.getGeo().getLat()+"") && !StringUtils.isEmpty(device.getGeo().getLon()+"")) {
+            Geo.Builder geo = Geo.newBuilder();
+            geo.setLat(device.getGeo().getLat());
+            geo.setLon(device.getGeo().getLon());
+            mediaRequest.setGeoBuilder(geo);
         }
-        if (!StringUtils.isEmpty(device.getGeo().getLon()+"")) {
-            mediaRequest.setLon(device.getGeo().getLon());
-        }
+
         mediaRequest.setType(ObjectUtils.isEmpty(xtraderBidRequest.getSite()) ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest.build();
     }

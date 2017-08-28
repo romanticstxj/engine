@@ -172,8 +172,9 @@ message BidRequest
         
         message Geo 
         {
-            optional float lon = 1;
-            optional float lat = 2;
+			optional int32 type = 1;
+            optional float lon = 2;
+            optional float lat = 3;
         }
     }
     
@@ -190,8 +191,6 @@ message BidRequest
         optional string storeurl = 9;
         repeated string keywords = 10;
         optional Content content = 11;
-        
-
     }
     
     message Site
@@ -236,7 +235,7 @@ message BidResponse
             optional int32 price = 3;
             optional string adid = 4;
             optional string cid = 5;
-            optional string crid = 6;
+            optional string icon = 6;
             optional string cover = 7;
             repeated string adm = 8;
             optional int32 duration = 9;

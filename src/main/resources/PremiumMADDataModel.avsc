@@ -165,13 +165,27 @@
 						"name": "dealid",
 						"default": null
 					}, {
-						"type": "float",
-						"name": "lon",
-						"default": 0
-					}, {
-						"type": "float",
-						"name": "lat",
-						"default": 0
+						"type": ["null", {
+								"type": "record",
+								"name": "Geo",
+								"fields": [{
+										"type": "int",
+										"name": "type",
+										"default": 0
+									}, {
+										"type": "float",
+										"name": "lat",
+										"default": 0
+									}, {
+										"type": "float",
+										"name": "lon",
+										"default": 0
+									}
+								]
+							}
+						],
+						"name": "geo",
+						"default": null
 					}, {
 						"type": "int",
 						"name": "os",
@@ -225,71 +239,72 @@
 			"name": "response",
 			"default": null,
 			"type": ["null", {
-				"type": "record",
-				"name": "MediaResponse",
-				"fields": [{
-						"type": "long",
-						"name": "dspid"
-					}, {
-						"type": ["null", "string"],
-						"name": "cid",
-						"default": null
-					}, {
-						"type": ["null", "string"],
-						"name": "crid",
-						"default": null
-					}, {
-						"type": ["null", "string"],
-						"name": "admid",
-						"default": null
-					}, {
-						"type": "int",
-						"name": "layout",
-						"default": 0
-					}, {
-						"type": ["null", "string"],
-						"name": "icon",
-						"default": null
-					}, {
-						"type": ["null", "string"],
-						"name": "cover",
-						"default": null
-					}, {
-						"type": ["null", "string"],
-						"name": "title",
-						"default": null
-					}, {
-						"type": ["null", "string"],
-						"name": "desc",
-						"default": null
-					}, {
-						"type": "int",
-						"name": "duration",
-						"default": 0
-					}, {
-						"type": {
-							"type": "array",
-							"items": "string"
-						},
-						"name": "adm"
-					}, {
-						"type": ["null", "string"],
-						"name": "dealid",
-						"default": null
-					}, {
-						"type": ["null", "string"],
-						"name": "lpgurl",
-						"default": null
-					}, {
-						"type": "int",
-						"name": "acttype",
-						"default": 1
-					}, {
-						"name": "monitor",
-						"type": "Monitor"
-					}
-				]
-			}]
+					"type": "record",
+					"name": "MediaResponse",
+					"fields": [{
+							"type": "long",
+							"name": "dspid"
+						}, {
+							"type": ["null", "string"],
+							"name": "cid",
+							"default": null
+						}, {
+							"type": ["null", "string"],
+							"name": "crid",
+							"default": null
+						}, {
+							"type": ["null", "string"],
+							"name": "admid",
+							"default": null
+						}, {
+							"type": "int",
+							"name": "layout",
+							"default": 0
+						}, {
+							"type": ["null", "string"],
+							"name": "icon",
+							"default": null
+						}, {
+							"type": ["null", "string"],
+							"name": "cover",
+							"default": null
+						}, {
+							"type": ["null", "string"],
+							"name": "title",
+							"default": null
+						}, {
+							"type": ["null", "string"],
+							"name": "desc",
+							"default": null
+						}, {
+							"type": "int",
+							"name": "duration",
+							"default": 0
+						}, {
+							"type": {
+								"type": "array",
+								"items": "string"
+							},
+							"name": "adm"
+						}, {
+							"type": ["null", "string"],
+							"name": "dealid",
+							"default": null
+						}, {
+							"type": ["null", "string"],
+							"name": "lpgurl",
+							"default": null
+						}, {
+							"type": "int",
+							"name": "acttype",
+							"default": 1
+						}, {
+							"name": "monitor",
+							"type": "Monitor"
+						}
+					]
+				}
+			]
 		}
 	]
 }

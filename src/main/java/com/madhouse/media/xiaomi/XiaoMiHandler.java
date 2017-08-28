@@ -220,12 +220,14 @@ public class XiaoMiHandler extends MediaBaseHandler {
             }
             Geo geo = device.getGeo();
             if (geo != null) {
+                com.madhouse.ssp.avro.Geo.Builder vargeo = com.madhouse.ssp.avro.Geo.newBuilder();
                 if(ObjectUtils.isNotEmpty(geo.getLat()+"")){
-                    mediaRequest.setLat((float)geo.getLat());
+                    vargeo.setLat((float)geo.getLat());
                 }
                 if(ObjectUtils.isNotEmpty(geo.getLon()+"")){
-                    mediaRequest.setLon((float)geo.getLon());
+                    vargeo.setLon((float)geo.getLon());
                 }
+                mediaRequest.setGeoBuilder(vargeo);
             }
             String adspaceKey = "";
             if (isSandbox) {//sandbox环境

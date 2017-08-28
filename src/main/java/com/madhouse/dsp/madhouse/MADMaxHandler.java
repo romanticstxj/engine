@@ -103,8 +103,8 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&pid=").append(mediaRequest.getMediaid())
                 .append("&density=").append(StringUtil.toString(String.valueOf(mediaMetaData.getType())))
                 .append("&media=").append(mediaMetaData.getType())
-                .append("&lon=").append(StringUtil.toString(mediaRequest.getLon().toString()))
-                .append("&lat=").append(StringUtil.toString(mediaRequest.getLat().toString()))
+                .append("&lon=").append(StringUtil.toString(mediaRequest.getGeoBuilder() != null ? mediaRequest.getGeoBuilder().getLon().toString() : ""))
+                .append("&lat=").append(StringUtil.toString(mediaRequest.getGeoBuilder() != null ? mediaRequest.getGeoBuilder().getLat().toString() : ""))
                 .append("&cell=").append(StringUtil.toString(mediaRequest.getCell()))
                 .append("&mcell=").append(StringUtil.toString(mediaRequest.getCellmd5()))
                 .append("&dealid=").append(StringUtil.toString(policyMetaData.getDealId()));

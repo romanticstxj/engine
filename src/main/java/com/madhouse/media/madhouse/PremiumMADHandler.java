@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.media.momo.MomoBidRequest;
+import com.madhouse.ssp.avro.*;
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,11 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaBid;
-import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
-import com.madhouse.ssp.avro.MediaResponse;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 
 /**
@@ -135,14 +134,16 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(!StringUtils.isEmpty(madBidRequest.getMcell())){
             mediaRequest.setCellmd5(madBidRequest.getMcell());
         }
-        //纬度
-        if(!StringUtils.isEmpty(madBidRequest.getLat())){
-            mediaRequest.setLat(Float.parseFloat(madBidRequest.getLat()));
+
+        if(!StringUtils.isEmpty(madBidRequest.getLat()) && !StringUtils.isEmpty(madBidRequest.getLon())) {
+            Geo.Builder geo = Geo.newBuilder();
+            //纬度
+            geo.setLat(Float.parseFloat(madBidRequest.getLat()));
+            //经度
+            geo.setLon(Float.parseFloat(madBidRequest.getLon()));
+            mediaRequest.setGeoBuilder(geo);
         }
-        //经度
-        if(!StringUtils.isEmpty(madBidRequest.getLon())){
-            mediaRequest.setLon(Float.parseFloat(madBidRequest.getLon()));
-        }
+
         //PDB、PD模式的deal id
         if(!StringUtils.isEmpty(madBidRequest.getDealid())){
             mediaRequest.setDealid(madBidRequest.getDealid());

@@ -1,14 +1,23 @@
 package com.madhouse.util;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+
+
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 /**
  * Created by WUJUNFENG on 2017/6/9.
  */
 public class HttpUtil {
+    private static HttpClient httpClient = new HttpClient();
+
     public static String getRealIp(HttpServletRequest req) {
         String ip = req.getHeader("X-Real-IP");
         if (ip != null) {
@@ -67,5 +76,51 @@ public class HttpUtil {
             i += readlen;
         }
         return new String(buffer);
+    }
+
+    public static String downloadFile(String url, String localPath) {
+        GetMethod getMethod = null;
+
+        try {
+            getMethod = new GetMethod(url);
+
+            if (httpClient.executeMethod(getMethod) == HttpStatus.SC_OK) {
+                String filePath = localPath;
+                if (!filePath.endsWith("\\") && !filePath.endsWith("/")) {
+                    filePath += "/";
+                }
+                
+                String fileName = url;
+                int pos = url.lastIndexOf("/");
+                if (pos > 0) {
+                    fileName = url.substring(pos + 1);
+                }
+
+                filePath += fileName;
+                File file = new File(filePath);
+                OutputStream outputStream = new FileOutputStream(file);
+                InputStream inputStream = getMethod.getResponseBodyAsStream();
+
+                int len = 0;
+                byte[] buffer = new byte[4096];
+                while ((len = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, len);
+                }
+
+                inputStream.close();
+                outputStream.flush();
+                outputStream.close();
+
+                return filePath;
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        } finally {
+            if (getMethod != null) {
+                getMethod.releaseConnection();
+            }
+        }
+
+        return null;
     }
 }

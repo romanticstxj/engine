@@ -18,7 +18,7 @@ public class ObjectUtils {
     public static boolean isNotEmpty(Object obj) {
         return !isEmpty(obj);
     }
-    
+
     public static boolean isEmpty(Object obj) {
         if (obj == null) {
             return true;
@@ -28,12 +28,16 @@ public class ObjectUtils {
             if (((Collection)obj).isEmpty()) {
                 return true;
             }
+
+            return false;
         }
 
         if (obj instanceof Map) {
             if (((Map)obj).isEmpty()) {
                 return true;
             }
+
+            return false;
         }
 
         if (obj instanceof String) {

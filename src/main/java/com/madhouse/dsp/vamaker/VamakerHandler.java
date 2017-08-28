@@ -104,12 +104,14 @@ public class VamakerHandler extends DSPBaseHandler {
         sb.append("&_md=").append(StringUtils.isEmpty(builder.getModel())?"UNKNOWN":builder.getModel());
         sb.append("&_adw=").append(builder.getW());
         sb.append("&_adh=").append(builder.getH());
-        
-        if (StringUtils.isNotEmpty(builder.getLon().toString())) {
-            sb.append("&_lon=").append(builder.getLon());
-        }
-        if (StringUtils.isNotEmpty(builder.getLat().toString())) {
-            sb.append("&_lat=").append(builder.getLat());
+
+        if (builder.getGeoBuilder() != null) {
+            if (StringUtils.isNotEmpty(builder.getGeoBuilder().getLon().toString())) {
+                sb.append("&_lon=").append(builder.getGeoBuilder().getLon().toString());
+            }
+            if (StringUtils.isNotEmpty(builder.getGeoBuilder().getLat().toString())) {
+                sb.append("&_lat=").append(builder.getGeoBuilder().getLat().toString());
+            }
         }
 
         if (StringUtils.isNotEmpty(builder.getCellmd5())) {

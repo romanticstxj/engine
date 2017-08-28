@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.ssp.avro.Geo;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -202,10 +203,12 @@ public class ToutiaoHandler extends MediaBaseHandler {
          * 赋值地理位置信息
          */
         if (ObjectUtils.isNotEmpty(geo)) {
+            Geo.Builder vargeo = Geo.newBuilder();
             //经度
-            mediaRequest.setLon((float)geo.getLon());
+            vargeo.setLon((float)geo.getLon());
             //纬度
-            mediaRequest.setLat((float)geo.getLat());
+            vargeo.setLat((float)geo.getLat());
+            mediaRequest.setGeoBuilder(vargeo);
         }
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("Toutiao convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));

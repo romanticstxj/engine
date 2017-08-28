@@ -55,15 +55,11 @@ public final class Constant {
         public static final int MAD_RTB = 1;
         public static final int MAD_API = 2;
         public static final int MAD_PROTO = 3;
+
         public static final int VAMAKER = 11;
-        public static final int PG = 12;
-        public static final int ADSAGE = 13;
-        public static final int MEILA = 14;
-        public static final int REACHMAX = 15;
-        public static final int AMNET = 16;
-        public static final int KEDA = 17;
-        public static final int TENCENT = 18;
-        public static final int BAIDU = 19;
+        public static final int IFLYTEK = 12;
+        public static final int PG = 13;
+        public static final int REACHMAX = 14;
     }
 
     public static final class BidAt {
