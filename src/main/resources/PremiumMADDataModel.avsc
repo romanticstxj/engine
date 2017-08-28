@@ -371,6 +371,10 @@
 			"type": "long",
 			"name": "policyid"
 		}, {
+			"type": "long",
+			"name": "bidtime",
+			"default" : 0
+		}, {
 			"type": "int",
 			"name": "invalid",
 			"default": 0
@@ -423,6 +427,10 @@
 		}, {
 			"type": "long",
 			"name": "policyid"
+		}, {
+			"type": "long",
+			"name": "bidtime",
+			"default" : 0
 		}, {
 			"type": "int",
 			"name": "invalid",
@@ -553,10 +561,6 @@
 						"default": null
 					}, {
 						"name": "cid",
-						"type": ["null", "string"],
-						"default": null
-					}, {
-						"name": "crid",
 						"type": ["null", "string"],
 						"default": null
 					}, {

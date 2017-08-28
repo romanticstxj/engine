@@ -97,8 +97,13 @@ public class WorkThread {
             String dspId = exts[1];
 
             ImpressionTrack.Builder impressionTrack = ImpressionTrack.newBuilder();
+            impressionTrack.setTime(System.currentTimeMillis());
+            impressionTrack.setIp(HttpUtil.getRealIp(req));
+            impressionTrack.setUa(HttpUtil.getUserAgent(req));
+            impressionTrack.setBidtime(Long.parseLong(bidTime));
+
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - Long.parseLong(bidTime)) / 1000 > expiredTime) {
+            if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > expiredTime) {
                 impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -109,9 +114,6 @@ public class WorkThread {
 
             redisMaster.expire(String.format(Constant.CommonKey.IMP_RECORD, impId), 86400);
 
-            impressionTrack.setTime(System.currentTimeMillis());
-            impressionTrack.setIp(HttpUtil.getRealIp(req));
-            impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setImpid(impId);
             impressionTrack.setMediaid(Long.parseLong(mediaId));
             impressionTrack.setAdspaceid(Long.parseLong(plcmtId));
@@ -189,8 +191,13 @@ public class WorkThread {
             String dspId = exts[1];
 
             ClickTrack.Builder clickTrack = ClickTrack.newBuilder();
+            clickTrack.setTime(System.currentTimeMillis());
+            clickTrack.setIp(HttpUtil.getRealIp(req));
+            clickTrack.setUa(HttpUtil.getUserAgent(req));
+            clickTrack.setBidtime(Long.parseLong(bidTime));
+
             int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - Long.parseLong(bidTime)) / 1000 > expiredTime) {
+            if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > expiredTime) {
                 clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -201,9 +208,6 @@ public class WorkThread {
 
             redisMaster.expire(String.format(Constant.CommonKey.CLK_RECORD, impId), 86400);
 
-            clickTrack.setTime(System.currentTimeMillis());
-            clickTrack.setIp(HttpUtil.getRealIp(req));
-            clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setImpid(impId);
             clickTrack.setMediaid(Long.parseLong(mediaId));
             clickTrack.setAdspaceid(Long.parseLong(plcmtId));
