@@ -3,7 +3,6 @@ package com.madhouse.media.tencent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.madhouse.ssp.avro.Geo;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,9 +16,9 @@ import com.madhouse.media.tencent.GPBForDSP.Request.Device;
 import com.madhouse.media.tencent.GPBForDSP.Request.Impression;
 import com.madhouse.media.tencent.GPBForDSP.Response;
 import com.madhouse.ssp.Constant;
+import com.madhouse.ssp.avro.Geo;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.MediaResponse;
 import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.util.ObjectUtils;
 
