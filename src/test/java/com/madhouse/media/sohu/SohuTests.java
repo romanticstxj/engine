@@ -6,6 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 
 
@@ -47,14 +48,14 @@ public class SohuTests {
         
         SohuRTB.Request.Impression.Banner.Builder banner = SohuRTB.Request.Impression.Banner.newBuilder();
         banner.addMimes(1);
-        banner.setWidth(320);
-        banner.setHeight(480);
+        banner.setWidth(228);
+        banner.setHeight(150);
         banner.setTemplate("25");
         
         
         SohuRTB.Request.Impression.Builder imp = SohuRTB.Request.Impression.newBuilder();
         imp.setIdx(1);
-        imp.setPid("12224");
+        imp.setPid("12355");
         imp.setBidFloor(1400);
         imp.setIsPreferredDeals(true);
         imp.setCampaignId("20170607");
@@ -76,20 +77,10 @@ public class SohuTests {
             HttpResponse response = client.execute(request);
 
             System.out.println(response.getStatusLine().getStatusCode());
+            byte[] bytes = EntityUtils.toByteArray(response.getEntity());
+            SohuRTB.Response bidResponse = SohuRTB.Response.parseFrom(bytes);
+            System.out.println("打印："+bidResponse.toString());
 
-//          if (response != null && (response.getStatusLine().getStatusCode() == 204 || response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 400)) {
-//              HttpEntity httpEntity = response.getEntity();
-//              byte[] bytes = EntityUtils.toByteArray(response.getEntity());
-////                TOUTIAOAds.BidResponse bidResponse = TOUTIAOAds.BidResponse.parseFrom(bytes);
-//              VamRealtimeBidding.VamResponse bidResponse = VamRealtimeBidding.VamResponse.parseFrom(bytes);
-//              
-////                System.out.println("打印："+bidResponse.toString());
-////                String title = bidResponse.getSeatbids(0).getAds(0).getCreative().getTitle();
-////                String source = bidResponse.getSeatbids(0).getAds(0).getCreative().getSource();
-////                System.out.println(title);
-////                System.out.println(source);
-////                System.out.println(bidResponse.toString());
-//          }
         } catch (Exception e) {
             e.printStackTrace();
         }

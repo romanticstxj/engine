@@ -24,28 +24,26 @@ import com.madhouse.util.ObjectUtils;
 public class PremiumMADHandler extends MediaBaseHandler {
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        
         PremiumMADBidRequest mediaRequest = new PremiumMADBidRequest();
-        
+        PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         try {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
             logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
+            premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
+            premiumMADResponse.setReturncode(Constant.StatusCode.BAD_REQUEST);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
                 mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
                 mediaBidMetaData.setRequestObject(request);
                 return true;
             } else {
-                PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
-                premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
-                premiumMADResponse.setReturncode(status);
                 return outputStreamWrite(premiumMADResponse,resp);
             }
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
-            return false;
+            return outputStreamWrite(premiumMADResponse,resp);
         }
     }
     /** 
@@ -343,7 +341,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             }
             
         }
-        return true;
+        return false;
     }
     private boolean outputStreamWrite(PremiumMADResponse premiumMADResponse, HttpServletResponse resp)  {
         StringBuilder sb = new StringBuilder();
@@ -380,10 +378,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setAdwidth(mediaRequest.getW());
             premiumMADResponse.setAdheight(mediaRequest.getH());
             
+            premiumMADResponse.setIcon(mediaResponse.getIcon());
+            premiumMADResponse.setCover(mediaResponse.getCover());
+            
             if(mediaResponse.getDuration() > 0){
                 premiumMADResponse.setDuration(mediaResponse.getDuration());
-                premiumMADResponse.setIcon(mediaResponse.getIcon());
-                premiumMADResponse.setCover(mediaResponse.getCover());
             }
 
             if (mediaResponse.getTitle() != null) {
