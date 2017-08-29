@@ -31,9 +31,9 @@ public class VamakerHandler extends MediaBaseHandler {
             logger.info("VamakerBidRequest Request params is : {}",bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(bidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if(null != mediaRequest){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -47,7 +47,7 @@ public class VamakerHandler extends MediaBaseHandler {
         }
     }
     
-    private MediaRequest conversionToPremiumMADDataModel(VamRequest bidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(VamRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         mediaRequest.setBid(bidRequest.getId());
         VamakerRTB.VamRequest.Mobile mobile = bidRequest.getVamMobile();
@@ -136,7 +136,7 @@ public class VamakerHandler extends MediaBaseHandler {
         }
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("Vamakerrequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
-        return mediaRequest.build();
+        return mediaRequest;
     }
 
     private int validateRequiredParam(VamRequest bidRequest) {

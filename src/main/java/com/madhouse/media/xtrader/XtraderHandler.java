@@ -35,9 +35,9 @@ public class XtraderHandler extends MediaBaseHandler {
             logger.info("Xtrader Request params is : {}",JSON.toJSONString(xtraderBidRequest));
             int status = validateRequiredParam(xtraderBidRequest);
             if (Constant.StatusCode.OK != status){
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, xtraderBidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox, xtraderBidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(xtraderBidRequest);
                     return true;
                 }
@@ -51,7 +51,7 @@ public class XtraderHandler extends MediaBaseHandler {
         }
     }
     
-    private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, XtraderBidRequest xtraderBidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, XtraderBidRequest xtraderBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         XtraderBidRequest.App app = xtraderBidRequest.getApp();
@@ -171,7 +171,7 @@ public class XtraderHandler extends MediaBaseHandler {
         }
 
         mediaRequest.setType(ObjectUtils.isEmpty(xtraderBidRequest.getSite()) ? Constant.MediaType.APP : Constant.MediaType.SITE);
-        return mediaRequest.build();
+        return mediaRequest;
     }
 
     private int validateRequiredParam(XtraderBidRequest xtraderBidRequest) {

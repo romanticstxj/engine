@@ -27,8 +27,8 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             logger.info("MojiWeather Request params is : {}",JSON.toJSONString(mojiWeatherBidRequest));
             int status = validateRequiredParam(mojiWeatherBidRequest);
             if (status == Constant.StatusCode.OK) {
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(mojiWeatherBidRequest); 
-                mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(mojiWeatherBidRequest); 
+                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                 mediaBidMetaData.setRequestObject(mojiWeatherBidRequest);
                 return true;
             } else {
@@ -43,7 +43,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
     }
     
-    private MediaRequest conversionToPremiumMADDataModel(MojiWeatherBidRequest mojiWeatherBidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(MojiWeatherBidRequest mojiWeatherBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         //广告请求流水号
         mediaRequest.setAdspacekey(mojiWeatherBidRequest.getAdid());
@@ -116,7 +116,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("mojiWeather convert mediaRequest is :{}", JSON.toJSONString(mediaRequest));
-        return mediaRequest.build();
+        return mediaRequest;
     }
 
     private int validateRequiredParam(MojiWeatherBidRequest mojiWeatherBidRequest) {

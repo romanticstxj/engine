@@ -43,13 +43,13 @@ public class BaoFengHandler extends MediaBaseHandler {
             logger.info("BaoFeng Request params is : {}",JSON.toJSONString(baoFengBidRequest));
             int status = validateRequiredParam(baoFengBidRequest, resp);
             if (status == Constant.StatusCode.OK) {
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox, baoFengBidRequest);
                 if (ObjectUtils.isEmpty(mediaRequest)) {
                     resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
                 }
-                mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                 mediaBidMetaData.setRequestObject(baoFengBidRequest);
                 return true;
             } else {
@@ -226,7 +226,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         return Constant.StatusCode.BAD_REQUEST;
     }
     
-    private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         BaoFengBidRequest.App app = baoFengBidRequest.getApp();
@@ -376,7 +376,7 @@ public class BaoFengHandler extends MediaBaseHandler {
         mediaRequest.setMac(device.getMac() != null ? device.getMac() : "");
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("BaoFengrequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
-        return mediaRequest.build();
+        return mediaRequest;
         
     }
     

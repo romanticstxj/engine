@@ -47,9 +47,9 @@ public class XiaoMiHandler extends MediaBaseHandler {
             logger.info("XiaoMi Request params is : {}", JSON.toJSONString(bidRequest));
             int status = validateRequiredParam(bidRequest);
             if (status == Constant.StatusCode.OK) {
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -127,7 +127,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         }
         return Constant.StatusCode.BAD_REQUEST;
     }
-    private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, XiaoMiBidRequest bidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, XiaoMiBidRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         Imp imp = bidRequest.getImp()[0];
@@ -260,7 +260,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
             return null;
         }
         
-        return mediaRequest.build();
+        return mediaRequest;
         
     }
 

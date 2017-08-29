@@ -32,9 +32,9 @@ public class TencentHandler extends MediaBaseHandler {
             logger.info("TencentBidRequest Request params is : {}",bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(bidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -49,7 +49,7 @@ public class TencentHandler extends MediaBaseHandler {
     }
     
    
-    private MediaRequest conversionToPremiumMADDataModel(Request bidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(Request bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         Impression impression =bidRequest.getImpression(0);
@@ -180,7 +180,7 @@ public class TencentHandler extends MediaBaseHandler {
         }
 
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
-        return mediaRequest.build();
+        return mediaRequest;
     }
 
     private int validateRequiredParam(Request bidRequest) {
