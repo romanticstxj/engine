@@ -29,6 +29,7 @@ import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.Monitor;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.ssp.avro.MediaBid.Builder;
+import com.madhouse.util.StringUtil;
 
 public class IflytekHandler extends DSPBaseHandler {
     
@@ -212,16 +213,16 @@ public class IflytekHandler extends DSPBaseHandler {
             String[] imprurl = null;
             String[] thclkurl = null;
             if (null != iflytekResponse.getBatch_ma() && iflytekResponse.getBatch_ma().size() > 0) {
-                dspResponse.setLpgurl(iflytekResponse.getBatch_ma().get(0).getLanding_url());
-                dspResponse.setTitle(iflytekResponse.getBatch_ma().get(0).getTitle());
-                dspResponse.setDesc(iflytekResponse.getBatch_ma().get(0).getSub_title());
+                dspResponse.setLpgurl(StringUtil.toString(iflytekResponse.getBatch_ma().get(0).getLanding_url()));
+                dspResponse.setTitle(StringUtil.toString(iflytekResponse.getBatch_ma().get(0).getTitle()));
+                dspResponse.setDesc(StringUtil.toString(iflytekResponse.getBatch_ma().get(0).getSub_title()));
                 List<String> list = new ArrayList<String>();
                 list.add(iflytekResponse.getBatch_ma().get(0).getImage());
                 dspResponse.setAdm(list);
                 imprurl = iflytekResponse.getBatch_ma().get(0).getImpr_url();
                 thclkurl = iflytekResponse.getBatch_ma().get(0).getClick_url();
             } else {
-                dspResponse.setLpgurl(iflytekResponse.getLanding_url());
+                dspResponse.setLpgurl(StringUtil.toString(iflytekResponse.getLanding_url()));
                 imprurl = iflytekResponse.getImpr_url();
                 thclkurl = iflytekResponse.getClick_url();
             }
@@ -240,7 +241,7 @@ public class IflytekHandler extends DSPBaseHandler {
             }
             dspResponse.setMonitorBuilder(monitor);
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
-            dspBidMetaData.getDspBidBuilder().setResponse(dspResponse.build());
+            dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
             logger.info("Iflytek Response is:{}",result);
             return true;
         } catch (Exception e) {

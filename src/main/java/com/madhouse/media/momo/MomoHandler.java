@@ -153,9 +153,10 @@ public class MomoHandler extends MediaBaseHandler {
         }
         //"WIFI" "CELL_UNKNOWN
         String connection = device.getConnection_type();
-        if(connection.equals(MomoStatusCode.ConnectionType.WIFI)){
+        
+        if(!StringUtils.isEmpty(connection) && connection.equals(MomoStatusCode.ConnectionType.WIFI)){
             mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
-        }else if(connection.equals(os.equals(MomoStatusCode.ConnectionType.CELL_UNKNOWN))){
+        }else{
             mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
         }
         String ua = device.getUa();
@@ -166,15 +167,16 @@ public class MomoHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(ip)) {
             mediaRequest.setIp(ip);
         }
-
+        MomoBidRequest.Device.Geo geos = device.getGeo();
         Geo.Builder geo = Geo.newBuilder();
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLon()+"")){
-            geo.setLat((float)device.getGeo().getLon());
+        if(null != geos){
+            if(ObjectUtils.isNotEmpty(geos.getLon()+"")){
+                geo.setLat((float)geos.getLon());
+            }
+            if(ObjectUtils.isNotEmpty(geos.getLon()+"")){
+                geo.setLon((float)geos.getLat());
+            }
         }
-        if(ObjectUtils.isNotEmpty(device.getGeo().getLon()+"")){
-            geo.setLon((float)device.getGeo().getLat());
-        }
-
         mediaRequest.setGeoBuilder(geo);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setType(Constant.MediaType.APP);

@@ -391,7 +391,7 @@ public class MADRTBHandler extends DSPBaseHandler {
     @Override
     public String getWinNoticeUrl(DSPBidMetaData dspBidMetaData) {
         try {
-            DSPResponse dspResponse = dspBidMetaData.getDspBidBuilder().getResponse();
+            DSPResponse.Builder dspResponse = dspBidMetaData.getDspBidBuilder().getResponseBuilder();
             String url = dspResponse.getNurl();
             if (StringUtils.isEmpty(url)) {
                 return null;
@@ -413,7 +413,7 @@ public class MADRTBHandler extends DSPBaseHandler {
             return url;
         } catch (Exception ex) {
             System.err.println(ex.toString());
-            return dspBidMetaData.getDspBidBuilder().getResponse().getNurl();
+            return dspBidMetaData.getDspBidBuilder().getResponseBuilder().getNurl();
         }
     }
 

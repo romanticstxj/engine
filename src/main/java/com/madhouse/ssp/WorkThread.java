@@ -453,7 +453,7 @@ public class WorkThread {
                             if (httpResponse != null) {
                                 if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
                                     if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB ||
-                                            dspBidMetaData.getDspBidBuilder().getResponse().getPrice() > plcmtMetaData.getBidFloor()) {
+                                            dspBidMetaData.getDspBidBuilder().getResponseBuilder().getPrice() > plcmtMetaData.getBidFloor()) {
                                         bidderList.add(dspBidMetaData);
                                     }
                                 }
@@ -622,9 +622,9 @@ public class WorkThread {
                         DSPBid.Builder left = o1.getDspBidBuilder();
                         DSPBid.Builder right = o2.getDspBidBuilder();
 
-                        if (left.getResponse().getPrice() > right.getResponse().getPrice()) {
+                        if (left.getResponseBuilder().getPrice() > right.getResponseBuilder().getPrice()) {
                             return -1;
-                        } else if (left.getResponse().getPrice() == right.getResponse().getPrice()) {
+                        } else if (left.getResponseBuilder().getPrice() == right.getResponseBuilder().getPrice()) {
                             if (left.getExecutetime() < right.getExecutetime()) {
                                 return -1;
                             } else {
@@ -637,11 +637,11 @@ public class WorkThread {
                 });
 
                 int price = plcmtMetaData.getBidFloor();
-                int maxPrice = bidderList.get(0).getDspBidBuilder().getResponse().getPrice();
+                int maxPrice = bidderList.get(0).getDspBidBuilder().getResponseBuilder().getPrice();
                 for (int i = 1; i < bidderList.size(); ++i) {
                     DSPBidMetaData dspBidMetaData = bidderList.get(i);
-                    if (dspBidMetaData.getDspBidBuilder().getResponse().getPrice() < maxPrice) {
-                        price = dspBidMetaData.getDspBidBuilder().getResponse().getPrice();
+                    if (dspBidMetaData.getDspBidBuilder().getResponseBuilder().getPrice() < maxPrice) {
+                        price = dspBidMetaData.getDspBidBuilder().getResponseBuilder().getPrice();
                         break;
                     }
                 }

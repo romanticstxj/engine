@@ -42,6 +42,7 @@ import com.madhouse.ssp.avro.DSPResponse;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.Monitor;
 import com.madhouse.ssp.avro.Track;
+import com.madhouse.util.StringUtil;
 
 public class ReachMaxHandler extends DSPBaseHandler {
 
@@ -255,10 +256,10 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspResponse.setId(dspRequest.getId());
                         dspResponse.setImpid(dspRequest.getImpid());
                         
-                        dspResponse.setLpgurl(materialMeta.getClickUrl());
-                        dspResponse.setDesc(materialMeta.getDescription1());
-                        dspResponse.setTitle(materialMeta.getTitle());
-                        dspResponse.setIcon(materialMeta.getIconUrl());
+                        dspResponse.setLpgurl(StringUtil.toString(materialMeta.getClickUrl()));
+                        dspResponse.setDesc(StringUtil.toString(materialMeta.getDescription1()));
+                        dspResponse.setTitle(StringUtil.toString(materialMeta.getTitle()));
+                        dspResponse.setIcon(StringUtil.toString(materialMeta.getIconUrl()));
                         
                         Monitor.Builder monitor = Monitor.newBuilder();
                         
@@ -294,7 +295,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspResponse.getAdm().add(materialMeta.getMediaUrl());
                         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
-                        dspBidMetaData.getDspBidBuilder().setResponse(dspResponse.build());
+                        dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
                         return true;
                     }
                 }

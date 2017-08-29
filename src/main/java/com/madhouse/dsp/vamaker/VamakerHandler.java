@@ -147,9 +147,9 @@ public class VamakerHandler extends DSPBaseHandler {
             dspResponse.setImpid(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getImpid());
             dspResponse.setAdid(vamakerResponse.getAdid());
             dspResponse.setBidid("");
-            dspResponse.setLpgurl(vamakerResponse.getLp());
-            dspResponse.setDesc(vamakerResponse.getDesc());
-            dspResponse.setTitle(vamakerResponse.getTitle());
+            dspResponse.setLpgurl(StringUtil.toString(vamakerResponse.getLp()));
+            dspResponse.setDesc(StringUtil.toString(vamakerResponse.getDesc()));
+            dspResponse.setTitle(StringUtil.toString(vamakerResponse.getTitle()));
             dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
             dspResponse.setAdm(vamakerResponse.getImg());
             Monitor.Builder monitor = Monitor.newBuilder();
@@ -161,7 +161,7 @@ public class VamakerHandler extends DSPBaseHandler {
             monitor.setClkurl(vamakerResponse.getCm());
             dspResponse.setMonitorBuilder(monitor);
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
-            dspBidMetaData.getDspBidBuilder().setResponse(dspResponse.build());
+            dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
             return true;
         } catch (Exception e) {
             logger.error("Vamaker Response :{}", dspBidMetaData.getDspBidBuilder().toString());
