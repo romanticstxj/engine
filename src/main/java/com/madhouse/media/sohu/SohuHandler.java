@@ -33,9 +33,9 @@ public class SohuHandler extends MediaBaseHandler {
             SohuRTB.Request bidRequest = SohuRTB.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
             int status =  validateRequiredParam(bidRequest);
             if(status == Constant.StatusCode.OK){
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(bidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -73,7 +73,7 @@ public class SohuHandler extends MediaBaseHandler {
         }
         return Constant.StatusCode.OK;
     }
-    private MediaRequest conversionToPremiumMADDataModel(Request bidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(Request bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         mediaRequest.setBid(bidRequest.getBidid());
         //是否为测试流量，0 为非测试，1 为测试 
@@ -166,7 +166,7 @@ public class SohuHandler extends MediaBaseHandler {
         } else {
             return null;
         }
-        return mediaRequest.build();
+        return mediaRequest;
     }
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {

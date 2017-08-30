@@ -257,10 +257,10 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                         dspResponse.setId(dspRequest.getId());
                         dspResponse.setImpid(dspRequest.getImpid());
                         
-                        dspResponse.setLpgurl(materialMeta.getClickUrl());
-                        dspResponse.setDesc(materialMeta.getDescription1());
-                        dspResponse.setTitle(materialMeta.getTitle());
-                        dspResponse.setIcon(materialMeta.getIconUrl());
+                        dspResponse.setLpgurl(StringUtil.toString(materialMeta.getClickUrl()));
+                        dspResponse.setDesc(StringUtil.toString(materialMeta.getDescription1()));
+                        dspResponse.setTitle(StringUtil.toString(materialMeta.getTitle()));
+                        dspResponse.setIcon(StringUtil.toString(materialMeta.getIconUrl()));
                         
                         Monitor.Builder monitor = Monitor.newBuilder();
                         List<Track> tracks=new ArrayList<>();
@@ -284,7 +284,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
                         dspResponse.getAdm().add(materialMeta.getMediaUrl());
                         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
-                        dspBidMetaData.getDspBidBuilder().setResponse(dspResponse.build());
+                        dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
                         return true;
                     }
                 }

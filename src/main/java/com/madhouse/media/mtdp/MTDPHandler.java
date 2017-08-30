@@ -35,9 +35,9 @@ public class MTDPHandler extends MediaBaseHandler {
             logger.info("MTDP Request params is : {}", bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -51,7 +51,7 @@ public class MTDPHandler extends MediaBaseHandler {
         }
     }
     
-    private MediaRequest conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) throws UnsupportedEncodingException {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) throws UnsupportedEncodingException {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         DPAds.BidRequest.Imp imp = bidRequest.getImpList().get(0);
         DPAds.BidRequest.Imp.Banner banner = bidRequest.getImpList().get(0).getBanner();
@@ -145,7 +145,7 @@ public class MTDPHandler extends MediaBaseHandler {
         DPAds.BidRequest.Site site = bidRequest.getSite();
         mediaRequest.setType(site !=null ? Constant.MediaType.APP : Constant.MediaType.SITE);
         logger.info("MTDPrequest convert mediaRequest is : {}", mediaRequest.toString());
-        return mediaRequest.build();
+        return mediaRequest;
     }
 
     private int validateRequiredParam(BidRequest bidRequest) {

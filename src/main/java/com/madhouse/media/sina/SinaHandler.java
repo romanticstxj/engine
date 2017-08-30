@@ -33,9 +33,9 @@ public class SinaHandler extends MediaBaseHandler {
             SinaBidRequest sinaBidRequest = JSON.parseObject(bytes, SinaBidRequest.class);
             int status = validateRequiredParam(sinaBidRequest, resp);
             if (status == Constant.StatusCode.OK) {
-                MediaRequest mediaRequest = conversionToPremiumMADDataModel(sinaBidRequest);
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(sinaBidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequest(mediaRequest);
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(sinaBidRequest);
                     return true;
                 }
@@ -49,7 +49,7 @@ public class SinaHandler extends MediaBaseHandler {
         }
     }
     
-    private MediaRequest conversionToPremiumMADDataModel(SinaBidRequest sinaBidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(SinaBidRequest sinaBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         SinaBidRequest.App app = sinaBidRequest.getApp();
@@ -172,7 +172,7 @@ public class SinaHandler extends MediaBaseHandler {
                 return null;
             }
         }
-        return mediaRequest.build();
+        return mediaRequest;
     }
 
     private int validateRequiredParam(SinaBidRequest sinaBidRequest, HttpServletResponse resp) {
