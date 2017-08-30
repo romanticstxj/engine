@@ -592,6 +592,10 @@
 						"type": ["null", "string"],
 						"default": null
 					}, {
+						"name": "content",
+						"type": ["null", "string"],
+						"default": null
+					}, {
 						"type": "int",
 						"name": "duration",
 						"default": 0
