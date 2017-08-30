@@ -393,7 +393,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 premiumMADResponse.setDisplaytext(mediaResponse.getDesc());
             }
             
-            if (StringUtils.isEmpty(mediaResponse.getContent())) {
+            if (!StringUtils.isEmpty(mediaResponse.getContent())) {
                 premiumMADResponse.setDisplaycontent(mediaResponse.getContent());
             }
 
