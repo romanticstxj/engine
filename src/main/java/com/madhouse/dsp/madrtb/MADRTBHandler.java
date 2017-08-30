@@ -201,11 +201,11 @@ public class MADRTBHandler extends DSPBaseHandler {
 
                     if (var1.getDesc() > 0) {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
-                        PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder data = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
-                        data.setType(Constant.NativeDescType.DESC);
-                        data.setLen(var1.getDesc());
+                        PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder desc = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
+                        desc.setType(Constant.NativeDescType.DESC);
+                        desc.setLen(var1.getDesc());
                         asset.setId(Integer.toString(id++));
-                        asset.setData(data);
+                        asset.setDesc(desc);
                         nativeRequest.addAssets(asset);
                     }
 
@@ -333,8 +333,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                                     continue;
                                 }
 
-                                if (asset.hasData()) {
-                                    dspResponse.setDesc(StringUtil.toString(asset.getData().getValue()));
+                                if (asset.hasDesc()) {
+                                    dspResponse.setDesc(StringUtil.toString(asset.getDesc().getValue()));
                                     continue;
                                 }
 

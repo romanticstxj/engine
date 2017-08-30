@@ -3383,17 +3383,30 @@ public final class PremiumMADRTBProtocol {
             com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.VideoOrBuilder getVideoOrBuilder();
 
             /**
-             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
              */
-            boolean hasData();
+            boolean hasDesc();
             /**
-             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
              */
-            com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getData();
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getDesc();
             /**
-             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
              */
-            com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getDataOrBuilder();
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getDescOrBuilder();
+
+            /**
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+             */
+            boolean hasContent();
+            /**
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+             */
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getContent();
+            /**
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+             */
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getContentOrBuilder();
           }
           /**
            * Protobuf type {@code com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset}
@@ -3508,6 +3521,19 @@ public final class PremiumMADRTBProtocol {
                         assetOneof_ = subBuilder.buildPartial();
                       }
                       assetOneofCase_ = 6;
+                      break;
+                    }
+                    case 58: {
+                      com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder subBuilder = null;
+                      if (assetOneofCase_ == 7) {
+                        subBuilder = ((com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_).toBuilder();
+                      }
+                      assetOneof_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.PARSER, extensionRegistry);
+                      if (subBuilder != null) {
+                        subBuilder.mergeFrom((com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_);
+                        assetOneof_ = subBuilder.buildPartial();
+                      }
+                      assetOneofCase_ = 7;
                       break;
                     }
                   }
@@ -6134,7 +6160,8 @@ public final class PremiumMADRTBProtocol {
               TITLE(3),
               IMAGE(4),
               VIDEO(5),
-              DATA(6),
+              DESC(6),
+              CONTENT(7),
               ASSETONEOF_NOT_SET(0);
               private int value = 0;
               private AssetOneofCase(int value) {
@@ -6145,7 +6172,8 @@ public final class PremiumMADRTBProtocol {
                   case 3: return TITLE;
                   case 4: return IMAGE;
                   case 5: return VIDEO;
-                  case 6: return DATA;
+                  case 6: return DESC;
+                  case 7: return CONTENT;
                   case 0: return ASSETONEOF_NOT_SET;
                   default: throw new java.lang.IllegalArgumentException(
                     "Value is undefined for this oneof enum.");
@@ -6297,27 +6325,53 @@ public final class PremiumMADRTBProtocol {
               return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Video.getDefaultInstance();
             }
 
-            public static final int DATA_FIELD_NUMBER = 6;
+            public static final int DESC_FIELD_NUMBER = 6;
             /**
-             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
              */
-            public boolean hasData() {
+            public boolean hasDesc() {
               return assetOneofCase_ == 6;
             }
             /**
-             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
              */
-            public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getData() {
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getDesc() {
               if (assetOneofCase_ == 6) {
                  return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
               }
               return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
             }
             /**
-             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
              */
-            public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getDataOrBuilder() {
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getDescOrBuilder() {
               if (assetOneofCase_ == 6) {
+                 return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
+              }
+              return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
+            }
+
+            public static final int CONTENT_FIELD_NUMBER = 7;
+            /**
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+             */
+            public boolean hasContent() {
+              return assetOneofCase_ == 7;
+            }
+            /**
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+             */
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getContent() {
+              if (assetOneofCase_ == 7) {
+                 return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
+              }
+              return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
+            }
+            /**
+             * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+             */
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getContentOrBuilder() {
+              if (assetOneofCase_ == 7) {
                  return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
               }
               return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
@@ -6358,6 +6412,9 @@ public final class PremiumMADRTBProtocol {
               if (assetOneofCase_ == 6) {
                 output.writeMessage(6, (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_);
               }
+              if (assetOneofCase_ == 7) {
+                output.writeMessage(7, (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_);
+              }
               getUnknownFields().writeTo(output);
             }
 
@@ -6390,6 +6447,10 @@ public final class PremiumMADRTBProtocol {
               if (assetOneofCase_ == 6) {
                 size += com.google.protobuf.CodedOutputStream
                   .computeMessageSize(6, (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_);
+              }
+              if (assetOneofCase_ == 7) {
+                size += com.google.protobuf.CodedOutputStream
+                  .computeMessageSize(7, (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_);
               }
               size += getUnknownFields().getSerializedSize();
               memoizedSerializedSize = size;
@@ -6572,10 +6633,17 @@ public final class PremiumMADRTBProtocol {
                   }
                 }
                 if (assetOneofCase_ == 6) {
-                  if (dataBuilder_ == null) {
+                  if (descBuilder_ == null) {
                     result.assetOneof_ = assetOneof_;
                   } else {
-                    result.assetOneof_ = dataBuilder_.build();
+                    result.assetOneof_ = descBuilder_.build();
+                  }
+                }
+                if (assetOneofCase_ == 7) {
+                  if (contentBuilder_ == null) {
+                    result.assetOneof_ = assetOneof_;
+                  } else {
+                    result.assetOneof_ = contentBuilder_.build();
                   }
                 }
                 result.bitField0_ = to_bitField0_;
@@ -6616,8 +6684,12 @@ public final class PremiumMADRTBProtocol {
                     mergeVideo(other.getVideo());
                     break;
                   }
-                  case DATA: {
-                    mergeData(other.getData());
+                  case DESC: {
+                    mergeDesc(other.getDesc());
+                    break;
+                  }
+                  case CONTENT: {
+                    mergeContent(other.getContent());
                     break;
                   }
                   case ASSETONEOF_NOT_SET: {
@@ -7180,64 +7252,64 @@ public final class PremiumMADRTBProtocol {
               }
 
               private com.google.protobuf.SingleFieldBuilder<
-                  com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder> dataBuilder_;
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder> descBuilder_;
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public boolean hasData() {
+              public boolean hasDesc() {
                 return assetOneofCase_ == 6;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getData() {
-                if (dataBuilder_ == null) {
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getDesc() {
+                if (descBuilder_ == null) {
                   if (assetOneofCase_ == 6) {
                     return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
                   }
                   return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
                 } else {
                   if (assetOneofCase_ == 6) {
-                    return dataBuilder_.getMessage();
+                    return descBuilder_.getMessage();
                   }
                   return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
                 }
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public Builder setData(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data value) {
-                if (dataBuilder_ == null) {
+              public Builder setDesc(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data value) {
+                if (descBuilder_ == null) {
                   if (value == null) {
                     throw new NullPointerException();
                   }
                   assetOneof_ = value;
                   onChanged();
                 } else {
-                  dataBuilder_.setMessage(value);
+                  descBuilder_.setMessage(value);
                 }
                 assetOneofCase_ = 6;
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public Builder setData(
+              public Builder setDesc(
                   com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder builderForValue) {
-                if (dataBuilder_ == null) {
+                if (descBuilder_ == null) {
                   assetOneof_ = builderForValue.build();
                   onChanged();
                 } else {
-                  dataBuilder_.setMessage(builderForValue.build());
+                  descBuilder_.setMessage(builderForValue.build());
                 }
                 assetOneofCase_ = 6;
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public Builder mergeData(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data value) {
-                if (dataBuilder_ == null) {
+              public Builder mergeDesc(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data value) {
+                if (descBuilder_ == null) {
                   if (assetOneofCase_ == 6 &&
                       assetOneof_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance()) {
                     assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder((com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_)
@@ -7248,18 +7320,18 @@ public final class PremiumMADRTBProtocol {
                   onChanged();
                 } else {
                   if (assetOneofCase_ == 6) {
-                    dataBuilder_.mergeFrom(value);
+                    descBuilder_.mergeFrom(value);
                   }
-                  dataBuilder_.setMessage(value);
+                  descBuilder_.setMessage(value);
                 }
                 assetOneofCase_ = 6;
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public Builder clearData() {
-                if (dataBuilder_ == null) {
+              public Builder clearDesc() {
+                if (descBuilder_ == null) {
                   if (assetOneofCase_ == 6) {
                     assetOneofCase_ = 0;
                     assetOneof_ = null;
@@ -7270,22 +7342,22 @@ public final class PremiumMADRTBProtocol {
                     assetOneofCase_ = 0;
                     assetOneof_ = null;
                   }
-                  dataBuilder_.clear();
+                  descBuilder_.clear();
                 }
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder getDataBuilder() {
-                return getDataFieldBuilder().getBuilder();
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder getDescBuilder() {
+                return getDescFieldBuilder().getBuilder();
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
-              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getDataOrBuilder() {
-                if ((assetOneofCase_ == 6) && (dataBuilder_ != null)) {
-                  return dataBuilder_.getMessageOrBuilder();
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getDescOrBuilder() {
+                if ((assetOneofCase_ == 6) && (descBuilder_ != null)) {
+                  return descBuilder_.getMessageOrBuilder();
                 } else {
                   if (assetOneofCase_ == 6) {
                     return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
@@ -7294,16 +7366,16 @@ public final class PremiumMADRTBProtocol {
                 }
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data desc = 6;</code>
                */
               private com.google.protobuf.SingleFieldBuilder<
                   com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder> 
-                  getDataFieldBuilder() {
-                if (dataBuilder_ == null) {
+                  getDescFieldBuilder() {
+                if (descBuilder_ == null) {
                   if (!(assetOneofCase_ == 6)) {
                     assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
                   }
-                  dataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                  descBuilder_ = new com.google.protobuf.SingleFieldBuilder<
                       com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder>(
                           (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_,
                           getParentForChildren(),
@@ -7311,7 +7383,142 @@ public final class PremiumMADRTBProtocol {
                   assetOneof_ = null;
                 }
                 assetOneofCase_ = 6;
-                return dataBuilder_;
+                return descBuilder_;
+              }
+
+              private com.google.protobuf.SingleFieldBuilder<
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder> contentBuilder_;
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public boolean hasContent() {
+                return assetOneofCase_ == 7;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data getContent() {
+                if (contentBuilder_ == null) {
+                  if (assetOneofCase_ == 7) {
+                    return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
+                  }
+                  return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    return contentBuilder_.getMessage();
+                  }
+                  return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
+                }
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public Builder setContent(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data value) {
+                if (contentBuilder_ == null) {
+                  if (value == null) {
+                    throw new NullPointerException();
+                  }
+                  assetOneof_ = value;
+                  onChanged();
+                } else {
+                  contentBuilder_.setMessage(value);
+                }
+                assetOneofCase_ = 7;
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public Builder setContent(
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder builderForValue) {
+                if (contentBuilder_ == null) {
+                  assetOneof_ = builderForValue.build();
+                  onChanged();
+                } else {
+                  contentBuilder_.setMessage(builderForValue.build());
+                }
+                assetOneofCase_ = 7;
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public Builder mergeContent(com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data value) {
+                if (contentBuilder_ == null) {
+                  if (assetOneofCase_ == 7 &&
+                      assetOneof_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance()) {
+                    assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder((com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_)
+                        .mergeFrom(value).buildPartial();
+                  } else {
+                    assetOneof_ = value;
+                  }
+                  onChanged();
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    contentBuilder_.mergeFrom(value);
+                  }
+                  contentBuilder_.setMessage(value);
+                }
+                assetOneofCase_ = 7;
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public Builder clearContent() {
+                if (contentBuilder_ == null) {
+                  if (assetOneofCase_ == 7) {
+                    assetOneofCase_ = 0;
+                    assetOneof_ = null;
+                    onChanged();
+                  }
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    assetOneofCase_ = 0;
+                    assetOneof_ = null;
+                  }
+                  contentBuilder_.clear();
+                }
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder getContentBuilder() {
+                return getContentFieldBuilder().getBuilder();
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder getContentOrBuilder() {
+                if ((assetOneofCase_ == 7) && (contentBuilder_ != null)) {
+                  return contentBuilder_.getMessageOrBuilder();
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    return (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_;
+                  }
+                  return com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
+                }
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset.Data content = 7;</code>
+               */
+              private com.google.protobuf.SingleFieldBuilder<
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder> 
+                  getContentFieldBuilder() {
+                if (contentBuilder_ == null) {
+                  if (!(assetOneofCase_ == 7)) {
+                    assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.getDefaultInstance();
+                  }
+                  contentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                      com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.DataOrBuilder>(
+                          (com.madhouse.rtb.PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data) assetOneof_,
+                          getParentForChildren(),
+                          isClean());
+                  assetOneof_ = null;
+                }
+                assetOneofCase_ = 7;
+                return contentBuilder_;
               }
 
               // @@protoc_insertion_point(builder_scope:com.madhouse.rtb.BidRequest.Impression.Native.NativeRequest.Asset)
@@ -25452,17 +25659,30 @@ public final class PremiumMADRTBProtocol {
             com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.VideoOrBuilder getVideoOrBuilder();
 
             /**
-             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
              */
-            boolean hasData();
+            boolean hasDesc();
             /**
-             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
              */
-            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getData();
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getDesc();
             /**
-             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
              */
-            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getDataOrBuilder();
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getDescOrBuilder();
+
+            /**
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+             */
+            boolean hasContent();
+            /**
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+             */
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getContent();
+            /**
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+             */
+            com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getContentOrBuilder();
           }
           /**
            * Protobuf type {@code com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset}
@@ -25577,6 +25797,19 @@ public final class PremiumMADRTBProtocol {
                         assetOneof_ = subBuilder.buildPartial();
                       }
                       assetOneofCase_ = 6;
+                      break;
+                    }
+                    case 58: {
+                      com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder subBuilder = null;
+                      if (assetOneofCase_ == 7) {
+                        subBuilder = ((com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_).toBuilder();
+                      }
+                      assetOneof_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.PARSER, extensionRegistry);
+                      if (subBuilder != null) {
+                        subBuilder.mergeFrom((com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_);
+                        assetOneof_ = subBuilder.buildPartial();
+                      }
+                      assetOneofCase_ = 7;
                       break;
                     }
                   }
@@ -28102,7 +28335,8 @@ public final class PremiumMADRTBProtocol {
               TITLE(3),
               IMAGE(4),
               VIDEO(5),
-              DATA(6),
+              DESC(6),
+              CONTENT(7),
               ASSETONEOF_NOT_SET(0);
               private int value = 0;
               private AssetOneofCase(int value) {
@@ -28113,7 +28347,8 @@ public final class PremiumMADRTBProtocol {
                   case 3: return TITLE;
                   case 4: return IMAGE;
                   case 5: return VIDEO;
-                  case 6: return DATA;
+                  case 6: return DESC;
+                  case 7: return CONTENT;
                   case 0: return ASSETONEOF_NOT_SET;
                   default: throw new java.lang.IllegalArgumentException(
                     "Value is undefined for this oneof enum.");
@@ -28265,27 +28500,53 @@ public final class PremiumMADRTBProtocol {
               return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Video.getDefaultInstance();
             }
 
-            public static final int DATA_FIELD_NUMBER = 6;
+            public static final int DESC_FIELD_NUMBER = 6;
             /**
-             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
              */
-            public boolean hasData() {
+            public boolean hasDesc() {
               return assetOneofCase_ == 6;
             }
             /**
-             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
              */
-            public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getData() {
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getDesc() {
               if (assetOneofCase_ == 6) {
                  return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
               }
               return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
             }
             /**
-             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
              */
-            public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getDataOrBuilder() {
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getDescOrBuilder() {
               if (assetOneofCase_ == 6) {
+                 return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
+              }
+              return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
+            }
+
+            public static final int CONTENT_FIELD_NUMBER = 7;
+            /**
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+             */
+            public boolean hasContent() {
+              return assetOneofCase_ == 7;
+            }
+            /**
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+             */
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getContent() {
+              if (assetOneofCase_ == 7) {
+                 return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
+              }
+              return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
+            }
+            /**
+             * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+             */
+            public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getContentOrBuilder() {
+              if (assetOneofCase_ == 7) {
                  return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
               }
               return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
@@ -28326,6 +28587,9 @@ public final class PremiumMADRTBProtocol {
               if (assetOneofCase_ == 6) {
                 output.writeMessage(6, (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_);
               }
+              if (assetOneofCase_ == 7) {
+                output.writeMessage(7, (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_);
+              }
               getUnknownFields().writeTo(output);
             }
 
@@ -28358,6 +28622,10 @@ public final class PremiumMADRTBProtocol {
               if (assetOneofCase_ == 6) {
                 size += com.google.protobuf.CodedOutputStream
                   .computeMessageSize(6, (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_);
+              }
+              if (assetOneofCase_ == 7) {
+                size += com.google.protobuf.CodedOutputStream
+                  .computeMessageSize(7, (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_);
               }
               size += getUnknownFields().getSerializedSize();
               memoizedSerializedSize = size;
@@ -28540,10 +28808,17 @@ public final class PremiumMADRTBProtocol {
                   }
                 }
                 if (assetOneofCase_ == 6) {
-                  if (dataBuilder_ == null) {
+                  if (descBuilder_ == null) {
                     result.assetOneof_ = assetOneof_;
                   } else {
-                    result.assetOneof_ = dataBuilder_.build();
+                    result.assetOneof_ = descBuilder_.build();
+                  }
+                }
+                if (assetOneofCase_ == 7) {
+                  if (contentBuilder_ == null) {
+                    result.assetOneof_ = assetOneof_;
+                  } else {
+                    result.assetOneof_ = contentBuilder_.build();
                   }
                 }
                 result.bitField0_ = to_bitField0_;
@@ -28584,8 +28859,12 @@ public final class PremiumMADRTBProtocol {
                     mergeVideo(other.getVideo());
                     break;
                   }
-                  case DATA: {
-                    mergeData(other.getData());
+                  case DESC: {
+                    mergeDesc(other.getDesc());
+                    break;
+                  }
+                  case CONTENT: {
+                    mergeContent(other.getContent());
                     break;
                   }
                   case ASSETONEOF_NOT_SET: {
@@ -29148,64 +29427,64 @@ public final class PremiumMADRTBProtocol {
               }
 
               private com.google.protobuf.SingleFieldBuilder<
-                  com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder> dataBuilder_;
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder> descBuilder_;
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public boolean hasData() {
+              public boolean hasDesc() {
                 return assetOneofCase_ == 6;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getData() {
-                if (dataBuilder_ == null) {
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getDesc() {
+                if (descBuilder_ == null) {
                   if (assetOneofCase_ == 6) {
                     return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
                   }
                   return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
                 } else {
                   if (assetOneofCase_ == 6) {
-                    return dataBuilder_.getMessage();
+                    return descBuilder_.getMessage();
                   }
                   return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
                 }
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public Builder setData(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data value) {
-                if (dataBuilder_ == null) {
+              public Builder setDesc(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data value) {
+                if (descBuilder_ == null) {
                   if (value == null) {
                     throw new NullPointerException();
                   }
                   assetOneof_ = value;
                   onChanged();
                 } else {
-                  dataBuilder_.setMessage(value);
+                  descBuilder_.setMessage(value);
                 }
                 assetOneofCase_ = 6;
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public Builder setData(
+              public Builder setDesc(
                   com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder builderForValue) {
-                if (dataBuilder_ == null) {
+                if (descBuilder_ == null) {
                   assetOneof_ = builderForValue.build();
                   onChanged();
                 } else {
-                  dataBuilder_.setMessage(builderForValue.build());
+                  descBuilder_.setMessage(builderForValue.build());
                 }
                 assetOneofCase_ = 6;
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public Builder mergeData(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data value) {
-                if (dataBuilder_ == null) {
+              public Builder mergeDesc(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data value) {
+                if (descBuilder_ == null) {
                   if (assetOneofCase_ == 6 &&
                       assetOneof_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance()) {
                     assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.newBuilder((com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_)
@@ -29216,18 +29495,18 @@ public final class PremiumMADRTBProtocol {
                   onChanged();
                 } else {
                   if (assetOneofCase_ == 6) {
-                    dataBuilder_.mergeFrom(value);
+                    descBuilder_.mergeFrom(value);
                   }
-                  dataBuilder_.setMessage(value);
+                  descBuilder_.setMessage(value);
                 }
                 assetOneofCase_ = 6;
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public Builder clearData() {
-                if (dataBuilder_ == null) {
+              public Builder clearDesc() {
+                if (descBuilder_ == null) {
                   if (assetOneofCase_ == 6) {
                     assetOneofCase_ = 0;
                     assetOneof_ = null;
@@ -29238,22 +29517,22 @@ public final class PremiumMADRTBProtocol {
                     assetOneofCase_ = 0;
                     assetOneof_ = null;
                   }
-                  dataBuilder_.clear();
+                  descBuilder_.clear();
                 }
                 return this;
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder getDataBuilder() {
-                return getDataFieldBuilder().getBuilder();
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder getDescBuilder() {
+                return getDescFieldBuilder().getBuilder();
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
-              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getDataOrBuilder() {
-                if ((assetOneofCase_ == 6) && (dataBuilder_ != null)) {
-                  return dataBuilder_.getMessageOrBuilder();
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getDescOrBuilder() {
+                if ((assetOneofCase_ == 6) && (descBuilder_ != null)) {
+                  return descBuilder_.getMessageOrBuilder();
                 } else {
                   if (assetOneofCase_ == 6) {
                     return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
@@ -29262,16 +29541,16 @@ public final class PremiumMADRTBProtocol {
                 }
               }
               /**
-               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data data = 6;</code>
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data desc = 6;</code>
                */
               private com.google.protobuf.SingleFieldBuilder<
                   com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder> 
-                  getDataFieldBuilder() {
-                if (dataBuilder_ == null) {
+                  getDescFieldBuilder() {
+                if (descBuilder_ == null) {
                   if (!(assetOneofCase_ == 6)) {
                     assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
                   }
-                  dataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                  descBuilder_ = new com.google.protobuf.SingleFieldBuilder<
                       com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder>(
                           (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_,
                           getParentForChildren(),
@@ -29279,7 +29558,142 @@ public final class PremiumMADRTBProtocol {
                   assetOneof_ = null;
                 }
                 assetOneofCase_ = 6;
-                return dataBuilder_;
+                return descBuilder_;
+              }
+
+              private com.google.protobuf.SingleFieldBuilder<
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder> contentBuilder_;
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public boolean hasContent() {
+                return assetOneofCase_ == 7;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data getContent() {
+                if (contentBuilder_ == null) {
+                  if (assetOneofCase_ == 7) {
+                    return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
+                  }
+                  return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    return contentBuilder_.getMessage();
+                  }
+                  return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
+                }
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public Builder setContent(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data value) {
+                if (contentBuilder_ == null) {
+                  if (value == null) {
+                    throw new NullPointerException();
+                  }
+                  assetOneof_ = value;
+                  onChanged();
+                } else {
+                  contentBuilder_.setMessage(value);
+                }
+                assetOneofCase_ = 7;
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public Builder setContent(
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder builderForValue) {
+                if (contentBuilder_ == null) {
+                  assetOneof_ = builderForValue.build();
+                  onChanged();
+                } else {
+                  contentBuilder_.setMessage(builderForValue.build());
+                }
+                assetOneofCase_ = 7;
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public Builder mergeContent(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data value) {
+                if (contentBuilder_ == null) {
+                  if (assetOneofCase_ == 7 &&
+                      assetOneof_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance()) {
+                    assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.newBuilder((com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_)
+                        .mergeFrom(value).buildPartial();
+                  } else {
+                    assetOneof_ = value;
+                  }
+                  onChanged();
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    contentBuilder_.mergeFrom(value);
+                  }
+                  contentBuilder_.setMessage(value);
+                }
+                assetOneofCase_ = 7;
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public Builder clearContent() {
+                if (contentBuilder_ == null) {
+                  if (assetOneofCase_ == 7) {
+                    assetOneofCase_ = 0;
+                    assetOneof_ = null;
+                    onChanged();
+                  }
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    assetOneofCase_ = 0;
+                    assetOneof_ = null;
+                  }
+                  contentBuilder_.clear();
+                }
+                return this;
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder getContentBuilder() {
+                return getContentFieldBuilder().getBuilder();
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder getContentOrBuilder() {
+                if ((assetOneofCase_ == 7) && (contentBuilder_ != null)) {
+                  return contentBuilder_.getMessageOrBuilder();
+                } else {
+                  if (assetOneofCase_ == 7) {
+                    return (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_;
+                  }
+                  return com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
+                }
+              }
+              /**
+               * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data content = 7;</code>
+               */
+              private com.google.protobuf.SingleFieldBuilder<
+                  com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder> 
+                  getContentFieldBuilder() {
+                if (contentBuilder_ == null) {
+                  if (!(assetOneofCase_ == 7)) {
+                    assetOneof_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.getDefaultInstance();
+                  }
+                  contentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                      com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.DataOrBuilder>(
+                          (com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset.Data) assetOneof_,
+                          getParentForChildren(),
+                          isClean());
+                  assetOneof_ = null;
+                }
+                assetOneofCase_ = 7;
+                return contentBuilder_;
               }
 
               // @@protoc_insertion_point(builder_scope:com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse.Asset)
@@ -35620,7 +36034,7 @@ public final class PremiumMADRTBProtocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\033PremiumMADRTBProtocol.proto\022\020com.madho" +
-      "use.rtb\"\275\030\n\nBidRequest\022\n\n\002id\030\001 \001(\t\0224\n\003im" +
+      "use.rtb\"\231\031\n\nBidRequest\022\n\n\002id\030\001 \001(\t\0224\n\003im" +
       "p\030\002 \003(\0132\'.com.madhouse.rtb.BidRequest.Im" +
       "pression\022/\n\003app\030\003 \001(\0132 .com.madhouse.rtb" +
       ".BidRequest.AppH\000\0221\n\004site\030\004 \001(\0132!.com.ma" +
@@ -35628,7 +36042,7 @@ public final class PremiumMADRTBProtocol {
       " \001(\0132#.com.madhouse.rtb.BidRequest.Devic" +
       "e\022/\n\004user\030\006 \001(\0132!.com.madhouse.rtb.BidRe" +
       "quest.User\022\014\n\004test\030\007 \001(\005\022\n\n\002at\030\010 \001(\005\022\014\n\004" +
-      "tmax\030\t \001(\005\022\014\n\004bcat\030\n \003(\t\022\014\n\004badv\030\013 \003(\t\032\230",
+      "tmax\030\t \001(\005\022\014\n\004bcat\030\n \003(\t\022\014\n\004badv\030\013 \003(\t\032\364",
       "\r\n\nImpression\022\n\n\002id\030\001 \001(\t\022@\n\006banner\030\002 \001(" +
       "\0132..com.madhouse.rtb.BidRequest.Impressi" +
       "on.BannerH\000\022>\n\005video\030\003 \001(\0132-.com.madhous" +
@@ -35644,13 +36058,13 @@ public final class PremiumMADRTBProtocol {
       "maxduration\030\004 \001(\005\022\021\n\tlinearity\030\005 \001(\005\022\022\n\n" +
       "startdelay\030\006 \001(\005\022\020\n\010plcmtcnt\030\007 \001(\005\022\r\n\005mi" +
       "mes\030\010 \003(\t\022\021\n\tprotocols\030\t \003(\005\022\013\n\003api\030\n \003(" +
-      "\005\032\207\007\n\006Native\022\014\n\004args\030\001 \001(\t\022\013\n\003ver\030\002 \001(\t\022" +
+      "\005\032\343\007\n\006Native\022\014\n\004args\030\001 \001(\t\022\013\n\003ver\030\002 \001(\t\022" +
       "M\n\007request\030\003 \001(\0132<.com.madhouse.rtb.BidR" +
       "equest.Impression.Native.NativeRequest\022\013" +
-      "\n\003api\030\004 \003(\005\032\205\006\n\rNativeRequest\022\016\n\006layout\030" +
+      "\n\003api\030\004 \003(\005\032\341\006\n\rNativeRequest\022\016\n\006layout\030" +
       "\001 \001(\005\022\020\n\010plcmtcnt\030\002 \001(\005\022R\n\006assets\030\003 \003(\0132",
       "B.com.madhouse.rtb.BidRequest.Impression" +
-      ".Native.NativeRequest.Asset\032\375\004\n\005Asset\022\n\n" +
+      ".Native.NativeRequest.Asset\032\331\005\n\005Asset\022\n\n" +
       "\002id\030\001 \001(\t\022\020\n\010required\030\002 \001(\010\022Y\n\005title\030\003 \001" +
       "(\0132H.com.madhouse.rtb.BidRequest.Impress" +
       "ion.Native.NativeRequest.Asset.TitleH\000\022Y" +
@@ -35658,82 +36072,87 @@ public final class PremiumMADRTBProtocol {
       "est.Impression.Native.NativeRequest.Asse" +
       "t.ImageH\000\022Y\n\005video\030\005 \001(\0132H.com.madhouse." +
       "rtb.BidRequest.Impression.Native.NativeR" +
-      "equest.Asset.VideoH\000\022W\n\004data\030\006 \001(\0132G.com",
+      "equest.Asset.VideoH\000\022W\n\004desc\030\006 \001(\0132G.com",
       ".madhouse.rtb.BidRequest.Impression.Nati" +
-      "ve.NativeRequest.Asset.DataH\000\032\024\n\005Title\022\013" +
-      "\n\003len\030\001 \001(\005\032:\n\005Image\022\014\n\004type\030\001 \001(\005\022\t\n\001w\030" +
-      "\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\r\n\005mimes\030\004 \003(\t\032i\n\005Video" +
-      "\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\023\n\013minduration\030\003 " +
-      "\001(\005\022\023\n\013maxduration\030\004 \001(\005\022\021\n\tprotocols\030\005 " +
-      "\003(\005\022\r\n\005mimes\030\006 \003(\t\032!\n\004Data\022\014\n\004type\030\001 \001(\005" +
-      "\022\013\n\003len\030\002 \001(\005B\014\n\nAssetOneof\032\240\001\n\003PMP\022\027\n\017p" +
-      "rivate_auction\030\001 \001(\005\022?\n\005deals\030\002 \003(\01320.co" +
-      "m.madhouse.rtb.BidRequest.Impression.PMP",
-      ".Deal\032?\n\004Deal\022\n\n\002id\030\001 \001(\t\022\n\n\002at\030\002 \001(\005\022\020\n" +
-      "\010bidfloor\030\003 \001(\005\022\r\n\005wseat\030\004 \003(\tB\021\n\017Impres" +
-      "sionOneof\032\213\001\n\004User\022\n\n\002id\030\001 \001(\t\022\013\n\003yob\030\002 " +
-      "\001(\005\022\016\n\006gender\030\003 \001(\t\0223\n\004tags\030\004 \003(\0132%.com." +
-      "madhouse.rtb.BidRequest.User.Tag\032%\n\003Tag\022" +
-      "\n\n\002id\030\001 \001(\t\022\022\n\nsimilarity\030\002 \001(\005\032\252\003\n\006Devi" +
-      "ce\022\n\n\002ua\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014\n\004ipv6\030\003 \001(\t" +
-      "\022\013\n\003did\030\004 \001(\t\022\016\n\006didmd5\030\005 \001(\t\022\014\n\004dpid\030\006 " +
-      "\001(\t\022\017\n\007dpidmd5\030\007 \001(\t\022\013\n\003mac\030\010 \001(\t\022\016\n\006mac" +
-      "md5\030\t \001(\t\022\014\n\004mac1\030\n \001(\t\022\017\n\007mac1md5\030\013 \001(\t",
-      "\022\013\n\003ifa\030\014 \001(\t\022\017\n\007carrier\030\r \001(\005\022\026\n\016connec" +
-      "tiontype\030\016 \001(\005\022\022\n\ndevicetype\030\017 \001(\005\022\n\n\002os" +
-      "\030\020 \001(\005\022\013\n\003osv\030\021 \001(\t\022\020\n\010language\030\022 \001(\t\022\014\n" +
-      "\004make\030\023 \001(\t\022\r\n\005model\030\024 \001(\t\022\013\n\003hwv\030\025 \001(\t\022" +
-      "4\n\003geo\030\026 \001(\0132\'.com.madhouse.rtb.BidReque" +
-      "st.Device.Geo\032-\n\003Geo\022\014\n\004type\030\001 \001(\005\022\013\n\003lo" +
-      "n\030\002 \001(\002\022\013\n\003lat\030\003 \001(\002\032\327\001\n\003App\022\n\n\002id\030\001 \001(\t" +
-      "\022\014\n\004name\030\002 \001(\t\022\013\n\003ver\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t" +
-      "\022\017\n\007pagecat\030\005 \003(\t\022\022\n\nsectioncat\030\006 \003(\t\022\016\n" +
-      "\006bundle\030\007 \001(\t\022\014\n\004paid\030\010 \001(\005\022\020\n\010storeurl\030",
-      "\t \001(\t\022\020\n\010keywords\030\n \003(\t\0225\n\007content\030\013 \001(\013" +
-      "2$.com.madhouse.rtb.BidRequest.Content\032\326" +
-      "\001\n\004Site\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\016\n\006dom" +
-      "ain\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022\017\n\007pagecat\030\005 \003(\t\022" +
-      "\022\n\nsectioncat\030\006 \003(\t\022\014\n\004page\030\007 \001(\t\022\013\n\003ref" +
-      "\030\010 \001(\t\022\016\n\006mobile\030\t \001(\005\022\020\n\010keywords\030\n \001(\t" +
-      "\0225\n\007content\030\013 \001(\0132$.com.madhouse.rtb.Bid" +
-      "Request.Content\032H\n\007Content\022\n\n\002id\030\001 \001(\t\022\r" +
-      "\n\005title\030\002 \001(\t\022\020\n\010keywords\030\003 \003(\t\022\020\n\010chann" +
-      "els\030\004 \003(\tB\014\n\nMediaOneof\"\373\n\n\013BidResponse\022",
-      "\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\0226\n\007seatbid\030\003 " +
-      "\003(\0132%.com.madhouse.rtb.BidResponse.SeatB" +
-      "id\022\013\n\003nbr\030\004 \001(\005\032\213\n\n\007SeatBid\0226\n\003bid\030\001 \003(\013" +
-      "2).com.madhouse.rtb.BidResponse.SeatBid." +
-      "Bid\032\307\t\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005impid\030\002 \001(\t\022\r" +
-      "\n\005price\030\003 \001(\005\022\014\n\004adid\030\004 \001(\t\022\013\n\003cid\030\005 \001(\t" +
-      "\022\014\n\004icon\030\006 \001(\t\022\r\n\005cover\030\007 \001(\t\022\013\n\003adm\030\010 \003" +
-      "(\t\022\020\n\010duration\030\t \001(\005\022L\n\nadm_native\030\n \001(\013" +
-      "28.com.madhouse.rtb.BidResponse.SeatBid." +
-      "Bid.NativeResponse\022\r\n\005admid\030\013 \001(\t\022\016\n\006dea",
-      "lid\030\014 \001(\t\022\014\n\004nurl\030\r \001(\t\022\016\n\006lpgurl\030\016 \001(\t\022" +
-      "\017\n\007acttype\030\017 \001(\005\022B\n\007monitor\030\020 \001(\01321.com." +
-      "madhouse.rtb.BidResponse.SeatBid.Bid.Mon" +
-      "itor\032\261\005\n\016NativeResponse\022\013\n\003ver\030\001 \001(\t\022N\n\006" +
-      "assets\030\002 \003(\0132>.com.madhouse.rtb.BidRespo" +
-      "nse.SeatBid.Bid.NativeResponse.Asset\032\301\004\n" +
-      "\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010required\030\002 \001(\010\022U\n\005" +
-      "title\030\003 \001(\0132D.com.madhouse.rtb.BidRespon" +
-      "se.SeatBid.Bid.NativeResponse.Asset.Titl" +
-      "eH\000\022U\n\005image\030\004 \001(\0132D.com.madhouse.rtb.Bi",
-      "dResponse.SeatBid.Bid.NativeResponse.Ass" +
-      "et.ImageH\000\022U\n\005video\030\005 \001(\0132D.com.madhouse" +
-      ".rtb.BidResponse.SeatBid.Bid.NativeRespo" +
-      "nse.Asset.VideoH\000\022S\n\004data\030\006 \001(\0132C.com.ma" +
-      "dhouse.rtb.BidResponse.SeatBid.Bid.Nativ" +
-      "eResponse.Asset.DataH\000\032\025\n\005Title\022\014\n\004text\030" +
-      "\001 \001(\t\0328\n\005Image\022\014\n\004type\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022" +
-      "\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003(\t\032<\n\005Video\022\t\n\001w\030\001 " +
-      "\001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url\030\003 \001(\t\022\020\n\010duration\030" +
-      "\004 \001(\005\032#\n\004Data\022\014\n\004type\030\001 \001(\005\022\r\n\005value\030\002 \001",
-      "(\tB\014\n\nAssetOneof\032\252\001\n\007Monitor\022G\n\006impurl\030\001" +
-      " \003(\01327.com.madhouse.rtb.BidResponse.Seat" +
-      "Bid.Bid.Monitor.Track\022\016\n\006clkurl\030\002 \003(\t\022\016\n" +
-      "\006securl\030\003 \003(\t\022\014\n\004exts\030\013 \003(\t\032(\n\005Track\022\022\n\n" +
-      "startdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(\t"
+      "ve.NativeRequest.Asset.DataH\000\022Z\n\007content" +
+      "\030\007 \001(\0132G.com.madhouse.rtb.BidRequest.Imp" +
+      "ression.Native.NativeRequest.Asset.DataH" +
+      "\000\032\024\n\005Title\022\013\n\003len\030\001 \001(\005\032:\n\005Image\022\014\n\004type" +
+      "\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\r\n\005mimes\030\004 " +
+      "\003(\t\032i\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\023\n\013mi" +
+      "nduration\030\003 \001(\005\022\023\n\013maxduration\030\004 \001(\005\022\021\n\t" +
+      "protocols\030\005 \003(\005\022\r\n\005mimes\030\006 \003(\t\032!\n\004Data\022\014" +
+      "\n\004type\030\001 \001(\005\022\013\n\003len\030\002 \001(\005B\014\n\nAssetOneof\032",
+      "\240\001\n\003PMP\022\027\n\017private_auction\030\001 \001(\005\022?\n\005deal" +
+      "s\030\002 \003(\01320.com.madhouse.rtb.BidRequest.Im" +
+      "pression.PMP.Deal\032?\n\004Deal\022\n\n\002id\030\001 \001(\t\022\n\n" +
+      "\002at\030\002 \001(\005\022\020\n\010bidfloor\030\003 \001(\005\022\r\n\005wseat\030\004 \003" +
+      "(\tB\021\n\017ImpressionOneof\032\213\001\n\004User\022\n\n\002id\030\001 \001" +
+      "(\t\022\013\n\003yob\030\002 \001(\005\022\016\n\006gender\030\003 \001(\t\0223\n\004tags\030" +
+      "\004 \003(\0132%.com.madhouse.rtb.BidRequest.User" +
+      ".Tag\032%\n\003Tag\022\n\n\002id\030\001 \001(\t\022\022\n\nsimilarity\030\002 " +
+      "\001(\005\032\252\003\n\006Device\022\n\n\002ua\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014" +
+      "\n\004ipv6\030\003 \001(\t\022\013\n\003did\030\004 \001(\t\022\016\n\006didmd5\030\005 \001(",
+      "\t\022\014\n\004dpid\030\006 \001(\t\022\017\n\007dpidmd5\030\007 \001(\t\022\013\n\003mac\030" +
+      "\010 \001(\t\022\016\n\006macmd5\030\t \001(\t\022\014\n\004mac1\030\n \001(\t\022\017\n\007m" +
+      "ac1md5\030\013 \001(\t\022\013\n\003ifa\030\014 \001(\t\022\017\n\007carrier\030\r \001" +
+      "(\005\022\026\n\016connectiontype\030\016 \001(\005\022\022\n\ndevicetype" +
+      "\030\017 \001(\005\022\n\n\002os\030\020 \001(\005\022\013\n\003osv\030\021 \001(\t\022\020\n\010langu" +
+      "age\030\022 \001(\t\022\014\n\004make\030\023 \001(\t\022\r\n\005model\030\024 \001(\t\022\013" +
+      "\n\003hwv\030\025 \001(\t\0224\n\003geo\030\026 \001(\0132\'.com.madhouse." +
+      "rtb.BidRequest.Device.Geo\032-\n\003Geo\022\014\n\004type" +
+      "\030\001 \001(\005\022\013\n\003lon\030\002 \001(\002\022\013\n\003lat\030\003 \001(\002\032\327\001\n\003App" +
+      "\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\013\n\003ver\030\003 \001(\t\022",
+      "\013\n\003cat\030\004 \003(\t\022\017\n\007pagecat\030\005 \003(\t\022\022\n\nsection" +
+      "cat\030\006 \003(\t\022\016\n\006bundle\030\007 \001(\t\022\014\n\004paid\030\010 \001(\005\022" +
+      "\020\n\010storeurl\030\t \001(\t\022\020\n\010keywords\030\n \003(\t\0225\n\007c" +
+      "ontent\030\013 \001(\0132$.com.madhouse.rtb.BidReque" +
+      "st.Content\032\326\001\n\004Site\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030" +
+      "\002 \001(\t\022\016\n\006domain\030\003 \001(\t\022\013\n\003cat\030\004 \003(\t\022\017\n\007pa" +
+      "gecat\030\005 \003(\t\022\022\n\nsectioncat\030\006 \003(\t\022\014\n\004page\030" +
+      "\007 \001(\t\022\013\n\003ref\030\010 \001(\t\022\016\n\006mobile\030\t \001(\005\022\020\n\010ke" +
+      "ywords\030\n \001(\t\0225\n\007content\030\013 \001(\0132$.com.madh" +
+      "ouse.rtb.BidRequest.Content\032H\n\007Content\022\n",
+      "\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022\020\n\010keywords\030\003 " +
+      "\003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nMediaOneof\"\323\013\n\013" +
+      "BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\0226" +
+      "\n\007seatbid\030\003 \003(\0132%.com.madhouse.rtb.BidRe" +
+      "sponse.SeatBid\022\013\n\003nbr\030\004 \001(\005\032\343\n\n\007SeatBid\022" +
+      "6\n\003bid\030\001 \003(\0132).com.madhouse.rtb.BidRespo" +
+      "nse.SeatBid.Bid\032\237\n\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005i" +
+      "mpid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022\014\n\004adid\030\004 \001(\t\022" +
+      "\013\n\003cid\030\005 \001(\t\022\014\n\004icon\030\006 \001(\t\022\r\n\005cover\030\007 \001(" +
+      "\t\022\013\n\003adm\030\010 \003(\t\022\020\n\010duration\030\t \001(\005\022L\n\nadm_",
+      "native\030\n \001(\01328.com.madhouse.rtb.BidRespo" +
+      "nse.SeatBid.Bid.NativeResponse\022\r\n\005admid\030" +
+      "\013 \001(\t\022\016\n\006dealid\030\014 \001(\t\022\014\n\004nurl\030\r \001(\t\022\016\n\006l" +
+      "pgurl\030\016 \001(\t\022\017\n\007acttype\030\017 \001(\005\022B\n\007monitor\030" +
+      "\020 \001(\01321.com.madhouse.rtb.BidResponse.Sea" +
+      "tBid.Bid.Monitor\032\211\006\n\016NativeResponse\022\013\n\003v" +
+      "er\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>.com.madhouse." +
+      "rtb.BidResponse.SeatBid.Bid.NativeRespon" +
+      "se.Asset\032\231\005\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010requir" +
+      "ed\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D.com.madhouse.r",
+      "tb.BidResponse.SeatBid.Bid.NativeRespons" +
+      "e.Asset.TitleH\000\022U\n\005image\030\004 \001(\0132D.com.mad" +
+      "house.rtb.BidResponse.SeatBid.Bid.Native" +
+      "Response.Asset.ImageH\000\022U\n\005video\030\005 \001(\0132D." +
+      "com.madhouse.rtb.BidResponse.SeatBid.Bid" +
+      ".NativeResponse.Asset.VideoH\000\022S\n\004desc\030\006 " +
+      "\001(\0132C.com.madhouse.rtb.BidResponse.SeatB" +
+      "id.Bid.NativeResponse.Asset.DataH\000\022V\n\007co" +
+      "ntent\030\007 \001(\0132C.com.madhouse.rtb.BidRespon" +
+      "se.SeatBid.Bid.NativeResponse.Asset.Data",
+      "H\000\032\025\n\005Title\022\014\n\004text\030\001 \001(\t\0328\n\005Image\022\014\n\004ty" +
+      "pe\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 " +
+      "\003(\t\032<\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003ur" +
+      "l\030\003 \001(\t\022\020\n\010duration\030\004 \001(\005\032#\n\004Data\022\014\n\004typ" +
+      "e\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOneof\032\252\001\n" +
+      "\007Monitor\022G\n\006impurl\030\001 \003(\01327.com.madhouse." +
+      "rtb.BidResponse.SeatBid.Bid.Monitor.Trac" +
+      "k\022\016\n\006clkurl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\022\014\n\004ext" +
+      "s\030\013 \003(\t\032(\n\005Track\022\022\n\nstartdelay\030\001 \001(\005\022\013\n\003" +
+      "url\030\002 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -35788,7 +36207,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidRequest_Impression_Native_NativeRequest_Asset_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidRequest_Impression_Native_NativeRequest_Asset_descriptor,
-        new java.lang.String[] { "Id", "Required", "Title", "Image", "Video", "Data", "AssetOneof", });
+        new java.lang.String[] { "Id", "Required", "Title", "Image", "Video", "Desc", "Content", "AssetOneof", });
     internal_static_com_madhouse_rtb_BidRequest_Impression_Native_NativeRequest_Asset_Title_descriptor =
       internal_static_com_madhouse_rtb_BidRequest_Impression_Native_NativeRequest_Asset_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidRequest_Impression_Native_NativeRequest_Asset_Title_fieldAccessorTable = new
@@ -35896,7 +36315,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_descriptor,
-        new java.lang.String[] { "Id", "Required", "Title", "Image", "Video", "Data", "AssetOneof", });
+        new java.lang.String[] { "Id", "Required", "Title", "Image", "Video", "Desc", "Content", "AssetOneof", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Title_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_Asset_Title_fieldAccessorTable = new

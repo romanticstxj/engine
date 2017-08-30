@@ -81,7 +81,8 @@ message BidRequest
                         Title title = 3;
                         Image image = 4;
                         Video video = 5;
-                        Data data = 6;
+                        Data desc = 6;
+						Data content = 7;
                     }
                     
                     message Title 
@@ -262,7 +263,8 @@ message BidResponse
                         Title title = 3;
                         Image image = 4;
                         Video video = 5;
-                        Data data = 6;
+                        Data desc = 6;
+						Data content = 7;
                     }
                     
                     message Title
