@@ -51,6 +51,9 @@ public class PremiumMADResponse {
     // 广告的文字描述。
     private String displaytext;
     
+    //  广告的文字内容； 
+    private String displaycontent;
+    
     //展示监播
     private List<String> imgtracking;
     
@@ -230,4 +233,13 @@ public class PremiumMADResponse {
     public void setBidid(String bidid) {
         this.bidid = bidid;
     }
+
+    public String getDisplaycontent() {
+        return displaycontent;
+    }
+
+    public void setDisplaycontent(String displaycontent) {
+        this.displaycontent = displaycontent;
+    }
+    
 }
