@@ -186,6 +186,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setCover(madResponse.getCover());
         dspResponse.setTitle(madResponse.getDisplaytitle());
         dspResponse.setDesc(madResponse.getDisplaytext());
+        dspResponse.setContent(madResponse.getDisplaycontent());
         dspResponse.setDuration(madResponse.getDuration() != null ? madResponse.getDuration() : 0);
         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
         dspResponse.setAdm(madResponse.getAdm());

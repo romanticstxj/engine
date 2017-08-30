@@ -392,6 +392,10 @@ public class PremiumMADHandler extends MediaBaseHandler {
             if (mediaResponse.getDesc() != null) {
                 premiumMADResponse.setDisplaytext(mediaResponse.getDesc());
             }
+            
+            if (StringUtils.isEmpty(mediaResponse.getContent())) {
+                premiumMADResponse.setDisplaycontent(mediaResponse.getContent());
+            }
 
             if (mediaResponse.getAdm() != null && !mediaResponse.getAdm().isEmpty()) {
                 premiumMADResponse.setImgurl( mediaResponse.getAdm().get(0));

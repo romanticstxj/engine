@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -6671119256732166437L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DSPResponse\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"bidid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"impid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"price\",\"type\":\"int\",\"default\":0},{\"name\":\"nurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"admid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"icon\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cover\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"title\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"desc\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"duration\",\"type\":\"int\",\"default\":0},{\"name\":\"adm\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"lpgurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"acttype\",\"type\":\"int\",\"default\":1},{\"name\":\"monitor\",\"type\":{\"type\":\"record\",\"name\":\"Monitor\",\"fields\":[{\"name\":\"impurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Track\",\"fields\":[{\"name\":\"startdelay\",\"type\":\"int\",\"default\":0},{\"name\":\"url\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}},\"default\":null},{\"name\":\"clkurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null},{\"name\":\"securl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null},{\"name\":\"exts\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null}]}}]}");
+  private static final long serialVersionUID = -6902947234488306087L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DSPResponse\",\"namespace\":\"com.madhouse.ssp.avro\",\"fields\":[{\"name\":\"id\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"bidid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"impid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"adid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"price\",\"type\":\"int\",\"default\":0},{\"name\":\"nurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"admid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"icon\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"cover\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"title\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"desc\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"content\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"duration\",\"type\":\"int\",\"default\":0},{\"name\":\"adm\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}},{\"name\":\"dealid\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"lpgurl\",\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\"}],\"default\":null},{\"name\":\"acttype\",\"type\":\"int\",\"default\":1},{\"name\":\"monitor\",\"type\":{\"type\":\"record\",\"name\":\"Monitor\",\"fields\":[{\"name\":\"impurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Track\",\"fields\":[{\"name\":\"startdelay\",\"type\":\"int\",\"default\":0},{\"name\":\"url\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}},\"default\":null},{\"name\":\"clkurl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null},{\"name\":\"securl\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null},{\"name\":\"exts\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"default\":null}]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -63,6 +63,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
   @Deprecated public java.lang.String cover;
   @Deprecated public java.lang.String title;
   @Deprecated public java.lang.String desc;
+  @Deprecated public java.lang.String content;
   @Deprecated public int duration;
   @Deprecated public java.util.List<java.lang.String> adm;
   @Deprecated public java.lang.String dealid;
@@ -91,6 +92,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
    * @param cover The new value for cover
    * @param title The new value for title
    * @param desc The new value for desc
+   * @param content The new value for content
    * @param duration The new value for duration
    * @param adm The new value for adm
    * @param dealid The new value for dealid
@@ -98,7 +100,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
    * @param acttype The new value for acttype
    * @param monitor The new value for monitor
    */
-  public DSPResponse(java.lang.String id, java.lang.String bidid, java.lang.String impid, java.lang.String adid, java.lang.String cid, java.lang.Integer price, java.lang.String nurl, java.lang.String admid, java.lang.String icon, java.lang.String cover, java.lang.String title, java.lang.String desc, java.lang.Integer duration, java.util.List<java.lang.String> adm, java.lang.String dealid, java.lang.String lpgurl, java.lang.Integer acttype, com.madhouse.ssp.avro.Monitor monitor) {
+  public DSPResponse(java.lang.String id, java.lang.String bidid, java.lang.String impid, java.lang.String adid, java.lang.String cid, java.lang.Integer price, java.lang.String nurl, java.lang.String admid, java.lang.String icon, java.lang.String cover, java.lang.String title, java.lang.String desc, java.lang.String content, java.lang.Integer duration, java.util.List<java.lang.String> adm, java.lang.String dealid, java.lang.String lpgurl, java.lang.Integer acttype, com.madhouse.ssp.avro.Monitor monitor) {
     this.id = id;
     this.bidid = bidid;
     this.impid = impid;
@@ -111,6 +113,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
     this.cover = cover;
     this.title = title;
     this.desc = desc;
+    this.content = content;
     this.duration = duration;
     this.adm = adm;
     this.dealid = dealid;
@@ -135,12 +138,13 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
     case 9: return cover;
     case 10: return title;
     case 11: return desc;
-    case 12: return duration;
-    case 13: return adm;
-    case 14: return dealid;
-    case 15: return lpgurl;
-    case 16: return acttype;
-    case 17: return monitor;
+    case 12: return content;
+    case 13: return duration;
+    case 14: return adm;
+    case 15: return dealid;
+    case 16: return lpgurl;
+    case 17: return acttype;
+    case 18: return monitor;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -161,12 +165,13 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
     case 9: cover = (java.lang.String)value$; break;
     case 10: title = (java.lang.String)value$; break;
     case 11: desc = (java.lang.String)value$; break;
-    case 12: duration = (java.lang.Integer)value$; break;
-    case 13: adm = (java.util.List<java.lang.String>)value$; break;
-    case 14: dealid = (java.lang.String)value$; break;
-    case 15: lpgurl = (java.lang.String)value$; break;
-    case 16: acttype = (java.lang.Integer)value$; break;
-    case 17: monitor = (com.madhouse.ssp.avro.Monitor)value$; break;
+    case 12: content = (java.lang.String)value$; break;
+    case 13: duration = (java.lang.Integer)value$; break;
+    case 14: adm = (java.util.List<java.lang.String>)value$; break;
+    case 15: dealid = (java.lang.String)value$; break;
+    case 16: lpgurl = (java.lang.String)value$; break;
+    case 17: acttype = (java.lang.Integer)value$; break;
+    case 18: monitor = (com.madhouse.ssp.avro.Monitor)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -364,6 +369,22 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
   /**
+   * Gets the value of the 'content' field.
+   * @return The value of the 'content' field.
+   */
+  public java.lang.String getContent() {
+    return content;
+  }
+
+  /**
+   * Sets the value of the 'content' field.
+   * @param value the value to set.
+   */
+  public void setContent(java.lang.String value) {
+    this.content = value;
+  }
+
+  /**
    * Gets the value of the 'duration' field.
    * @return The value of the 'duration' field.
    */
@@ -503,6 +524,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
     private java.lang.String cover;
     private java.lang.String title;
     private java.lang.String desc;
+    private java.lang.String content;
     private int duration;
     private java.util.List<java.lang.String> adm;
     private java.lang.String dealid;
@@ -570,29 +592,33 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
         this.desc = data().deepCopy(fields()[11].schema(), other.desc);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.duration)) {
-        this.duration = data().deepCopy(fields()[12].schema(), other.duration);
+      if (isValidValue(fields()[12], other.content)) {
+        this.content = data().deepCopy(fields()[12].schema(), other.content);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.adm)) {
-        this.adm = data().deepCopy(fields()[13].schema(), other.adm);
+      if (isValidValue(fields()[13], other.duration)) {
+        this.duration = data().deepCopy(fields()[13].schema(), other.duration);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.dealid)) {
-        this.dealid = data().deepCopy(fields()[14].schema(), other.dealid);
+      if (isValidValue(fields()[14], other.adm)) {
+        this.adm = data().deepCopy(fields()[14].schema(), other.adm);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.lpgurl)) {
-        this.lpgurl = data().deepCopy(fields()[15].schema(), other.lpgurl);
+      if (isValidValue(fields()[15], other.dealid)) {
+        this.dealid = data().deepCopy(fields()[15].schema(), other.dealid);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.acttype)) {
-        this.acttype = data().deepCopy(fields()[16].schema(), other.acttype);
+      if (isValidValue(fields()[16], other.lpgurl)) {
+        this.lpgurl = data().deepCopy(fields()[16].schema(), other.lpgurl);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.monitor)) {
-        this.monitor = data().deepCopy(fields()[17].schema(), other.monitor);
+      if (isValidValue(fields()[17], other.acttype)) {
+        this.acttype = data().deepCopy(fields()[17].schema(), other.acttype);
         fieldSetFlags()[17] = true;
+      }
+      if (isValidValue(fields()[18], other.monitor)) {
+        this.monitor = data().deepCopy(fields()[18].schema(), other.monitor);
+        fieldSetFlags()[18] = true;
       }
       if (other.hasMonitorBuilder()) {
         this.monitorBuilder = com.madhouse.ssp.avro.Monitor.newBuilder(other.getMonitorBuilder());
@@ -653,29 +679,33 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
         this.desc = data().deepCopy(fields()[11].schema(), other.desc);
         fieldSetFlags()[11] = true;
       }
-      if (isValidValue(fields()[12], other.duration)) {
-        this.duration = data().deepCopy(fields()[12].schema(), other.duration);
+      if (isValidValue(fields()[12], other.content)) {
+        this.content = data().deepCopy(fields()[12].schema(), other.content);
         fieldSetFlags()[12] = true;
       }
-      if (isValidValue(fields()[13], other.adm)) {
-        this.adm = data().deepCopy(fields()[13].schema(), other.adm);
+      if (isValidValue(fields()[13], other.duration)) {
+        this.duration = data().deepCopy(fields()[13].schema(), other.duration);
         fieldSetFlags()[13] = true;
       }
-      if (isValidValue(fields()[14], other.dealid)) {
-        this.dealid = data().deepCopy(fields()[14].schema(), other.dealid);
+      if (isValidValue(fields()[14], other.adm)) {
+        this.adm = data().deepCopy(fields()[14].schema(), other.adm);
         fieldSetFlags()[14] = true;
       }
-      if (isValidValue(fields()[15], other.lpgurl)) {
-        this.lpgurl = data().deepCopy(fields()[15].schema(), other.lpgurl);
+      if (isValidValue(fields()[15], other.dealid)) {
+        this.dealid = data().deepCopy(fields()[15].schema(), other.dealid);
         fieldSetFlags()[15] = true;
       }
-      if (isValidValue(fields()[16], other.acttype)) {
-        this.acttype = data().deepCopy(fields()[16].schema(), other.acttype);
+      if (isValidValue(fields()[16], other.lpgurl)) {
+        this.lpgurl = data().deepCopy(fields()[16].schema(), other.lpgurl);
         fieldSetFlags()[16] = true;
       }
-      if (isValidValue(fields()[17], other.monitor)) {
-        this.monitor = data().deepCopy(fields()[17].schema(), other.monitor);
+      if (isValidValue(fields()[17], other.acttype)) {
+        this.acttype = data().deepCopy(fields()[17].schema(), other.acttype);
         fieldSetFlags()[17] = true;
+      }
+      if (isValidValue(fields()[18], other.monitor)) {
+        this.monitor = data().deepCopy(fields()[18].schema(), other.monitor);
+        fieldSetFlags()[18] = true;
       }
       this.monitorBuilder = null;
     }
@@ -1148,6 +1178,45 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
     }
 
     /**
+      * Gets the value of the 'content' field.
+      * @return The value.
+      */
+    public java.lang.String getContent() {
+      return content;
+    }
+
+    /**
+      * Sets the value of the 'content' field.
+      * @param value The value of 'content'.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.DSPResponse.Builder setContent(java.lang.String value) {
+      validate(fields()[12], value);
+      this.content = value;
+      fieldSetFlags()[12] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'content' field has been set.
+      * @return True if the 'content' field has been set, false otherwise.
+      */
+    public boolean hasContent() {
+      return fieldSetFlags()[12];
+    }
+
+
+    /**
+      * Clears the value of the 'content' field.
+      * @return This builder.
+      */
+    public com.madhouse.ssp.avro.DSPResponse.Builder clearContent() {
+      content = null;
+      fieldSetFlags()[12] = false;
+      return this;
+    }
+
+    /**
       * Gets the value of the 'duration' field.
       * @return The value.
       */
@@ -1161,9 +1230,9 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder setDuration(int value) {
-      validate(fields()[12], value);
+      validate(fields()[13], value);
       this.duration = value;
-      fieldSetFlags()[12] = true;
+      fieldSetFlags()[13] = true;
       return this;
     }
 
@@ -1172,7 +1241,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'duration' field has been set, false otherwise.
       */
     public boolean hasDuration() {
-      return fieldSetFlags()[12];
+      return fieldSetFlags()[13];
     }
 
 
@@ -1181,7 +1250,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder clearDuration() {
-      fieldSetFlags()[12] = false;
+      fieldSetFlags()[13] = false;
       return this;
     }
 
@@ -1199,9 +1268,9 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder setAdm(java.util.List<java.lang.String> value) {
-      validate(fields()[13], value);
+      validate(fields()[14], value);
       this.adm = value;
-      fieldSetFlags()[13] = true;
+      fieldSetFlags()[14] = true;
       return this;
     }
 
@@ -1210,7 +1279,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'adm' field has been set, false otherwise.
       */
     public boolean hasAdm() {
-      return fieldSetFlags()[13];
+      return fieldSetFlags()[14];
     }
 
 
@@ -1220,7 +1289,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder clearAdm() {
       adm = null;
-      fieldSetFlags()[13] = false;
+      fieldSetFlags()[14] = false;
       return this;
     }
 
@@ -1238,9 +1307,9 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder setDealid(java.lang.String value) {
-      validate(fields()[14], value);
+      validate(fields()[15], value);
       this.dealid = value;
-      fieldSetFlags()[14] = true;
+      fieldSetFlags()[15] = true;
       return this;
     }
 
@@ -1249,7 +1318,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'dealid' field has been set, false otherwise.
       */
     public boolean hasDealid() {
-      return fieldSetFlags()[14];
+      return fieldSetFlags()[15];
     }
 
 
@@ -1259,7 +1328,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder clearDealid() {
       dealid = null;
-      fieldSetFlags()[14] = false;
+      fieldSetFlags()[15] = false;
       return this;
     }
 
@@ -1277,9 +1346,9 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder setLpgurl(java.lang.String value) {
-      validate(fields()[15], value);
+      validate(fields()[16], value);
       this.lpgurl = value;
-      fieldSetFlags()[15] = true;
+      fieldSetFlags()[16] = true;
       return this;
     }
 
@@ -1288,7 +1357,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'lpgurl' field has been set, false otherwise.
       */
     public boolean hasLpgurl() {
-      return fieldSetFlags()[15];
+      return fieldSetFlags()[16];
     }
 
 
@@ -1298,7 +1367,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder clearLpgurl() {
       lpgurl = null;
-      fieldSetFlags()[15] = false;
+      fieldSetFlags()[16] = false;
       return this;
     }
 
@@ -1316,9 +1385,9 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder setActtype(int value) {
-      validate(fields()[16], value);
+      validate(fields()[17], value);
       this.acttype = value;
-      fieldSetFlags()[16] = true;
+      fieldSetFlags()[17] = true;
       return this;
     }
 
@@ -1327,7 +1396,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'acttype' field has been set, false otherwise.
       */
     public boolean hasActtype() {
-      return fieldSetFlags()[16];
+      return fieldSetFlags()[17];
     }
 
 
@@ -1336,7 +1405,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder clearActtype() {
-      fieldSetFlags()[16] = false;
+      fieldSetFlags()[17] = false;
       return this;
     }
 
@@ -1354,10 +1423,10 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return This builder.
       */
     public com.madhouse.ssp.avro.DSPResponse.Builder setMonitor(com.madhouse.ssp.avro.Monitor value) {
-      validate(fields()[17], value);
+      validate(fields()[18], value);
       this.monitorBuilder = null;
       this.monitor = value;
-      fieldSetFlags()[17] = true;
+      fieldSetFlags()[18] = true;
       return this;
     }
 
@@ -1366,7 +1435,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'monitor' field has been set, false otherwise.
       */
     public boolean hasMonitor() {
-      return fieldSetFlags()[17];
+      return fieldSetFlags()[18];
     }
 
     /**
@@ -1410,7 +1479,7 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
     public com.madhouse.ssp.avro.DSPResponse.Builder clearMonitor() {
       monitor = null;
       monitorBuilder = null;
-      fieldSetFlags()[17] = false;
+      fieldSetFlags()[18] = false;
       return this;
     }
 
@@ -1431,15 +1500,16 @@ public class DSPResponse extends org.apache.avro.specific.SpecificRecordBase imp
         record.cover = fieldSetFlags()[9] ? this.cover : (java.lang.String) defaultValue(fields()[9]);
         record.title = fieldSetFlags()[10] ? this.title : (java.lang.String) defaultValue(fields()[10]);
         record.desc = fieldSetFlags()[11] ? this.desc : (java.lang.String) defaultValue(fields()[11]);
-        record.duration = fieldSetFlags()[12] ? this.duration : (java.lang.Integer) defaultValue(fields()[12]);
-        record.adm = fieldSetFlags()[13] ? this.adm : (java.util.List<java.lang.String>) defaultValue(fields()[13]);
-        record.dealid = fieldSetFlags()[14] ? this.dealid : (java.lang.String) defaultValue(fields()[14]);
-        record.lpgurl = fieldSetFlags()[15] ? this.lpgurl : (java.lang.String) defaultValue(fields()[15]);
-        record.acttype = fieldSetFlags()[16] ? this.acttype : (java.lang.Integer) defaultValue(fields()[16]);
+        record.content = fieldSetFlags()[12] ? this.content : (java.lang.String) defaultValue(fields()[12]);
+        record.duration = fieldSetFlags()[13] ? this.duration : (java.lang.Integer) defaultValue(fields()[13]);
+        record.adm = fieldSetFlags()[14] ? this.adm : (java.util.List<java.lang.String>) defaultValue(fields()[14]);
+        record.dealid = fieldSetFlags()[15] ? this.dealid : (java.lang.String) defaultValue(fields()[15]);
+        record.lpgurl = fieldSetFlags()[16] ? this.lpgurl : (java.lang.String) defaultValue(fields()[16]);
+        record.acttype = fieldSetFlags()[17] ? this.acttype : (java.lang.Integer) defaultValue(fields()[17]);
         if (monitorBuilder != null) {
           record.monitor = this.monitorBuilder.build();
         } else {
-          record.monitor = fieldSetFlags()[17] ? this.monitor : (com.madhouse.ssp.avro.Monitor) defaultValue(fields()[17]);
+          record.monitor = fieldSetFlags()[18] ? this.monitor : (com.madhouse.ssp.avro.Monitor) defaultValue(fields()[18]);
         }
         return record;
       } catch (java.lang.Exception e) {
