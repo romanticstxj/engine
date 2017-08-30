@@ -79,7 +79,9 @@ public class MaterialMetaData {
     private int actType;
     private String lpgUrl;
     private Monitor monitor;
+    private String mediaQueryKey;
     private String mediaMaterialKey;
+    private String mediaMaterialUrl;
 
     public Monitor getMonitor() {
         return monitor;
@@ -239,6 +241,22 @@ public class MaterialMetaData {
 
     public void setDspId(long dspId) {
         this.dspId = dspId;
+    }
+
+    public String getMediaQueryKey() {
+        return mediaQueryKey;
+    }
+
+    public void setMediaQueryKey(String mediaQueryKey) {
+        this.mediaQueryKey = mediaQueryKey;
+    }
+
+    public String getMediaMaterialUrl() {
+        return mediaMaterialUrl;
+    }
+
+    public void setMediaMaterialUrl(String mediaMaterialUrl) {
+        this.mediaMaterialUrl = mediaMaterialUrl;
     }
 
     public String getMediaMaterialKey() {
