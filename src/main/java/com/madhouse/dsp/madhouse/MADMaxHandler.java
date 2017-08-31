@@ -181,7 +181,6 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setId(dspRequest.getId());
         dspResponse.setBidid(StringUtil.toString(madResponse.getBidid()));
         dspResponse.setImpid(dspRequest.getImpid());
-        dspResponse.setAdmid(madResponse.getAdspaceid());
         dspResponse.setIcon(madResponse.getIcon());
         dspResponse.setCover(madResponse.getCover());
         dspResponse.setTitle(madResponse.getDisplaytitle());

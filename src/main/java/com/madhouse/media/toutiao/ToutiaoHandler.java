@@ -322,7 +322,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             try {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    if(!StringUtils.isEmpty(mediaBidMetaData.getMediaBidBuilder().getResponseBuilder().getAdmid())){
+                    if(!StringUtils.isEmpty(mediaBidMetaData.getMediaBidBuilder().getResponseBuilder().getCrid())){
                         resp.setStatus(Constant.StatusCode.OK);
                         builder=convertToutiaoResponse(bidRequest, mediaBidMetaData.getMediaBidBuilder().getRequestBuilder(), mediaBidMetaData, Constant.StatusCode.OK);
                     } else {

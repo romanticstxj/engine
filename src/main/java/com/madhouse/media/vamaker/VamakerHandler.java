@@ -214,7 +214,7 @@ public class VamakerHandler extends MediaBaseHandler {
         
         
         bidResposeBuilder.setId(bidRequest.getId());
-        bidBuilder.setCrid(mediaResponse.getAdmid());
+        bidBuilder.setCrid(mediaResponse.getCrid());
         bidBuilder.setPrice(bidRequest.getVamMobile().getBidfloor());
         
         
