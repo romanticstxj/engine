@@ -273,7 +273,7 @@ public class TencentHandler extends MediaBaseHandler {
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
-            bidResponseBuilder.setAdid(mediaResponse.getAdmid());
+            bidResponseBuilder.setAdid(mediaResponse.getCrid());
             if (mediaResponse.getMonitorBuilder() != null && mediaResponse.getMonitorBuilder().getImpurl() != null && mediaResponse.getMonitorBuilder().getImpurl().size() > 0) {
                 if (mediaResponse.getMonitorBuilder().getImpurl().size() >= 2) {
                     bidResponseBuilder.setExt2(mediaResponse.getMonitorBuilder().getImpurl().get(0).getUrl());//设置为dsp的监测

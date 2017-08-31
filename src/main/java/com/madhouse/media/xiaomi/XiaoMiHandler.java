@@ -178,13 +178,13 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 if (XiaoMiStatusCode.XiaoMiOs.ANDROID.equalsIgnoreCase(os)) {
                     mediaRequest.setOs(Constant.OSType.ANDROID);
                     mediaRequest.setDid(device.getDidsha1());
-                    mediaRequest.setDidmd5(device.getDidmd5());
+                    mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : !StringUtils.isEmpty(device.getDidsha1()) ? device.getDidsha1() : "");
                     //Android ID - md5 - sha1
                     mediaRequest.setDpid(device.getDpid());
                     mediaRequest.setDpidmd5(device.getDpidmd5() != null ? device.getDpidmd5() : device.getDpidsha1());
                 } else if (XiaoMiStatusCode.XiaoMiOs.IOS.equalsIgnoreCase(os)) {
                     mediaRequest.setOs(Constant.OSType.IOS);
-                    mediaRequest.setIfa(device.getIdfasha1());
+                    mediaRequest.setIfa(!StringUtils.isEmpty(device.getIdfasha1()) ? device.getIdfasha1() : !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : "");
                 } else {
                     mediaRequest.setOs(Constant.OSType.UNKNOWN);
                 }
@@ -212,11 +212,8 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 }
             }
             mediaRequest.setOsv(device.getOsv() != null ? device.getOsv() : null);
-            if(!StringUtils.isEmpty(device.getMacsha1())){
-                mediaRequest.setMac(device.getMacsha1());
-            }
             if(!StringUtils.isEmpty(device.getMacmd5())){
-                mediaRequest.setMacmd5(device.getMacmd5());
+                mediaRequest.setMacmd5(!StringUtils.isEmpty(device.getMacmd5()) ? device.getMacmd5() : !StringUtils.isEmpty(device.getMacsha1()) ? device.getMacsha1() : "");
             }
             Geo geo = device.getGeo();
             if (geo != null) {

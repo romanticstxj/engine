@@ -61,13 +61,6 @@ public class VamakerHandler extends MediaBaseHandler {
         }
         logger.warn("crid not found:{}", sb.toString());
         
-        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
-        if (null != mappingMetaData) {
-            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-        }else{
-            return null;
-        }
-        
         switch (mobile.getOs()) {
             case VamakerStatusCode.Os.ANDROID:
                 mediaRequest.setOs(Constant.OSType.ANDROID);
@@ -135,6 +128,12 @@ public class VamakerHandler extends MediaBaseHandler {
             mediaRequest.setIp(ip);
         }
         mediaRequest.setType(Constant.MediaType.APP);
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (null != mappingMetaData) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+        }else{
+            return null;
+        }
         logger.info("Vamakerrequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }

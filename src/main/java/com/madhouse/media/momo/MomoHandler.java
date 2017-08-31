@@ -508,7 +508,7 @@ public class MomoHandler extends MediaBaseHandler {
         bidBuilder.setImpid(bidRequest.getImpList().get(0).getId());
         bidBuilder.setPrice(mediaRequest.getBidfloor());
         bidBuilder.setCid(mediaResponse.getCid());
-        bidBuilder.setAdid(mediaResponse.getAdmid());   //广告位id
+        bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
         bidBuilder.setCrid(mediaResponse.getCrid());  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
         bidBuilder.setNativeCreative(nativeCreativeBuilder);
