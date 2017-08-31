@@ -282,19 +282,20 @@ public class MADRTBHandler extends DSPBaseHandler {
                     if (bidResponse.getSeatbidCount() > 0 && bidResponse.getSeatbid(0).getBidCount() > 0) {
                         PremiumMADRTBProtocol.BidResponse.SeatBid.Bid bid = bidResponse.getSeatbid(0).getBid(0);
                         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
-                        dspResponse.setId(dspBid.getRequestBuilder().getId());
+                        dspResponse.setId(bidResponse.getId());
                         dspResponse.setBidid(StringUtil.toString(bid.getId()));
                         dspResponse.setImpid(dspBid.getRequestBuilder().getImpid());
                         dspResponse.setAdid(StringUtil.toString(bid.getAdid()));
                         dspResponse.setCid(StringUtil.toString(bid.getCid()));
                         dspResponse.setCrid(StringUtil.toString(bid.getCrid()));
                         dspResponse.setIcon(StringUtil.toString(bid.getIcon()));
+                        dspResponse.setCover(StringUtil.toString(bid.getCover()));
                         dspResponse.setPrice(bid.getPrice());
                         dspResponse.setNurl(StringUtil.toString(bid.getNurl()));
-                        dspResponse.setDuration(bid.getDuration());
+                        dspResponse.setDuration(bid.hasDuration() ? bid.getDuration() : 0);
                         dspResponse.setDealid(StringUtil.toString(bid.getDealid()));
                         dspResponse.setLpgurl(StringUtil.toString(bid.getLpgurl()));
-                        dspResponse.setActtype(bid.getActtype());
+                        dspResponse.setActtype(bid.hasActtype() ? bid.getActtype() : 0);
 
                         if (bid.getMonitor() != null) {
                             Monitor.Builder monitor = Monitor.newBuilder();
@@ -318,6 +319,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                             for (String url : bid.getMonitor().getExtsList()) {
                                 monitor.getExts().add(url);
                             }
+
+                            monitor.setExptime(bid.getMonitor().hasExptime() ? bid.getMonitor().getExptime() : 86400);
                         }
 
                         if (bid.getAdmCount() > 0) {
