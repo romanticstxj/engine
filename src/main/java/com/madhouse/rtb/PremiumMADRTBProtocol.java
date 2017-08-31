@@ -25092,51 +25092,46 @@ public final class PremiumMADRTBProtocol {
             getCidBytes();
 
         /**
-         * <code>optional string icon = 6;</code>
+         * <code>optional string crid = 6;</code>
+         */
+        boolean hasCrid();
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        java.lang.String getCrid();
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        com.google.protobuf.ByteString
+            getCridBytes();
+
+        /**
+         * <code>optional string icon = 7;</code>
          */
         boolean hasIcon();
         /**
-         * <code>optional string icon = 6;</code>
+         * <code>optional string icon = 7;</code>
          */
         java.lang.String getIcon();
         /**
-         * <code>optional string icon = 6;</code>
+         * <code>optional string icon = 7;</code>
          */
         com.google.protobuf.ByteString
             getIconBytes();
 
         /**
-         * <code>optional string cover = 7;</code>
+         * <code>optional string cover = 8;</code>
          */
         boolean hasCover();
         /**
-         * <code>optional string cover = 7;</code>
+         * <code>optional string cover = 8;</code>
          */
         java.lang.String getCover();
         /**
-         * <code>optional string cover = 7;</code>
+         * <code>optional string cover = 8;</code>
          */
         com.google.protobuf.ByteString
             getCoverBytes();
-
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        com.google.protobuf.ProtocolStringList
-            getAdmList();
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        int getAdmCount();
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        java.lang.String getAdm(int index);
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        com.google.protobuf.ByteString
-            getAdmBytes(int index);
 
         /**
          * <code>optional int32 duration = 9;</code>
@@ -25148,31 +25143,36 @@ public final class PremiumMADRTBProtocol {
         int getDuration();
 
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+         * <code>repeated string adm = 10;</code>
+         */
+        com.google.protobuf.ProtocolStringList
+            getAdmList();
+        /**
+         * <code>repeated string adm = 10;</code>
+         */
+        int getAdmCount();
+        /**
+         * <code>repeated string adm = 10;</code>
+         */
+        java.lang.String getAdm(int index);
+        /**
+         * <code>repeated string adm = 10;</code>
+         */
+        com.google.protobuf.ByteString
+            getAdmBytes(int index);
+
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
          */
         boolean hasAdmNative();
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
          */
         com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse getAdmNative();
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
          */
         com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponseOrBuilder getAdmNativeOrBuilder();
-
-        /**
-         * <code>optional string admid = 11;</code>
-         */
-        boolean hasAdmid();
-        /**
-         * <code>optional string admid = 11;</code>
-         */
-        java.lang.String getAdmid();
-        /**
-         * <code>optional string admid = 11;</code>
-         */
-        com.google.protobuf.ByteString
-            getAdmidBytes();
 
         /**
          * <code>optional string dealid = 12;</code>
@@ -25322,32 +25322,38 @@ public final class PremiumMADRTBProtocol {
                 case 50: {
                   com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000020;
-                  icon_ = bs;
+                  crid_ = bs;
                   break;
                 }
                 case 58: {
                   com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000040;
-                  cover_ = bs;
+                  icon_ = bs;
                   break;
                 }
                 case 66: {
                   com.google.protobuf.ByteString bs = input.readBytes();
-                  if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-                    adm_ = new com.google.protobuf.LazyStringArrayList();
-                    mutable_bitField0_ |= 0x00000080;
-                  }
-                  adm_.add(bs);
+                  bitField0_ |= 0x00000080;
+                  cover_ = bs;
                   break;
                 }
                 case 72: {
-                  bitField0_ |= 0x00000080;
+                  bitField0_ |= 0x00000100;
                   duration_ = input.readInt32();
                   break;
                 }
                 case 82: {
+                  com.google.protobuf.ByteString bs = input.readBytes();
+                  if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+                    adm_ = new com.google.protobuf.LazyStringArrayList();
+                    mutable_bitField0_ |= 0x00000200;
+                  }
+                  adm_.add(bs);
+                  break;
+                }
+                case 90: {
                   com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Builder subBuilder = null;
-                  if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                  if (((bitField0_ & 0x00000200) == 0x00000200)) {
                     subBuilder = admNative_.toBuilder();
                   }
                   admNative_ = input.readMessage(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.PARSER, extensionRegistry);
@@ -25355,13 +25361,7 @@ public final class PremiumMADRTBProtocol {
                     subBuilder.mergeFrom(admNative_);
                     admNative_ = subBuilder.buildPartial();
                   }
-                  bitField0_ |= 0x00000100;
-                  break;
-                }
-                case 90: {
-                  com.google.protobuf.ByteString bs = input.readBytes();
                   bitField0_ |= 0x00000200;
-                  admid_ = bs;
                   break;
                 }
                 case 98: {
@@ -25408,7 +25408,7 @@ public final class PremiumMADRTBProtocol {
             throw new com.google.protobuf.InvalidProtocolBufferException(
                 e.getMessage()).setUnfinishedMessage(this);
           } finally {
-            if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+            if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
               adm_ = adm_.getUnmodifiableView();
             }
             this.unknownFields = unknownFields.build();
@@ -30460,6 +30460,15 @@ public final class PremiumMADRTBProtocol {
               getSecurlBytes(int index);
 
           /**
+           * <code>optional int32 exptime = 4;</code>
+           */
+          boolean hasExptime();
+          /**
+           * <code>optional int32 exptime = 4;</code>
+           */
+          int getExptime();
+
+          /**
            * <code>repeated string exts = 11;</code>
            */
           com.google.protobuf.ProtocolStringList
@@ -30556,11 +30565,16 @@ public final class PremiumMADRTBProtocol {
                     securl_.add(bs);
                     break;
                   }
+                  case 32: {
+                    bitField0_ |= 0x00000001;
+                    exptime_ = input.readInt32();
+                    break;
+                  }
                   case 90: {
                     com.google.protobuf.ByteString bs = input.readBytes();
-                    if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                    if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
                       exts_ = new com.google.protobuf.LazyStringArrayList();
-                      mutable_bitField0_ |= 0x00000008;
+                      mutable_bitField0_ |= 0x00000010;
                     }
                     exts_.add(bs);
                     break;
@@ -30582,7 +30596,7 @@ public final class PremiumMADRTBProtocol {
               if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                 securl_ = securl_.getUnmodifiableView();
               }
-              if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+              if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
                 exts_ = exts_.getUnmodifiableView();
               }
               this.unknownFields = unknownFields.build();
@@ -31170,6 +31184,7 @@ public final class PremiumMADRTBProtocol {
             // @@protoc_insertion_point(class_scope:com.madhouse.rtb.BidResponse.SeatBid.Bid.Monitor.Track)
           }
 
+          private int bitField0_;
           public static final int IMPURL_FIELD_NUMBER = 1;
           private java.util.List<com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track> impurl_;
           /**
@@ -31263,6 +31278,21 @@ public final class PremiumMADRTBProtocol {
             return securl_.getByteString(index);
           }
 
+          public static final int EXPTIME_FIELD_NUMBER = 4;
+          private int exptime_;
+          /**
+           * <code>optional int32 exptime = 4;</code>
+           */
+          public boolean hasExptime() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+          }
+          /**
+           * <code>optional int32 exptime = 4;</code>
+           */
+          public int getExptime() {
+            return exptime_;
+          }
+
           public static final int EXTS_FIELD_NUMBER = 11;
           private com.google.protobuf.LazyStringList exts_;
           /**
@@ -31296,6 +31326,7 @@ public final class PremiumMADRTBProtocol {
             impurl_ = java.util.Collections.emptyList();
             clkurl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
             securl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            exptime_ = 0;
             exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           }
           private byte memoizedIsInitialized = -1;
@@ -31319,6 +31350,9 @@ public final class PremiumMADRTBProtocol {
             }
             for (int i = 0; i < securl_.size(); i++) {
               output.writeBytes(3, securl_.getByteString(i));
+            }
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+              output.writeInt32(4, exptime_);
             }
             for (int i = 0; i < exts_.size(); i++) {
               output.writeBytes(11, exts_.getByteString(i));
@@ -31353,6 +31387,10 @@ public final class PremiumMADRTBProtocol {
               }
               size += dataSize;
               size += 1 * getSecurlList().size();
+            }
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+              size += com.google.protobuf.CodedOutputStream
+                .computeInt32Size(4, exptime_);
             }
             {
               int dataSize = 0;
@@ -31491,8 +31529,10 @@ public final class PremiumMADRTBProtocol {
               bitField0_ = (bitField0_ & ~0x00000002);
               securl_ = com.google.protobuf.LazyStringArrayList.EMPTY;
               bitField0_ = (bitField0_ & ~0x00000004);
-              exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+              exptime_ = 0;
               bitField0_ = (bitField0_ & ~0x00000008);
+              exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+              bitField0_ = (bitField0_ & ~0x00000010);
               return this;
             }
 
@@ -31520,6 +31560,7 @@ public final class PremiumMADRTBProtocol {
             public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor buildPartial() {
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor result = new com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor(this);
               int from_bitField0_ = bitField0_;
+              int to_bitField0_ = 0;
               if (impurlBuilder_ == null) {
                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
                   impurl_ = java.util.Collections.unmodifiableList(impurl_);
@@ -31539,11 +31580,16 @@ public final class PremiumMADRTBProtocol {
                 bitField0_ = (bitField0_ & ~0x00000004);
               }
               result.securl_ = securl_;
-              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+              if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                to_bitField0_ |= 0x00000001;
+              }
+              result.exptime_ = exptime_;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
                 exts_ = exts_.getUnmodifiableView();
-                bitField0_ = (bitField0_ & ~0x00000008);
+                bitField0_ = (bitField0_ & ~0x00000010);
               }
               result.exts_ = exts_;
+              result.bitField0_ = to_bitField0_;
               onBuilt();
               return result;
             }
@@ -31605,10 +31651,13 @@ public final class PremiumMADRTBProtocol {
                 }
                 onChanged();
               }
+              if (other.hasExptime()) {
+                setExptime(other.getExptime());
+              }
               if (!other.exts_.isEmpty()) {
                 if (exts_.isEmpty()) {
                   exts_ = other.exts_;
-                  bitField0_ = (bitField0_ & ~0x00000008);
+                  bitField0_ = (bitField0_ & ~0x00000010);
                 } else {
                   ensureExtsIsMutable();
                   exts_.addAll(other.exts_);
@@ -32068,11 +32117,43 @@ public final class PremiumMADRTBProtocol {
               return this;
             }
 
+            private int exptime_ ;
+            /**
+             * <code>optional int32 exptime = 4;</code>
+             */
+            public boolean hasExptime() {
+              return ((bitField0_ & 0x00000008) == 0x00000008);
+            }
+            /**
+             * <code>optional int32 exptime = 4;</code>
+             */
+            public int getExptime() {
+              return exptime_;
+            }
+            /**
+             * <code>optional int32 exptime = 4;</code>
+             */
+            public Builder setExptime(int value) {
+              bitField0_ |= 0x00000008;
+              exptime_ = value;
+              onChanged();
+              return this;
+            }
+            /**
+             * <code>optional int32 exptime = 4;</code>
+             */
+            public Builder clearExptime() {
+              bitField0_ = (bitField0_ & ~0x00000008);
+              exptime_ = 0;
+              onChanged();
+              return this;
+            }
+
             private com.google.protobuf.LazyStringList exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
             private void ensureExtsIsMutable() {
-              if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+              if (!((bitField0_ & 0x00000010) == 0x00000010)) {
                 exts_ = new com.google.protobuf.LazyStringArrayList(exts_);
-                bitField0_ |= 0x00000008;
+                bitField0_ |= 0x00000010;
                }
             }
             /**
@@ -32143,7 +32224,7 @@ public final class PremiumMADRTBProtocol {
              */
             public Builder clearExts() {
               exts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
               onChanged();
               return this;
             }
@@ -32356,16 +32437,58 @@ public final class PremiumMADRTBProtocol {
           }
         }
 
-        public static final int ICON_FIELD_NUMBER = 6;
-        private java.lang.Object icon_;
+        public static final int CRID_FIELD_NUMBER = 6;
+        private java.lang.Object crid_;
         /**
-         * <code>optional string icon = 6;</code>
+         * <code>optional string crid = 6;</code>
          */
-        public boolean hasIcon() {
+        public boolean hasCrid() {
           return ((bitField0_ & 0x00000020) == 0x00000020);
         }
         /**
-         * <code>optional string icon = 6;</code>
+         * <code>optional string crid = 6;</code>
+         */
+        public java.lang.String getCrid() {
+          java.lang.Object ref = crid_;
+          if (ref instanceof java.lang.String) {
+            return (java.lang.String) ref;
+          } else {
+            com.google.protobuf.ByteString bs = 
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              crid_ = s;
+            }
+            return s;
+          }
+        }
+        /**
+         * <code>optional string crid = 6;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCridBytes() {
+          java.lang.Object ref = crid_;
+          if (ref instanceof java.lang.String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            crid_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+
+        public static final int ICON_FIELD_NUMBER = 7;
+        private java.lang.Object icon_;
+        /**
+         * <code>optional string icon = 7;</code>
+         */
+        public boolean hasIcon() {
+          return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+        /**
+         * <code>optional string icon = 7;</code>
          */
         public java.lang.String getIcon() {
           java.lang.Object ref = icon_;
@@ -32382,7 +32505,7 @@ public final class PremiumMADRTBProtocol {
           }
         }
         /**
-         * <code>optional string icon = 6;</code>
+         * <code>optional string icon = 7;</code>
          */
         public com.google.protobuf.ByteString
             getIconBytes() {
@@ -32398,16 +32521,16 @@ public final class PremiumMADRTBProtocol {
           }
         }
 
-        public static final int COVER_FIELD_NUMBER = 7;
+        public static final int COVER_FIELD_NUMBER = 8;
         private java.lang.Object cover_;
         /**
-         * <code>optional string cover = 7;</code>
+         * <code>optional string cover = 8;</code>
          */
         public boolean hasCover() {
-          return ((bitField0_ & 0x00000040) == 0x00000040);
+          return ((bitField0_ & 0x00000080) == 0x00000080);
         }
         /**
-         * <code>optional string cover = 7;</code>
+         * <code>optional string cover = 8;</code>
          */
         public java.lang.String getCover() {
           java.lang.Object ref = cover_;
@@ -32424,7 +32547,7 @@ public final class PremiumMADRTBProtocol {
           }
         }
         /**
-         * <code>optional string cover = 7;</code>
+         * <code>optional string cover = 8;</code>
          */
         public com.google.protobuf.ByteString
             getCoverBytes() {
@@ -32440,42 +32563,13 @@ public final class PremiumMADRTBProtocol {
           }
         }
 
-        public static final int ADM_FIELD_NUMBER = 8;
-        private com.google.protobuf.LazyStringList adm_;
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        public com.google.protobuf.ProtocolStringList
-            getAdmList() {
-          return adm_;
-        }
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        public int getAdmCount() {
-          return adm_.size();
-        }
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        public java.lang.String getAdm(int index) {
-          return adm_.get(index);
-        }
-        /**
-         * <code>repeated string adm = 8;</code>
-         */
-        public com.google.protobuf.ByteString
-            getAdmBytes(int index) {
-          return adm_.getByteString(index);
-        }
-
         public static final int DURATION_FIELD_NUMBER = 9;
         private int duration_;
         /**
          * <code>optional int32 duration = 9;</code>
          */
         public boolean hasDuration() {
-          return ((bitField0_ & 0x00000080) == 0x00000080);
+          return ((bitField0_ & 0x00000100) == 0x00000100);
         }
         /**
          * <code>optional int32 duration = 9;</code>
@@ -32484,67 +32578,54 @@ public final class PremiumMADRTBProtocol {
           return duration_;
         }
 
-        public static final int ADM_NATIVE_FIELD_NUMBER = 10;
-        private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse admNative_;
+        public static final int ADM_FIELD_NUMBER = 10;
+        private com.google.protobuf.LazyStringList adm_;
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+         * <code>repeated string adm = 10;</code>
          */
-        public boolean hasAdmNative() {
-          return ((bitField0_ & 0x00000100) == 0x00000100);
+        public com.google.protobuf.ProtocolStringList
+            getAdmList() {
+          return adm_;
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+         * <code>repeated string adm = 10;</code>
+         */
+        public int getAdmCount() {
+          return adm_.size();
+        }
+        /**
+         * <code>repeated string adm = 10;</code>
+         */
+        public java.lang.String getAdm(int index) {
+          return adm_.get(index);
+        }
+        /**
+         * <code>repeated string adm = 10;</code>
+         */
+        public com.google.protobuf.ByteString
+            getAdmBytes(int index) {
+          return adm_.getByteString(index);
+        }
+
+        public static final int ADM_NATIVE_FIELD_NUMBER = 11;
+        private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse admNative_;
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
+         */
+        public boolean hasAdmNative() {
+          return ((bitField0_ & 0x00000200) == 0x00000200);
+        }
+        /**
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
          */
         public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse getAdmNative() {
           return admNative_;
         }
         /**
-         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+         * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
          */
         public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponseOrBuilder getAdmNativeOrBuilder() {
           return admNative_;
-        }
-
-        public static final int ADMID_FIELD_NUMBER = 11;
-        private java.lang.Object admid_;
-        /**
-         * <code>optional string admid = 11;</code>
-         */
-        public boolean hasAdmid() {
-          return ((bitField0_ & 0x00000200) == 0x00000200);
-        }
-        /**
-         * <code>optional string admid = 11;</code>
-         */
-        public java.lang.String getAdmid() {
-          java.lang.Object ref = admid_;
-          if (ref instanceof java.lang.String) {
-            return (java.lang.String) ref;
-          } else {
-            com.google.protobuf.ByteString bs = 
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              admid_ = s;
-            }
-            return s;
-          }
-        }
-        /**
-         * <code>optional string admid = 11;</code>
-         */
-        public com.google.protobuf.ByteString
-            getAdmidBytes() {
-          java.lang.Object ref = admid_;
-          if (ref instanceof java.lang.String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            admid_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
         }
 
         public static final int DEALID_FIELD_NUMBER = 12;
@@ -32715,12 +32796,12 @@ public final class PremiumMADRTBProtocol {
           price_ = 0;
           adid_ = "";
           cid_ = "";
+          crid_ = "";
           icon_ = "";
           cover_ = "";
-          adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           duration_ = 0;
+          adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           admNative_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.getDefaultInstance();
-          admid_ = "";
           dealid_ = "";
           nurl_ = "";
           lpgurl_ = "";
@@ -32756,22 +32837,22 @@ public final class PremiumMADRTBProtocol {
             output.writeBytes(5, getCidBytes());
           }
           if (((bitField0_ & 0x00000020) == 0x00000020)) {
-            output.writeBytes(6, getIconBytes());
+            output.writeBytes(6, getCridBytes());
           }
           if (((bitField0_ & 0x00000040) == 0x00000040)) {
-            output.writeBytes(7, getCoverBytes());
-          }
-          for (int i = 0; i < adm_.size(); i++) {
-            output.writeBytes(8, adm_.getByteString(i));
+            output.writeBytes(7, getIconBytes());
           }
           if (((bitField0_ & 0x00000080) == 0x00000080)) {
-            output.writeInt32(9, duration_);
+            output.writeBytes(8, getCoverBytes());
           }
           if (((bitField0_ & 0x00000100) == 0x00000100)) {
-            output.writeMessage(10, admNative_);
+            output.writeInt32(9, duration_);
+          }
+          for (int i = 0; i < adm_.size(); i++) {
+            output.writeBytes(10, adm_.getByteString(i));
           }
           if (((bitField0_ & 0x00000200) == 0x00000200)) {
-            output.writeBytes(11, getAdmidBytes());
+            output.writeMessage(11, admNative_);
           }
           if (((bitField0_ & 0x00000400) == 0x00000400)) {
             output.writeBytes(12, getDealidBytes());
@@ -32819,11 +32900,19 @@ public final class PremiumMADRTBProtocol {
           }
           if (((bitField0_ & 0x00000020) == 0x00000020)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(6, getIconBytes());
+              .computeBytesSize(6, getCridBytes());
           }
           if (((bitField0_ & 0x00000040) == 0x00000040)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(7, getCoverBytes());
+              .computeBytesSize(7, getIconBytes());
+          }
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeBytesSize(8, getCoverBytes());
+          }
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(9, duration_);
           }
           {
             int dataSize = 0;
@@ -32834,17 +32923,9 @@ public final class PremiumMADRTBProtocol {
             size += dataSize;
             size += 1 * getAdmList().size();
           }
-          if (((bitField0_ & 0x00000080) == 0x00000080)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeInt32Size(9, duration_);
-          }
-          if (((bitField0_ & 0x00000100) == 0x00000100)) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeMessageSize(10, admNative_);
-          }
           if (((bitField0_ & 0x00000200) == 0x00000200)) {
             size += com.google.protobuf.CodedOutputStream
-              .computeBytesSize(11, getAdmidBytes());
+              .computeMessageSize(11, admNative_);
           }
           if (((bitField0_ & 0x00000400) == 0x00000400)) {
             size += com.google.protobuf.CodedOutputStream
@@ -32995,21 +33076,21 @@ public final class PremiumMADRTBProtocol {
             bitField0_ = (bitField0_ & ~0x00000008);
             cid_ = "";
             bitField0_ = (bitField0_ & ~0x00000010);
-            icon_ = "";
+            crid_ = "";
             bitField0_ = (bitField0_ & ~0x00000020);
-            cover_ = "";
+            icon_ = "";
             bitField0_ = (bitField0_ & ~0x00000040);
-            adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            cover_ = "";
             bitField0_ = (bitField0_ & ~0x00000080);
             duration_ = 0;
             bitField0_ = (bitField0_ & ~0x00000100);
+            adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            bitField0_ = (bitField0_ & ~0x00000200);
             if (admNativeBuilder_ == null) {
               admNative_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.getDefaultInstance();
             } else {
               admNativeBuilder_.clear();
             }
-            bitField0_ = (bitField0_ & ~0x00000200);
-            admid_ = "";
             bitField0_ = (bitField0_ & ~0x00000400);
             dealid_ = "";
             bitField0_ = (bitField0_ & ~0x00000800);
@@ -33076,32 +33157,32 @@ public final class PremiumMADRTBProtocol {
             if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
               to_bitField0_ |= 0x00000020;
             }
-            result.icon_ = icon_;
+            result.crid_ = crid_;
             if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
               to_bitField0_ |= 0x00000040;
             }
-            result.cover_ = cover_;
-            if (((bitField0_ & 0x00000080) == 0x00000080)) {
-              adm_ = adm_.getUnmodifiableView();
-              bitField0_ = (bitField0_ & ~0x00000080);
-            }
-            result.adm_ = adm_;
-            if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+            result.icon_ = icon_;
+            if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
               to_bitField0_ |= 0x00000080;
             }
-            result.duration_ = duration_;
-            if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+            result.cover_ = cover_;
+            if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
               to_bitField0_ |= 0x00000100;
+            }
+            result.duration_ = duration_;
+            if (((bitField0_ & 0x00000200) == 0x00000200)) {
+              adm_ = adm_.getUnmodifiableView();
+              bitField0_ = (bitField0_ & ~0x00000200);
+            }
+            result.adm_ = adm_;
+            if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+              to_bitField0_ |= 0x00000200;
             }
             if (admNativeBuilder_ == null) {
               result.admNative_ = admNative_;
             } else {
               result.admNative_ = admNativeBuilder_.build();
             }
-            if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-              to_bitField0_ |= 0x00000200;
-            }
-            result.admid_ = admid_;
             if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
               to_bitField0_ |= 0x00000400;
             }
@@ -33165,36 +33246,36 @@ public final class PremiumMADRTBProtocol {
               cid_ = other.cid_;
               onChanged();
             }
-            if (other.hasIcon()) {
+            if (other.hasCrid()) {
               bitField0_ |= 0x00000020;
+              crid_ = other.crid_;
+              onChanged();
+            }
+            if (other.hasIcon()) {
+              bitField0_ |= 0x00000040;
               icon_ = other.icon_;
               onChanged();
             }
             if (other.hasCover()) {
-              bitField0_ |= 0x00000040;
+              bitField0_ |= 0x00000080;
               cover_ = other.cover_;
               onChanged();
+            }
+            if (other.hasDuration()) {
+              setDuration(other.getDuration());
             }
             if (!other.adm_.isEmpty()) {
               if (adm_.isEmpty()) {
                 adm_ = other.adm_;
-                bitField0_ = (bitField0_ & ~0x00000080);
+                bitField0_ = (bitField0_ & ~0x00000200);
               } else {
                 ensureAdmIsMutable();
                 adm_.addAll(other.adm_);
               }
               onChanged();
             }
-            if (other.hasDuration()) {
-              setDuration(other.getDuration());
-            }
             if (other.hasAdmNative()) {
               mergeAdmNative(other.getAdmNative());
-            }
-            if (other.hasAdmid()) {
-              bitField0_ |= 0x00000400;
-              admid_ = other.admid_;
-              onChanged();
             }
             if (other.hasDealid()) {
               bitField0_ |= 0x00000800;
@@ -33580,15 +33661,91 @@ public final class PremiumMADRTBProtocol {
             return this;
           }
 
-          private java.lang.Object icon_ = "";
+          private java.lang.Object crid_ = "";
           /**
-           * <code>optional string icon = 6;</code>
+           * <code>optional string crid = 6;</code>
            */
-          public boolean hasIcon() {
+          public boolean hasCrid() {
             return ((bitField0_ & 0x00000020) == 0x00000020);
           }
           /**
-           * <code>optional string icon = 6;</code>
+           * <code>optional string crid = 6;</code>
+           */
+          public java.lang.String getCrid() {
+            java.lang.Object ref = crid_;
+            if (!(ref instanceof java.lang.String)) {
+              com.google.protobuf.ByteString bs =
+                  (com.google.protobuf.ByteString) ref;
+              java.lang.String s = bs.toStringUtf8();
+              if (bs.isValidUtf8()) {
+                crid_ = s;
+              }
+              return s;
+            } else {
+              return (java.lang.String) ref;
+            }
+          }
+          /**
+           * <code>optional string crid = 6;</code>
+           */
+          public com.google.protobuf.ByteString
+              getCridBytes() {
+            java.lang.Object ref = crid_;
+            if (ref instanceof String) {
+              com.google.protobuf.ByteString b = 
+                  com.google.protobuf.ByteString.copyFromUtf8(
+                      (java.lang.String) ref);
+              crid_ = b;
+              return b;
+            } else {
+              return (com.google.protobuf.ByteString) ref;
+            }
+          }
+          /**
+           * <code>optional string crid = 6;</code>
+           */
+          public Builder setCrid(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+            crid_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string crid = 6;</code>
+           */
+          public Builder clearCrid() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            crid_ = getDefaultInstance().getCrid();
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional string crid = 6;</code>
+           */
+          public Builder setCridBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+            crid_ = value;
+            onChanged();
+            return this;
+          }
+
+          private java.lang.Object icon_ = "";
+          /**
+           * <code>optional string icon = 7;</code>
+           */
+          public boolean hasIcon() {
+            return ((bitField0_ & 0x00000040) == 0x00000040);
+          }
+          /**
+           * <code>optional string icon = 7;</code>
            */
           public java.lang.String getIcon() {
             java.lang.Object ref = icon_;
@@ -33605,7 +33762,7 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional string icon = 6;</code>
+           * <code>optional string icon = 7;</code>
            */
           public com.google.protobuf.ByteString
               getIconBytes() {
@@ -33621,36 +33778,36 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional string icon = 6;</code>
+           * <code>optional string icon = 7;</code>
            */
           public Builder setIcon(
               java.lang.String value) {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
             icon_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string icon = 6;</code>
+           * <code>optional string icon = 7;</code>
            */
           public Builder clearIcon() {
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000040);
             icon_ = getDefaultInstance().getIcon();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string icon = 6;</code>
+           * <code>optional string icon = 7;</code>
            */
           public Builder setIconBytes(
               com.google.protobuf.ByteString value) {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
             icon_ = value;
             onChanged();
             return this;
@@ -33658,13 +33815,13 @@ public final class PremiumMADRTBProtocol {
 
           private java.lang.Object cover_ = "";
           /**
-           * <code>optional string cover = 7;</code>
+           * <code>optional string cover = 8;</code>
            */
           public boolean hasCover() {
-            return ((bitField0_ & 0x00000040) == 0x00000040);
+            return ((bitField0_ & 0x00000080) == 0x00000080);
           }
           /**
-           * <code>optional string cover = 7;</code>
+           * <code>optional string cover = 8;</code>
            */
           public java.lang.String getCover() {
             java.lang.Object ref = cover_;
@@ -33681,7 +33838,7 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional string cover = 7;</code>
+           * <code>optional string cover = 8;</code>
            */
           public com.google.protobuf.ByteString
               getCoverBytes() {
@@ -33697,130 +33854,37 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional string cover = 7;</code>
+           * <code>optional string cover = 8;</code>
            */
           public Builder setCover(
               java.lang.String value) {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
             cover_ = value;
             onChanged();
             return this;
           }
           /**
-           * <code>optional string cover = 7;</code>
+           * <code>optional string cover = 8;</code>
            */
           public Builder clearCover() {
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
             cover_ = getDefaultInstance().getCover();
             onChanged();
             return this;
           }
           /**
-           * <code>optional string cover = 7;</code>
+           * <code>optional string cover = 8;</code>
            */
           public Builder setCoverBytes(
               com.google.protobuf.ByteString value) {
             if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000080;
             cover_ = value;
-            onChanged();
-            return this;
-          }
-
-          private com.google.protobuf.LazyStringList adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          private void ensureAdmIsMutable() {
-            if (!((bitField0_ & 0x00000080) == 0x00000080)) {
-              adm_ = new com.google.protobuf.LazyStringArrayList(adm_);
-              bitField0_ |= 0x00000080;
-             }
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public com.google.protobuf.ProtocolStringList
-              getAdmList() {
-            return adm_.getUnmodifiableView();
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public int getAdmCount() {
-            return adm_.size();
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public java.lang.String getAdm(int index) {
-            return adm_.get(index);
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public com.google.protobuf.ByteString
-              getAdmBytes(int index) {
-            return adm_.getByteString(index);
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public Builder setAdm(
-              int index, java.lang.String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAdmIsMutable();
-            adm_.set(index, value);
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public Builder addAdm(
-              java.lang.String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAdmIsMutable();
-            adm_.add(value);
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public Builder addAllAdm(
-              java.lang.Iterable<java.lang.String> values) {
-            ensureAdmIsMutable();
-            com.google.protobuf.AbstractMessageLite.Builder.addAll(
-                values, adm_);
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public Builder clearAdm() {
-            adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-            bitField0_ = (bitField0_ & ~0x00000080);
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>repeated string adm = 8;</code>
-           */
-          public Builder addAdmBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAdmIsMutable();
-            adm_.add(value);
             onChanged();
             return this;
           }
@@ -33857,17 +33921,110 @@ public final class PremiumMADRTBProtocol {
             return this;
           }
 
+          private com.google.protobuf.LazyStringList adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+          private void ensureAdmIsMutable() {
+            if (!((bitField0_ & 0x00000200) == 0x00000200)) {
+              adm_ = new com.google.protobuf.LazyStringArrayList(adm_);
+              bitField0_ |= 0x00000200;
+             }
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public com.google.protobuf.ProtocolStringList
+              getAdmList() {
+            return adm_.getUnmodifiableView();
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public int getAdmCount() {
+            return adm_.size();
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public java.lang.String getAdm(int index) {
+            return adm_.get(index);
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public com.google.protobuf.ByteString
+              getAdmBytes(int index) {
+            return adm_.getByteString(index);
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public Builder setAdm(
+              int index, java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAdmIsMutable();
+            adm_.set(index, value);
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public Builder addAdm(
+              java.lang.String value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAdmIsMutable();
+            adm_.add(value);
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public Builder addAllAdm(
+              java.lang.Iterable<java.lang.String> values) {
+            ensureAdmIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, adm_);
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public Builder clearAdm() {
+            adm_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+            bitField0_ = (bitField0_ & ~0x00000200);
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>repeated string adm = 10;</code>
+           */
+          public Builder addAdmBytes(
+              com.google.protobuf.ByteString value) {
+            if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAdmIsMutable();
+            adm_.add(value);
+            onChanged();
+            return this;
+          }
+
           private com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse admNative_ = com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.getDefaultInstance();
           private com.google.protobuf.SingleFieldBuilder<
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponseOrBuilder> admNativeBuilder_;
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public boolean hasAdmNative() {
-            return ((bitField0_ & 0x00000200) == 0x00000200);
+            return ((bitField0_ & 0x00000400) == 0x00000400);
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse getAdmNative() {
             if (admNativeBuilder_ == null) {
@@ -33877,7 +34034,7 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public Builder setAdmNative(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse value) {
             if (admNativeBuilder_ == null) {
@@ -33889,11 +34046,11 @@ public final class PremiumMADRTBProtocol {
             } else {
               admNativeBuilder_.setMessage(value);
             }
-            bitField0_ |= 0x00000200;
+            bitField0_ |= 0x00000400;
             return this;
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public Builder setAdmNative(
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Builder builderForValue) {
@@ -33903,15 +34060,15 @@ public final class PremiumMADRTBProtocol {
             } else {
               admNativeBuilder_.setMessage(builderForValue.build());
             }
-            bitField0_ |= 0x00000200;
+            bitField0_ |= 0x00000400;
             return this;
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public Builder mergeAdmNative(com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse value) {
             if (admNativeBuilder_ == null) {
-              if (((bitField0_ & 0x00000200) == 0x00000200) &&
+              if (((bitField0_ & 0x00000400) == 0x00000400) &&
                   admNative_ != com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.getDefaultInstance()) {
                 admNative_ =
                   com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.newBuilder(admNative_).mergeFrom(value).buildPartial();
@@ -33922,11 +34079,11 @@ public final class PremiumMADRTBProtocol {
             } else {
               admNativeBuilder_.mergeFrom(value);
             }
-            bitField0_ |= 0x00000200;
+            bitField0_ |= 0x00000400;
             return this;
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public Builder clearAdmNative() {
             if (admNativeBuilder_ == null) {
@@ -33935,19 +34092,19 @@ public final class PremiumMADRTBProtocol {
             } else {
               admNativeBuilder_.clear();
             }
-            bitField0_ = (bitField0_ & ~0x00000200);
+            bitField0_ = (bitField0_ & ~0x00000400);
             return this;
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Builder getAdmNativeBuilder() {
-            bitField0_ |= 0x00000200;
+            bitField0_ |= 0x00000400;
             onChanged();
             return getAdmNativeFieldBuilder().getBuilder();
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           public com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponseOrBuilder getAdmNativeOrBuilder() {
             if (admNativeBuilder_ != null) {
@@ -33957,7 +34114,7 @@ public final class PremiumMADRTBProtocol {
             }
           }
           /**
-           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 10;</code>
+           * <code>optional .com.madhouse.rtb.BidResponse.SeatBid.Bid.NativeResponse adm_native = 11;</code>
            */
           private com.google.protobuf.SingleFieldBuilder<
               com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Builder, com.madhouse.rtb.PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponseOrBuilder> 
@@ -33971,82 +34128,6 @@ public final class PremiumMADRTBProtocol {
               admNative_ = null;
             }
             return admNativeBuilder_;
-          }
-
-          private java.lang.Object admid_ = "";
-          /**
-           * <code>optional string admid = 11;</code>
-           */
-          public boolean hasAdmid() {
-            return ((bitField0_ & 0x00000400) == 0x00000400);
-          }
-          /**
-           * <code>optional string admid = 11;</code>
-           */
-          public java.lang.String getAdmid() {
-            java.lang.Object ref = admid_;
-            if (!(ref instanceof java.lang.String)) {
-              com.google.protobuf.ByteString bs =
-                  (com.google.protobuf.ByteString) ref;
-              java.lang.String s = bs.toStringUtf8();
-              if (bs.isValidUtf8()) {
-                admid_ = s;
-              }
-              return s;
-            } else {
-              return (java.lang.String) ref;
-            }
-          }
-          /**
-           * <code>optional string admid = 11;</code>
-           */
-          public com.google.protobuf.ByteString
-              getAdmidBytes() {
-            java.lang.Object ref = admid_;
-            if (ref instanceof String) {
-              com.google.protobuf.ByteString b = 
-                  com.google.protobuf.ByteString.copyFromUtf8(
-                      (java.lang.String) ref);
-              admid_ = b;
-              return b;
-            } else {
-              return (com.google.protobuf.ByteString) ref;
-            }
-          }
-          /**
-           * <code>optional string admid = 11;</code>
-           */
-          public Builder setAdmid(
-              java.lang.String value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-            admid_ = value;
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string admid = 11;</code>
-           */
-          public Builder clearAdmid() {
-            bitField0_ = (bitField0_ & ~0x00000400);
-            admid_ = getDefaultInstance().getAdmid();
-            onChanged();
-            return this;
-          }
-          /**
-           * <code>optional string admid = 11;</code>
-           */
-          public Builder setAdmidBytes(
-              com.google.protobuf.ByteString value) {
-            if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000400;
-            admid_ = value;
-            onChanged();
-            return this;
           }
 
           private java.lang.Object dealid_ = "";
@@ -36114,45 +36195,45 @@ public final class PremiumMADRTBProtocol {
       "ywords\030\n \001(\t\0225\n\007content\030\013 \001(\0132$.com.madh" +
       "ouse.rtb.BidRequest.Content\032H\n\007Content\022\n",
       "\n\002id\030\001 \001(\t\022\r\n\005title\030\002 \001(\t\022\020\n\010keywords\030\003 " +
-      "\003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nMediaOneof\"\323\013\n\013" +
+      "\003(\t\022\020\n\010channels\030\004 \003(\tB\014\n\nMediaOneof\"\343\013\n\013" +
       "BidResponse\022\n\n\002id\030\001 \001(\t\022\r\n\005bidid\030\002 \001(\t\0226" +
       "\n\007seatbid\030\003 \003(\0132%.com.madhouse.rtb.BidRe" +
-      "sponse.SeatBid\022\013\n\003nbr\030\004 \001(\005\032\343\n\n\007SeatBid\022" +
+      "sponse.SeatBid\022\013\n\003nbr\030\004 \001(\005\032\363\n\n\007SeatBid\022" +
       "6\n\003bid\030\001 \003(\0132).com.madhouse.rtb.BidRespo" +
-      "nse.SeatBid.Bid\032\237\n\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005i" +
+      "nse.SeatBid.Bid\032\257\n\n\003Bid\022\n\n\002id\030\001 \001(\t\022\r\n\005i" +
       "mpid\030\002 \001(\t\022\r\n\005price\030\003 \001(\005\022\014\n\004adid\030\004 \001(\t\022" +
-      "\013\n\003cid\030\005 \001(\t\022\014\n\004icon\030\006 \001(\t\022\r\n\005cover\030\007 \001(" +
-      "\t\022\013\n\003adm\030\010 \003(\t\022\020\n\010duration\030\t \001(\005\022L\n\nadm_",
-      "native\030\n \001(\01328.com.madhouse.rtb.BidRespo" +
-      "nse.SeatBid.Bid.NativeResponse\022\r\n\005admid\030" +
-      "\013 \001(\t\022\016\n\006dealid\030\014 \001(\t\022\014\n\004nurl\030\r \001(\t\022\016\n\006l" +
-      "pgurl\030\016 \001(\t\022\017\n\007acttype\030\017 \001(\005\022B\n\007monitor\030" +
-      "\020 \001(\01321.com.madhouse.rtb.BidResponse.Sea" +
-      "tBid.Bid.Monitor\032\211\006\n\016NativeResponse\022\013\n\003v" +
-      "er\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>.com.madhouse." +
-      "rtb.BidResponse.SeatBid.Bid.NativeRespon" +
-      "se.Asset\032\231\005\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010requir" +
-      "ed\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D.com.madhouse.r",
+      "\013\n\003cid\030\005 \001(\t\022\014\n\004crid\030\006 \001(\t\022\014\n\004icon\030\007 \001(\t" +
+      "\022\r\n\005cover\030\010 \001(\t\022\020\n\010duration\030\t \001(\005\022\013\n\003adm",
+      "\030\n \003(\t\022L\n\nadm_native\030\013 \001(\01328.com.madhous" +
+      "e.rtb.BidResponse.SeatBid.Bid.NativeResp" +
+      "onse\022\016\n\006dealid\030\014 \001(\t\022\014\n\004nurl\030\r \001(\t\022\016\n\006lp" +
+      "gurl\030\016 \001(\t\022\017\n\007acttype\030\017 \001(\005\022B\n\007monitor\030\020" +
+      " \001(\01321.com.madhouse.rtb.BidResponse.Seat" +
+      "Bid.Bid.Monitor\032\211\006\n\016NativeResponse\022\013\n\003ve" +
+      "r\030\001 \001(\t\022N\n\006assets\030\002 \003(\0132>.com.madhouse.r" +
       "tb.BidResponse.SeatBid.Bid.NativeRespons" +
-      "e.Asset.TitleH\000\022U\n\005image\030\004 \001(\0132D.com.mad" +
-      "house.rtb.BidResponse.SeatBid.Bid.Native" +
-      "Response.Asset.ImageH\000\022U\n\005video\030\005 \001(\0132D." +
-      "com.madhouse.rtb.BidResponse.SeatBid.Bid" +
-      ".NativeResponse.Asset.VideoH\000\022S\n\004desc\030\006 " +
-      "\001(\0132C.com.madhouse.rtb.BidResponse.SeatB" +
-      "id.Bid.NativeResponse.Asset.DataH\000\022V\n\007co" +
-      "ntent\030\007 \001(\0132C.com.madhouse.rtb.BidRespon" +
-      "se.SeatBid.Bid.NativeResponse.Asset.Data",
-      "H\000\032\025\n\005Title\022\014\n\004text\030\001 \001(\t\0328\n\005Image\022\014\n\004ty" +
-      "pe\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 " +
-      "\003(\t\032<\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003ur" +
-      "l\030\003 \001(\t\022\020\n\010duration\030\004 \001(\005\032#\n\004Data\022\014\n\004typ" +
-      "e\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOneof\032\252\001\n" +
-      "\007Monitor\022G\n\006impurl\030\001 \003(\01327.com.madhouse." +
-      "rtb.BidResponse.SeatBid.Bid.Monitor.Trac" +
-      "k\022\016\n\006clkurl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\022\014\n\004ext" +
-      "s\030\013 \003(\t\032(\n\005Track\022\022\n\nstartdelay\030\001 \001(\005\022\013\n\003" +
-      "url\030\002 \001(\t"
+      "e.Asset\032\231\005\n\005Asset\022\n\n\002id\030\001 \001(\t\022\020\n\010require" +
+      "d\030\002 \001(\010\022U\n\005title\030\003 \001(\0132D.com.madhouse.rt",
+      "b.BidResponse.SeatBid.Bid.NativeResponse" +
+      ".Asset.TitleH\000\022U\n\005image\030\004 \001(\0132D.com.madh" +
+      "ouse.rtb.BidResponse.SeatBid.Bid.NativeR" +
+      "esponse.Asset.ImageH\000\022U\n\005video\030\005 \001(\0132D.c" +
+      "om.madhouse.rtb.BidResponse.SeatBid.Bid." +
+      "NativeResponse.Asset.VideoH\000\022S\n\004desc\030\006 \001" +
+      "(\0132C.com.madhouse.rtb.BidResponse.SeatBi" +
+      "d.Bid.NativeResponse.Asset.DataH\000\022V\n\007con" +
+      "tent\030\007 \001(\0132C.com.madhouse.rtb.BidRespons" +
+      "e.SeatBid.Bid.NativeResponse.Asset.DataH",
+      "\000\032\025\n\005Title\022\014\n\004text\030\001 \001(\t\0328\n\005Image\022\014\n\004typ" +
+      "e\030\001 \001(\005\022\t\n\001w\030\002 \001(\005\022\t\n\001h\030\003 \001(\005\022\013\n\003url\030\004 \003" +
+      "(\t\032<\n\005Video\022\t\n\001w\030\001 \001(\005\022\t\n\001h\030\002 \001(\005\022\013\n\003url" +
+      "\030\003 \001(\t\022\020\n\010duration\030\004 \001(\005\032#\n\004Data\022\014\n\004type" +
+      "\030\001 \001(\005\022\r\n\005value\030\002 \001(\tB\014\n\nAssetOneof\032\273\001\n\007" +
+      "Monitor\022G\n\006impurl\030\001 \003(\01327.com.madhouse.r" +
+      "tb.BidResponse.SeatBid.Bid.Monitor.Track" +
+      "\022\016\n\006clkurl\030\002 \003(\t\022\016\n\006securl\030\003 \003(\t\022\017\n\007expt" +
+      "ime\030\004 \001(\005\022\014\n\004exts\030\013 \003(\t\032(\n\005Track\022\022\n\nstar" +
+      "tdelay\030\001 \001(\005\022\013\n\003url\030\002 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -36303,7 +36384,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_descriptor,
-        new java.lang.String[] { "Id", "Impid", "Price", "Adid", "Cid", "Icon", "Cover", "Adm", "Duration", "AdmNative", "Admid", "Dealid", "Nurl", "Lpgurl", "Acttype", "Monitor", });
+        new java.lang.String[] { "Id", "Impid", "Price", "Adid", "Cid", "Crid", "Icon", "Cover", "Duration", "Adm", "AdmNative", "Dealid", "Nurl", "Lpgurl", "Acttype", "Monitor", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_NativeResponse_fieldAccessorTable = new
@@ -36345,7 +36426,7 @@ public final class PremiumMADRTBProtocol {
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_descriptor,
-        new java.lang.String[] { "Impurl", "Clkurl", "Securl", "Exts", });
+        new java.lang.String[] { "Impurl", "Clkurl", "Securl", "Exptime", "Exts", });
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_Track_descriptor =
       internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_descriptor.getNestedTypes().get(0);
     internal_static_com_madhouse_rtb_BidResponse_SeatBid_Bid_Monitor_Track_fieldAccessorTable = new
