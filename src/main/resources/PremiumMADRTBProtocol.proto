@@ -236,12 +236,12 @@ message BidResponse
             optional int32 price = 3;
             optional string adid = 4;
             optional string cid = 5;
-            optional string icon = 6;
-            optional string cover = 7;
-            repeated string adm = 8;
+            optional string crid = 6;
+            optional string icon = 7;
+            optional string cover = 8;
             optional int32 duration = 9;
-            optional NativeResponse adm_native = 10;
-            optional string admid = 11;
+            repeated string adm = 10;
+            optional NativeResponse adm_native = 11;
             optional string dealid = 12;
             optional string nurl = 13;
             optional string lpgurl = 14;
@@ -301,6 +301,7 @@ message BidResponse
                 repeated Track impurl = 1;
                 repeated string clkurl = 2;
                 repeated string securl = 3;
+                optional int32 exptime = 4;
                 repeated string exts = 11;
 
                 message Track
