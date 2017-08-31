@@ -3,10 +3,10 @@
         "domain": "http://172.16.25.47:8181",
         "port": 8181,
         "wokerId": 10,
-        "minIdle": 50,
-        "maxIdle": 100,
-        "maxTotal": 300,
-        "gZipOn": false,
+        "minIdle": 10,
+        "maxIdle": 20,
+        "maxTotal": 30,
+        "gZipOn": true,
         "expiredTime": 86400,
         "bids": [{
                 "path": "/adcall/bidrequest",
@@ -76,9 +76,9 @@
         ]
     },
     "redis": {
-        "minIdle": 50,
-        "maxIdle": 100,
-        "maxTotal": 300,
+        "minIdle": 10,
+        "maxIdle": 20,
+        "maxTotal": 30,
         "slave": {
             "passwd": "",
             "host": "172.16.25.26",
