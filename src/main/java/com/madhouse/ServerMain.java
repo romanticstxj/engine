@@ -41,6 +41,7 @@ public class ServerMain {
 		if (webApp.getgZipOn()) {
 			GzipHandler gzipHandler = new GzipHandler();
 			gzipHandler.setMinGzipSize(1024);
+			gzipHandler.setCheckGzExists(true);
 			httpServer.insertHandler(gzipHandler);
 		}
 
