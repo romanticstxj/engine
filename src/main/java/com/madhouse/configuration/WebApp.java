@@ -19,6 +19,34 @@ public class WebApp {
 
 	private int expiredTime;
 
+	private int minIdle;
+	private int maxIdle;
+	private int maxTotal;
+
+	public int getMinIdle() {
+		return minIdle;
+	}
+
+	public void setMinIdle(int minIdle) {
+		this.minIdle = minIdle;
+	}
+
+	public int getMaxIdle() {
+		return maxIdle;
+	}
+
+	public void setMaxIdle(int maxIdle) {
+		this.maxIdle = maxIdle;
+	}
+
+	public int getMaxTotal() {
+		return maxTotal;
+	}
+
+	public void setMaxTotal(int maxTotal) {
+		this.maxTotal = maxTotal;
+	}
+
 	public int getWokerId() {
 		return wokerId;
 	}

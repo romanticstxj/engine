@@ -37,7 +37,7 @@ public class ServerMain {
 			servletHandler.addHandler(bid.getPath(), bidServlet);
 		}
 
-		HttpServer httpServer = new HttpServer(servletHandler);
+		HttpServer httpServer = new HttpServer(webApp.getMinIdle(), webApp.getMaxTotal(), webApp.getMaxIdle(), servletHandler);
 		if (webApp.getgZipOn()) {
 			GzipHandler gzipHandler = new GzipHandler();
 			gzipHandler.setMinGzipSize(1024);
