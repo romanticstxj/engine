@@ -107,7 +107,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&lat=").append(StringUtil.toString(mediaRequest.getGeoBuilder() != null ? mediaRequest.getGeoBuilder().getLat().toString() : ""))
                 .append("&cell=").append(StringUtil.toString(mediaRequest.getCell()))
                 .append("&mcell=").append(StringUtil.toString(mediaRequest.getCellmd5()))
-                .append("&dealid=").append(StringUtil.toString(policyMetaData.getDealId()));
+                .append("&dealid=").append(StringUtil.toString(mediaRequest.getDealid()));
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)

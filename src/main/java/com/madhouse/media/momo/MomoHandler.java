@@ -1,7 +1,6 @@
 package com.madhouse.media.momo;
 
-import static com.madhouse.media.momo.MomoExchange.NativeFormat.FEED_LANDING_PAGE_LARGE_IMG;
-import static com.madhouse.media.momo.MomoExchange.NativeFormat.FEED_LANDING_PAGE_VIDEO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +23,7 @@ import com.madhouse.media.momo.MomoBidRequest.Device;
 import com.madhouse.media.momo.MomoBidRequest.Impression;
 import com.madhouse.media.momo.MomoExchange.BidRequest;
 import com.madhouse.media.momo.MomoExchange.BidResponse;
+import com.madhouse.media.momo.MomoExchange.BidResponse.SeatBid.Bid.NativeCreative;
 import com.madhouse.media.momo.MomoResponse.Bid;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
@@ -201,7 +202,7 @@ public class MomoHandler extends MediaBaseHandler {
     }
     
     
-    private MediaRequest.Builder conversionToPremiumMADDataModel(BidRequest bidRequest) {
+    private MediaRequest.Builder conversionToPremiumMADDataModel(MomoExchange.BidRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         MomoExchange.BidRequest.Imp imp = bidRequest.getImpList().get(0);
@@ -237,6 +238,13 @@ public class MomoHandler extends MediaBaseHandler {
             mediaRequest.setName(app.getName());
         }
        
+        /**
+         * 设置dealid
+         */
+        if(null !=imp.getPmp() && null !=imp.getPmp().getDealsList() && imp.getPmp().getDealsList().size() >0){
+            MomoExchange.BidRequest.Imp.Pmp.Deal deal = imp.getPmp().getDeals(0);
+            mediaRequest.setDealid(deal.getId());
+        }
         
         MomoExchange.BidRequest.Device device =  bidRequest.getDevice();
         
@@ -346,8 +354,11 @@ public class MomoHandler extends MediaBaseHandler {
                 return Constant.StatusCode.BAD_REQUEST;
             }else{
                MomoExchange.BidRequest.Imp.Native aNative =  imp.getNative();
-               if(!aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_LARGE_IMG)&&
-                       !aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_VIDEO)){
+               if(!aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode())&&
+                   !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())&&
+                   !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())&&
+                   !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())&&
+                   !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){
                    logger.debug("MomoExchange.bidRequest.Imp[0].Native is [img,video] is missing");
                    return Constant.StatusCode.BAD_REQUEST;
                }
@@ -373,22 +384,40 @@ public class MomoHandler extends MediaBaseHandler {
     }
     private String getCampainType(MomoExchange.BidRequest.Imp.Native aNative){
         Random random = new Random();
-        if(aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_LARGE_IMG) && aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_VIDEO)){
-               List<MomoExchange.NativeFormat> list = new ArrayList<>();
-               list.add(FEED_LANDING_PAGE_LARGE_IMG);
-               list.add(FEED_LANDING_PAGE_VIDEO);
-               int i = random.nextInt(2);
-               switch (list.get(i)){
-                   case FEED_LANDING_PAGE_LARGE_IMG:
-                       return  "img";
-                   case FEED_LANDING_PAGE_VIDEO:
-                       return "video";
-               }
-               return "";
-        }else if(aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_LARGE_IMG) && !aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_VIDEO)){
-            return "img";
-        }else if(!aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_LARGE_IMG) && aNative.getNativeFormatList().contains(FEED_LANDING_PAGE_VIDEO)){
-            return "video";
+        if(null != aNative.getNativeFormatList() && aNative.getNativeFormatList().size() >0){
+            if(aNative.getNativeFormatList().size() >1){
+                List<String> list = new ArrayList<String>();
+                for(int i=0;i < aNative.getNativeFormatList().size();i++){
+                    list.add(aNative.getNativeFormatList().get(i));
+                }
+                int i = random.nextInt(aNative.getNativeFormatList().size()-1);
+                switch (list.get(i)){
+                    case "FEED_LANDING_PAGE_LARGE_IMG":
+                        return  "img";
+                    case "FEED_LANDING_PAGE_VIDEO":
+                        return "video";
+                    case "FEED_LANDING_PAGE_SMALL_IMG":
+                        return  "smallImg";
+                    case "NEARBY_LANDING_PAGE_NO_IMG":
+                        return "noImg";
+                    case "FEED_LANDING_PAGE_SQUARE_IMG":
+                        return  "squareImg";
+                }
+                return "";
+            }else if(aNative.getNativeFormatList().size() == 1){
+                
+                if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode())){
+                    return "img";
+                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())){
+                    return  "smallImg";
+                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())){
+                     return "noImg";
+                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){
+                     return  "squareImg";
+                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())){
+                     return "video";
+                }
+            }
         }
         return "";
     }
@@ -483,32 +512,7 @@ public class MomoHandler extends MediaBaseHandler {
         
         
         MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
-        
-        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
-        nativeCreativeBuilder.setTitle(mediaResponse.getTitle());
-        nativeCreativeBuilder.setDesc(mediaResponse.getDesc());
-        nativeCreativeBuilder.setLogo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder());
-        if(null != mediaResponse.getDuration() && mediaResponse.getDuration()>0){
-            nativeCreativeBuilder.addVideo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Video.newBuilder().setUrl(mediaResponse.getAdm().get(0)));          //视频
-            nativeCreativeBuilder.setCardTitle(mediaResponse.getTitle()); //无单独的行动卡标题 使用视频物料的标题
-            nativeCreativeBuilder.setCardDesc(mediaResponse.getDesc());   //无单独的行动卡副标题 使用视频物料的副标题
-            nativeCreativeBuilder.setLandingpageUrl(MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder().setUrl(mediaResponse.getAdm().get(0)));  //落地页
-            if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(FEED_LANDING_PAGE_VIDEO)){
-                nativeCreativeBuilder.setNativeFormat(FEED_LANDING_PAGE_VIDEO);
-            }
-        }else{
-            MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
-            imageBuilder.setHeight(mediaRequest.getH());
-            imageBuilder.setWidth(mediaRequest.getW());
-            imageBuilder.setUrl(mediaResponse.getAdm().get(0));
-            nativeCreativeBuilder.addImage(imageBuilder);           //广告图片
-            nativeCreativeBuilder.setLandingpageUrl(MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder().setUrl(mediaResponse.getAdm().get(0)));  //落地页
-            if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(FEED_LANDING_PAGE_LARGE_IMG)){
-                nativeCreativeBuilder.setNativeFormat(FEED_LANDING_PAGE_LARGE_IMG);
-            }
-        }
-        
+        MediaRequest.Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         
         MomoExchange.BidResponse.SeatBid.Bid.Builder bidBuilder = MomoExchange.BidResponse.SeatBid.Bid.newBuilder();
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
@@ -518,7 +522,18 @@ public class MomoHandler extends MediaBaseHandler {
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
         bidBuilder.setCrid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
-        bidBuilder.setNativeCreative(nativeCreativeBuilder);
+        //bidBuilder.setNativeCreative(nativeCreativeBuilder);
+        
+        bidBuilder.setNativeCreative(getNativeCreative(bidRequest,mediaResponse,mediaRequest));
+        
+        /**
+         * 设置dealid
+         */
+        if(null !=bidRequest.getImp(0) && null !=bidRequest.getImp(0).getPmp().getDealsList() && bidRequest.getImp(0).getPmp().getDealsList().size() >0){
+            MomoExchange.BidRequest.Imp.Pmp.Deal deal = bidRequest.getImp(0).getPmp().getDeals(0);
+             bidBuilder.setDealid(deal.getId());
+        }
+        
         /**
          *组装点击和展示监播url
          */
@@ -547,5 +562,112 @@ public class MomoHandler extends MediaBaseHandler {
         logger.info("MoMO Response params is : {}", bidResposeBuilder.toString());
         return bidResposeBuilder.build();
     }
+
+
+    private NativeCreative.Builder getNativeCreative(BidRequest bidRequest, MediaResponse.Builder mediaResponse, Builder mediaRequest) {
+        
+        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
+        nativeCreativeBuilder.setTitle(mediaResponse.getTitle());
+        nativeCreativeBuilder.setDesc(mediaResponse.getDesc());
+        nativeCreativeBuilder.setLogo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder());
     
+        String url = mediaResponse.getAdm().get(0);
+        String suffix = url.substring(url.lastIndexOf(".")+1,url.length()).toLowerCase();
+        if (ImageTypeEnums.contains(suffix)) {//广告图片
+            nativeCreativeBuilder.setLandingpageUrl(getLink(mediaResponse));  //落地页
+            if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode())){//大图样式落地页
+                nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode());
+                nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));
+                
+            }else if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){//单图样式落地页
+                 nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode());
+                 nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));    
+                 
+            }else if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())){//三图样式落地页
+                nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode());
+                if(null != mediaResponse.getAdm() && mediaResponse.getAdm().size() >0){
+                    for(int i=0;i < mediaResponse.getAdm().size();i++){
+                        nativeCreativeBuilder.addImage(getImageList(mediaRequest,mediaResponse,i));   //传多个物料
+                    }
+                }
+                
+            }else if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())){//图标样式落地页
+                nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode());
+                nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));    
+            }
+        }else if (VideoTypeEnums.contains(suffix)) {//视频
+           nativeCreativeBuilder.addVideo(getVideo(mediaRequest,mediaResponse)); 
+           /*nativeCreativeBuilder.setCardTitle(jsonEntity.getExt().getTitle());
+           nativeCreativeBuilder.setCardDesc(jsonEntity.getExt().getDesc()); 
+           nativeCreativeBuilder.addDisplayLabels(jsonEntity.getExt().getLabels().get(0));*/
+           nativeCreativeBuilder.setCardImage(moMoVideoGetImage(mediaRequest,mediaResponse));
+           nativeCreativeBuilder.setLandingpageUrl(getLink(mediaResponse));  //落地页
+            
+            if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())){//横版视频落地页
+                nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode());
+            }
+        }
+        return nativeCreativeBuilder;
+        
+        
+    }
+    private MomoExchange.BidResponse.SeatBid.Bid.Link.Builder getLink(MediaResponse.Builder builder) {
+        MomoExchange.BidResponse.SeatBid.Bid.Link.Builder linkBuilder = MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder();
+        linkBuilder.setUrl(builder.getLpgurl());
+        return linkBuilder;
+    }
+    
+    /**
+     * 单图
+     * @param jsonEntity
+     * @return
+     */
+    private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder getImage(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder) {
+        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
+        imageBuilder.setHeight(requestBuilder.getH());
+        imageBuilder.setWidth(requestBuilder.getW());
+        imageBuilder.setUrl(responseBuilder.getAdm().get(0));
+
+        return imageBuilder;
+    }
+
+    /**
+     * 多图
+     * @param jsonEntity
+     * @return
+     */
+    private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder getImageList(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder,int i) {
+            MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
+            imageBuilder.setHeight(requestBuilder.getH());
+            imageBuilder.setWidth(requestBuilder.getW());
+            imageBuilder.setUrl(responseBuilder.getAdm().get(i));
+        return imageBuilder;
+    }
+
+    private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Video.Builder getVideo(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder) {
+        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Video.Builder videoBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Video.newBuilder();
+        videoBuilder.setUrl(responseBuilder.getAdm().get(0));
+        
+        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
+        imageBuilder.setHeight(requestBuilder.getH());
+        imageBuilder.setWidth(requestBuilder.getW());
+        imageBuilder.setUrl(responseBuilder.getCover());
+        
+        videoBuilder.setCoverImg(imageBuilder);
+        return videoBuilder;
+    }
+    
+    /**
+     * momo 视频专用
+     * @param jsonEntity
+     * @return
+     */
+    private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder moMoVideoGetImage(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder) {
+        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
+        /*imageBuilder.setUrl(jsonEntity.getExt().getAdm().get(0));
+        imageBuilder.setWidth(jsonEntity.getExt().getWidth());
+        imageBuilder.setHeight(jsonEntity.getExt().getHeigh());*/
+        return imageBuilder;
+    }
+
 }

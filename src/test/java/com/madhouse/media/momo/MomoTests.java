@@ -13,13 +13,19 @@ import org.apache.http.util.EntityUtils;
 public class MomoTests {
     public static void main(String[] arg) {
         MomoExchange.BidRequest.Imp.Native.Builder nativeBuilder = MomoExchange.BidRequest.Imp.Native.newBuilder();
-        nativeBuilder.addNativeFormat(MomoExchange.NativeFormat.FEED_LANDING_PAGE_VIDEO);
+        nativeBuilder.addNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode());
 //        nativeBuilder.addNativeFormat(MomoExchange.NativeFormat.FEED_LANDING_PAGE_VIDEO);
-
+        
+        MomoExchange.BidRequest.Imp.Pmp.Deal.Builder dealBuilder = MomoExchange.BidRequest.Imp.Pmp.Deal.newBuilder();
+        dealBuilder.setId("20170829");
+        MomoExchange.BidRequest.Imp.Pmp.Builder pmpBuilder = MomoExchange.BidRequest.Imp.Pmp.newBuilder();
+        pmpBuilder.addDeals(dealBuilder);
+        
         MomoExchange.BidRequest.Imp.Builder impBuilder = MomoExchange.BidRequest.Imp.newBuilder();
         impBuilder.setId("3c7a762982484fb4");
         impBuilder.setSlotid("1-2");
         impBuilder.setBidfloor(2);
+        impBuilder.setPmp(pmpBuilder);
         impBuilder.setNative(nativeBuilder);
 
         MomoExchange.BidRequest.App.Builder appBuilder = MomoExchange.BidRequest.App.newBuilder();
