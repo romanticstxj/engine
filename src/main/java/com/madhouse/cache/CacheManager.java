@@ -552,43 +552,41 @@ public class CacheManager implements Runnable {
             int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
-            if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+            if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
+                int budgetCount = policyMetaData.getMaxCount();
+                if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
                     int pastDays = Utility.dateDiff(cal.getTime(), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
                     int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                    budgetCount = (int)((double)policyMetaData.getMaxCount() * pastDays / totalDays);
+                }
 
-                    if (dailyCount >= ((double)policyMetaData.getMaxCount() * pastDays / totalDays)) {
-                        return false;
-                    }
+                int pastHours = 0;
+                int totalHours = 24;
+                if (ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
+                    pastHours = currentHour + 1;
                 } else {
-                    if (totalCount >= policyMetaData.getMaxCount()) {
+                    List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
+                    if (ObjectUtils.isEmpty(hours)) {
                         return false;
                     }
+
+                    for (int hour : hours) {
+                        if (hour <= currentHour) {
+                            pastHours += 1;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    totalHours = hours.size();
+                }
+
+                if (dailyCount >= ((double)budgetCount * pastHours / totalHours)) {
+                    return false;
                 }
             } else {
-                if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
-                    int pastHours = 0;
-                    int totalHours = 24;
-                    if (ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
-                        pastHours = currentHour + 1;
-                    } else {
-                        List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
-                        if (ObjectUtils.isEmpty(hours)) {
-                            return false;
-                        }
-
-                        for (int hour : hours) {
-                            if (hour <= currentHour) {
-                                pastHours += 1;
-                            } else {
-                                break;
-                            }
-                        }
-
-                        totalHours = hours.size();
-                    }
-
-                    if (dailyCount >= ((double)policyMetaData.getMaxCount() * pastHours / totalHours)) {
+                if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
+                    if (totalCount >= policyMetaData.getMaxCount()) {
                         return false;
                     }
                 } else {
