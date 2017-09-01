@@ -74,6 +74,7 @@ public class MaterialMetaData {
     private String title;
     private String desc;
     private String cover;
+    private String content;
     private List<String> adm;
     private int duration;
     private int actType;
@@ -145,6 +146,14 @@ public class MaterialMetaData {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getIcon() {
