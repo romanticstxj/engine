@@ -61,7 +61,7 @@ public class MomoHandler extends MediaBaseHandler {
                         mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                         if(mediaRequest != null){
                             mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
-                            mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.JSON,bidRequest});
+                            mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.PROTOBUF,bidRequest});
                             return true;
                         }
                     }
@@ -268,7 +268,7 @@ public class MomoHandler extends MediaBaseHandler {
             geo.setLon((float)device.getGeo().getLat());
             mediaRequest.setGeoBuilder(geo);
         }
-
+        mediaRequest.setAdtype(2);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         
         switch (device.getConnectiontype()) {
@@ -402,7 +402,7 @@ public class MomoHandler extends MediaBaseHandler {
                     Object[] objType = (Object[])mediaBidMetaData.getRequestObject();
                     
                     if(MomoStatusCode.Type.PROTOBUF.equals(objType[0])){
-                        MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(BidRequest)objType[1]);
+                        MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(MomoExchange.BidRequest)objType[1]);
                         if(null != bidResponse){
                             resp.setContentType("application/octet-stream;charset=UTF-8");
                             resp.getOutputStream().write(bidResponse.toByteArray());
@@ -431,8 +431,8 @@ public class MomoHandler extends MediaBaseHandler {
         resp.setStatus(Constant.StatusCode.NO_CONTENT);
         return false;
     }
-
-    private MomoResponse convertToMomoBidResponse(MediaBidMetaData mediaBidMetaData, MomoBidRequest momoBidRequest) {
+    //开屏
+    private MomoResponse convertToMomoBidResponse(MediaBidMetaData mediaBidMetaData, MomoBidRequest objType) {
         
         MomoResponse momoBidResponse = new MomoResponse();
         MomoResponse.Bid bid = momoBidResponse.new Bid(); 
@@ -443,7 +443,7 @@ public class MomoHandler extends MediaBaseHandler {
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         
         
-        bid.setImpid(momoBidRequest.getImp().get(0).getId());
+        bid.setImpid(objType.getImp().get(0).getId());
         bid.setCrid(mediaResponse.getCrid());
         bid.setClick_url(mediaResponse.getLpgurl());
         
@@ -456,13 +456,20 @@ public class MomoHandler extends MediaBaseHandler {
         bid.setImptrackers(impTrackers);
         bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
         
-        image.setUrl(mediaResponse.getAdm().get(0));
-        
-        if(mediaResponse.getAdm().get(0).contains(".gif")){
-            gif.setUrl(mediaResponse.getCover());
-        } else if(mediaResponse.getAdm().get(0).contains(".mp4")){
-            video.setUrl(mediaResponse.getCover());
+        String splashFormat = objType.getImp().get(0).getSplash_format();
+        if(splashFormat.equals("SPLASH_IMG")){
+            image.setUrl(mediaResponse.getAdm().get(0));
+        }else if(splashFormat.equals("SPLASH_GIF")){
+            image.setUrl(mediaResponse.getCover());
+            gif.setUrl(mediaResponse.getAdm().get(0));
+            bid.setGif(gif);
+        }else if(splashFormat.equals("SPLASH_VIDEO")){
+            image.setUrl(mediaResponse.getCover());
+            video.setUrl(mediaResponse.getAdm().get(0));
+            bid.setVideo(video);
         }
+        bid.setImage(image);
+        
         bidList.add(bid);
         momoBidResponse.setBid(bidList);
         momoBidResponse.setId(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
@@ -509,7 +516,7 @@ public class MomoHandler extends MediaBaseHandler {
         bidBuilder.setPrice(mediaRequest.getBidfloor());
         bidBuilder.setCid(mediaResponse.getCid());
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
-        bidBuilder.setCrid(mediaResponse.getCrid());  //物料id
+        bidBuilder.setCrid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
         bidBuilder.setNativeCreative(nativeCreativeBuilder);
         /**

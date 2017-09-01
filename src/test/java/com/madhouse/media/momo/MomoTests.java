@@ -13,7 +13,7 @@ import org.apache.http.util.EntityUtils;
 public class MomoTests {
     public static void main(String[] arg) {
         MomoExchange.BidRequest.Imp.Native.Builder nativeBuilder = MomoExchange.BidRequest.Imp.Native.newBuilder();
-        nativeBuilder.addNativeFormat(MomoExchange.NativeFormat.FEED_LANDING_PAGE_LARGE_IMG);
+        nativeBuilder.addNativeFormat(MomoExchange.NativeFormat.FEED_LANDING_PAGE_VIDEO);
 //        nativeBuilder.addNativeFormat(MomoExchange.NativeFormat.FEED_LANDING_PAGE_VIDEO);
 
         MomoExchange.BidRequest.Imp.Builder impBuilder = MomoExchange.BidRequest.Imp.newBuilder();
@@ -59,6 +59,7 @@ public class MomoTests {
 //      HttpPost request = new HttpPost("http://172.16.25.131:8080/adcall/momo/bidrequest");
         HttpPost request = new HttpPost("http://localhost:8181/adcall/momo/bidrequest");
         request.setEntity(new ByteArrayEntity(requestBuilder.build().toByteArray()));
+        request.setHeader("Content-Type", "application/x-protobuf");
 
         HttpClient client = HttpClients.createDefault();
         try {

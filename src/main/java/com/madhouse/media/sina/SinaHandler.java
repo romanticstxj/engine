@@ -82,9 +82,9 @@ public class SinaHandler extends MediaBaseHandler {
         if(null !=imp.getBanner()){
             mediaRequest.setW(imp.getBanner().getW());
             mediaRequest.setH(imp.getBanner().getH());
-            sb.append("banner");
+            sb.append(":banner");
         }else{
-             sb.append("feed");
+             sb.append(":feed");
         }
         
         //0—未知，1—Ethernet，2—wifi，3—蜂窝网络，未知代，4—蜂窝网络，2G，5—蜂窝网络，3G，6—蜂窝网络，4G。
@@ -172,6 +172,7 @@ public class SinaHandler extends MediaBaseHandler {
                 return null;
             }
         }
+        logger.info("Sina convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }
 
@@ -241,10 +242,11 @@ public class SinaHandler extends MediaBaseHandler {
         SinaResponse.Seatbid.Bid.Ext ext = bid.new Ext();
         
         ext.setLandingid(mediaResponse.getLpgurl());
+        List<String> list =new ArrayList<String>();
         for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
-            ext.getPm().add(track.getUrl());
+            list.add(track.getUrl());
         } 
-        
+        ext.setPm(list);
         ext.setCm(mediaResponse.getMonitorBuilder().getClkurl());
         
         bid.setExt(ext);
