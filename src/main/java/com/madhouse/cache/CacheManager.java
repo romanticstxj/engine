@@ -570,14 +570,18 @@ public class CacheManager implements Runnable {
                         return false;
                     }
 
-                    for (int hour : hours) {
-                        if (hour <= currentHour) {
-                            pastHours += 1;
+                    int start = 0;
+                    int end = hours.size();
+                    while (end - start > 1) {
+                        int mid = (start + end) / 2;
+                        if (hours.get(mid) <= currentHour) {
+                            start = mid;
                         } else {
-                            break;
+                            end = mid;
                         }
                     }
 
+                    pastHours = start + 1;
                     totalHours = hours.size();
                 }
 
