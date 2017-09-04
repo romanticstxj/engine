@@ -222,4 +222,10 @@ public final class Constant {
         public static final int PUBLIC_MARKETING = 0;
         public static final int PRIVATE_MARKETING = 1;
     }
+
+    public static final class AuditMode {
+        public static final int NONE = 0;
+        public static final int PLATFORM = 1;
+        public static final int MEDIA = 2;
+    }
 }

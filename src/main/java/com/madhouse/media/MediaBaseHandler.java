@@ -1,8 +1,10 @@
 package com.madhouse.media;
 
 import com.madhouse.cache.AuctionPriceInfo;
+import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 
+import com.madhouse.cache.MediaMetaData;
 import com.madhouse.configuration.Configuration;
 import com.madhouse.configuration.WebApp;
 import com.madhouse.resource.ResourceManager;
@@ -12,7 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
+import com.madhouse.util.ObjectUtils;
+import com.madhouse.util.StringUtil;
 import org.apache.logging.log4j.Logger;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by WUJUNFENG on 2017/5/23.
@@ -31,36 +38,76 @@ public abstract class MediaBaseHandler {
         return false;
     }
 
-    public final boolean packageResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp, DSPBid.Builder dspBid) {
+    public final boolean packageResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp, DSPBid.Builder dspBid, MaterialMetaData materialMetaData) {
         try {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            MediaMetaData mediaMetaData = mediaBidMetaData.getMediaMetaData();
 
             mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
             if (dspBid != null && dspBid.getStatus() == Constant.StatusCode.OK && dspBid.getRequestBuilder() != null) {
-                DSPResponse.Builder dspResponse = dspBid.getResponseBuilder();
-                MediaResponse.Builder mediaResponse = MediaResponse.newBuilder();
-                mediaResponse.setDspid(dspBid.getDspid());
-                mediaResponse.setCid(dspResponse.getCid());
-                mediaResponse.setCrid(dspResponse.getCrid());
-                mediaResponse.setLayout(dspBid.getRequestBuilder().getLayout());
-                mediaResponse.setTitle(dspResponse.getTitle());
-                mediaResponse.setDesc(dspResponse.getDesc());
-                mediaResponse.setContent(dspResponse.getContent());
-                mediaResponse.setIcon(dspResponse.getIcon());
-                mediaResponse.setCover(dspResponse.getCover());
-                mediaResponse.setAdm(dspResponse.getAdm());
-                mediaResponse.setDealid(dspResponse.getDealid());
-                mediaResponse.setDuration(dspResponse.getDuration());
-                mediaResponse.setLpgurl(dspResponse.getLpgurl());
-                mediaResponse.setActtype(dspResponse.getActtype());
-                mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitorBuilder()));
+                if (mediaMetaData.getMaterialAuditMode() == Constant.AuditMode.NONE || materialMetaData != null) {
+                    DSPResponse.Builder dspResponse = dspBid.getResponseBuilder();
+                    MediaResponse.Builder mediaResponse = MediaResponse.newBuilder();
+                    mediaResponse.setDspid(dspBid.getDspid());
+                    mediaResponse.setCid(dspResponse.getCid());
+                    mediaResponse.setCrid(dspResponse.getCrid());
+                    mediaResponse.setLayout(dspBid.getRequestBuilder().getLayout());
 
-                Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
-                monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl()));
-                monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl());
+                    if (mediaMetaData.getMaterialAuditMode() != Constant.AuditMode.NONE) {
+                        mediaResponse.setTitle(StringUtil.toString(materialMetaData.getTitle()));
+                        mediaResponse.setDesc(StringUtil.toString(materialMetaData.getDesc()));
+                        mediaResponse.setContent(StringUtil.toString(materialMetaData.getContent()));
+                        mediaResponse.setIcon(StringUtil.toString(materialMetaData.getIcon()));
+                        mediaResponse.setCover(StringUtil.toString(materialMetaData.getCover()));
+                        mediaResponse.setAdm(materialMetaData.getAdm());
+                        mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
+                        mediaResponse.setDuration(materialMetaData.getDuration());
+                        mediaResponse.setLpgurl(StringUtil.toString(materialMetaData.getLpgUrl()));
+                        mediaResponse.setActtype(materialMetaData.getActType());
 
-                mediaBid.setResponseBuilder(mediaResponse);
-                mediaBid.setStatus(Constant.StatusCode.OK);
+                        if (materialMetaData.getMonitor() != null) {
+                            Monitor.Builder monitor = Monitor.newBuilder();
+                            if (!ObjectUtils.isEmpty(materialMetaData.getMonitor().getImpUrls())) {
+                                List<Track> impUrls = new LinkedList<>();
+                                for (MaterialMetaData.Monitor.Track t : materialMetaData.getMonitor().getImpUrls()) {
+                                    impUrls.add(new Track(t.getStartDelay(), this.macroReplace(t.getUrl(), dspResponse.getMonitorBuilder().getExts())));
+                                }
+                                monitor.setImpurl(impUrls);
+                            }
+
+                            if (!ObjectUtils.isEmpty(materialMetaData.getMonitor().getClkUrls())) {
+                                List<String> clkUrls = new LinkedList<>();
+                                for (String clkUrl : materialMetaData.getMonitor().getClkUrls()) {
+                                    clkUrls.add(this.macroReplace(clkUrl, dspResponse.getMonitorBuilder().getExts()));
+                                }
+                                monitor.setClkurl(clkUrls);
+                            }
+
+                            if (!ObjectUtils.isEmpty(materialMetaData.getMonitor().getSecUrls())) {
+                                monitor.setSecurl(materialMetaData.getMonitor().getSecUrls());
+                            }
+                        }
+                    } else {
+                        mediaResponse.setTitle(dspResponse.getTitle());
+                        mediaResponse.setDesc(dspResponse.getDesc());
+                        mediaResponse.setContent(dspResponse.getContent());
+                        mediaResponse.setIcon(dspResponse.getIcon());
+                        mediaResponse.setCover(dspResponse.getCover());
+                        mediaResponse.setAdm(dspResponse.getAdm());
+                        mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
+                        mediaResponse.setDuration(dspResponse.getDuration());
+                        mediaResponse.setLpgurl(dspResponse.getLpgurl());
+                        mediaResponse.setActtype(dspResponse.getActtype());
+                        mediaResponse.setMonitorBuilder(Monitor.newBuilder(dspResponse.getMonitorBuilder()));
+                    }
+
+                    Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
+                    monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl()));
+                    monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl());
+
+                    mediaBid.setResponseBuilder(mediaResponse);
+                    mediaBid.setStatus(Constant.StatusCode.OK);
+                }
             }
 
             resp.setHeader("Connection", "keep-alive");
@@ -73,6 +120,17 @@ public abstract class MediaBaseHandler {
         }
 
         return false;
+    }
+
+    private String macroReplace(String url, List<String> exts) {
+        if (!ObjectUtils.isEmpty(exts)) {
+            String ext1 = exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "";
+            String ext2 = exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "";
+            String ext3 = exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "";
+            return url.replace("${EXT1}", ext1).replace("${EXT2}", ext2).replace("${EXT3}", ext3);
+        }
+
+        return url;
     }
 
     public abstract boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp);

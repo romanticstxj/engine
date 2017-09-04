@@ -311,6 +311,7 @@ public class WorkThread {
                 return;
             }
 
+            mediaBidMetaData.setMediaMetaData(mediaMetaData);
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
                 logger.warn("media or adspace is not allowed.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
@@ -496,7 +497,25 @@ public class WorkThread {
                             LoggerUtil.getInstance().writeBidLog(ResourceManager.getInstance().getKafkaProducer(), dspBidMetaData.getDspBidBuilder());
                         }
 
-                        mediaBaseHandler.packageResponse(mediaBidMetaData, resp, (winner != null) ? winner.getDspBidBuilder() : null);
+                        DSPBid.Builder dspBid = null;
+                        MaterialMetaData materialMetaData = null;
+
+                        if (winner != null) {
+                            dspBid = winner.getDspBidBuilder();
+                            if (mediaMetaData.getMaterialAuditMode() != Constant.AuditMode.NONE) {
+                                long dspId = winner.getDspMetaData().getId();
+                                long mediaId = mediaMetaData.getId();
+                                long adspaceId = plcmtMetaData.getId();
+                                String crid = winner.getDspBidBuilder().getResponseBuilder().getCrid();
+
+                                materialMetaData = CacheManager.getInstance().getMaterialMetaData(dspId, crid, mediaId, 0);
+                                if (materialMetaData == null) {
+                                    materialMetaData = CacheManager.getInstance().getMaterialMetaData(dspId, crid, mediaId, adspaceId);
+                                }
+                            }
+                        }
+
+                        mediaBaseHandler.packageResponse(mediaBidMetaData, resp, dspBid, materialMetaData);
                         return;
                     }
 
@@ -504,7 +523,7 @@ public class WorkThread {
                 }
             }
 
-            mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null);
+            mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
         } catch (Exception ex) {
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
             logger.error(ex.toString());

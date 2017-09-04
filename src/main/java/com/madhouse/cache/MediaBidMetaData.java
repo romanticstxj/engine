@@ -16,6 +16,7 @@ public class MediaBidMetaData {
     private Object requestObject;
     private MediaBid.Builder mediaBidBuilder;
     private TrackingParam trackingParam;
+    private MediaMetaData mediaMetaData;
 
     public Object getRequestObject() {
         return requestObject;
@@ -39,6 +40,14 @@ public class MediaBidMetaData {
 
     public void setTrackingParam(TrackingParam trackingParam) {
         this.trackingParam = trackingParam;
+    }
+
+    public MediaMetaData getMediaMetaData() {
+        return mediaMetaData;
+    }
+
+    public void setMediaMetaData(MediaMetaData mediaMetaData) {
+        this.mediaMetaData = mediaMetaData;
     }
 
     public String getImpressionTrackingUrl() {
