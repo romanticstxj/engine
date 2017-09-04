@@ -84,9 +84,8 @@ public abstract class MediaBaseHandler {
                                 monitor.setClkurl(clkUrls);
                             }
 
-                            if (!ObjectUtils.isEmpty(materialMetaData.getMonitor().getSecUrls())) {
-                                monitor.setSecurl(materialMetaData.getMonitor().getSecUrls());
-                            }
+                            monitor.setSecurl(materialMetaData.getMonitor().getSecUrls());
+                            monitor.setExts(dspResponse.getMonitorBuilder().getExts());
                         }
                     } else {
                         mediaResponse.setTitle(dspResponse.getTitle());

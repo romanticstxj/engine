@@ -492,11 +492,6 @@ public class WorkThread {
                             }
                         }
 
-                        for (Map.Entry entry : selectedDspList.entrySet()) {
-                            DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
-                            LoggerUtil.getInstance().writeBidLog(ResourceManager.getInstance().getKafkaProducer(), dspBidMetaData.getDspBidBuilder());
-                        }
-
                         DSPBid.Builder dspBid = null;
                         MaterialMetaData materialMetaData = null;
 
@@ -512,10 +507,21 @@ public class WorkThread {
                                 if (materialMetaData == null) {
                                     materialMetaData = CacheManager.getInstance().getMaterialMetaData(dspId, crid, mediaId, adspaceId);
                                 }
+
+                                if (materialMetaData == null) {
+                                    winner.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
+                                    logger.warn("material status error.");
+                                }
                             }
                         }
-
+                        
                         mediaBaseHandler.packageResponse(mediaBidMetaData, resp, dspBid, materialMetaData);
+
+                        for (Map.Entry entry : selectedDspList.entrySet()) {
+                            DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
+                            LoggerUtil.getInstance().writeBidLog(ResourceManager.getInstance().getKafkaProducer(), dspBidMetaData.getDspBidBuilder());
+                        }
+
                         return;
                     }
 
