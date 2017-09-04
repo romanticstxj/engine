@@ -59,6 +59,7 @@ public abstract class MediaBaseHandler {
                         mediaResponse.setContent(StringUtil.toString(materialMetaData.getContent()));
                         mediaResponse.setIcon(StringUtil.toString(materialMetaData.getIcon()));
                         mediaResponse.setCover(StringUtil.toString(materialMetaData.getCover()));
+                        mediaResponse.setContent(StringUtil.toString(materialMetaData.getContent()));
                         mediaResponse.setAdm(materialMetaData.getAdm());
                         mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
                         mediaResponse.setDuration(materialMetaData.getDuration());
@@ -93,6 +94,7 @@ public abstract class MediaBaseHandler {
                         mediaResponse.setContent(dspResponse.getContent());
                         mediaResponse.setIcon(dspResponse.getIcon());
                         mediaResponse.setCover(dspResponse.getCover());
+                        mediaResponse.setContent(dspResponse.getContent());
                         mediaResponse.setAdm(dspResponse.getAdm());
                         mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
                         mediaResponse.setDuration(dspResponse.getDuration());
