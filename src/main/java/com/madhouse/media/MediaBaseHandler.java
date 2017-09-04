@@ -52,6 +52,7 @@ public abstract class MediaBaseHandler {
                     mediaResponse.setCid(dspResponse.getCid());
                     mediaResponse.setCrid(dspResponse.getCrid());
                     mediaResponse.setLayout(dspBid.getRequestBuilder().getLayout());
+                    mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
 
                     if (mediaMetaData.getMaterialAuditMode() != Constant.AuditMode.NONE) {
                         mediaResponse.setTitle(StringUtil.toString(materialMetaData.getTitle()));
@@ -61,7 +62,6 @@ public abstract class MediaBaseHandler {
                         mediaResponse.setCover(StringUtil.toString(materialMetaData.getCover()));
                         mediaResponse.setContent(StringUtil.toString(materialMetaData.getContent()));
                         mediaResponse.setAdm(materialMetaData.getAdm());
-                        mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
                         mediaResponse.setDuration(materialMetaData.getDuration());
                         mediaResponse.setLpgurl(StringUtil.toString(materialMetaData.getLpgUrl()));
                         mediaResponse.setActtype(materialMetaData.getActType());
@@ -96,7 +96,6 @@ public abstract class MediaBaseHandler {
                         mediaResponse.setCover(dspResponse.getCover());
                         mediaResponse.setContent(dspResponse.getContent());
                         mediaResponse.setAdm(dspResponse.getAdm());
-                        mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
                         mediaResponse.setDuration(dspResponse.getDuration());
                         mediaResponse.setLpgurl(dspResponse.getLpgurl());
                         mediaResponse.setActtype(dspResponse.getActtype());
