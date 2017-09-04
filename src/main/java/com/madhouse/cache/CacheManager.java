@@ -407,7 +407,7 @@ public class CacheManager implements Runnable {
                 String totalCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                 String dailyCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
-                if (!this.policyQuantityControl(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount))) {
+                if (!this.policyBudgetControl(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount))) {
                     continue;
                 }
             }
@@ -540,7 +540,7 @@ public class CacheManager implements Runnable {
         this.blockedPolicy = blockedPolicy;
     }
 
-    public boolean policyQuantityControl(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
+    public boolean policyBudgetControl(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
         try {
             if (policyMetaData.getControlType() == Constant.PolicyControlType.NONE) {
                 return true;

@@ -441,7 +441,7 @@ public class WorkThread {
                             long totalCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                             long dailyCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
-                            if (!CacheManager.getInstance().policyQuantityControl(policyMetaData, totalCount, dailyCount)) {
+                            if (!CacheManager.getInstance().policyBudgetControl(policyMetaData, totalCount, dailyCount)) {
                                 CacheManager.getInstance().blockPolicy(policyMetaData.getId());
                             }
                         }
