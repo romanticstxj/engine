@@ -16,6 +16,9 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by WUJUNFENG on 2017/7/19.
  */
@@ -311,34 +314,38 @@ public class MADRTBHandler extends DSPBaseHandler {
                             Monitor.Builder monitor = Monitor.newBuilder();
                             dspResponse.setMonitorBuilder(monitor);
 
+                            monitor.setImpurl(new LinkedList<>());
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : bid.getMonitor().getImpurlList()) {
-                                Track.Builder var = Track.newBuilder();
-                                var.setStartdelay(track.getStartdelay());
-                                var.setUrl(track.getUrl());
-                                monitor.getImpurl().add(var.build());
+                                monitor.getImpurl().add(new Track(track.getStartdelay(), track.getUrl()));
                             }
 
+                            monitor.setClkurl(new LinkedList<>());
                             for (String url : bid.getMonitor().getClkurlList()) {
                                 monitor.getClkurl().add(url);
                             }
 
+                            monitor.setSecurl(new LinkedList<>());
                             for (String url : bid.getMonitor().getSecurlList()) {
                                 monitor.getSecurl().add(url);
                             }
 
-                            for (String url : bid.getMonitor().getExtsList()) {
-                                monitor.getExts().add(url);
+                            monitor.setExts(new LinkedList<>());
+                            for (String ext : bid.getMonitor().getExtsList()) {
+                                monitor.getExts().add(ext);
                             }
 
                             monitor.setExptime(bid.getMonitor().hasExptime() ? bid.getMonitor().getExptime() : 86400);
                         }
+
+                        dspResponse.setAdm(new LinkedList<>());
 
                         if (bid.getAdmCount() > 0) {
                             for (String url : bid.getAdmList()) {
                                 dspResponse.getAdm().add(url);
                             }
 
-                            dspResponse.setCover(bid.getCover());
+                            dspResponse.setIcon(StringUtil.toString(bid.getIcon()));
+                            dspResponse.setCover(StringUtil.toString(bid.getCover()));
                         } else {
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
                                 if (asset.hasTitle()) {
@@ -348,6 +355,11 @@ public class MADRTBHandler extends DSPBaseHandler {
 
                                 if (asset.hasDesc()) {
                                     dspResponse.setDesc(StringUtil.toString(asset.getDesc().getValue()));
+                                    continue;
+                                }
+
+                                if (asset.hasContent()) {
+                                    dspResponse.setContent(StringUtil.toString(asset.getContent().getValue()));
                                     continue;
                                 }
 
