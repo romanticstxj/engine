@@ -281,6 +281,10 @@ public class MADRTBHandler extends DSPBaseHandler {
                 int status = httpResponse.getStatusLine().getStatusCode();
                 if (status != Constant.StatusCode.OK) {
                     dspBid.setStatus(status);
+                    if (status != Constant.StatusCode.NO_CONTENT) {
+                        dspBid.setStatus(Constant.StatusCode.BAD_REQUEST);
+                    }
+
                     return false;
                 }
 
@@ -372,12 +376,18 @@ public class MADRTBHandler extends DSPBaseHandler {
                                 if (asset.hasImage()) {
                                     switch (asset.getImage().getType()) {
                                         case Constant.NativeImageType.ICON: {
-                                            dspResponse.setIcon(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            if (asset.getImage().getUrlCount() > 0) {
+                                                dspResponse.setIcon(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            }
+
                                             break;
                                         }
 
                                         case Constant.NativeImageType.COVER: {
-                                            dspResponse.setCover(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            if (asset.getImage().getUrlCount() > 0) {
+                                                dspResponse.setCover(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            }
+
                                             break;
                                         }
 
