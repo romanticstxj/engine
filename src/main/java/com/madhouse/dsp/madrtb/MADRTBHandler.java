@@ -202,10 +202,20 @@ public class MADRTBHandler extends DSPBaseHandler {
                     if (var1.getDesc() > 0) {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder desc = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
-                        desc.setType(Constant.NativeDescType.DESC);
+                        desc.setType(Constant.NativeDataType.NORMAL);
                         desc.setLen(var1.getDesc());
                         asset.setId(Integer.toString(id++));
                         asset.setDesc(desc);
+                        nativeRequest.addAssets(asset);
+                    }
+
+                    if (var1.getContent() > 0) {
+                        PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
+                        PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder content = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
+                        content.setType(Constant.NativeDataType.NORMAL);
+                        content.setLen(var1.getContent());
+                        asset.setId(Integer.toString(id++));
+                        asset.setContent(content);
                         nativeRequest.addAssets(asset);
                     }
 
@@ -213,8 +223,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                         PlcmtMetaData.Video var2 = var1.getVideo();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Video.Builder video = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Video.newBuilder();
-                        video.setW(var2.getW());
-                        video.setH(var2.getH());
+                        video.setW(mediaRequest.getW());
+                        video.setH(mediaRequest.getH());
                         video.addAllMimes(var2.getMimes());
                         video.setMinduration(var2.getMinDuraion());
                         video.setMaxduration(var2.getMaxDuration());
@@ -226,8 +236,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.MAIN);
-                        image.setW(var2.getW());
-                        image.setH(var2.getH());
+                        image.setW(mediaRequest.getW());
+                        image.setH(mediaRequest.getH());
                         image.addAllMimes(var2.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setImage(image);
