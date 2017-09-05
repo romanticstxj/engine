@@ -16,6 +16,9 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by WUJUNFENG on 2017/7/19.
  */
@@ -202,10 +205,20 @@ public class MADRTBHandler extends DSPBaseHandler {
                     if (var1.getDesc() > 0) {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder desc = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
-                        desc.setType(Constant.NativeDescType.DESC);
+                        desc.setType(Constant.NativeDataType.NORMAL);
                         desc.setLen(var1.getDesc());
                         asset.setId(Integer.toString(id++));
                         asset.setDesc(desc);
+                        nativeRequest.addAssets(asset);
+                    }
+
+                    if (var1.getContent() > 0) {
+                        PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
+                        PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.Builder content = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Data.newBuilder();
+                        content.setType(Constant.NativeDataType.NORMAL);
+                        content.setLen(var1.getContent());
+                        asset.setId(Integer.toString(id++));
+                        asset.setContent(content);
                         nativeRequest.addAssets(asset);
                     }
 
@@ -213,8 +226,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                         PlcmtMetaData.Video var2 = var1.getVideo();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Video.Builder video = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Video.newBuilder();
-                        video.setW(var2.getW());
-                        video.setH(var2.getH());
+                        video.setW(mediaRequest.getW());
+                        video.setH(mediaRequest.getH());
                         video.addAllMimes(var2.getMimes());
                         video.setMinduration(var2.getMinDuraion());
                         video.setMaxduration(var2.getMaxDuration());
@@ -226,8 +239,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.MAIN);
-                        image.setW(var2.getW());
-                        image.setH(var2.getH());
+                        image.setW(mediaRequest.getW());
+                        image.setH(mediaRequest.getH());
                         image.addAllMimes(var2.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setImage(image);
@@ -268,6 +281,10 @@ public class MADRTBHandler extends DSPBaseHandler {
                 int status = httpResponse.getStatusLine().getStatusCode();
                 if (status != Constant.StatusCode.OK) {
                     dspBid.setStatus(status);
+                    if (status != Constant.StatusCode.NO_CONTENT) {
+                        dspBid.setStatus(Constant.StatusCode.BAD_REQUEST);
+                    }
+
                     return false;
                 }
 
@@ -301,34 +318,38 @@ public class MADRTBHandler extends DSPBaseHandler {
                             Monitor.Builder monitor = Monitor.newBuilder();
                             dspResponse.setMonitorBuilder(monitor);
 
+                            monitor.setImpurl(new LinkedList<>());
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.Monitor.Track track : bid.getMonitor().getImpurlList()) {
-                                Track.Builder var = Track.newBuilder();
-                                var.setStartdelay(track.getStartdelay());
-                                var.setUrl(track.getUrl());
-                                monitor.getImpurl().add(var.build());
+                                monitor.getImpurl().add(new Track(track.getStartdelay(), track.getUrl()));
                             }
 
+                            monitor.setClkurl(new LinkedList<>());
                             for (String url : bid.getMonitor().getClkurlList()) {
                                 monitor.getClkurl().add(url);
                             }
 
+                            monitor.setSecurl(new LinkedList<>());
                             for (String url : bid.getMonitor().getSecurlList()) {
                                 monitor.getSecurl().add(url);
                             }
 
-                            for (String url : bid.getMonitor().getExtsList()) {
-                                monitor.getExts().add(url);
+                            monitor.setExts(new LinkedList<>());
+                            for (String ext : bid.getMonitor().getExtsList()) {
+                                monitor.getExts().add(ext);
                             }
 
                             monitor.setExptime(bid.getMonitor().hasExptime() ? bid.getMonitor().getExptime() : 86400);
                         }
+
+                        dspResponse.setAdm(new LinkedList<>());
 
                         if (bid.getAdmCount() > 0) {
                             for (String url : bid.getAdmList()) {
                                 dspResponse.getAdm().add(url);
                             }
 
-                            dspResponse.setCover(bid.getCover());
+                            dspResponse.setIcon(StringUtil.toString(bid.getIcon()));
+                            dspResponse.setCover(StringUtil.toString(bid.getCover()));
                         } else {
                             for (PremiumMADRTBProtocol.BidResponse.SeatBid.Bid.NativeResponse.Asset asset : bid.getAdmNative().getAssetsList()) {
                                 if (asset.hasTitle()) {
@@ -341,6 +362,11 @@ public class MADRTBHandler extends DSPBaseHandler {
                                     continue;
                                 }
 
+                                if (asset.hasContent()) {
+                                    dspResponse.setContent(StringUtil.toString(asset.getContent().getValue()));
+                                    continue;
+                                }
+
                                 if (asset.hasVideo()) {
                                     dspResponse.getAdm().add(StringUtil.toString(asset.getVideo().getUrl()));
                                     dspResponse.setDuration(asset.getVideo().getDuration());
@@ -350,12 +376,18 @@ public class MADRTBHandler extends DSPBaseHandler {
                                 if (asset.hasImage()) {
                                     switch (asset.getImage().getType()) {
                                         case Constant.NativeImageType.ICON: {
-                                            dspResponse.setIcon(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            if (asset.getImage().getUrlCount() > 0) {
+                                                dspResponse.setIcon(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            }
+
                                             break;
                                         }
 
                                         case Constant.NativeImageType.COVER: {
-                                            dspResponse.setCover(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            if (asset.getImage().getUrlCount() > 0) {
+                                                dspResponse.setCover(StringUtil.toString(asset.getImage().getUrl(0)));
+                                            }
+
                                             break;
                                         }
 

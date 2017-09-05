@@ -104,8 +104,8 @@ public final class Constant {
         public static final int COVER = 3;
     }
 
-    public static final class NativeDescType {
-        public static final int DESC = 1;
+    public static final class NativeDataType {
+        public static final int NORMAL = 1;
     }
 
     public static final class NBR {
