@@ -348,6 +348,7 @@ public class WorkThread {
             MediaBidMetaData.TrackingParam trackingParam = new MediaBidMetaData.TrackingParam();
             mediaBidMetaData.setTrackingParam(trackingParam);
 
+            trackingParam.setReqId(StringUtil.toString(mediaRequest.getBid()));
             trackingParam.setImpId(mediaBid.getImpid());
             trackingParam.setMediaId(plcmtMetaData.getMediaId());
             trackingParam.setAdspaceId(plcmtMetaData.getId());

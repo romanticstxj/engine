@@ -79,6 +79,7 @@ public class MediaBidMetaData {
     }
 
     public static class TrackingParam {
+        private String reqId;
         private String impId;
         private long mediaId;
         private long adspaceId;
@@ -89,6 +90,14 @@ public class MediaBidMetaData {
         private AuctionPriceInfo dspCost;
         private long bidTime;
         private String trackingParams = null;
+
+        public String getReqId() {
+            return reqId;
+        }
+
+        public void setReqId(String reqId) {
+            this.reqId = reqId;
+        }
 
         public String getImpId() {
             return impId;
@@ -188,7 +197,10 @@ public class MediaBidMetaData {
                 crc32.update(sb.toString().getBytes("utf-8"));
                 long sign = crc32.getValue();
 
-                sb = new StringBuilder().append("_impid=")
+                sb = new StringBuilder()
+                        .append("_bid=")
+                        .append(getReqId())
+                        .append("&_impid=")
                         .append(getImpId())
                         .append("&_mid=")
                         .append(getMediaId())
