@@ -21,6 +21,7 @@ import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.momo.MomoBidRequest.Device;
 import com.madhouse.media.momo.MomoBidRequest.Impression;
+import com.madhouse.media.momo.MomoBidRequest.Impression.Campaign;
 import com.madhouse.media.momo.MomoExchange.BidRequest;
 import com.madhouse.media.momo.MomoExchange.BidResponse;
 import com.madhouse.media.momo.MomoExchange.BidResponse.SeatBid.Bid.NativeCreative;
@@ -146,15 +147,19 @@ public class MomoHandler extends MediaBaseHandler {
         String os = device.getOs();//"1"为iOS,"2"为安卓
         if(os.equals(MomoStatusCode.Os.OS_IOS)){//ios
             mediaRequest.setOs(Constant.OSType.IOS);
-            mediaRequest.setDid(device.getDid());
-            mediaRequest.setDidmd5(device.getDidmd5());
+            mediaRequest.setIfa(device.getDid());
         }else if(os.equals(os.equals(MomoStatusCode.Os.OS_ANDROID))){//安卓
             mediaRequest.setOs(Constant.OSType.ANDROID);
-            mediaRequest.setIfa(device.getDid());
+            mediaRequest.setDid(device.getDid());
+            mediaRequest.setDidmd5(device.getDidmd5());
         }
         //"WIFI" "CELL_UNKNOWN
         String connection = device.getConnection_type();
-        
+        Campaign campaign = imp.getCampaign();
+        if(campaign != null){
+            String campaignId = campaign.getCampaign_id();
+            mediaRequest.setDealid(campaignId);
+        }
         if(!StringUtils.isEmpty(connection) && connection.equals(MomoStatusCode.ConnectionType.WIFI)){
             mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
         }else{
@@ -197,7 +202,7 @@ public class MomoHandler extends MediaBaseHandler {
             }
         }
         
-        logger.info("Momorequest convert mediaRequest is : {}", mediaRequest.toString());
+        logger.info("Momorequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }
     
