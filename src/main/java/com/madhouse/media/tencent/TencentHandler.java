@@ -59,17 +59,7 @@ public class TencentHandler extends MediaBaseHandler {
         sb.append("TENC:");
         String TencAdspaceId = bidRequest.getImpression(0).getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
         sb.append(TencAdspaceId).append(":");
-        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
-        if (mappingMetaData != null) {
-            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-        } else { 
-            mappingMetaData = CacheManager.getInstance().getMediaMapping("TENC:0:");
-            if(mappingMetaData != null){
-                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-            }else{
-                return null;
-            }
-        }
+        
         mediaRequest.setBid(bidRequest.getId());
         
         Integer w = null;
@@ -88,6 +78,7 @@ public class TencentHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(os)) {
             if(os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)){
                 mediaRequest.setOs(Constant.OSType.IOS);
+                sb.append("ios");
                 if(TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()){
                     mediaRequest.setIfa(device.getIdfa());
                 }
@@ -95,6 +86,7 @@ public class TencentHandler extends MediaBaseHandler {
                     mediaRequest.setDpid(device.getOpenudid());
                 }
             }else{
+                sb.append("android");
                 mediaRequest.setOs(Constant.OSType.ANDROID);
                 if(!device.hasImei()){
                     mediaRequest.setDidmd5(device.getImei());
@@ -148,6 +140,10 @@ public class TencentHandler extends MediaBaseHandler {
         }else{
             mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
         }
+        String dealId =impression.getDealid();
+        if(!StringUtils.isEmpty(dealId)){
+            mediaRequest.setDealid(dealId);
+        }
         if (!device.hasOsv()) {
             mediaRequest.setOsv(device.getOs());
         }
@@ -178,7 +174,19 @@ public class TencentHandler extends MediaBaseHandler {
                 mediaRequest.setGeoBuilder(geo);
             }
         }
-
+        
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (mappingMetaData != null) {
+            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+        } else { 
+            mappingMetaData = CacheManager.getInstance().getMediaMapping("TENC:0:");
+            if(mappingMetaData != null){
+                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
+            }else{
+                return null;
+            }
+        }
+        mediaRequest.setAdtype(2);
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest;
     }
@@ -193,27 +201,20 @@ public class TencentHandler extends MediaBaseHandler {
             Impression impression =bidRequest.getImpression(0);
             if(ObjectUtils.isNotEmpty(impression)){
                 if(impression.hasBanner()){
-                    logger.debug("{}:Tencent.bidRequest.impression.Banner is missing",id);
-                    return Constant.StatusCode.BAD_REQUEST;
-                }else if(impression.hasVideo()){
-                    logger.debug("{}:Tencent.bidRequest.impression.Video is missing",id);
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                if(!impression.hasBanner()){
-                    if(impression.getBanner().hasWidth()){
+                    if(!impression.getBanner().hasWidth()){
                         logger.debug("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
-                    if(impression.getBanner().hasWidth()){
+                    if(!impression.getBanner().hasWidth()){
                         logger.debug("{}:Tencent.bidRequest.impression.Video.H is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
-                }else if(!impression.hasVideo()){
-                    if(impression.getVideo().hasWidth()){
+                }else if(impression.hasVideo()){
+                    if(!impression.getVideo().hasWidth()){
                         logger.debug("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
-                    if(impression.getVideo().hasHeight()){
+                    if(!impression.getVideo().hasHeight()){
                         logger.debug("{}:Tencent.bidRequest.impression.Video.H is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
@@ -222,11 +223,11 @@ public class TencentHandler extends MediaBaseHandler {
                 logger.debug("{}:Tencent.bidRequest.impression is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            if(bidRequest.hasDevice()){
+            if(!bidRequest.hasDevice()){
                 logger.debug("{}:Tencent.bidRequest.Device is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            if(bidRequest.hasApp()){
+            if(!bidRequest.hasApp()){
                 logger.debug("{}:Tencent.bidRequest.App is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
@@ -273,7 +274,7 @@ public class TencentHandler extends MediaBaseHandler {
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
-            bidResponseBuilder.setAdid(mediaResponse.getCrid());
+            bidResponseBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid(): "");
             if (mediaResponse.getMonitorBuilder() != null && mediaResponse.getMonitorBuilder().getImpurl() != null && mediaResponse.getMonitorBuilder().getImpurl().size() > 0) {
                 if (mediaResponse.getMonitorBuilder().getImpurl().size() >= 2) {
                     bidResponseBuilder.setExt2(mediaResponse.getMonitorBuilder().getImpurl().get(0).getUrl());//设置为dsp的监测

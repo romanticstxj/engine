@@ -89,6 +89,10 @@ public class SohuHandler extends MediaBaseHandler {
             mediaRequest.setW(impression.getVideo().getWidth());
             mediaRequest.setH(impression.getVideo().getHeight());
         }
+        String campaignId = impression.getCampaignId();
+        if(!StringUtils.isEmpty(campaignId)){
+            mediaRequest.setDealid(campaignId);
+        }
         String ip = device.getIp();
         if (!StringUtils.isEmpty(ip)) {
             mediaRequest.setIp(ip);
@@ -100,6 +104,9 @@ public class SohuHandler extends MediaBaseHandler {
         mediaRequest.setAdtype(2);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        
+        
+        
         //网络类型(不区分大小写)：2G，3G，4G，WIFI 
         switch (device.getNetType()) {
             case SohuStatusCode.ConnectionType._2G:
@@ -159,7 +166,8 @@ public class SohuHandler extends MediaBaseHandler {
             mediaRequest.setDpid(openUDID);
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("SH:").append(bidRequest.getImpression(0).getPid()).append(":").append(SohuStatusCode.Os.ANDROID);
+        sb.append("SOHU:").append(bidRequest.getImpression(0).getPid()).append(":").append(SohuStatusCode.Os.ANDROID);
+        sb.append(":w:"+mediaRequest.getW()+":h:"+mediaRequest.getH());;
         MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
@@ -213,24 +221,24 @@ public class SohuHandler extends MediaBaseHandler {
         List<Track> tracks= mediaResponse.getMonitorBuilder().getImpurl();
         if (tracks != null && tracks.size() > 0) {
             if (tracks.size() >= 2) {
-                bidBuilder.setDisplayPara(tracks.get(0).getUrl());
+                bidBuilder.setDisplayPara(tracks.get(tracks.size()-1).getUrl());//取最后一个（exchange自己的监播）
             }
-            bidBuilder.setExt1(tracks.get(tracks.size() - 1).getUrl());//取最后一个（exchange自己的建波）
+            bidBuilder.setExt1(tracks.get(tracks.size() - 1).getUrl());//madmax的展示监播
         }
         
         //如果有落地页就取值，如果没有，判断thclkurl的大小，如果size=2，第一条设置为ClickMonitor，第二条设置为ext2，；如果size=1，则只设置为ext2的值
         List<String> list = mediaResponse.getMonitorBuilder().getClkurl();
         if (list != null) {
             if (mediaResponse.getLpgurl() != null && mediaResponse.getLpgurl() != "") {
-                bidBuilder.setClickPara(mediaResponse.getLpgurl());//落地页地址
+                bidBuilder.setExt2(list.get(list.size() - 1));//落地页地址
             } else {
                 if (list.size() >=2){
-                    bidBuilder.setClickPara(list.get(0));
+                    bidBuilder.setExt2(list.get(0));
                 }
             }
             
             if (list.size() >= 0) {
-                bidBuilder.setExt2(list.get(list.size() - 1));
+                bidBuilder.setClickPara(mediaResponse.getLpgurl());
             }
         }
         seatBuilder.addBid(bidBuilder);
