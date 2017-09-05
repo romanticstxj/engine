@@ -37,6 +37,7 @@ public class SohuTests {
         device.setCarrier("0");
         device.setNetType("2G");
         device.setMobileType("iphone");
+        device.setImei("imei0001");
         requestBuild.setDevice(device);
         
         SohuRTB.Request.Site.Builder site = SohuRTB.Request.Site.newBuilder();
@@ -48,20 +49,22 @@ public class SohuTests {
         
         SohuRTB.Request.Impression.Banner.Builder banner = SohuRTB.Request.Impression.Banner.newBuilder();
         banner.addMimes(1);
-        banner.setWidth(228);
-        banner.setHeight(150);
+        banner.setWidth(320);
+        banner.setHeight(480);
         banner.setTemplate("25");
         
         
         SohuRTB.Request.Impression.Builder imp = SohuRTB.Request.Impression.newBuilder();
         imp.setIdx(1);
-        imp.setPid("12355");
+        //SOHU:12224:android:w:320:h:480640 960
+        imp.setPid("12224");
         imp.setBidFloor(1400);
         imp.setIsPreferredDeals(true);
         imp.setCampaignId("20170607");
         imp.setLineId("700DF305C5B69149");
         imp.addAcceptAdvertisingType("1010000");
         imp.addAcceptAdvertisingType("102100");
+        imp.setCampaignId("20170609");
         imp.setBanner(banner);
         requestBuild.addImpression(imp);
         
