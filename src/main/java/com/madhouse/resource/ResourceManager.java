@@ -70,12 +70,12 @@ public class ResourceManager {
 
             {
                 Redis.Config config = this.configuration.getRedis().getMaster();
-                this.jedisPoolMaster = new JedisPool(poolConfig, config.getHost(), config.getPort());
+                this.jedisPoolMaster = new JedisPool(poolConfig, config.getHost(), config.getPort(), 2000, StringUtils.isEmpty(config.getPasswd()) ? null : config.getPasswd(), config.getDb());
             }
 
             {
                 Redis.Config config = this.configuration.getRedis().getSlave();
-                this.jedisPoolSlave = new JedisPool(poolConfig, config.getHost(), config.getPort());
+                this.jedisPoolSlave = new JedisPool(poolConfig, config.getHost(), config.getPort(), 2000, StringUtils.isEmpty(config.getPasswd()) ? null : config.getPasswd(), config.getDb());
             }
         }
 

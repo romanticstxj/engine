@@ -249,7 +249,6 @@ public class CacheManager implements Runnable {
                 if (!StringUtils.isEmpty(text)) {
                     MediaMetaData mediaMetaData = JSON.parseObject(text, MediaMetaData.class);
                     var.put(mediaMetaData.getId(), mediaMetaData);
-
                 }
             }
         }
