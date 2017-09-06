@@ -97,7 +97,7 @@ public class VamakerHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(mac)) {
             mediaRequest.setMacmd5(mac);
         }
-        
+        mediaRequest.setAdtype(2);
         mediaRequest.setW(mobile.getWidth());
         mediaRequest.setH(mobile.getHeight());
         mediaRequest.setBidfloor(mobile.getBidfloor());
@@ -135,6 +135,7 @@ public class VamakerHandler extends MediaBaseHandler {
             return null;
         }
         logger.info("Vamakerrequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
+        mediaRequest.build();
         return mediaRequest;
     }
 
@@ -213,7 +214,7 @@ public class VamakerHandler extends MediaBaseHandler {
         
         
         bidResposeBuilder.setId(bidRequest.getId());
-        bidBuilder.setCrid(mediaResponse.getCrid());
+        bidBuilder.setCrid(StringUtil.toString(mediaResponse.getCrid()));
         bidBuilder.setPrice(bidRequest.getVamMobile().getBidfloor());
         
         
@@ -233,7 +234,7 @@ public class VamakerHandler extends MediaBaseHandler {
         }
         bidBuilder.setMobileBidding(mobileBuilder);
         bidResposeBuilder.addBid(bidBuilder);
-        logger.info("VamaKer Response params is : {}", JSON.toJSONString(bidResposeBuilder));
+        logger.info("VamaKer Response params is : {}", bidResposeBuilder.toString());
         return bidResposeBuilder;
     }
     
