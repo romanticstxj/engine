@@ -12,9 +12,9 @@ public final class TencentStatusCode {
         public static final int MD5 = 1;
     }
     public static final class Carrier   {
-        public static final int CHINA_MOBILE  = 46001;
-        public static final int  CHINA_UNICOM  = 46002;
-        public static final int  CHINA_TELECOM = 46003;
+        public static final int CHINA_MOBILE  = 46000;
+        public static final int CHINA_UNICOM  = 46001;
+        public static final int CHINA_TELECOM = 46003;
     }
     ////连接类型，0：未知; 1：以太网; 2：Wifi; 3：移动数据-未知; 4：2G; 5：3G; 6：4G
     public static final class ConnectionType{
