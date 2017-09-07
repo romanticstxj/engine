@@ -228,4 +228,10 @@ public final class Constant {
         public static final int PLATFORM = 1;
         public static final int MEDIA = 2;
     }
+
+    public static final class GeoType {
+        public static final int WGS84 = 0;
+        public static final int GCJ02 = 1;
+        public static final int BD09 = 2;
+    }
 }

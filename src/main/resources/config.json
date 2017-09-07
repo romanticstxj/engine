@@ -1,6 +1,7 @@
 {
     "webapp": {
         "domain": "http://172.16.25.47:8181",
+        "resourcePath": "home",
         "port": 8181,
         "wokerId": 10,
         "minIdle": 10,

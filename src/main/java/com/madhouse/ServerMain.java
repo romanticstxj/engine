@@ -3,6 +3,8 @@ package com.madhouse;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.util.Utility;
 import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 
 import com.madhouse.configuration.Bid;
@@ -13,6 +15,7 @@ import com.madhouse.ssp.ClickServlet;
 import com.madhouse.ssp.ImpressionServlet;
 import com.madhouse.util.httpserver.HttpServer;
 import com.madhouse.util.httpserver.ServletHandler;
+import org.eclipse.jetty.util.resource.Resource;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,12 +48,18 @@ public class ServerMain {
 			httpServer.insertHandler(gzipHandler);
 		}
 
-		if (httpServer.start(webApp.getPort())) {
-			try {
+		try {
+			ResourceHandler resourceHandler = new ResourceHandler();
+			ContextHandler contextHandler = new ContextHandler("/");
+			contextHandler.setBaseResource(Resource.newResource(webApp.getResourcePath()));
+			contextHandler.setHandler(resourceHandler);
+			httpServer.insertHandler(contextHandler);
+
+			if (httpServer.start(webApp.getPort())) {
 				httpServer.join();
-			} catch (Exception ex) {
-				System.out.println(ex.toString());
 			}
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
 		}
 	}
 }

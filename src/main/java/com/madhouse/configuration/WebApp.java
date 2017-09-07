@@ -4,24 +4,25 @@ import java.util.List;
 
 public class WebApp {
 	private String domain;
-
 	private String impression;
-
 	private String click;
-
 	private int wokerId;
-
 	private int port;
-
 	private Boolean gZipOn;
-
 	private List<Bid> bids;
-
 	private int expiredTime;
-
+	private String resourcePath;
 	private int minIdle;
 	private int maxIdle;
 	private int maxTotal;
+
+	public String getResourcePath() {
+		return resourcePath;
+	}
+
+	public void setResourcePath(String resourcePath) {
+		this.resourcePath = resourcePath;
+	}
 
 	public int getMinIdle() {
 		return minIdle;
