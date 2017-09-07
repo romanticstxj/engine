@@ -1,7 +1,7 @@
 {
     "webapp": {
-        "domain": "http://172.16.25.47:8181",
-        "resourcePath": "html/",
+        "domain": "@domain@",
+        "resourcePath": "../html",
         "port": 8181,
         "wokerId": 10,
         "minIdle": 10,
@@ -57,7 +57,7 @@
         "click": "/adcall/click"
     },
     "kafka": {
-        "brokers": "172.16.25.27:9092,172.16.25.28:9092,172.16.25.29:9092",
+        "brokers": "@brokers@",
         "topics": [{
                 "type": "KAFKA_MEDIA_BID",
                 "topic": "topic_mediabid"
@@ -82,14 +82,14 @@
         "maxTotal": 30,
         "slave": {
             "passwd": "",
-            "host": "172.16.25.26",
-            "port": 6379,
+            "host": "@slavehost@",
+            "port": @slaveport@,
             "db": 0
         },
         "master": {
             "passwd": "",
-            "host": "172.16.25.26",
-            "port": 6379,
+            "host": "@masterhost@",
+            "port": @masterport@,
             "db": 0
         }
     }
