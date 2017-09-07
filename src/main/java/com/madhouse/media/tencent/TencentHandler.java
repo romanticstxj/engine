@@ -21,6 +21,7 @@ import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.util.ObjectUtils;
+import com.madhouse.util.StringUtil;
 
 public class TencentHandler extends MediaBaseHandler {
     
@@ -39,11 +40,13 @@ public class TencentHandler extends MediaBaseHandler {
                     return true;
                 }
             }
-            resp.setStatus(Constant.StatusCode.NO_CONTENT);
+            GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData,status,bidRequest.getId());
+            outputStreamWrite(resp, bidResponse);
+            resp.setStatus(Constant.StatusCode.OK);
             return false;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
-            resp.setStatus(Constant.StatusCode.NO_CONTENT);
+            resp.setStatus(Constant.StatusCode.OK);
             return false;
         }
     }
@@ -239,38 +242,44 @@ public class TencentHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
+            GPBForDSP.Response.Builder bidResponse = GPBForDSP.Response.newBuilder();
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    GPBForDSP.Response bidResponse = convertToTencentResponse(mediaBidMetaData);
-                    if(null != bidResponse){
-                        resp.setContentType("application/octet-stream;charset=UTF-8");
-                        resp.getOutputStream().write(bidResponse.toByteArray());
-                        resp.setStatus(Constant.StatusCode.OK);
-                        return true;
-                    }
+                    bidResponse = convertToTencentResponse(mediaBidMetaData,mediaBid.getStatus(),null);
                 } else {
-                    resp.setStatus(mediaBid.getStatus());
-                    return false;
+                    bidResponse = convertToTencentResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,mediaBid.getRequest().getBid());
                 }
-            } 
+            }
+            outputStreamWrite(resp, bidResponse);
+            return true;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        resp.setStatus(Constant.StatusCode.NO_CONTENT);
-        return false;
+    }
+    
+    private boolean outputStreamWrite(HttpServletResponse resp, GPBForDSP.Response.Builder bidResponse)  {
+        try {
+            resp.setContentType("application/octet-stream;charset=UTF-8");
+            resp.getOutputStream().write(bidResponse.build().toByteArray());
+        } catch (Exception e) {
+            logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
+            return false;
+        }
+        logger.debug("Tencent outputStreamWrite is:{}",bidResponse.toString());
+        return true;
     }
 
-    private Response convertToTencentResponse(MediaBidMetaData mediaBidMetaData) {
+    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData,int status,String requestId) {
         GPBForDSP.Response.Builder responseBuiler = GPBForDSP.Response.newBuilder();
-        GPBForDSP.Response.SeatBid.Builder seatBuilder =GPBForDSP.Response.SeatBid.newBuilder();
-        
-        GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
-        Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        if(null != mediaResponse){
-            responseBuiler.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        responseBuiler.setId(StringUtil.toString(requestId));
+        if(Constant.StatusCode.OK == status){
+            GPBForDSP.Response.SeatBid.Builder seatBuilder =GPBForDSP.Response.SeatBid.newBuilder();
+            GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
+            Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+            responseBuiler.setId(StringUtil.toString(mediaBidMetaData.getMediaBidBuilder().getImpid()));
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
@@ -297,11 +306,9 @@ public class TencentHandler extends MediaBaseHandler {
             }
             seatBuilder.addBid(bidResponseBuilder);//与request中的impression对应，可以对多个impression回复参与竞价，也可以对其中一部分回复参与竞价
             responseBuiler.addSeatbid(seatBuilder);
-            logger.info("Tencent Response params is : {}", responseBuiler.toString());
-        }else{
-            return null;
+            
         }
-        return responseBuiler.build();
+        return responseBuiler;
     }
     
 }
