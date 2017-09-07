@@ -279,7 +279,7 @@ public class TencentHandler extends MediaBaseHandler {
             GPBForDSP.Response.SeatBid.Builder seatBuilder =GPBForDSP.Response.SeatBid.newBuilder();
             GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
             Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-            responseBuiler.setId(StringUtil.toString(mediaBidMetaData.getMediaBidBuilder().getImpid()));
+            responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
