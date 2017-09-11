@@ -305,6 +305,7 @@ public class MADRTBHandler extends DSPBaseHandler {
                         dspResponse.setAdid(StringUtil.toString(bid.getAdid()));
                         dspResponse.setCid(StringUtil.toString(bid.getCid()));
                         dspResponse.setCrid(StringUtil.toString(bid.getCrid()));
+                        dspResponse.setBrand(StringUtil.toString(bid.getBrand()));
                         dspResponse.setIcon(StringUtil.toString(bid.getIcon()));
                         dspResponse.setCover(StringUtil.toString(bid.getCover()));
                         dspResponse.setPrice(bid.getPrice());

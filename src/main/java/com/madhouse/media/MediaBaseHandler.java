@@ -55,6 +55,7 @@ public abstract class MediaBaseHandler {
                     mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
 
                     if (mediaMetaData.getMaterialAuditMode() != Constant.AuditMode.NONE) {
+                        mediaResponse.setBrand(StringUtil.toString(materialMetaData.getBrand()));
                         mediaResponse.setTitle(StringUtil.toString(materialMetaData.getTitle()));
                         mediaResponse.setDesc(StringUtil.toString(materialMetaData.getDesc()));
                         mediaResponse.setContent(StringUtil.toString(materialMetaData.getContent()));
@@ -88,6 +89,7 @@ public abstract class MediaBaseHandler {
                             monitor.setExts(dspResponse.getMonitorBuilder().getExts());
                         }
                     } else {
+                        mediaResponse.setBrand(dspResponse.getBrand());
                         mediaResponse.setTitle(dspResponse.getTitle());
                         mediaResponse.setDesc(dspResponse.getDesc());
                         mediaResponse.setContent(dspResponse.getContent());

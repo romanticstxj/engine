@@ -257,6 +257,10 @@
 							"name": "crid",
 							"default": null
 						}, {
+							"type": ["null", "string"],
+							"name": "brand",
+							"default": null
+						}, {
 							"type": "int",
 							"name": "layout",
 							"default": 0
@@ -569,6 +573,10 @@
 						"default": null
 					}, {
 						"name": "crid",
+						"type": ["null", "string"],
+						"default": null
+					},  {
+						"name": "brand",
 						"type": ["null", "string"],
 						"default": null
 					}, {
