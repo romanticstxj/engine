@@ -31,6 +31,7 @@ public class SohuHandler extends MediaBaseHandler {
         
         try {
             SohuRTB.Request bidRequest = SohuRTB.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
+            logger.info("Sohu Request params is : {}", bidRequest.toString());
             int status =  validateRequiredParam(bidRequest);
             if(status == Constant.StatusCode.OK){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
@@ -51,24 +52,24 @@ public class SohuHandler extends MediaBaseHandler {
     private int validateRequiredParam(Request bidRequest) {
         
         if (ObjectUtils.isEmpty(bidRequest)) {
-            logger.debug("bidRequest is missing");
+            logger.warn("bidRequest is missing");
             return Constant.StatusCode.BAD_REQUEST;
         }
         String bid = bidRequest.getBidid();
         if (StringUtils.isEmpty(bid)) {
-            logger.debug("bid is missing");
+            logger.warn("bid is missing");
             return Constant.StatusCode.BAD_REQUEST;
         }
         if (ObjectUtils.isEmpty(bidRequest.getImpression(0))) {
-            logger.debug("{},bidRequest.Impression is missing",bid);
+            logger.warn("{},bidRequest.Impression is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
         if (ObjectUtils.isEmpty(bidRequest.getImpression(0).getPid())) {
-            logger.debug("{},bidRequest.Impression.pid is missing",bid);
+            logger.warn("{},bidRequest.Impression.pid is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
         if (ObjectUtils.isEmpty(bidRequest.getDevice())) {
-            logger.debug("{},bidRequest.Device is missing",bid);
+            logger.warn("{},bidRequest.Device is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
         return Constant.StatusCode.OK;
@@ -243,6 +244,7 @@ public class SohuHandler extends MediaBaseHandler {
         }
         seatBuilder.addBid(bidBuilder);
         bidResponseBuiler.addSeatbid(seatBuilder);
+        logger.info("sohu Response params is : {}", bidResponseBuiler.toString());
         return bidResponseBuiler;
     }
     

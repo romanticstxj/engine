@@ -1,7 +1,4 @@
 package com.madhouse.media.momo;
-
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,9 +27,6 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
-
-
-
 public class MomoHandler extends MediaBaseHandler {
     
     @Override
@@ -84,47 +78,47 @@ public class MomoHandler extends MediaBaseHandler {
         if (ObjectUtils.isNotEmpty(bidRequest)) {
             String id = bidRequest.getId();
             if (null == id){
-                logger.debug("MomoBidRequest.id is null");
+                logger.warn("MomoBidRequest.id is null");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             
             if(null == bidRequest.getVersion()){
-                logger.debug("{}:MomoBidRequest.Version is null",id);
+                logger.warn("{}:MomoBidRequest.Version is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             
             if(null == bidRequest.getImp() && bidRequest.getImp().size()==0){
-                logger.debug("{}:MomoBidRequest.Imp is null",id);
+                logger.warn("{}:MomoBidRequest.Imp is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }else{
                  MomoBidRequest.Impression imp = bidRequest.getImp().get(0);
                  if (ObjectUtils.isEmpty(imp)) {
-                     logger.debug("{}:MomoBidRequest.Imp is null",id);
+                     logger.warn("{}:MomoBidRequest.Imp is null",id);
                      return Constant.StatusCode.BAD_REQUEST;
                  }
                  if (StringUtils.isEmpty(imp.getId())) {
-                     logger.debug("{}:MomoBidRequest.Imp.id is null",id);
+                     logger.warn("{}:MomoBidRequest.Imp.id is null",id);
                      return Constant.StatusCode.BAD_REQUEST;
                  }
                  if (StringUtils.isEmpty(imp.getSplash_format())) {
-                     logger.debug("{}:MomoBidRequest.Imp.Splash_format is null",id);
+                     logger.warn("{}:MomoBidRequest.Imp.Splash_format is null",id);
                      return Constant.StatusCode.BAD_REQUEST;
                  }
                  if(null == imp.getCampaign()){
-                     logger.debug("{}:MomoBidRequest.Imp.campaign is null",id);
+                     logger.warn("{}:MomoBidRequest.Imp.campaign is null",id);
                      return Constant.StatusCode.BAD_REQUEST;
                  }else{
                      MomoBidRequest.Impression.Campaign campaign = imp.getCampaign();
                      if(null == campaign.getCampaign_id()){
-                         logger.debug("{}:MomoBidRequest.Imp.campaign.id is null",id);
+                         logger.warn("{}:MomoBidRequest.Imp.campaign.id is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
                      if(null == campaign.getCampaign_begin_date()){
-                         logger.debug("{}:MomoBidRequest.Imp.campaign.begin_date is null",id);
+                         logger.warn("{}:MomoBidRequest.Imp.campaign.begin_date is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
                      if(null == campaign.getCampaign_end_date()){
-                         logger.debug("{}:MomoBidRequest.Imp.campaign.end_date is null",id);
+                         logger.warn("{}:MomoBidRequest.Imp.campaign.end_date is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
                  }
@@ -331,14 +325,14 @@ public class MomoHandler extends MediaBaseHandler {
              *  陌陌请求的唯一ID标识
              */
             if (StringUtils.isEmpty(bidRequest.getId())) {
-                logger.debug("MomoExchange.bidRequest.id is missing");
+                logger.warn("MomoExchange.bidRequest.id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             /**
              *  陌陌请求协议版本
              */
             if (StringUtils.isEmpty(bidRequest.getVersion())) {
-                logger.debug("MomoExchange.bidRequest.version is missing");
+                logger.warn("MomoExchange.bidRequest.version is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             /**
@@ -346,16 +340,16 @@ public class MomoHandler extends MediaBaseHandler {
              * */
             List<MomoExchange.BidRequest.Imp> impList = bidRequest.getImpList();
             if (impList == null || impList.size() < 1) {
-                logger.debug("MomoExchange.bidRequest.Imp is missing");
+                logger.warn("MomoExchange.bidRequest.Imp is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             MomoExchange.BidRequest.Imp imp = impList.get(0);
             if(StringUtils.isEmpty(imp.getId())){
-                logger.debug("MomoExchange.bidRequest.Imp[0].id is missing");
+                logger.warn("MomoExchange.bidRequest.Imp[0].id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if(ObjectUtils.isEmpty(imp.getNative())){
-                logger.debug("MomoExchange.bidRequest.Imp[0].Native is missing");
+                logger.warn("MomoExchange.bidRequest.Imp[0].Native is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }else{
                MomoExchange.BidRequest.Imp.Native aNative =  imp.getNative();
@@ -364,23 +358,23 @@ public class MomoHandler extends MediaBaseHandler {
                    !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())&&
                    !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())&&
                    !aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){
-                   logger.debug("MomoExchange.bidRequest.Imp[0].Native is [img,video] is missing");
+                   logger.warn("MomoExchange.bidRequest.Imp[0].Native is [img,video] is missing");
                    return Constant.StatusCode.BAD_REQUEST;
                }
             }
             if(StringUtils.isEmpty(imp.getSlotid())){
-                logger.debug("MomoExchange.bidRequest.Imp[0].Slotidis missing");
+                logger.warn("MomoExchange.bidRequest.Imp[0].Slotidis missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }else{
                 String campainType = getCampainType(imp.getNative());
                 if(StringUtils.isEmpty(campainType)){
-                    logger.debug("MomoExchange.bidRequest.Imp[0].Native.Type is missing");
+                    logger.warn("MomoExchange.bidRequest.Imp[0].Native.Type is missing");
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             }
             MomoExchange.BidRequest.Device device =  bidRequest.getDevice();
             if(ObjectUtils.isEmpty(device)){
-                logger.debug("MomoExchange.bidRequest.Device is missing");
+                logger.warn("MomoExchange.bidRequest.Device is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;
@@ -508,6 +502,7 @@ public class MomoHandler extends MediaBaseHandler {
         momoBidResponse.setBid(bidList);
         momoBidResponse.setId(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
         
+        logger.info("MoMO Response params is : {}", JSON.toJSONString(momoBidResponse));
         return momoBidResponse;
     }
 

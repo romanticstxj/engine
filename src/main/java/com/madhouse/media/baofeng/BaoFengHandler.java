@@ -75,7 +75,7 @@ public class BaoFengHandler extends MediaBaseHandler {
                         resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(baoFengResponse).getBytes("utf-8"));
                         resp.setStatus(Constant.StatusCode.OK);
-                        logger.debug("_Status_" + Constant.StatusCode.OK);
+                        logger.info("_Status_" + Constant.StatusCode.OK);
                         return true;
                     }
                 } catch (Exception e) {
@@ -177,51 +177,51 @@ public class BaoFengHandler extends MediaBaseHandler {
                 // 验证app
                 BaoFengBidRequest.App app = baoFengBidRequest.getApp();
                 if (ObjectUtils.isEmpty(app)) {
-                    logger.debug("{}:app is null",id);
+                    logger.warn("{}:app is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
 
                 if (StringUtils.isEmpty(app.getId())) {
-                    logger.debug("{}:app or appid is null",id);
+                    logger.warn("{}:app or appid is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 
                 // 验证Impression对象
                 BaoFengBidRequest.Impression imp = baoFengBidRequest.getImp();
                 if (ObjectUtils.isEmpty(imp)) {
-                    logger.debug("{}:imp or impid,H,W is null",id);
+                    logger.warn("{}:imp or impid,H,W is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (StringUtils.isEmpty(imp.getId())) {
-                    logger.debug("{}:imp or impid is null",id);
+                    logger.warn("{}:imp or impid is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (0 == imp.getW()) {
-                    logger.debug("{}:imp or W is null",id);
+                    logger.warn("{}:imp or W is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (0 == imp.getH()) {
-                    logger.debug("{}:imp or H is null",id);
+                    logger.warn("{}:imp or H is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 
                 // 验证Device对象
                 BaoFengBidRequest.Device device = baoFengBidRequest.getDevice();
                 if (ObjectUtils.isEmpty(device)) {
-                    logger.debug("{},device or deviceid,dpid is null",id);
+                    logger.warn("{},device or deviceid,dpid is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (StringUtils.isEmpty(device.getId())) {
-                    logger.debug("{},device or deviceid is null",id);
+                    logger.warn("{},device or deviceid is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (StringUtils.isEmpty(device.getDpid())) {
-                    logger.debug("{},device or dpid is null",id);
+                    logger.warn("{},device or dpid is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 return Constant.StatusCode.OK;
             }
-            logger.debug("baoFengBidRequest.id is null");
+            logger.warn("baoFengBidRequest.id is null");
         }
         return Constant.StatusCode.BAD_REQUEST;
     }

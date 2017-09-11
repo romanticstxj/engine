@@ -30,7 +30,7 @@ public class TencentHandler extends MediaBaseHandler {
         
         try {
             GPBForDSP.Request bidRequest = GPBForDSP.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("TencentBidRequest Request params is : {}",bidRequest.toString());
+            logger.info("Tencent Request params is : {}",bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
@@ -202,40 +202,40 @@ public class TencentHandler extends MediaBaseHandler {
         if (ObjectUtils.isNotEmpty(bidRequest)) {
             String id = bidRequest.getId();
             if (StringUtils.isEmpty(id)) {
-                logger.debug("Tencent.bidRequest.id is missing");
+                logger.warn("Tencent.bidRequest.id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             Impression impression =bidRequest.getImpression(0);
             if(ObjectUtils.isNotEmpty(impression)){
                 if(impression.hasBanner()){
                     if(!impression.getBanner().hasWidth()){
-                        logger.debug("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
+                        logger.warn("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                     if(!impression.getBanner().hasWidth()){
-                        logger.debug("{}:Tencent.bidRequest.impression.Video.H is missing",id);
+                        logger.warn("{}:Tencent.bidRequest.impression.Video.H is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                 }else if(impression.hasVideo()){
                     if(!impression.getVideo().hasWidth()){
-                        logger.debug("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
+                        logger.warn("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                     if(!impression.getVideo().hasHeight()){
-                        logger.debug("{}:Tencent.bidRequest.impression.Video.H is missing",id);
+                        logger.warn("{}:Tencent.bidRequest.impression.Video.H is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                 }
             }else{
-                logger.debug("{}:Tencent.bidRequest.impression is missing",id);
+                logger.warn("{}:Tencent.bidRequest.impression is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if(!bidRequest.hasDevice()){
-                logger.debug("{}:Tencent.bidRequest.Device is missing",id);
+                logger.warn("{}:Tencent.bidRequest.Device is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if(!bidRequest.hasApp()){
-                logger.debug("{}:Tencent.bidRequest.App is missing",id);
+                logger.warn("{}:Tencent.bidRequest.App is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;
@@ -272,7 +272,7 @@ public class TencentHandler extends MediaBaseHandler {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        logger.debug("Tencent outputStreamWrite is:{}",bidResponse.toString());
+        logger.info("Tencent outputStreamWrite is:{}",bidResponse.toString());
         return true;
     }
 
@@ -280,7 +280,7 @@ public class TencentHandler extends MediaBaseHandler {
         GPBForDSP.Response.Builder responseBuiler = GPBForDSP.Response.newBuilder();
         responseBuiler.setId(StringUtil.toString(requestId));
         if(Constant.StatusCode.OK == status){
-            GPBForDSP.Response.SeatBid.Builder seatBuilder =GPBForDSP.Response.SeatBid.newBuilder();
+            GPBForDSP.Response.SeatBid.Builder seatBuilder = GPBForDSP.Response.SeatBid.newBuilder();
             GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
             Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             responseBuiler.setId(StringUtil.toString(bidRequest.getId()));

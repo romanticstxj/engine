@@ -67,37 +67,37 @@ public class XiaoMiHandler extends MediaBaseHandler {
         if (ObjectUtils.isNotEmpty(bidRequest)) {
             String id = bidRequest.getId();
             if (StringUtils.isEmpty(id)) {
-                logger.debug("bidRequest.id is missing");
+                logger.warn("bidRequest.id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (bidRequest.getImp() == null || bidRequest.getImp().length == 0) {
-                logger.debug("{},bidRequest.Imp is missing",id);
+                logger.warn("{},bidRequest.Imp is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             Imp imp = bidRequest.getImp()[0];
     
             Integer admtype = imp.getAdmtype();
             if (admtype == null || admtype != 2) {//只支持json
-                logger.debug("{},bidRequest.Imp.admtype is missing",id);
+                logger.warn("{},bidRequest.Imp.admtype is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
            
             if (StringUtils.isEmpty(imp.getId())) {
-                logger.debug("{},bidRequest.Imp.id is missing",id);
+                logger.warn("{},bidRequest.Imp.id is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(imp.getTagid())) {
-                logger.debug("{},bidRequest.Imp.Tagid is missing",id);
+                logger.warn("{},bidRequest.Imp.Tagid is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (ObjectUtils.isEmpty(imp.getBanner()) && ObjectUtils.isEmpty(imp.getNativead()) && ObjectUtils.isEmpty(imp.getSplash())) {
-                logger.debug("{},bidRequest.Imp.Banner, Imp.Nativead,Imp.Splash is missing",id);
+                logger.warn("{},bidRequest.Imp.Banner, Imp.Nativead,Imp.Splash is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             if (imp.getNativead() != null) {
                 if (imp.getNativead().getRequest() == null) {
-                    logger.debug("{},bidRequest.Imp.Nativead.Request is missing",id);
+                    logger.warn("{},bidRequest.Imp.Nativead.Request is missing",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             }
@@ -107,20 +107,20 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 AdTemplate adTemplate = adTemplates[0];
                 if (adTemplate != null) {
                     if (StringUtils.isEmpty(adTemplate.getId())) {
-                        logger.debug("{},bidRequest.Imp.adTemplates.id is missing",id);
+                        logger.warn("{},bidRequest.Imp.adTemplates.id is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                     if (adTemplate.getWidth() == null){
-                        logger.debug("{},bidRequest.Imp.adTemplates.Width is missing",id);
+                        logger.warn("{},bidRequest.Imp.adTemplates.Width is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                     if (adTemplate.getHeight() == null){
-                        logger.debug("{},bidRequest.Imp.adTemplates.Height is missing",id);
+                        logger.warn("{},bidRequest.Imp.adTemplates.Height is missing",id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                 }
             } else {
-                logger.debug("{},bidRequest.Imp.adTemplates is missing",id);
+                logger.warn("{},bidRequest.Imp.adTemplates is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;

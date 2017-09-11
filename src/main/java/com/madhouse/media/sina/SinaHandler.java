@@ -181,24 +181,24 @@ public class SinaHandler extends MediaBaseHandler {
             String id = sinaBidRequest.getId();
             if (StringUtils.isNotEmpty(id)) {
                 if (ObjectUtils.isEmpty(sinaBidRequest.getDevice())) {
-                    logger.debug("sinaBidRequest.Device is null");
+                    logger.warn("sinaBidRequest.Device is null");
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (ObjectUtils.isEmpty(sinaBidRequest.getDevice().getOs())) {
-                    logger.debug("{}:sinaBidRequest.Device.os is null",id);
+                    logger.warn("{}:sinaBidRequest.Device.os is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (ObjectUtils.isEmpty(sinaBidRequest.getImp().get(0))) {
-                    logger.debug("sinaBidRequest.Imp[0] is null");
+                    logger.warn("sinaBidRequest.Imp[0] is null");
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (ObjectUtils.isEmpty(sinaBidRequest.getApp())) {
-                    logger.debug("sinaBidRequest.App is null");
+                    logger.warn("sinaBidRequest.App is null");
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 return Constant.StatusCode.OK;
             }
-            logger.debug("baoFengBidRequest.id is null");
+            logger.warn("baoFengBidRequest.id is null");
         }
         return Constant.StatusCode.BAD_REQUEST;
     }
@@ -214,7 +214,7 @@ public class SinaHandler extends MediaBaseHandler {
                         resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(result).getBytes("utf-8"));
                         resp.setStatus(Constant.StatusCode.OK);
-                        logger.debug("_Status_" + Constant.StatusCode.OK);
+                        logger.warn("_Status_" + Constant.StatusCode.OK);
                         return true;
                     }
                 } else {
@@ -269,7 +269,7 @@ public class SinaHandler extends MediaBaseHandler {
         response.setId(sinaRequest.getId());
         response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
         response.setSeatbid(seatbids);
-
+        logger.info("MoMO Response params is : {}", JSON.toJSONString(response));
         return response;
     }
     

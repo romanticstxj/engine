@@ -243,52 +243,52 @@ public class ToutiaoHandler extends MediaBaseHandler {
     private int validateRequiredParam(TOUTIAOAds.BidRequest bidRequest) {
         if (ObjectUtils.isNotEmpty(bidRequest)) {
             if (StringUtils.isEmpty(bidRequest.getRequestId())) {
-                logger.debug("RequestId is missing" );
+                logger.warn("RequestId is missing" );
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(bidRequest.getApiVersion())) {
-                logger.debug("{}:ApiVersion is missing",bidRequest.getRequestId());
+                logger.warn("{}:ApiVersion is missing",bidRequest.getRequestId());
                 return Constant.StatusCode.BAD_REQUEST;
             }
 
             //不支持多条广告位的请求
             if (bidRequest.getAdslotsCount() != 1) {
-                logger.debug("{}:AdslotsCount is size",bidRequest.getRequestId());
+                logger.warn("{}:AdslotsCount is size",bidRequest.getRequestId());
                 return Constant.StatusCode.BAD_REQUEST;
             } else {
                 TOUTIAOAds.AdSlot adSlot = bidRequest.getAdslots(0);
                 if (StringUtils.isEmpty(adSlot.getId())) {
-                    logger.debug("{}:adSlot.id is missing",bidRequest.getRequestId());
+                    logger.warn("{}:adSlot.id is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (adSlot.getBannerCount() != 1) {
-                    logger.debug("{}:adSlot.banner is missing",bidRequest.getRequestId());
+                    logger.warn("{}:adSlot.banner is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (adSlot.getAdTypeCount() == 0) {
-                    logger.debug("{}:adSlot.AdType is missing",bidRequest.getRequestId());
+                    logger.warn("{}:adSlot.AdType is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 //TODO AdSlot 对象的PMP的Deals对象集合 未判断DEAL.id的值不能为空
                 TOUTIAOAds.Pmp.Deal deal = adSlot.getPmp().getDeals(0);
                 if (deal == null) {
-                    logger.debug("{}:Pmp.Deal is missing",bidRequest.getRequestId());
+                    logger.warn("{}:Pmp.Deal is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 TOUTIAOAds.AdSlot.Banner banner = adSlot.getBanner(0);
 
                 //广告位的尺寸，向第三方请求必填的参数
                 if (banner.getHeight() < 0) {
-                    logger.debug("{}:adSlot.Banner.Height is missing",bidRequest.getRequestId());
+                    logger.warn("{}:adSlot.Banner.Height is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (banner.getWidth() < 0) {
-                    logger.debug("{}:adSlot.Banner.Width is missing",bidRequest.getRequestId());
+                    logger.warn("{}:adSlot.Banner.Width is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
 
                 }
                 if (banner.getPos() == null) {
-                    logger.debug("{}:AdSlot.Banner.Pos is missing",bidRequest.getRequestId());
+                    logger.warn("{}:AdSlot.Banner.Pos is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
 
                 }
@@ -296,18 +296,18 @@ public class ToutiaoHandler extends MediaBaseHandler {
 
             TOUTIAOAds.App app = bidRequest.getApp();
             if (ObjectUtils.isEmpty(app)) {
-                logger.debug("{}:App is missing",bidRequest.getRequestId());
+                logger.warn("{}:App is missing",bidRequest.getRequestId());
                 return Constant.StatusCode.BAD_REQUEST;
             } else {
                 if (StringUtils.isEmpty(app.getId())) {
-                    logger.debug("{}:App.id is missing",bidRequest.getRequestId());
+                    logger.warn("{}:App.id is missing",bidRequest.getRequestId());
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             }
 
             TOUTIAOAds.Device device = bidRequest.getDevice();
             if (ObjectUtils.isEmpty(device)) {
-                logger.debug("{}:App is missing",bidRequest.getRequestId());
+                logger.warn("{}:App is missing",bidRequest.getRequestId());
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;
@@ -352,7 +352,6 @@ public class ToutiaoHandler extends MediaBaseHandler {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        logger.debug(builder.toString());
         return true;
     }
     private TOUTIAOAds.BidResponse.Builder convertToutiaoResponse(TOUTIAOAds.BidRequest bidRequest,Builder builder,MediaBidMetaData mediaBidMetaData,int code) {

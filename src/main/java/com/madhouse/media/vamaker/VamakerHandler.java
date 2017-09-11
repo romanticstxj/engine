@@ -28,7 +28,7 @@ public class VamakerHandler extends MediaBaseHandler {
         
         try {
             VamakerRTB.VamRequest bidRequest = VamakerRTB.VamRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("VamakerBidRequest Request params is : {}",bidRequest.toString());
+            logger.info("Vamaker Request params is : {}",bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
@@ -143,12 +143,12 @@ public class VamakerHandler extends MediaBaseHandler {
         if(ObjectUtils.isNotEmpty(bidRequest)){
             String id = bidRequest.getId();
             if(StringUtils.isEmpty(id)){
-                logger.debug("VamakerRTB.id is missing");
+                logger.warn("VamakerRTB.id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             VamakerRTB.VamRequest.Mobile vamMobile = bidRequest.getVamMobile();
             if (ObjectUtils.isEmpty(vamMobile)) {
-                logger.debug("{},VamakerRTB.VamMobile is missing",id);
+                logger.warn("{},VamakerRTB.VamMobile is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }  
             //0-其他,1-android，2-ios
@@ -158,20 +158,20 @@ public class VamakerHandler extends MediaBaseHandler {
                 String imei = vamMobile.getImei();
                 String aid = vamMobile.getAid();
                 if (StringUtils.isEmpty(imei) && StringUtils.isEmpty(aid)) {
-                    logger.debug("{},VamakerRTB.VamMobile:imei,aid is missing",id);
+                    logger.warn("{},VamakerRTB.VamMobile:imei,aid is missing",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 break;
             case VamakerStatusCode.Os.IOS:
                 String idfa = vamMobile.getIDFA();
                 if (StringUtils.isEmpty(idfa)) {
-                    logger.debug("{},VamakerRTB.VamMobile.idfa is missing",id);
+                    logger.warn("{},VamakerRTB.VamMobile.idfa is missing",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 break;
             }
             if (vamMobile.getAdspaceId() <= 0) {
-                logger.debug("{},VamakerRTB.VamMobile.AdspaceId is missing",id);
+                logger.warn("{},VamakerRTB.VamMobile.AdspaceId is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;

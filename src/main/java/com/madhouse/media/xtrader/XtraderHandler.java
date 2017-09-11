@@ -178,27 +178,27 @@ public class XtraderHandler extends MediaBaseHandler {
         if(ObjectUtils.isNotEmpty(xtraderBidRequest)){
             String id = xtraderBidRequest.getId();
             if(StringUtils.isEmpty(id)){
-                logger.debug("{}:xtraderBidRequest.id is null",id);
+                logger.warn("{}:xtraderBidRequest.id is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             XtraderBidRequest.App app = xtraderBidRequest.getApp();
             if(ObjectUtils.isEmpty(app)){
-                logger.debug("{}:xtraderBidRequest.app is null",id);
+                logger.warn("{}:xtraderBidRequest.app is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             
             XtraderBidRequest.Device device = xtraderBidRequest.getDevice();
             if(ObjectUtils.isEmpty(device)){
-                logger.debug("{}:xtraderBidRequest.device is null",id);
+                logger.warn("{}:xtraderBidRequest.device is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if(StringUtils.isEmpty(device.getOs()) && XtraderStatusCode.Os.OS_ANDROID != device.getOs() && XtraderStatusCode.Os.OS_IOS != device.getOs()){
-                logger.debug("{}:xtraderBidRequest.device.id is null",id);
+                logger.warn("{}:xtraderBidRequest.device.id is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             XtraderBidRequest.Imp imp = xtraderBidRequest.getImp().get(0);
             if(ObjectUtils.isEmpty(imp)){
-                logger.debug("{}:xtraderBidRequest.imp is null",id);
+                logger.warn("{}:xtraderBidRequest.imp is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;
@@ -263,6 +263,7 @@ public class XtraderHandler extends MediaBaseHandler {
         response.setId(xtraderRequest.getId());
         response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
         response.setSeatbid(seatbids);
+        logger.info("Xtrader Response params is : {}", response.toString());
         return response;
     }
     

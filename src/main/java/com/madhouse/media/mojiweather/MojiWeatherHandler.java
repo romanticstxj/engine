@@ -126,91 +126,91 @@ public class MojiWeatherHandler extends MediaBaseHandler {
              */
             String adid = mojiWeatherBidRequest.getAdid();
             if (StringUtils.isEmpty(adid)) {
-                logger.debug("adid is missing");
+                logger.warn("adid is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getSessionid())) {
-                logger.debug("{}:Sessionid is missing", adid);
+                logger.warn("{}:Sessionid is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (mojiWeatherBidRequest.getAdtype() == null || "" == mojiWeatherBidRequest.getAdtype().toString()) {
-                logger.debug("{}:Adtype is missing", adid);
+                logger.warn("{}:Adtype is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             } else if (mojiWeatherBidRequest.getAdtype() < 1 || mojiWeatherBidRequest.getAdtype() > 3) {
-                logger.debug("{}:Adtype content is missing", adid);
+                logger.warn("{}:Adtype content is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (mojiWeatherBidRequest.getTradelevel() == null) {
-                logger.debug("{}:Tradelevel is missing", adid);
+                logger.warn("{}:Tradelevel is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             } else if (mojiWeatherBidRequest.getTradelevel() < 1 || mojiWeatherBidRequest.getTradelevel() > 3) {
-                logger.debug("{}:Tradelevel content is missing", adid);
+                logger.warn("{}:Tradelevel content is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getPkgname())) {
-                logger.debug("{}:Pkgname is missing", adid);
+                logger.warn("{}:Pkgname is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getAppname())) {
-                logger.debug("{}:Appname is missing", adid);
+                logger.warn("{}:Appname is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (mojiWeatherBidRequest.getNet() == null) {
-                logger.debug("{}:Net is missing", adid);
+                logger.warn("{}:Net is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             } else if (mojiWeatherBidRequest.getNet() < 0 || mojiWeatherBidRequest.getNet() > 4) {
-                logger.debug("{}:Net content is missing", adid);
+                logger.warn("{}:Net content is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             
             if (mojiWeatherBidRequest.getCarrier() == null) {
-                logger.debug("{}:Carrier is missing", adid);
+                logger.warn("{}:Carrier is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             } else if (mojiWeatherBidRequest.getCarrier() < 0 || mojiWeatherBidRequest.getCarrier() > 3) {
-                logger.debug("{}:Carrier content is missing", adid);
+                logger.warn("{}:Carrier content is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getOs())) {
-                logger.debug("{}:Os is missing", adid);
+                logger.warn("{}:Os is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getOsv())) {
-                logger.debug("{}:Osv is missing", adid);
+                logger.warn("{}:Osv is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (mojiWeatherBidRequest.getBasic_price() == null) {
-                logger.debug("{}:Basic_price is missing", adid);
+                logger.warn("{}:Basic_price is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getDevice())) {
-                logger.debug("{}:Device is missing", adid);
+                logger.warn("{}:Device is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getIp())) {
-                logger.debug("{}:Ip is missing", adid);
+                logger.warn("{}:Ip is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             if (mojiWeatherBidRequest.getAdtype() == 3) {
                 if (mojiWeatherBidRequest.getScrwidth() == 0) {
-                    logger.debug("{}:Adtype_3 Scrwidth is missing", adid);
+                    logger.warn("{}:Adtype_3 Scrwidth is missing", adid);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (mojiWeatherBidRequest.getScrheight() == 0) {
-                    logger.debug("{}:Adtype_3 Scrheight is missing", adid);
+                    logger.warn("{}:Adtype_3 Scrheight is missing", adid);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             } else {
                 if (mojiWeatherBidRequest.getAdstyle() == null) {
-                    logger.debug("{}:Adstyle is missing", adid);
+                    logger.warn("{}:Adstyle is missing", adid);
                     return Constant.StatusCode.BAD_REQUEST;
                 } else if (!MojiWeatherADStyle.contains(mojiWeatherBidRequest.getAdstyle())) {
-                    logger.debug("{}:Adstyle content is missing", adid);
+                    logger.warn("{}:Adstyle content is missing", adid);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             }
             if(!StringUtils.isEmpty(mojiWeatherBidRequest.getFeed_Support_Types())){
                 if (!hasFeedType(mojiWeatherBidRequest.getFeed_Support_Types())) {
-                    logger.debug("{}:Feed_Support_Types content is missing", adid);
+                    logger.warn("{}:Feed_Support_Types content is missing", adid);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             }
@@ -270,7 +270,6 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        logger.debug("outputStreamWrite is:{}",moWeatherResponse.toString());
         return true;
     }
     private MojiWeatherResponse convertToMojiWeatherResponse(int status, MediaBidMetaData mediaBidMetaData, MojiWeatherBidRequest moWeatherRequest) {
