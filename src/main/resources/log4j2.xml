@@ -3,7 +3,7 @@
 <!-- status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出 monitorInterval 
 	设置间隔秒数。. 日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > 
 	ALL : Log4j能够自动检测修改配置文件和重新配置本身, -->
-<Configuration status="INFO">
+<Configuration status="WARN">
 	<Properties>
 		<Property name="LOG_HOME">/services/logs/engine</Property>
 	</Properties>
@@ -98,14 +98,12 @@
 		
 	</Appenders>
 	<loggers>
-		<!-- <Root level="info">
-			<appender-ref ref="Console" />
-		</Root>	 -->	
-		<Logger name="premiummad" additivity="false" level="INFO">
-			<appender-ref ref="Console" />
+		<Root level="INFO">
+            <AppenderRef ref="Console" />
+        </Root>	
+		<Logger name="premiummad" additivity="false" level="INFO" >
 			<appender-ref ref="premiummad" />
 		</Logger>
-		
 		<Logger name="topic_mediabid" additivity="false" level="all">
 			<appender-ref ref="topic_mediabid" />
 		</Logger>
