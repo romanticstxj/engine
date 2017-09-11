@@ -3,7 +3,7 @@
 <!-- status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出 monitorInterval 
 	设置间隔秒数。. 日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > 
 	ALL : Log4j能够自动检测修改配置文件和重新配置本身, -->
-<Configuration status="TRACE">
+<Configuration status="INFO">
 	<Properties>
 		<Property name="LOG_HOME">/services/logs/engine</Property>
 	</Properties>
@@ -34,6 +34,7 @@
 			<Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
+            <DefaultRolloverStrategy max="168" />
 		</RollingRandomAccessFile>
 		<!-- 媒体 -->
 		<RollingRandomAccessFile name="topic_mediabid"
@@ -56,6 +57,7 @@
 			<Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
+            <DefaultRolloverStrategy max="168" />
 		</RollingRandomAccessFile>
 		<!-- winnotice -->
 		<RollingRandomAccessFile name="topic_winnotice"
@@ -67,6 +69,7 @@
 			<Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
+            <DefaultRolloverStrategy max="168" />
 		</RollingRandomAccessFile>
 		<!-- impression -->
 		<RollingRandomAccessFile name="topic_impression"
@@ -78,6 +81,7 @@
 			<Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
+            <DefaultRolloverStrategy max="168" />
 		</RollingRandomAccessFile>
 		<!-- click -->
 		<RollingRandomAccessFile name="topic_click"
@@ -89,6 +93,7 @@
 			<Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
+            <DefaultRolloverStrategy max="168" />
 		</RollingRandomAccessFile>
 		
 	</Appenders>
@@ -96,7 +101,7 @@
 		<!-- <Root level="info">
 			<appender-ref ref="Console" />
 		</Root>	 -->	
-		<Logger name="premiummad" additivity="false" level="TRACE">
+		<Logger name="premiummad" additivity="false" level="INFO">
 			<appender-ref ref="Console" />
 			<appender-ref ref="premiummad" />
 		</Logger>

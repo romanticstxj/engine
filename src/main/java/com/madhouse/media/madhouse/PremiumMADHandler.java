@@ -161,102 +161,102 @@ public class PremiumMADHandler extends MediaBaseHandler {
             // 必填参数
             String bid = mediaRequest.getBid();
             if (StringUtils.isEmpty(bid)) {
-                logger.debug("bid is missing");
+                logger.warn("bid is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String adspaceid = mediaRequest.getAdspaceid();
             if (StringUtils.isEmpty(adspaceid)) {
-                logger.debug("adspaceid is missing");
+                logger.warn("adspaceid is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             String conn = mediaRequest.getConn();
             if (StringUtils.isEmpty(conn)) {
-                logger.debug("{}:conn is missing", adspaceid);
+                logger.warn("{}:conn is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 Integer.parseInt(conn); //是否合法
             } catch (Exception e) {
-                logger.debug("{}:osv is not correct _Ex", adspaceid);
+                logger.warn("{}:osv is not correct _Ex", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String width = mediaRequest.getWidth();
             if (StringUtils.isEmpty(width)) {
-                logger.debug("{}:width is missing", adspaceid);
+                logger.warn("{}:width is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 int w = Integer.parseInt(width); //是否合法
                 if (w < 1) {
-                    logger.debug("{}:width is not correct", adspaceid);
+                    logger.warn("{}:width is not correct", adspaceid);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             } catch (Exception e) {
-                logger.debug("{}:width is not correct _Ex", adspaceid);
+                logger.warn("{}:width is not correct _Ex", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             String height = mediaRequest.getHeight();
             if (StringUtils.isEmpty(height)) {
-                logger.debug("{}:height is missing", height);
+                logger.warn("{}:height is missing", height);
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             try {
                 int h = Integer.parseInt(height); //是否合法
                 if (h < 1) {
-                    logger.debug("{}:width is not correct", adspaceid);
+                    logger.warn("{}:width is not correct", adspaceid);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
             } catch (Exception e) {
-                logger.debug("{}:height is not correct_Ex", adspaceid);
+                logger.warn("{}:height is not correct_Ex", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             String adtype = mediaRequest.getAdtype();
             if (StringUtils.isEmpty(adtype)) {
-                logger.debug("{}:adtype is missing", adtype);
+                logger.warn("{}:adtype is missing", adtype);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 Integer.parseInt(adtype); //adtype是数字
             } catch (Exception e) {
-                logger.debug("{}:adtype is not correct", adtype);
+                logger.warn("{}:adtype is not correct", adtype);
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             String pkgname = mediaRequest.getPkgname();
             if (StringUtils.isEmpty(pkgname)) {
-                logger.debug("{}:pkgname is missing", adspaceid);
+                logger.warn("{}:pkgname is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String appname = mediaRequest.getAppname();
             if (StringUtils.isEmpty(appname)) {
-                logger.debug("{}:appname is missing", adspaceid);
+                logger.warn("{}:appname is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
     
             String carrier = mediaRequest.getCarrier();
             if (StringUtils.isEmpty(carrier)) {
-                logger.debug("{}:carrier is missing", adspaceid);
+                logger.warn("{}:carrier is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 Integer.parseInt(carrier); //是否合法
             } catch (Exception e) {
-                logger.debug("{}:carrier is not correct", adspaceid);
+                logger.warn("{}:carrier is not correct", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String os = mediaRequest.getOs();
             if (StringUtils.isEmpty(os)) {
-                logger.debug("{}:os is missing", adspaceid);
+                logger.warn("{}:os is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 Integer.parseInt(os); //是否合法
             } catch (Exception e) {
-                logger.debug("{}:os is not correct", adspaceid);
+                logger.warn("{}:os is not correct", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             switch (os) {
@@ -267,7 +267,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     String aaid = mediaRequest.getAaid();
                     boolean flag = StringUtils.isEmpty(imei)  && StringUtils.isEmpty(aid) && StringUtils.isEmpty(aaid) ;
                     if (flag) {
-                        logger.debug("{}:android params is missing", adspaceid);
+                        logger.warn("{}:android params is missing", adspaceid);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                     break;
@@ -277,39 +277,39 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     String oid = mediaRequest.getOid();
                     boolean flag_ios =  StringUtils.isEmpty(idfa) && StringUtils.isEmpty(oid);
                     if (flag_ios) {
-                        logger.debug("{}:ios params is missing", adspaceid);
+                        logger.warn("{}:ios params is missing", adspaceid);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                     break;
             }
             String osv = mediaRequest.getOsv();
             if (StringUtils.isEmpty(osv)) {
-                logger.debug("{}:osv is missing", adspaceid);
+                logger.warn("{}:osv is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String ua = mediaRequest.getUa();
             if (StringUtils.isEmpty(ua)) {
-                logger.debug("{}:ua is missing", adspaceid);
+                logger.warn("{}:ua is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String ip = mediaRequest.getIp();
             if (StringUtils.isEmpty(ip)) {
-                logger.debug("{}:ip is missing", adspaceid);
+                logger.warn("{}:ip is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String pid = mediaRequest.getPid();
             if (StringUtils.isEmpty(pid)) {
-                logger.debug("{}:pid is missing", adspaceid);
+                logger.warn("{}:pid is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String media = mediaRequest.getMedia();
             if (StringUtils.isEmpty(media)) {
-                logger.debug("{}:media is missing", adspaceid);
+                logger.warn("{}:media is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String pcat = mediaRequest.getPcat();
             if (StringUtils.isEmpty(pcat)) {
-                logger.debug("{}:pcat is missing", adspaceid);
+                logger.warn("{}:pcat is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;
@@ -326,7 +326,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,Constant.StatusCode.OK);
                 if (premiumMADResponse != null) {
                     outputStreamWrite(premiumMADResponse,resp);
-                    logger.debug(Constant.StatusCode.OK);
                     return true;
                 }
             } else if (mediaBid.getStatus() == Constant.StatusCode.NO_CONTENT){
@@ -358,7 +357,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        logger.debug(sb.toString());
+        logger.info("PremiumMAD Response:"+sb.toString());
         return false;
     }
     

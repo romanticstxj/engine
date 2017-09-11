@@ -230,7 +230,7 @@ public class SohuHandler extends MediaBaseHandler {
         List<String> list = mediaResponse.getMonitorBuilder().getClkurl();
         if (list != null) {
             if (mediaResponse.getLpgurl() != null && mediaResponse.getLpgurl() != "") {
-                bidBuilder.setExt2(list.get(list.size() - 1));//落地页地址
+                bidBuilder.setExt2(list.get(list.size() - 1));
             } else {
                 if (list.size() >=2){
                     bidBuilder.setExt2(list.get(0));
@@ -238,7 +238,7 @@ public class SohuHandler extends MediaBaseHandler {
             }
             
             if (list.size() >= 0) {
-                bidBuilder.setClickPara(mediaResponse.getLpgurl());
+                bidBuilder.setClickPara(mediaResponse.getLpgurl());//落地页地址
             }
         }
         seatBuilder.addBid(bidBuilder);

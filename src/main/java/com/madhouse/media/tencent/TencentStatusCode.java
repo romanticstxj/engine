@@ -4,7 +4,8 @@ public final class TencentStatusCode {
     //  操作系统类型
     public static final class Os {
         public static final String OS_ANDROID = "android";
-        public static final String OS_IOS = "iphone";
+        public static final String OS_IPHONE = "iphone";
+        public static final String OS_IOS = "ios";
     }
     //0: 明文，1 ：MD5, 2:SHA1 默认填0
     public static final class Encryption{

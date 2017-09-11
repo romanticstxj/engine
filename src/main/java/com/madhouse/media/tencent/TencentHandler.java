@@ -65,21 +65,11 @@ public class TencentHandler extends MediaBaseHandler {
         
         mediaRequest.setBid(bidRequest.getId());
         
-        Integer w = null;
-        Integer h = null;
-        if(!impression.hasBanner()){
-            w = impression.getBanner().getWidth();
-            h = impression.getBanner().getHeight();
-        }else if(!impression.hasVideo()){
-            w = impression.getVideo().getWidth();
-            h = impression.getVideo().getHeight();
-        }
-        mediaRequest.setW(w);
-        mediaRequest.setH(h);
+        
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String os = device.getOs();//iPhone.OS.9.3.2
         if (!StringUtils.isEmpty(os)) {
-            if(os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)){
+            if(os.toLowerCase().contains(TencentStatusCode.Os.OS_IPHONE) || os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)){
                 mediaRequest.setOs(Constant.OSType.IOS);
                 sb.append("ios");
                 if(TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()){
@@ -98,6 +88,20 @@ public class TencentHandler extends MediaBaseHandler {
                     mediaRequest.setDpidmd5(device.getAndroidid());
                 }
             }
+        }
+        
+        if(!impression.hasBanner()){
+            mediaRequest.setW(impression.getBanner().getWidth());
+            mediaRequest.setH(impression.getBanner().getHeight());
+            sb.append(":w:"+impression.getBanner().getWidth());
+            sb.append(":h:"+impression.getBanner().getWidth());
+            sb.append(":banner");
+        }else if(!impression.hasVideo()){
+            mediaRequest.setW(impression.getVideo().getWidth());
+            mediaRequest.setH(impression.getVideo().getHeight());
+            sb.append(":w:"+impression.getVideo().getWidth());
+            sb.append(":h:"+impression.getVideo().getWidth());
+            sb.append(":video");
         }
         if(!device.hasCarrier()){
             int carrier = device.getCarrier();
@@ -286,9 +290,14 @@ public class TencentHandler extends MediaBaseHandler {
             bidResponseBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid(): "");
             if (mediaResponse.getMonitorBuilder() != null && mediaResponse.getMonitorBuilder().getImpurl() != null && mediaResponse.getMonitorBuilder().getImpurl().size() > 0) {
                 if (mediaResponse.getMonitorBuilder().getImpurl().size() >= 2) {
-                    bidResponseBuilder.setExt2(mediaResponse.getMonitorBuilder().getImpurl().get(0).getUrl());//设置为dsp的监测
+                    String impurl = mediaResponse.getMonitorBuilder().getImpurl().get(0).getUrl();
+                    if(impurl.contains("v2")){
+                        bidResponseBuilder.setExt2(impurl.substring(impurl.indexOf("v2")+2, impurl.length()));//设置为dsp的监测
+                    }
                 }
-                bidResponseBuilder.addDispExts(mediaResponse.getMonitorBuilder().getImpurl().get(mediaResponse.getMonitorBuilder().getImpurl().size() - 1).getUrl());//取最后一个（exchange自己的建波）
+                String impTrack = mediaResponse.getMonitorBuilder().getImpurl().get(mediaResponse.getMonitorBuilder().getImpurl().size() - 1).getUrl();//取最后一个（exchange自己的建波）
+                
+                bidResponseBuilder.addDispExts(impTrack.substring(impTrack.lastIndexOf("imp")+3,impTrack.length()));
             }
             //如果有落地页就取值，如果没有，判断thclkurl的大小，如果size=2，第一条设置为ClickMonitor，第二条设置为ext2，；如果size=1，则只设置为ext2的值
             if (mediaResponse.getMonitorBuilder().getClkurl() != null ) {
