@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.CRC32;
@@ -465,9 +466,19 @@ public class WorkThread {
 
                                 @Override
                                 public void run() {
-                                    Jedis redisConn = ResourceManager.getInstance().getJedisPoolMaster().getResource();
-                                    redisConn.incr(dailyBudgetKey);
-                                    redisConn.incr(totalBudgetKey);
+                                    Jedis redisConn = null;
+
+                                    try {
+                                        redisConn = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+                                        redisConn.incr(dailyBudgetKey);
+                                        redisConn.incr(totalBudgetKey);
+                                    } catch (Exception ex) {
+                                        logger.error(ex.toString());
+                                    } finally {
+                                        if (redisConn != null) {
+                                            redisConn.close();
+                                        }
+                                    }
                                 }
                             });
                         }
