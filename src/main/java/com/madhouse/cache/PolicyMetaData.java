@@ -33,7 +33,7 @@ public class PolicyMetaData {
     private Map<Long, AdspaceInfo> adspaceInfoMap = new HashMap<>();
 
     private int controlType;
-    private int maxCount;
+    private long maxCount;
     private int controlMethod;
 
     private int status;
@@ -217,11 +217,11 @@ public class PolicyMetaData {
         this.controlType = controlType;
     }
 
-    public int getMaxCount() {
+    public long getMaxCount() {
         return maxCount;
     }
 
-    public void setMaxCount(int maxCount) {
+    public void setMaxCount(long maxCount) {
         this.maxCount = maxCount;
     }
 

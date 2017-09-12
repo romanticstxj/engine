@@ -395,6 +395,10 @@ public class CacheManager implements Runnable {
             }
 
             if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
+                if (policyMetaData.getMaxCount() <= 0) {
+                    continue;
+                }
+
                 this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), "0", "NX");
                 this.redisMaster.set(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), "0", "NX", "EX", 86400);
 
@@ -406,7 +410,7 @@ public class CacheManager implements Runnable {
                 String totalCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                 String dailyCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
-                if (!this.policyBudgetControl(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount))) {
+                if (this.getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount)) <= 0) {
                     continue;
                 }
             }
@@ -539,12 +543,8 @@ public class CacheManager implements Runnable {
         this.blockedPolicy = blockedPolicy;
     }
 
-    public boolean policyBudgetControl(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
+    public long getPolicyBudget(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
         try {
-            if (policyMetaData.getControlType() == Constant.PolicyControlType.NONE) {
-                return true;
-            }
-
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
 
@@ -552,11 +552,11 @@ public class CacheManager implements Runnable {
             int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
             if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
-                int budgetCount = policyMetaData.getMaxCount();
+                long budgetCount = policyMetaData.getMaxCount();
                 if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
                     int pastDays = Utility.dateDiff(cal.getTime(), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
                     int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
-                    budgetCount = (int)((double)policyMetaData.getMaxCount() * pastDays / totalDays);
+                    budgetCount = policyMetaData.getMaxCount() * pastDays / totalDays;
                 }
 
                 int pastHours = 0;
@@ -566,7 +566,7 @@ public class CacheManager implements Runnable {
                 } else {
                     List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
                     if (ObjectUtils.isEmpty(hours)) {
-                        return false;
+                        return -1;
                     }
 
                     int start = 0;
@@ -584,25 +584,18 @@ public class CacheManager implements Runnable {
                     totalHours = hours.size();
                 }
 
-                if (dailyCount >= ((double)budgetCount * pastHours / totalHours)) {
-                    return false;
-                }
+                return (budgetCount * pastHours / totalHours - dailyCount);
             } else {
                 if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                    if (totalCount >= policyMetaData.getMaxCount()) {
-                        return false;
-                    }
+                    return policyMetaData.getMaxCount() - totalCount;
                 } else {
-                    if (dailyCount >= policyMetaData.getMaxCount()) {
-                        return false;
-                    }
+                    return policyMetaData.getMaxCount() - dailyCount;
                 }
             }
         } catch (Exception ex) {
             logger.error(ex.toString());
-            return false;
         }
 
-        return true;
+        return -1;
     }
 }

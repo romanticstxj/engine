@@ -12,6 +12,14 @@ import java.util.*;
 public final class Utility {
     private static final Random random = new Random(System.currentTimeMillis());
 
+    public static int nextInt(int bound) {
+        if (bound > 0) {
+            return random.nextInt(bound);
+        }
+
+        return random.nextInt();
+    }
+
     public static <T> Pair<T, Integer> randomWithWeights(Collection<Pair<T, Integer>> dataSource) {
         if (dataSource == null || dataSource.isEmpty()) {
             return null;

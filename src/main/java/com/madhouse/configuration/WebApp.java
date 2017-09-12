@@ -15,6 +15,7 @@ public class WebApp {
 	private int minIdle;
 	private int maxIdle;
 	private int maxTotal;
+	private int slowDownCount;
 
 	public String getResourcePath() {
 		return resourcePath;
@@ -110,5 +111,13 @@ public class WebApp {
 
 	public void setExpiredTime(int expiredTime) {
 		this.expiredTime = expiredTime;
+	}
+
+	public int getSlowDownCount() {
+		return slowDownCount;
+	}
+
+	public void setSlowDownCount(int slowDownCount) {
+		this.slowDownCount = slowDownCount;
 	}
 }

@@ -9,6 +9,7 @@
         "maxTotal": 30,
         "gZipOn": true,
         "expiredTime": 86400,
+        "slowDownCount": 1000,
         "bids": [{
                 "path": "/adcall/bidrequest",
                 "className": "com.madhouse.media.madhouse.PremiumMADHandler"

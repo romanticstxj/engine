@@ -367,6 +367,10 @@ public class WorkThread {
                 adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(adBlockId);
             }
 
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+
             int[] deliveryTypes = {Constant.DeliveryType.PDB, Constant.DeliveryType.PD, Constant.DeliveryType.RTB};
 
             for (int i = 0; i < deliveryTypes.length; ++i) {
@@ -387,6 +391,22 @@ public class WorkThread {
                     this.multiHttpClient.reset();
 
                     PolicyMetaData policyMetaData = selectedPolicy.getLeft();
+                    if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
+                        String totalCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                        String dailyCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+
+                        long policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
+                        if (policyBudget > 0) {
+                            int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
+                            if (policyBudget < slowDownCount && Utility.nextInt((int)(slowDownCount - policyBudget)) != 0) {
+                                continue;
+                            }
+                        } else {
+                            CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                            continue;
+                        }
+                    }
+
                     trackingParam.setPolicyId(policyMetaData.getId());
 
                     Map<Long, DSPBidMetaData> selectedDspList = new HashMap<>();
@@ -434,17 +454,9 @@ public class WorkThread {
                     }
 
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
-                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE && policyMetaData.getMaxCount() > 0) {
-                            Calendar cal = Calendar.getInstance();
-                            cal.setTime(new Date());
-                            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-
-                            long totalCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                            long dailyCount = redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-
-                            if (!CacheManager.getInstance().policyBudgetControl(policyMetaData, totalCount, dailyCount)) {
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                            }
+                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
+                            redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
+                            redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
                         }
 
                         List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());
