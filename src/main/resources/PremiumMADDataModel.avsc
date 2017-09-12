@@ -4,36 +4,42 @@
 	"type": "record",
 	"name": "Monitor",
 	"fields": [{
-			"type": {
-				"type": "array",
-				"items": {
-					"type": "record",
-					"name": "Track",
-					"fields": [{
-							"type": "int",
-							"name": "startdelay",
-							"default": 0
-						}, {
-							"type": "string",
-							"name": "url"
-						}
-					]
+			"type": [
+				"null", {
+					"type": "array",
+					"items": {
+						"type": "record",
+						"name": "Track",
+						"fields": [{
+								"type": "int",
+								"name": "startdelay",
+								"default": 0
+							}, {
+								"type": "string",
+								"name": "url"
+							}
+						]
+					}
 				}
-			},
+			],
 			"name": "impurl",
 			"default": null
 		}, {
-			"type": {
-				"type": "array",
-				"items": "string"
-			},
+			"type":[
+				"null", {
+					"type": "array",
+					"items": "string"
+				}
+			],
 			"name": "clkurl",
 			"default": null
 		}, {
-			"type": {
-				"type": "array",
-				"items": "string"
-			},
+			"type": [
+				"null", {
+					"type": "array",
+					"items": "string"
+				}
+			],
 			"name": "securl",
 			"default": null
 		}, {
@@ -41,10 +47,12 @@
 			"name": "exptime",
 			"default": 86400
 	   }, {
-         	"type": {
-         		"type": "array",
-         		"items": "string"
-         	},
+         	"type": [
+				"null", {
+	         		"type": "array",
+	         		"items": "string"
+	         	}
+	        ],
          	"name": "exts",
          	"default": null
         }
@@ -222,11 +230,12 @@
 						"name": "cellmd5",
 						"default": null
 					}, {
-						"type": {
-							"type": "array",
-							"items": "string"
-						},
 						"name": "tags",
+						"type": [
+							"null", {
+								"type": "array",
+								"items": "string"}
+								], 
 						"default": null
 					}, {
 						"type": "int",
@@ -289,10 +298,12 @@
 							"name": "duration",
 							"default": 0
 						}, {
-							"type": {
-								"type": "array",
-								"items": "string"
-							},
+							"type": [
+								"null",{
+									"type": "array",
+									"items": "string"
+								}
+							],
 							"name": "adm"
 						}, {
 							"type": ["null", "string"],
@@ -612,10 +623,11 @@
 						"name": "duration",
 						"default": 0
 					}, {
-						"type": {
+						"type": [
+							"null",{
 							"type": "array",
 							"items": "string"
-						},
+						}],
 						"name": "adm"
 					}, {
 						"name": "dealid",
