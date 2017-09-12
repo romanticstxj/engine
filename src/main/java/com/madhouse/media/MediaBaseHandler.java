@@ -129,7 +129,7 @@ public abstract class MediaBaseHandler {
             String ext1 = exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "";
             String ext2 = exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "";
             String ext3 = exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "";
-            return url.replace("${EXT1}", ext1).replace("${EXT2}", ext2).replace("${EXT3}", ext3);
+            return url.replace("__EXT1__", ext1).replace("__EXT2__", ext2).replace("__EXT3__", ext3);
         }
 
         return url;
