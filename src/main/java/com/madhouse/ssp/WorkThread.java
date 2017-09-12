@@ -37,7 +37,7 @@ public class WorkThread {
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
     private Map<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
 
-    private ExecutorService winNoticeService = Executors.newCachedThreadPool();
+    private ExecutorService asyncExecutorService = Executors.newCachedThreadPool();
 
     private final byte[] image = {  0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
                                     (byte)0x80, 0x01, 0x00, 0x00, 0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, 0x21,
@@ -395,6 +395,10 @@ public class WorkThread {
                         String totalCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                         String dailyCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
+                        if (StringUtils.isEmpty(totalCount) || StringUtils.isEmpty(dailyCount)) {
+                            continue;
+                        }
+
                         long policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
                         if (policyBudget > 0) {
                             int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
@@ -455,8 +459,17 @@ public class WorkThread {
 
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
                         if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
-                            redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                            redisMaster.incr(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
+                            this.asyncExecutorService.submit(new Runnable() {
+                                final String totalBudgetKey = String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId());
+                                final String dailyBudgetKey = String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate);
+
+                                @Override
+                                public void run() {
+                                    Jedis redisConn = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+                                    redisConn.incr(dailyBudgetKey);
+                                    redisConn.incr(totalBudgetKey);
+                                }
+                            });
                         }
 
                         List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());
@@ -494,7 +507,7 @@ public class WorkThread {
                                     if (!StringUtils.isEmpty(url)) {
                                         final HttpGet httpGet = new HttpGet(url);
                                         final HttpClient httpClient = this.getHttpClient(winner.getDspMetaData().getId());
-                                        this.winNoticeService.submit(new Runnable() {
+                                        this.asyncExecutorService.submit(new Runnable() {
                                             public void run() {
                                                 httpClient.execute(httpGet, 150);
                                                 httpGet.releaseConnection();
