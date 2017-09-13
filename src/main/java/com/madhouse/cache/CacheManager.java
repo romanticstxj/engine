@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 
@@ -410,7 +411,8 @@ public class CacheManager implements Runnable {
                 String totalCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
                 String dailyCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
-                if (this.getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount)) <= 0) {
+                Pair<Long, Long> budgetCount = this.getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
+                if (budgetCount.getLeft() <= 0) {
                     continue;
                 }
             }
@@ -543,7 +545,7 @@ public class CacheManager implements Runnable {
         this.blockedPolicy = blockedPolicy;
     }
 
-    public long getPolicyBudget(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
+    public Pair<Long, Long> getPolicyBudget(PolicyMetaData policyMetaData, long totalCount, long dailyCount) {
         try {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
@@ -552,13 +554,6 @@ public class CacheManager implements Runnable {
             int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 
             if (policyMetaData.getControlMethod() == Constant.PolicyControlMethod.AVERAGE) {
-                long budgetCount = policyMetaData.getMaxCount();
-                if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                    int pastDays = Utility.dateDiff(cal.getTime(), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
-                    int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
-                    budgetCount = policyMetaData.getMaxCount() * pastDays / totalDays;
-                }
-
                 int pastHours = 0;
                 int totalHours = 24;
                 if (ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
@@ -566,7 +561,7 @@ public class CacheManager implements Runnable {
                 } else {
                     List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
                     if (ObjectUtils.isEmpty(hours)) {
-                        return -1;
+                        return Pair.of(-1L, -1L);
                     }
 
                     int start = 0;
@@ -584,18 +579,25 @@ public class CacheManager implements Runnable {
                     totalHours = hours.size();
                 }
 
-                return (budgetCount * pastHours / totalHours - dailyCount);
-            } else {
+                long dailyBudget = policyMetaData.getMaxCount();
                 if (policyMetaData.getControlType() == Constant.PolicyControlType.TOTAL) {
-                    return policyMetaData.getMaxCount() - totalCount;
+                    int pastDays = Utility.dateDiff(cal.getTime(), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                    int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(policyMetaData.getStartDate())) + 1;
+                    dailyBudget = policyMetaData.getMaxCount() / totalDays;
+                }
+
+                return Pair.of((dailyBudget * pastHours / totalHours - dailyCount), dailyBudget - dailyCount);
+            } else {
+                if (policyMetaData.getControlType() == Constant.PolicyControlType.DAILY) {
+                    return Pair.of(policyMetaData.getMaxCount() - dailyCount, policyMetaData.getMaxCount() - dailyCount);
                 } else {
-                    return policyMetaData.getMaxCount() - dailyCount;
+                    return Pair.of(policyMetaData.getMaxCount() - totalCount, policyMetaData.getMaxCount() - totalCount);
                 }
             }
         } catch (Exception ex) {
             logger.error(ex.toString());
         }
 
-        return -1;
+        return Pair.of(-1L, -1L);
     }
 }

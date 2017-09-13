@@ -400,10 +400,10 @@ public class WorkThread {
                             continue;
                         }
 
-                        long policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
-                        if (policyBudget > 0) {
+                        Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
+                        if (policyBudget.getLeft() > 0) {
                             int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
-                            if (policyBudget < slowDownCount && Utility.nextInt((int)(slowDownCount - policyBudget)) != 0) {
+                            if (policyBudget.getRight() < slowDownCount && Utility.nextInt((int)(slowDownCount - policyBudget.getRight())) != 0) {
                                 continue;
                             }
                         } else {
@@ -425,7 +425,7 @@ public class WorkThread {
                             if (dspMetaData.getMaxQPS() > 0) {
                                 String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
                                 redisMaster.set(qpsControl, "0", "NX", "EX", 15);
-                                long totalCount = redisMaster.incrBy(qpsControl, 1);
+                                long totalCount = redisMaster.incr(qpsControl);
                                 if (totalCount > dspMetaData.getMaxQPS()) {
                                     logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
                                     continue;
