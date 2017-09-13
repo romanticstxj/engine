@@ -397,16 +397,20 @@ public class WorkThread {
                         String dailyCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
                         if (StringUtils.isEmpty(totalCount) || StringUtils.isEmpty(dailyCount)) {
+                            policyMetaDatas.remove(selectedPolicy);
                             continue;
                         }
 
+                        //<currentHourBudget, currentDayBudget
                         Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
                         if (policyBudget == null || policyBudget.getLeft() <= 0) {
+                            policyMetaDatas.remove(selectedPolicy);
                             continue;
                         }
 
                         int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
-                        if (policyBudget.getRight() < slowDownCount && Utility.nextInt((int)(slowDownCount - policyBudget.getRight())) != 0) {
+                        if (policyBudget.getRight() <= slowDownCount && Utility.nextInt(slowDownCount) >= policyBudget.getRight()) {
+                            policyMetaDatas.remove(selectedPolicy);
                             continue;
                         }
                     }
