@@ -200,14 +200,23 @@ public class CacheManager implements Runnable {
         this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
         MetaData var = new MetaData();
+        logger.debug("loading media metadata.");
         var.setMediaMetaDataMap(this.loadMediaMetaData());
+        logger.debug("loading adspace metadata.");
         var.setPlcmtMetaDataMap(this.loadPlcmtMetaData());
+        logger.debug("loading adblock metadata.");
         var.setAdBlockMetaDataMap(this.loadAdBlockMetaData());
+        logger.debug("loading policy metadata.");
         var.setPolicyMetaDataMap(this.loadPolicyMetaData());
+        logger.debug("loading dsp metadata.");
         var.setDspMetaDataMap(this.loadDSPMetaData());
+        logger.debug("loading media mapping metadata.");
         var.setMediaMappingMetaDataMap(this.loadMediaMappingData());
+        logger.debug("loading dsp mapping metadata.");
         var.setDspMappingMetaDataMap(this.loadDSPMappingData());
+        logger.debug("loading material metadata.");
         var.setMaterialMetaDataMap(this.loadMaterialMappingData());
+        logger.debug("updating policy targeting metadata.");
         var.setPolicyTargetMap(this.updatePolicyTargetInfo(var.getPolicyMetaDataMap()));
 
         this.metaData = var;
