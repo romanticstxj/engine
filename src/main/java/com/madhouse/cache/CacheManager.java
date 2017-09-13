@@ -412,7 +412,7 @@ public class CacheManager implements Runnable {
                 String dailyCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
                 Pair<Long, Long> budgetCount = this.getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
-                if (budgetCount.getLeft() <= 0) {
+                if (budgetCount == null || budgetCount.getLeft() <= 0) {
                     continue;
                 }
             }
@@ -561,7 +561,7 @@ public class CacheManager implements Runnable {
                 } else {
                     List<Integer> hours = policyMetaData.getWeekdayHoursMap().get(weekday);
                     if (ObjectUtils.isEmpty(hours)) {
-                        return Pair.of(-1L, -1L);
+                        return null;
                     }
 
                     int start = 0;
@@ -598,6 +598,6 @@ public class CacheManager implements Runnable {
             logger.error(ex.toString());
         }
 
-        return Pair.of(-1L, -1L);
+        return null;
     }
 }

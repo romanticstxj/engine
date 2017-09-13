@@ -401,13 +401,12 @@ public class WorkThread {
                         }
 
                         Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
-                        if (policyBudget.getLeft() > 0) {
-                            int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
-                            if (policyBudget.getRight() < slowDownCount && Utility.nextInt((int)(slowDownCount - policyBudget.getRight())) != 0) {
-                                continue;
-                            }
-                        } else {
-                            CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                        if (policyBudget == null || policyBudget.getLeft() <= 0) {
+                            continue;
+                        }
+
+                        int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
+                        if (policyBudget.getRight() < slowDownCount && Utility.nextInt((int)(slowDownCount - policyBudget.getRight())) != 0) {
                             continue;
                         }
                     }
