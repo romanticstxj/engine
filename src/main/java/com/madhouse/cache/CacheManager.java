@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -136,6 +137,8 @@ public class CacheManager implements Runnable {
 
     //blocked policy
     private ConcurrentHashSet<Long> blockedPolicy = new ConcurrentHashSet<>();
+    //policy budget batch
+    private Map<Long, AtomicLong> policyBudgetBatchMap = new ConcurrentHashMap<>();
 
     private Jedis redisMaster = null;
     private Jedis redisSlave = null;
@@ -166,6 +169,70 @@ public class CacheManager implements Runnable {
         }
 
         return null;
+    }
+
+    public void decrPolicyBudget(PolicyMetaData policyMetaData) {
+        AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+        if (policyBudgetBatch != null) {
+            policyBudgetBatch.decrementAndGet();
+        }
+    }
+
+    public boolean checkPolicyBudget(PolicyMetaData policyMetaData) {
+        synchronized (this) {
+            AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+            if (policyBudgetBatch == null) {
+                policyBudgetBatch = new AtomicLong(0L);
+                this.policyBudgetBatchMap.put(policyMetaData.getId(), policyBudgetBatch);
+            }
+
+            if (policyBudgetBatch.get() > 0L) {
+                return true;
+            }
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+            long budgetBatchSize = ResourceManager.getInstance().getConfiguration().getWebapp().getBudgetBatchSize();
+
+            Jedis redisConn = null;
+
+            try {
+                redisConn = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+                Long totalCount = redisConn.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), budgetBatchSize);
+                Long dailyCount = redisConn.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), budgetBatchSize);
+
+                if (totalCount == null || dailyCount == null) {
+                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                    return false;
+                }
+
+                //<currentHourBudget, currentDayBudget>
+                Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, totalCount, dailyCount);
+                if (policyBudget == null || policyBudget.getLeft() + budgetBatchSize <= 0) {
+                    CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                    return false;
+                }
+
+                if (policyBudget.getLeft() >= 0) {
+                    policyBudgetBatch.addAndGet(budgetBatchSize);
+                } else {
+                    policyBudgetBatch.addAndGet(budgetBatchSize + policyBudget.getLeft());
+                    redisConn.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), policyBudget.getLeft());
+                    redisConn.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), policyBudget.getLeft());
+                }
+
+                return true;
+            } catch (Exception ex) {
+                logger.error(ex.toString());
+            } finally {
+                if (redisConn != null) {
+                    redisConn.close();
+                }
+            }
+        }
+
+        return false;
     }
 
     public MaterialMetaData getMaterialMetaData(long dspId, String materialId, long mediaId, long adspaceId) {

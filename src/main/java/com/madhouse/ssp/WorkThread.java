@@ -23,10 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.CRC32;
 
 
@@ -38,7 +36,6 @@ public class WorkThread {
 
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
     private Map<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
-    private Map<Long, AtomicLong> policyBudgetBatchMap = new ConcurrentHashMap<>();
 
     private ExecutorService asyncExecutorService = Executors.newCachedThreadPool();
 
@@ -395,40 +392,9 @@ public class WorkThread {
 
                     PolicyMetaData policyMetaData = selectedPolicy.getLeft();
                     if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
-                        AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
-                        if (policyBudgetBatch == null) {
-                            policyBudgetBatch = new AtomicLong(0L);
-                        }
-
-                        if (policyBudgetBatch.get() <= 0L) {
-                            long budgetBatchSize = ResourceManager.getInstance().getConfiguration().getWebapp().getBudgetBatchSize();
-
-                            Long totalCount = redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), budgetBatchSize);
-                            Long dailyCount = redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), budgetBatchSize);
-
-                            if (totalCount == null || dailyCount == null) {
-                                policyMetaDatas.remove(selectedPolicy);
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                                continue;
-                            }
-
-                            //<currentHourBudget, currentDayBudget>
-                            Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, totalCount, dailyCount);
-                            if (policyBudget == null || policyBudget.getLeft() + budgetBatchSize <= 0) {
-                                policyMetaDatas.remove(selectedPolicy);
-                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
-                                continue;
-                            }
-
-                            if (policyBudget.getLeft() >= 0) {
-                                policyBudgetBatch.addAndGet(budgetBatchSize);
-                            } else {
-                                policyBudgetBatch.addAndGet(budgetBatchSize + policyBudget.getLeft());
-                                redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), policyBudget.getLeft());
-                                redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), policyBudget.getLeft());
-                            }
-
-                            this.policyBudgetBatchMap.put(policyMetaData.getId(), policyBudgetBatch);
+                        if (!CacheManager.getInstance().checkPolicyBudget(policyMetaData)) {
+                            policyMetaDatas.remove(selectedPolicy);
+                            continue;
                         }
                     }
 
@@ -479,10 +445,7 @@ public class WorkThread {
                     }
 
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
-                        AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
-                        if (policyBudgetBatch != null) {
-                            policyBudgetBatch.decrementAndGet();
-                        }
+                        CacheManager.getInstance().decrPolicyBudget(policyMetaData);
 
                         List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());
                         for (Map.Entry entry : selectedDspList.entrySet()) {
