@@ -211,6 +211,9 @@ public class CacheManager implements Runnable {
                 Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, totalCount, dailyCount);
                 if (policyBudget == null || policyBudget.getLeft() + budgetBatchSize <= 0) {
                     CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+
+                    redisConn.decrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), budgetBatchSize);
+                    redisConn.decrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), budgetBatchSize);
                     return false;
                 }
 
