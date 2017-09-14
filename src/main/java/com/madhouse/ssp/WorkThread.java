@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.CRC32;
 
 
@@ -37,6 +38,7 @@ public class WorkThread {
 
     private MultiHttpClient multiHttpClient = new MultiHttpClient();
     private Map<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
+    private Map<Long, AtomicLong> policyBudgetBatchMap = new ConcurrentHashMap<>();
 
     private ExecutorService asyncExecutorService = Executors.newCachedThreadPool();
 
@@ -393,25 +395,40 @@ public class WorkThread {
 
                     PolicyMetaData policyMetaData = selectedPolicy.getLeft();
                     if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
-                        String totalCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
-                        String dailyCount = redisMaster.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
-
-                        if (StringUtils.isEmpty(totalCount) || StringUtils.isEmpty(dailyCount)) {
-                            policyMetaDatas.remove(selectedPolicy);
-                            continue;
+                        AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+                        if (policyBudgetBatch == null) {
+                            policyBudgetBatch = new AtomicLong(0L);
                         }
 
-                        //<currentHourBudget, currentDayBudget
-                        Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
-                        if (policyBudget == null || policyBudget.getLeft() <= 0) {
-                            policyMetaDatas.remove(selectedPolicy);
-                            continue;
-                        }
+                        if (policyBudgetBatch.get() <= 0L) {
+                            long budgetBatchSize = ResourceManager.getInstance().getConfiguration().getWebapp().getBudgetBatchSize();
 
-                        int slowDownCount = ResourceManager.getInstance().getConfiguration().getWebapp().getSlowDownCount();
-                        if (policyBudget.getRight() <= slowDownCount && Utility.nextInt(slowDownCount) >= policyBudget.getRight()) {
-                            policyMetaDatas.remove(selectedPolicy);
-                            continue;
+                            Long totalCount = redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), budgetBatchSize);
+                            Long dailyCount = redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), budgetBatchSize);
+
+                            if (totalCount == null || dailyCount == null) {
+                                policyMetaDatas.remove(selectedPolicy);
+                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                continue;
+                            }
+
+                            //<currentHourBudget, currentDayBudget>
+                            Pair<Long, Long> policyBudget = CacheManager.getInstance().getPolicyBudget(policyMetaData, totalCount, dailyCount);
+                            if (policyBudget == null || policyBudget.getLeft() + budgetBatchSize <= 0) {
+                                policyMetaDatas.remove(selectedPolicy);
+                                CacheManager.getInstance().blockPolicy(policyMetaData.getId());
+                                continue;
+                            }
+
+                            if (policyBudget.getLeft() >= 0) {
+                                policyBudgetBatch.addAndGet(budgetBatchSize);
+                            } else {
+                                policyBudgetBatch.addAndGet(budgetBatchSize + policyBudget.getLeft());
+                                redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), policyBudget.getLeft());
+                                redisMaster.incrBy(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate), policyBudget.getLeft());
+                            }
+
+                            this.policyBudgetBatchMap.put(policyMetaData.getId(), policyBudgetBatch);
                         }
                     }
 
@@ -462,28 +479,9 @@ public class WorkThread {
                     }
 
                     if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
-                        if (policyMetaData.getControlType() != Constant.PolicyControlType.NONE) {
-                            this.asyncExecutorService.submit(new Runnable() {
-                                final String totalBudgetKey = String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId());
-                                final String dailyBudgetKey = String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate);
-
-                                @Override
-                                public void run() {
-                                    Jedis redisConn = null;
-
-                                    try {
-                                        redisConn = ResourceManager.getInstance().getJedisPoolMaster().getResource();
-                                        redisConn.incr(dailyBudgetKey);
-                                        redisConn.incr(totalBudgetKey);
-                                    } catch (Exception ex) {
-                                        logger.error(ex.toString());
-                                    } finally {
-                                        if (redisConn != null) {
-                                            redisConn.close();
-                                        }
-                                    }
-                                }
-                            });
+                        AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+                        if (policyBudgetBatch != null) {
+                            policyBudgetBatch.decrementAndGet();
                         }
 
                         List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());

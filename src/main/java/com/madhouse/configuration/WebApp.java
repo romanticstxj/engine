@@ -15,7 +15,7 @@ public class WebApp {
 	private int minIdle;
 	private int maxIdle;
 	private int maxTotal;
-	private int slowDownCount;
+	private int budgetBatchSize;
 
 	public String getResourcePath() {
 		return resourcePath;
@@ -113,11 +113,11 @@ public class WebApp {
 		this.expiredTime = expiredTime;
 	}
 
-	public int getSlowDownCount() {
-		return slowDownCount;
+	public int getBudgetBatchSize() {
+		return budgetBatchSize;
 	}
 
-	public void setSlowDownCount(int slowDownCount) {
-		this.slowDownCount = slowDownCount;
+	public void setBudgetBatchSize(int budgetBatchSize) {
+		this.budgetBatchSize = budgetBatchSize;
 	}
 }
