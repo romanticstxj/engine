@@ -169,7 +169,17 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.warn("adspaceid is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
-    
+            String devicetype = mediaRequest.getDevicetype();
+            if (StringUtils.isEmpty(devicetype)) {
+                logger.warn("{}:devicetype is missing", adspaceid);
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+            try {
+                Integer.parseInt(devicetype); //是否合法
+            } catch (Exception e) {
+                logger.warn("{}:devicetype is not correct _Ex", adspaceid);
+                return Constant.StatusCode.BAD_REQUEST;
+            }
             String conn = mediaRequest.getConn();
             if (StringUtils.isEmpty(conn)) {
                 logger.warn("{}:conn is missing", adspaceid);
@@ -178,7 +188,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             try {
                 Integer.parseInt(conn); //是否合法
             } catch (Exception e) {
-                logger.warn("{}:osv is not correct _Ex", adspaceid);
+                logger.warn("{}:conn is not correct _Ex", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String width = mediaRequest.getWidth();

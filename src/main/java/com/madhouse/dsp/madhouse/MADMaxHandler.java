@@ -200,6 +200,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         monitor.setClkurl(madResponse.getThclkurl());
         monitor.setSecurl(madResponse.getSecurl());
         dspResponse.setMonitorBuilder(monitor);
+        logger.info("MADMax Response is:{}", dspResponse.toString());
         return dspResponse;
     }
     
