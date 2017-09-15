@@ -430,7 +430,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
             premiumMADResponse.setReturncode(status);
         }
-        logger.info("premiumMAD Response params is : {}", JSON.toJSONString(premiumMADResponse));
         return premiumMADResponse;
     }
 }
