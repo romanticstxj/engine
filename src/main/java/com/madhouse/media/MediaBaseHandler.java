@@ -1,10 +1,7 @@
 package com.madhouse.media;
 
-import com.madhouse.cache.AuctionPriceInfo;
-import com.madhouse.cache.MaterialMetaData;
-import com.madhouse.cache.MediaBidMetaData;
+import com.madhouse.cache.*;
 
-import com.madhouse.cache.MediaMetaData;
 import com.madhouse.configuration.Configuration;
 import com.madhouse.configuration.WebApp;
 import com.madhouse.resource.ResourceManager;
@@ -42,6 +39,7 @@ public abstract class MediaBaseHandler {
         try {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             MediaMetaData mediaMetaData = mediaBidMetaData.getMediaMetaData();
+            PlcmtMetaData plcmtMetaData = mediaBidMetaData.getPlcmtMetaData();
 
             mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
             if (dspBid != null && dspBid.getStatus() == Constant.StatusCode.OK && dspBid.getRequestBuilder() != null) {
@@ -53,6 +51,7 @@ public abstract class MediaBaseHandler {
                     mediaResponse.setCrid(dspResponse.getCrid());
                     mediaResponse.setLayout(dspBid.getRequestBuilder().getLayout());
                     mediaResponse.setDealid(StringUtil.toString(mediaBid.getRequestBuilder().getDealid()));
+                    mediaResponse.setPrice(plcmtMetaData.getBidFloor());
 
                     if (mediaMetaData.getMaterialAuditMode() != Constant.AuditMode.NONE) {
                         mediaResponse.setBrand(StringUtil.toString(materialMetaData.getBrand()));

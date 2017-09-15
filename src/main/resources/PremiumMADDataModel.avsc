@@ -274,6 +274,10 @@
 							"name": "layout",
 							"default": 0
 						}, {
+							"type": "int",
+							"name": "price",
+							"default": 0
+						}, {
 							"type": ["null", "string"],
 							"name": "icon",
 							"default": null

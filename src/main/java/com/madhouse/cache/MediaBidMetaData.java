@@ -17,6 +17,7 @@ public class MediaBidMetaData {
     private MediaBid.Builder mediaBidBuilder;
     private TrackingParam trackingParam;
     private MediaMetaData mediaMetaData;
+    private PlcmtMetaData plcmtMetaData;
 
     public Object getRequestObject() {
         return requestObject;
@@ -48,6 +49,14 @@ public class MediaBidMetaData {
 
     public void setMediaMetaData(MediaMetaData mediaMetaData) {
         this.mediaMetaData = mediaMetaData;
+    }
+
+    public PlcmtMetaData getPlcmtMetaData() {
+        return plcmtMetaData;
+    }
+
+    public void setPlcmtMetaData(PlcmtMetaData plcmtMetaData) {
+        this.plcmtMetaData = plcmtMetaData;
     }
 
     public String getImpressionTrackingUrl() {

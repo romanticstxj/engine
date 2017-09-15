@@ -311,12 +311,14 @@ public class WorkThread {
                 return;
             }
 
-            mediaBidMetaData.setMediaMetaData(mediaMetaData);
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
                 logger.warn("media or adspace is not allowed.");
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
+
+            mediaBidMetaData.setMediaMetaData(mediaMetaData);
+            mediaBidMetaData.setPlcmtMetaData(plcmtMetaData);
 
             //init mediaid, adspaceid
             mediaRequest.setMediaid(mediaMetaData.getId());
