@@ -301,7 +301,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
         XiaoMiResponse.Bid bid = bidResponse.new Bid();
         bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
         bid.setImpid(bidRequest.getImp()[0].getId());
-        bid.setPrice(mediaRequest.getBidfloor());//Bid price as CPM; 必须高于底价,否则竞价失败 ;必须字段,单位为分
+        bid.setPrice(mediaResponse.getPrice());//Bid price as CPM; 必须高于底价,否则竞价失败 ;必须字段,单位为分
         bid.setAdid(mediaRequest.getAdspacekey());
         //判断接受的类型
         String[] mines = null;

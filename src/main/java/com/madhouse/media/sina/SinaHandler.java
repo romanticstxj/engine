@@ -256,7 +256,7 @@ public class SinaHandler extends MediaBaseHandler {
         bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
         bid.setImpid(impid);
         bid.setNurl("");
-        bid.setPrice((float) sinaRequest.getImp().get(0).getBidfloor());
+        bid.setPrice((float)mediaResponse.getPrice());
         bid.setCrid(mediaResponse.getCrid());
         
         List<SinaResponse.Seatbid.Bid> bidList = new ArrayList<>(1);

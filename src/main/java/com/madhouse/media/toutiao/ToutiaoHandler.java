@@ -375,7 +375,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid()); 
         bidBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? Long.parseLong(mediaResponse.getCrid()):0);
         bidBuilder.setAdslotId(bidRequest.getAdslots(0).getId());
-        bidBuilder.setPrice( builder.getBidfloor());
+        bidBuilder.setPrice(mediaResponse.getPrice());
         
         for (AdType adtype : bidRequest.getAdslots(0).getAdTypeList()) {
             if(builder.getAdtype() == adtype.getNumber()){

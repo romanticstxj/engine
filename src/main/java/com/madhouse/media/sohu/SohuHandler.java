@@ -214,7 +214,7 @@ public class SohuHandler extends MediaBaseHandler {
         //bid对象
         SohuRTB.Response.Bid.Builder bidBuilder = SohuRTB.Response.Bid.newBuilder();
         //在底价上加一分
-        bidBuilder.setPrice(bidRequest.getImpression(0).getBidFloor()+1);
+        bidBuilder.setPrice(mediaResponse.getPrice());
         
         bidBuilder.setAdurl(mediaResponse.getAdm().get(0));
         

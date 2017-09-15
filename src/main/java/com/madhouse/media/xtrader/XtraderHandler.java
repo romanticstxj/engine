@@ -253,7 +253,7 @@ public class XtraderHandler extends MediaBaseHandler {
         bid.setImpid(impid);
         bid.setNurl("");
         bid.setCrid("");
-        bid.setPrice(xtraderRequest.getImp().get(0).getPmp().getDeals().get(0).getBidfloor());
+        bid.setPrice(mediaResponse.getPrice());
         ArrayList<XtraderResponse.Seatbid.Bid> bidList = new ArrayList<>(1);
         bidList.add(bid);
         seatbid.setBid(bidList);

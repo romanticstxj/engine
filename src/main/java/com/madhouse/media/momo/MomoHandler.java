@@ -517,7 +517,7 @@ public class MomoHandler extends MediaBaseHandler {
         MomoExchange.BidResponse.SeatBid.Bid.Builder bidBuilder = MomoExchange.BidResponse.SeatBid.Bid.newBuilder();
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
         bidBuilder.setImpid(bidRequest.getImpList().get(0).getId());
-        bidBuilder.setPrice(mediaRequest.getBidfloor());
+        bidBuilder.setPrice(mediaResponse.getPrice());
         bidBuilder.setCid(mediaResponse.getCid());
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
         bidBuilder.setCrid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");  //物料id
