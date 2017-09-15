@@ -312,11 +312,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.warn("{}:pid is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            String media = mediaRequest.getMedia();
-            if (StringUtils.isEmpty(media)) {
-                logger.warn("{}:media is missing", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
-            }
             String pcat = mediaRequest.getPcat();
             if (StringUtils.isEmpty(pcat)) {
                 logger.warn("{}:pcat is missing", adspaceid);
