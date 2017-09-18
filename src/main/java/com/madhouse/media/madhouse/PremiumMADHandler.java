@@ -38,6 +38,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
+            premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
                 if(request != null){
@@ -45,7 +46,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     mediaBidMetaData.setRequestObject(request);
                     return true;
                 }
-                premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
             }
             return outputStreamWrite(premiumMADResponse,resp);
         } catch (Exception e) {
@@ -172,13 +172,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 return null;
             }
         }
-        //投放的媒体形式
-        if(!StringUtils.isEmpty(madBidRequest.getMedia())){
-            mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
-        } else {
-            mediaRequest.setType(Constant.MediaType.APP);
-        }
-        mediaRequest.build();
         logger.info("PremiumMAD convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }

@@ -323,6 +323,7 @@ public class WorkThread {
             //init mediaid, adspaceid
             mediaRequest.setMediaid(mediaMetaData.getId());
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
+            mediaRequest.setType(mediaMetaData.getType());
 
             //init user ip
             if (!mediaRequest.hasIp()) {
