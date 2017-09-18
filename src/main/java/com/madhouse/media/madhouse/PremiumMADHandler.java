@@ -1,21 +1,28 @@
 package com.madhouse.media.madhouse;
 
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.madhouse.media.momo.MomoBidRequest;
-import com.madhouse.ssp.avro.*;
-import com.sun.org.apache.bcel.internal.generic.GOTO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jetty.http.HttpStatus;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
+import com.madhouse.ssp.avro.Geo;
+import com.madhouse.ssp.avro.MediaBid;
+import com.madhouse.ssp.avro.MediaRequest;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
+import com.madhouse.ssp.avro.MediaResponse;
+import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 
 /**
@@ -24,22 +31,23 @@ import com.madhouse.util.ObjectUtils;
 public class PremiumMADHandler extends MediaBaseHandler {
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        PremiumMADBidRequest mediaRequest = new PremiumMADBidRequest();
+        PremiumMADRequest mediaRequest = new PremiumMADRequest();
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         try {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
             logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
-            premiumMADResponse.setReturncode(Constant.StatusCode.BAD_REQUEST);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
-                mediaBidMetaData.setRequestObject(request);
-                return true;
-            } else {
-                return outputStreamWrite(premiumMADResponse,resp);
+                if(request != null){
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
+                    mediaBidMetaData.setRequestObject(request);
+                    return true;
+                }
+                premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
             }
+            return outputStreamWrite(premiumMADResponse,resp);
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -51,7 +59,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
     * @param madBidRequest
     * @return
     */
-    private Builder conversionToPremiumMADDataModel(PremiumMADBidRequest madBidRequest) {
+    private Builder conversionToPremiumMADDataModel(PremiumMADRequest madBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         //广告请求流水号
         mediaRequest.setBid(madBidRequest.getBid());
@@ -148,14 +156,33 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(!StringUtils.isEmpty(madBidRequest.getDealid())){
             mediaRequest.setDealid(madBidRequest.getDealid());
         }
+        
+        if(!StringUtils.isEmpty(madBidRequest.getLabel())){
+            try{
+                String labels = URLDecoder.decode(madBidRequest.getLabel());
+                JSONArray jsonArray = JSON.parseArray(labels);
+                List<String> list = new ArrayList<>();
+                for(int i=0;i<jsonArray.size();i++){
+                    String label = jsonArray.getString(i);
+                    list.add(label);
+                }
+                mediaRequest.setTags(list);
+            } catch(Exception e){
+                logger.warn("{}:Label parsing error :",madBidRequest.getLabel());
+                return null;
+            }
+        }
         //投放的媒体形式
         if(!StringUtils.isEmpty(madBidRequest.getMedia())){
             mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
+        } else {
+            mediaRequest.setType(Constant.MediaType.APP);
         }
+        mediaRequest.build();
         logger.info("PremiumMAD convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }
-    private int validateRequiredParam(PremiumMADBidRequest mediaRequest) {
+    private int validateRequiredParam(PremiumMADRequest mediaRequest) {
 
         if (ObjectUtils.isNotEmpty(mediaRequest)) {
             // 必填参数

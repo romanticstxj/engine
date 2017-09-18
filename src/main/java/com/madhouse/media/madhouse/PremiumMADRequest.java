@@ -2,7 +2,7 @@ package com.madhouse.media.madhouse;
 
 import java.util.List;
 
-public class PremiumMADBidRequest {
+public class PremiumMADRequest {
     /**
      * Bid Request ID 广告请求流水号必须唯一
      */
@@ -156,7 +156,7 @@ public class PremiumMADBidRequest {
     /**
      * 广告请求时所携带的标签code，UrlEncode编码
      * */
-    private List<String> label;
+    private String label;
     
     /**
      * PDB、PD模式的deal id
@@ -356,10 +356,10 @@ public class PremiumMADBidRequest {
     public void setMcell(String mcell) {
         this.mcell = mcell;
     }
-    public List<String> getLabel() {
+    public String getLabel() {
         return label;
     }
-    public void setLabel(List<String> label) {
+    public void setLabel(String label) {
         this.label = label;
     }
     
