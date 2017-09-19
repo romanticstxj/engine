@@ -146,7 +146,7 @@ public class CacheManager implements Runnable {
     private MetaData metaData = new MetaData();
 
     public boolean init() {
-        this.scheduledExecutor.scheduleAtFixedRate(this, 0, 180, TimeUnit.SECONDS);
+        this.scheduledExecutor.scheduleAtFixedRate(this, 0, ResourceManager.getInstance().getConfiguration().getWebapp().getCacheExpiredTime(), TimeUnit.SECONDS);
         return true;
     }
 

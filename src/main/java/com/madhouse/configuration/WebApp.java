@@ -10,7 +10,8 @@ public class WebApp {
 	private int port;
 	private Boolean gZipOn;
 	private List<Bid> bids;
-	private int expiredTime;
+	private int cacheExpiredTime;
+	private int trackingExpiredTime;
 	private String resourcePath;
 	private int minIdle;
 	private int maxIdle;
@@ -105,15 +106,23 @@ public class WebApp {
 		this.click = click;
 	}
 
-	public int getExpiredTime() {
-		return expiredTime;
-	}
+	public int getCacheExpiredTime() {
+        return cacheExpiredTime;
+    }
 
-	public void setExpiredTime(int expiredTime) {
-		this.expiredTime = expiredTime;
-	}
+    public void setCacheExpiredTime(int cacheExpiredTime) {
+        this.cacheExpiredTime = cacheExpiredTime;
+    }
 
-	public int getBudgetBatchSize() {
+    public int getTrackingExpiredTime() {
+        return trackingExpiredTime;
+    }
+
+    public void setTrackingExpiredTime(int trackingExpiredTime) {
+        this.trackingExpiredTime = trackingExpiredTime;
+    }
+
+    public int getBudgetBatchSize() {
 		return budgetBatchSize;
 	}
 
