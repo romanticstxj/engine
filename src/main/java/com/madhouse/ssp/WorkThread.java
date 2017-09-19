@@ -102,8 +102,8 @@ public class WorkThread {
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setBidtime(Long.parseLong(bidTime));
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > expiredTime) {
+            int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
+            if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > trackingExpiredTime) {
                 impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -196,8 +196,8 @@ public class WorkThread {
             clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setBidtime(Long.parseLong(bidTime));
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > expiredTime) {
+            int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
+            if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > trackingExpiredTime) {
                 clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -320,7 +320,7 @@ public class WorkThread {
             mediaBidMetaData.setMediaMetaData(mediaMetaData);
             mediaBidMetaData.setPlcmtMetaData(plcmtMetaData);
 
-            //init mediaid, adspaceid
+            //init mediaid, adspaceid,Type
             mediaRequest.setMediaid(mediaMetaData.getId());
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
             mediaRequest.setType(mediaMetaData.getType());
