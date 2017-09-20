@@ -191,6 +191,7 @@ public class MADMaxHandler extends DSPBaseHandler {
         dspResponse.setAdm(madResponse.getAdm());
         dspResponse.setLpgurl(madResponse.getClickurl());
         dspResponse.setDealid(madResponse.getDealid());
+        dspResponse.setCrid(madResponse.getCrid());
         Monitor.Builder monitor = Monitor.newBuilder();
         List<Track> tracks=new ArrayList<>();
         for (String track : madResponse.getImgtracking()) {

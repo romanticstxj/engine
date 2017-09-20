@@ -312,7 +312,7 @@ public class CacheManager implements Runnable {
                 String text = this.redisSlave.get(String.format(Constant.CommonKey.MATERIAL_META_DATA, materialId));
                 if (!StringUtils.isEmpty(text)) {
                     MaterialMetaData mediaMetaData = JSON.parseObject(text, MaterialMetaData.class);
-                    var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
+                    var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getDspId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
                 }
             }
         }

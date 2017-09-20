@@ -20,6 +20,9 @@ public class PremiumMADResponse {
 
     //广告活动ID
     private String cid;
+        
+    //广告创意或素材ID
+    private String crid;
     
     private Integer adwidth;
     
@@ -241,5 +244,12 @@ public class PremiumMADResponse {
     public void setDisplaycontent(String displaycontent) {
         this.displaycontent = displaycontent;
     }
-    
+
+    public String getCrid() {
+        return crid;
+    }
+
+    public void setCrid(String crid) {
+        this.crid = crid;
+    }
 }
