@@ -104,6 +104,15 @@ public abstract class MediaBaseHandler {
                     }
 
                     Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
+
+                    if (monitor.getImpurl() == null) {
+                        monitor.setImpurl(new LinkedList<>());
+                    }
+
+                    if (monitor.getClkurl() == null) {
+                        monitor.setClkurl(new LinkedList<>());
+                    }
+
                     monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl()));
                     monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl());
 
