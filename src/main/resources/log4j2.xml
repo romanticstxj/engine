@@ -28,7 +28,7 @@
 			 -->
 		<RollingRandomAccessFile name="premiummad"
 			fileName="${LOG_HOME}/premiummad.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/premiummad-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/premiummad-%d{yyyy-MM-dd HH}-%i.log">
 			<PatternLayout
 				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{1} %L - %msg%xEx%n" />
 			<Policies>
@@ -39,18 +39,19 @@
 		<!-- 媒体 -->
 		<RollingRandomAccessFile name="topic_mediabid"
 			fileName="${LOG_HOME}/topic_mediabid.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_mediabid-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_mediabid-%d{yyyy-MM-dd HH}-%i.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
 			<Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
+            <DefaultRolloverStrategy max="168" />
 		</RollingRandomAccessFile>
 		<!-- dsp -->
 		<RollingRandomAccessFile name="topic_dspbid"
 			fileName="${LOG_HOME}/topic_dspbid.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_dspbid-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_dspbid-%d{yyyy-MM-dd HH}-%i.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -62,7 +63,7 @@
 		<!-- winnotice -->
 		<RollingRandomAccessFile name="topic_winnotice"
 			fileName="${LOG_HOME}/topic_winnotice.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_winnotice-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_winnotice-%d{yyyy-MM-dd HH}-%i.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -74,7 +75,7 @@
 		<!-- impression -->
 		<RollingRandomAccessFile name="topic_impression"
 			fileName="${LOG_HOME}/topic_impression.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_impression-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_impression-%d{yyyy-MM-dd HH}-%i.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
@@ -86,7 +87,7 @@
 		<!-- click -->
 		<RollingRandomAccessFile name="topic_click"
 			fileName="${LOG_HOME}/topic_click.log"
-			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_click-%d{yyyy-MM-dd-HH}.log">
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/topic_click-%d{yyyy-MM-dd HH}-%i.log">
 			<PatternLayout>
                 <Pattern>%m%n</Pattern>
             </PatternLayout>
