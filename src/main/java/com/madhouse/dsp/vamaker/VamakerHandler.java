@@ -40,7 +40,7 @@ public class VamakerHandler extends DSPBaseHandler {
         StringBuilder sb = new StringBuilder(urlTemplate);
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
         String adspaceId = plcmtMetaData.getAdspaceKey();
-        if (dspBidMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
+        if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
         sb.append("_a=").append(adspaceId);
