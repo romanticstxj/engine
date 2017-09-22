@@ -48,18 +48,21 @@ public class IflytekHandler extends DSPBaseHandler {
             }
             iflytek.setAdunitid(adspaceId);
             iflytek.setAppid(adspaceId);
-            
+            //设备型号 
+            iflytek.setModel("phone");
             switch (builder.getOs()) {
             case Constant.OSType.ANDROID:
                 iflytek.setOs(IflytekStatusCode.Os.OS_ANDROID);
                 iflytek.setAdid(builder.getDpid());
                 iflytek.setAaid(builder.getIfa());
                 iflytek.setImei(builder.getDid());
+                iflytek.setVendor("Google");
                 break;
             case Constant.OSType.IOS:
                 iflytek.setOs(IflytekStatusCode.Os.OS_IOS);
                 iflytek.setOpenudid(builder.getDpid());
                 iflytek.setIdfa(builder.getIfa());
+                iflytek.setVendor("Apple");
                 break;
             case Constant.OSType.WINDOWS_PHONE:
                 iflytek.setOs(IflytekStatusCode.Os.OS_WINDOWS_PHONE);
@@ -123,10 +126,7 @@ public class IflytekHandler extends DSPBaseHandler {
             iflytek.setDvw("320");
             //横竖屏
             iflytek.setOrientation("0");
-            //设备生产商 
-            iflytek.setVendor(builder.getMake());
-            //设备型号 
-            iflytek.setModel(builder.getModel());
+            
             //目前使用的语言
             iflytek.setLan("zh-CN");
             //设备类型  Y       -1-未知 

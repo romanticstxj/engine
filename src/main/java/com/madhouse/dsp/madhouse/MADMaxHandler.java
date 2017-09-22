@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -49,8 +50,9 @@ public class MADMaxHandler extends DSPBaseHandler {
         // url编码
         String ua = mediaRequest.getUa();
         String device = mediaRequest.getModel();
-        String pkgname = mediaRequest.getBundle();
+        List<String> tags = mediaRequest.getTags();
         String appname = mediaRequest.getName();
+        String label ="";
         try {
             if (ua != null) {
                 ua = URLEncoder.encode(ua, "UTF-8");
@@ -58,8 +60,8 @@ public class MADMaxHandler extends DSPBaseHandler {
             if (device != null) {
                 device = URLEncoder.encode(device, "UTF-8");
             }
-            if (pkgname != null) {
-                pkgname = URLEncoder.encode(pkgname, "UTF-8");
+            if (tags != null && tags != null) {
+                label = URLEncoder.encode(JSON.toJSONString(tags), "UTF-8");
             }
             if (appname != null) {
                 appname = URLEncoder.encode(appname, "UTF-8");
@@ -88,7 +90,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&adtype=").append(plcmtMetaData.getAdType())
                 .append("&width=").append(mediaRequest.getW())
                 .append("&height=").append(mediaRequest.getH())
-                .append("&pkgname=").append(StringUtil.toString(pkgname))
+                .append("&pkgname=").append(StringUtil.toString(mediaRequest.getBundle()))
                 .append("&conn=").append(StringUtil.toString(mediaRequest.getConnectiontype().toString()))
                 .append("&carrier=").append(StringUtil.toString(mediaRequest.getCarrier().toString()))
                 .append("&device=").append(StringUtil.toString(device))
@@ -107,7 +109,8 @@ public class MADMaxHandler extends DSPBaseHandler {
                 .append("&lat=").append(StringUtil.toString(mediaRequest.getGeoBuilder() != null ? mediaRequest.getGeoBuilder().getLat().toString() : ""))
                 .append("&cell=").append(StringUtil.toString(mediaRequest.getCell()))
                 .append("&mcell=").append(StringUtil.toString(mediaRequest.getCellmd5()))
-                .append("&dealid=").append(StringUtil.toString(mediaRequest.getDealid()));
+                .append("&dealid=").append(StringUtil.toString(mediaRequest.getDealid()))
+                .append("&label=").append(StringUtil.toString(label));
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
