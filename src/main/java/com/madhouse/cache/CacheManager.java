@@ -179,17 +179,21 @@ public class CacheManager implements Runnable {
     }
 
     public boolean checkPolicyBudget(PolicyMetaData policyMetaData) {
+        AtomicLong policyBudgetBatch = null;
+
         synchronized (this) {
-            AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+            policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
             if (policyBudgetBatch == null) {
                 policyBudgetBatch = new AtomicLong(0L);
                 this.policyBudgetBatchMap.put(policyMetaData.getId(), policyBudgetBatch);
             }
+        }
 
-            if (policyBudgetBatch.get() > 0L) {
-                return true;
-            }
+        if (policyBudgetBatch.get() > 0L) {
+            return true;
+        }
 
+        synchronized (policyBudgetBatch) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
