@@ -256,7 +256,8 @@
 					"name": "MediaResponse",
 					"fields": [{
 							"type": "long",
-							"name": "dspid"
+							"name": "dspid",
+							"default": 0
 						}, {
 							"type": ["null", "string"],
 							"name": "cid",

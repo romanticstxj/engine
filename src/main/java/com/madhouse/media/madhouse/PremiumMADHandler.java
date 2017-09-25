@@ -367,7 +367,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             PremiumMADResponse premiumMADResponse=new PremiumMADResponse();
-            if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+            if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,Constant.StatusCode.OK);
                 if (premiumMADResponse != null) {
                     outputStreamWrite(premiumMADResponse,resp);
