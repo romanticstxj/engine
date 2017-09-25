@@ -30,7 +30,8 @@ public abstract class MediaBaseHandler {
         try {
             boolean result = this.parseMediaRequest(req, mediaBidMetaData, resp);
 
-            MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
             if (!result && !StringUtils.isEmpty(mediaRequest.getAdspacekey())) {
                 //get placement metadata
                 PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
@@ -39,7 +40,7 @@ public abstract class MediaBaseHandler {
                     if (mediaMetaData != null) {
                         mediaRequest.setMediaid(mediaMetaData.getId());
                         mediaRequest.setAdspaceid(plcmtMetaData.getId());
-                        LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBidMetaData.getMediaBidBuilder());
+                        LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
                     }
                 }
             }
@@ -139,10 +140,10 @@ public abstract class MediaBaseHandler {
             }
 
             resp.setHeader("Connection", "keep-alive");
-            if (this.packageMediaResponse(mediaBidMetaData, resp)) {
-                LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
-                return true;
-            }
+            boolean result = this.packageMediaResponse(mediaBidMetaData, resp);
+            LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
+
+            return result;
         } catch (Exception ex) {
             logger.error(ex.toString());
         }
