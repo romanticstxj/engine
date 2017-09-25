@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
@@ -27,7 +28,23 @@ public abstract class MediaBaseHandler {
 
     public final boolean parseRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            return this.parseMediaRequest(req, mediaBidMetaData, resp);
+            boolean result = this.parseMediaRequest(req, mediaBidMetaData, resp);
+
+            MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
+            if (!result && !StringUtils.isEmpty(mediaRequest.getAdspacekey())) {
+                //get placement metadata
+                PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
+                if (plcmtMetaData != null) {
+                    MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
+                    if (mediaMetaData != null) {
+                        mediaRequest.setMediaid(mediaMetaData.getId());
+                        mediaRequest.setAdspaceid(plcmtMetaData.getId());
+                        LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBidMetaData.getMediaBidBuilder());
+                    }
+                }
+            }
+
+            return result;
         } catch (Exception ex) {
             logger.error(ex.toString());
         }
