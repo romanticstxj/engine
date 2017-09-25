@@ -86,33 +86,42 @@ public class OppoHandler extends MediaBaseHandler {
         OppoBidRequest.Imp imp = oppoBidRequest.getImp().get(0);
 //        OppoBidRequest.Imp.Pmp pmp =oppoBidRequest.getImp().get(0).getPmp();
         
-        OppoNativeRequest oppoNativeRequest = getRequestNative(oppoBidRequest.getImp().get(0).getNatives().getRequest());
-        
         // 广告请求唯一id
-        mediaRequest.setBid(oppoBidRequest.getId());
         mediaRequest.setAdtype(2);
-        mediaRequest.setName(app.getName());
-        mediaRequest.setBundle(app.getBundle());
-        mediaRequest.setBidfloor(Integer.parseInt(imp.getBidfloor()+""));
+        if(!StringUtils.isEmpty(oppoBidRequest.getId())){
+        	mediaRequest.setBid(oppoBidRequest.getId());
+        }
+        if(!StringUtils.isEmpty(app.getName())){
+        	 mediaRequest.setName(app.getName());
+        }
+        if(!StringUtils.isEmpty(app.getBundle())){
+        	 mediaRequest.setBundle(app.getBundle()); 
+        }
+        if(imp.getBidfloor() !=0){
+        	mediaRequest.setBidfloor(Integer.parseInt(imp.getBidfloor()+""));
+        }
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setType(Constant.MediaType.APP);
         
         StringBuilder sb = new StringBuilder();
         sb.append("OPPO:");
         //广告位id
-        sb.append(imp.getTagid()).append(":");
-        // 操作系统的类型
-        String os = device.getOs(); 
-        if (OppoStatusCode.Os.OS_ANDROID.equalsIgnoreCase(os)) {
-            sb.append(OppoStatusCode.Os.OS_ANDROID);
-            mediaRequest.setDid(device.getDidmd5());
-            mediaRequest.setOs(Constant.OSType.ANDROID);
-        } else if(OppoStatusCode.Os.OS_IOS.equalsIgnoreCase(os)){
-            sb.append(OppoStatusCode.Os.OS_IOS);
-            mediaRequest.setIfa(device.getDidmd5());
-            mediaRequest.setOs(Constant.OSType.IOS);
+        if(!StringUtils.isEmpty(imp.getTagid())){
+        	sb.append(imp.getTagid()).append(":");
         }
-        
+        // 操作系统的类型
+        if(!StringUtils.isEmpty(device.getOs())){
+        	 String os = device.getOs(); 
+	        if (OppoStatusCode.Os.OS_ANDROID.equalsIgnoreCase(os)) {
+	            sb.append(OppoStatusCode.Os.OS_ANDROID);
+	            mediaRequest.setDid(device.getDidmd5());
+	            mediaRequest.setOs(Constant.OSType.ANDROID);
+	        } else if(OppoStatusCode.Os.OS_IOS.equalsIgnoreCase(os)){
+	            sb.append(OppoStatusCode.Os.OS_IOS);
+	            mediaRequest.setIfa(device.getDidmd5());
+	            mediaRequest.setOs(Constant.OSType.IOS);
+	        }
+        }
         //0—未知，1—Ethernet，2—wifi，3—蜂窝网络，未知代，4—蜂窝网络，2G，5—蜂窝网络，3G，6—蜂窝网络，4G。
         switch (device.getConnectiontype()) {
             case OppoStatusCode.ConnectionType.UNKNOWN:
