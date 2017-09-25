@@ -61,7 +61,7 @@ public class ProcterGambleHandler extends DSPBaseHandler {
         
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
         String adspaceId = plcmtMetaData.getAdspaceKey();
-        if (dspBidMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
+        if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
         AdSlot.Builder adSlotBuilder = getAdslot(builder, plcmtMetaData,adspaceId);

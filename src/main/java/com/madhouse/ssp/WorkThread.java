@@ -102,8 +102,8 @@ public class WorkThread {
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setBidtime(Long.parseLong(bidTime));
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > expiredTime) {
+            int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
+            if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > trackingExpiredTime) {
                 impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -196,8 +196,8 @@ public class WorkThread {
             clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setBidtime(Long.parseLong(bidTime));
 
-            int expiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getExpiredTime();
-            if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > expiredTime) {
+            int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
+            if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > trackingExpiredTime) {
                 clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
             }
 
@@ -296,14 +296,6 @@ public class WorkThread {
                 return;
             }
 
-            if (!mediaRequest.hasW() || mediaRequest.getW() <= 0) {
-                mediaRequest.setW(plcmtMetaData.getW());
-            }
-
-            if (!mediaRequest.hasH() || mediaRequest.getH() <= 0) {
-                mediaRequest.setH(plcmtMetaData.getH());
-            }
-
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
             if (mediaMetaData == null) {
                 logger.error("get media metadata error.");
@@ -313,16 +305,25 @@ public class WorkThread {
 
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
                 logger.warn("media or adspace is not allowed.");
-                resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
+                mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
                 return;
             }
 
             mediaBidMetaData.setMediaMetaData(mediaMetaData);
             mediaBidMetaData.setPlcmtMetaData(plcmtMetaData);
 
-            //init mediaid, adspaceid
+            //init mediaid, adspaceid,Type
             mediaRequest.setMediaid(mediaMetaData.getId());
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
+            mediaRequest.setType(mediaMetaData.getType());
+
+            if (!mediaRequest.hasW() || mediaRequest.getW() <= 0) {
+                mediaRequest.setW(plcmtMetaData.getW());
+            }
+
+            if (!mediaRequest.hasH() || mediaRequest.getH() <= 0) {
+                mediaRequest.setH(plcmtMetaData.getH());
+            }
 
             //init user ip
             if (!mediaRequest.hasIp()) {
@@ -338,7 +339,7 @@ public class WorkThread {
             String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
             if (StringUtils.isEmpty(location)) {
                 logger.error("get user's location error.");
-                resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
+                mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
                 return;
             }
 

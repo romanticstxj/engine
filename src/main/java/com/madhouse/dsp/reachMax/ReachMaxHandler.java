@@ -13,6 +13,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.google.protobuf.ByteString;
 import com.madhouse.cache.AdBlockMetaData;
 import com.madhouse.cache.CacheManager;
@@ -63,7 +64,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
         String adspaceId = plcmtMetaData.getAdspaceKey();
-        if (dspBidMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
+        if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
         AdSlot.Builder adSlotBuilder = getAdslot(builder, plcmtMetaData,adspaceId);
@@ -85,7 +86,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
             .setNetwork(networkBuilder)//
             .addAdslots(adSlotBuilder);
 
-        logger.info("ProcterGamble request url:{}", pg.toString());
+        logger.info("ReachMax request url:{}", pg.toString());
         
         HttpPost request = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
         request.setHeader(HTTP.CONTENT_TYPE, HTTP.OCTET_STREAM_TYPE);
@@ -245,7 +246,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         try {
             if(statusCode == Constant.StatusCode.OK){
                 BidResponse bidResponse = BidResponse.parseFrom(EntityUtils.toByteArray(httpResponse.getEntity()));
-                logger.info("ProcterGambleHandler Response is:{}",bidResponse.toString());
+                logger.info("ReachMax Response is:{}",bidResponse.toString());
                 List<Ad> ads = bidResponse.getAdsList();
                 if (ads != null && ads.size() != 0) { // 只取第一个广告
                     Ad ad = ads.get(0);
@@ -302,7 +303,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
             }
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
         } catch (Exception e) {
-            logger.error("ProcterGambleHandler Response error:{}", dspBidMetaData.getDspBidBuilder().toString());
+            logger.error("ReachMax Response error:{}", JSON.toJSONString(dspResponse));
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return false;
         }

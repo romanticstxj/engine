@@ -16,6 +16,7 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.alibaba.fastjson.JSON;
 import com.madhouse.configuration.Kafka;
 import com.madhouse.kafkaclient.producer.KafkaProducer;
 import com.madhouse.kafkaclient.util.KafkaCallback;
@@ -53,7 +54,7 @@ public class LoggerUtil extends KafkaCallback {
         try {
             sendMessage(kafkaProducer, getAvroBytes(message.build()),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.KafkaTopicType.KAFKA_DSP_BID));
         } catch (Exception e) {
-            premiumMadLogger.error(e.toString());
+            premiumMadLogger.error(String.format("%s-%s", e.toString(),JSON.toJSONString(message)));
         }
     }
 
@@ -61,7 +62,7 @@ public class LoggerUtil extends KafkaCallback {
         try {
             sendMessage(kafkaProducer, getAvroBytes(message.build()),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.KafkaTopicType.KAFKA_MEDIA_BID));
         } catch (Exception e) {
-            premiumMadLogger.error(e.toString());
+            premiumMadLogger.error(String.format("%s-%s", e.toString(),JSON.toJSONString(message)));
         }
     }
 
@@ -69,7 +70,7 @@ public class LoggerUtil extends KafkaCallback {
         try {
             sendMessage(kafkaProducer, getAvroBytes(message.build()),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.KafkaTopicType.KAFKA_WIN_NOTICE));
         } catch (Exception e) {
-            premiumMadLogger.error(e.toString());
+            premiumMadLogger.error(String.format("%s-%s", e.toString(),JSON.toJSONString(message)));
         }
     }
 
@@ -77,7 +78,7 @@ public class LoggerUtil extends KafkaCallback {
         try {
             sendMessage(kafkaProducer, getAvroBytes(message.build()),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.KafkaTopicType.KAFKA_IMPRESSION));
         } catch (Exception e) {
-            premiumMadLogger.error(e.toString());
+            premiumMadLogger.error(String.format("%s-%s", e.toString(),JSON.toJSONString(message)));
         }
     }
 
@@ -85,7 +86,7 @@ public class LoggerUtil extends KafkaCallback {
         try {
             sendMessage(kafkaProducer, getAvroBytes(message.build()),ResourceManager.getInstance().getConfiguration().getKafka().getTopic(Constant.KafkaTopicType.KAFKA_CLICK));
         } catch (Exception e) {
-            premiumMadLogger.error(e.toString());
+            premiumMadLogger.error(String.format("%s-%s", e.toString(),JSON.toJSONString(message)));
         }
     }
 

@@ -38,6 +38,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
+            premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
                 if(request != null){
@@ -45,7 +46,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     mediaBidMetaData.setRequestObject(request);
                     return true;
                 }
-                premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
             }
             return outputStreamWrite(premiumMADResponse,resp);
         } catch (Exception e) {
@@ -65,7 +65,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
         mediaRequest.setBid(madBidRequest.getBid());
         //广告位标识
         mediaRequest.setAdspacekey(madBidRequest.getAdspaceid());
-        mediaRequest.setBundle(madBidRequest.getPkgname());
         //应用程序名称
         mediaRequest.setName(madBidRequest.getAppname());
         mediaRequest.setAdtype(Integer.parseInt(madBidRequest.getAdtype()));        
@@ -126,14 +125,6 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if(!StringUtils.isEmpty(madBidRequest.getIp())){
             mediaRequest.setIp(madBidRequest.getIp());
         }
-        if(!StringUtils.isEmpty(madBidRequest.getUa())){
-            mediaRequest.setUa(madBidRequest.getUa());
-        }
-        //设备型号
-        
-        if(!StringUtils.isEmpty(madBidRequest.getDevice())){
-            mediaRequest.setModel(madBidRequest.getDevice());
-        }
         // 手机号码。
         if(!StringUtils.isEmpty(madBidRequest.getCell())){
             mediaRequest.setCell(madBidRequest.getCell());
@@ -172,13 +163,35 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 return null;
             }
         }
-        //投放的媒体形式
-        if(!StringUtils.isEmpty(madBidRequest.getMedia())){
-            mediaRequest.setType(Integer.parseInt(madBidRequest.getMedia()));
-        } else {
-            mediaRequest.setType(Constant.MediaType.APP);
+        //设备型号
+        if(!StringUtils.isEmpty(madBidRequest.getDevice())){
+            try{
+                String device = URLDecoder.decode(madBidRequest.getDevice());
+                mediaRequest.setMake(device);
+                mediaRequest.setModel(device);
+            } catch(Exception e){
+                logger.warn("{}:Device parsing error :",madBidRequest.getDevice());
+                return null;
+            }
         }
-        mediaRequest.build();
+        if(!StringUtils.isEmpty(madBidRequest.getUa())){
+            try{
+                String ua = URLDecoder.decode(madBidRequest.getUa());
+                mediaRequest.setUa(ua);
+            } catch(Exception e){
+                logger.warn("{}:ua parsing error :",madBidRequest.getUa());
+                return null;
+            }
+        }
+        if(!StringUtils.isEmpty(madBidRequest.getAppname())){
+            try{
+                String appName = URLDecoder.decode(madBidRequest.getAppname());
+                mediaRequest.setBundle(appName);
+            } catch(Exception e){
+                logger.warn("{}:ua appName error :",madBidRequest.getAppname());
+                return null;
+            }
+        }
         logger.info("PremiumMAD convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }
@@ -354,7 +367,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             PremiumMADResponse premiumMADResponse=new PremiumMADResponse();
-            if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+            if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,Constant.StatusCode.OK);
                 if (premiumMADResponse != null) {
                     outputStreamWrite(premiumMADResponse,resp);
@@ -406,6 +419,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setBid(mediaRequest.getBid());
             premiumMADResponse.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
             premiumMADResponse.setCid(mediaResponse.getCid());
+            premiumMADResponse.setCrid(mediaResponse.getCrid());
             premiumMADResponse.setAdwidth(mediaRequest.getW());
             premiumMADResponse.setAdheight(mediaRequest.getH());
             

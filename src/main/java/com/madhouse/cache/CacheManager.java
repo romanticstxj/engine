@@ -146,7 +146,7 @@ public class CacheManager implements Runnable {
     private MetaData metaData = new MetaData();
 
     public boolean init() {
-        this.scheduledExecutor.scheduleAtFixedRate(this, 0, 180, TimeUnit.SECONDS);
+        this.scheduledExecutor.scheduleAtFixedRate(this, 0, ResourceManager.getInstance().getConfiguration().getWebapp().getCacheExpiredTime(), TimeUnit.SECONDS);
         return true;
     }
 
@@ -179,17 +179,21 @@ public class CacheManager implements Runnable {
     }
 
     public boolean checkPolicyBudget(PolicyMetaData policyMetaData) {
+        AtomicLong policyBudgetBatch = null;
+
         synchronized (this) {
-            AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+            policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
             if (policyBudgetBatch == null) {
                 policyBudgetBatch = new AtomicLong(0L);
                 this.policyBudgetBatchMap.put(policyMetaData.getId(), policyBudgetBatch);
             }
+        }
 
-            if (policyBudgetBatch.get() > 0L) {
-                return true;
-            }
+        if (policyBudgetBatch.get() > 0L) {
+            return true;
+        }
 
+        synchronized (policyBudgetBatch) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
@@ -312,7 +316,7 @@ public class CacheManager implements Runnable {
                 String text = this.redisSlave.get(String.format(Constant.CommonKey.MATERIAL_META_DATA, materialId));
                 if (!StringUtils.isEmpty(text)) {
                     MaterialMetaData mediaMetaData = JSON.parseObject(text, MaterialMetaData.class);
-                    var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
+                    var.put(String.format(Constant.CommonKey.MATERIAL_MAPPING_DATA, mediaMetaData.getDspId(),mediaMetaData.getMaterialId(),mediaMetaData.getMediaId(),mediaMetaData.getAdspaceId()), mediaMetaData);
                 }
             }
         }
