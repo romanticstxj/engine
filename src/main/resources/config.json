@@ -8,7 +8,8 @@
         "maxIdle": 20,
         "maxTotal": 30,
         "gZipOn": true,
-        "expiredTime": 86400,
+        "cacheExpiredTime": 60,
+        "trackingExpiredTime": 86400,
         "budgetBatchSize": 1000,
         "bids": [{
                 "path": "/adcall/bidrequest",
@@ -52,6 +53,9 @@
             }, {
                 "path": "/adcall/sina/bidrequest",
                 "className": "com.madhouse.media.sina.SinaHandler"
+            },{
+                "path": "/adcall/oppo/bidrequest",
+                "className": "com.madhouse.media.oppo.OppoHandler"
             }
         ],
         "impression": "/adcall/impression",
