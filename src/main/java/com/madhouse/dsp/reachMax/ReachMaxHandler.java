@@ -100,13 +100,13 @@ public class ReachMaxHandler extends DSPBaseHandler {
             case Constant.OSType.ANDROID:
                 deviceBuilder.setOs(Os.ANDROID);
                 UdId.Builder udidBuilder = UdId.newBuilder();
-                String aid=builder.getDpid();
+                String aid=! StringUtils.isEmpty(builder.getDpid()) ? builder.getDpid() : !StringUtils.isEmpty(builder.getDpidmd5()) ? builder.getDpidmd5(): null  ;
+                String imei=! StringUtils.isEmpty(builder.getDid()) ? builder.getDid() : !StringUtils.isEmpty(builder.getDidmd5()) ? builder.getDidmd5(): null  ;
                 if (aid != null) {
                     udidBuilder.setAndroidId(aid);
-                } else if (builder.getDid() != null) {
-                    udidBuilder.setAndroidId(builder.getDid());
+                } else if (imei != null) {
+                    udidBuilder.setAndroidId(imei);
                 }
-                String imei = builder.getDid();
                 if (imei != null) {
                     deviceBuilder = deviceBuilder.setUdid(udidBuilder.setImei(imei));
                 } else if (builder.getMac() != null) {
@@ -210,7 +210,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
 
     private App.Builder getApp(com.madhouse.ssp.avro.MediaRequest.Builder builder, String adspaceId) {
         App.Builder appBuilder = App.newBuilder();
-        appBuilder.setId(adspaceId);
+        appBuilder.setId("madhouse");
         App.StaticInfo.Builder appStaticInfoBuilder = App.StaticInfo.newBuilder();
         String pkgname = builder.getBundle();
         if (pkgname != null && pkgname.length() > 0) {

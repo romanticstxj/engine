@@ -171,7 +171,7 @@ public class MADMaxHandler extends DSPBaseHandler {
             }
             return false;
         } catch (Exception e) {
-            logger.error("MADMax Response :{}", dspBidMetaData.getDspBidBuilder().toString());
+            logger.error(e.toString() + "MADMax_Response_error" + dspBidMetaData.getDspBidBuilder().toString());
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
             return false;
         }
