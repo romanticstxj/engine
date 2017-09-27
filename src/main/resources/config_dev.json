@@ -3,7 +3,6 @@
         "domain": "http://172.16.25.47:8181",
         "resourcePath": "../html",
         "port": 8181,
-        "wokerId": 10,
         "minIdle": 10,
         "maxIdle": 20,
         "maxTotal": 30,
@@ -58,8 +57,8 @@
                 "className": "com.madhouse.media.oppo.OppoHandler"
             }
         ],
-        "impression": "/adcall/impression",
-        "click": "/adcall/click"
+        "impression": "/adtrack/impression",
+        "click": "/adtrack/click"
     },
     "kafka": {
         "brokers": "172.16.26.201:9092,172.16.26.202:9092,172.16.26.203:9092",

@@ -5,6 +5,7 @@ package com.madhouse.dsp;
  */
 
 import com.madhouse.cache.*;
+import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.LoggerUtil;
 import com.madhouse.ssp.avro.*;
@@ -39,7 +40,7 @@ public abstract class DSPBaseHandler {
 
             MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
             DSPRequest.Builder dspRequest = DSPRequest.newBuilder()
-                    .setId(StringUtil.getUUID())
+                    .setId(ResourceManager.getInstance().nextId())
                     .setImpid(mediaBid.getImpid())
                     .setAdtype(plcmtMetaData.getAdType())
                     .setLayout(plcmtMetaData.getLayout())

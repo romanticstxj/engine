@@ -3,8 +3,8 @@ package com.madhouse.util;
  * Created by WUJUNFENG on 2017/7/10.
  */
 public class IdWoker {
-    private final long workerIdBits = 10L;
-    private final long sequenceBits = 12L;
+    private final long workerIdBits = 12L;
+    private final long sequenceBits = 10L;
     private final long maxWorkerId =  -1L ^ (-1L << workerIdBits);
     private final long sequenceMask = -1L ^ (-1L << sequenceBits);
     private final long timeLeftShift = workerIdBits + sequenceBits;

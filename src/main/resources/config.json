@@ -3,7 +3,6 @@
         "domain": "@domain@",
         "resourcePath": "../html",
         "port": 8181,
-        "wokerId": 10,
         "minIdle": 10,
         "maxIdle": 20,
         "maxTotal": 30,

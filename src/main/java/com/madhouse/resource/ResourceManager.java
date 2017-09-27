@@ -14,6 +14,7 @@ import com.madhouse.util.IPLocation;
 import com.madhouse.util.IdWoker;
 import com.madhouse.util.StringUtil;
 
+import com.madhouse.util.Utility;
 import com.madhouse.util.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,6 +28,7 @@ import com.madhouse.ssp.LoggerUtil;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -89,7 +91,14 @@ public class ResourceManager {
 			}
         }
 
-        this.idWoker = new IdWoker(this.getConfiguration().getWebapp().getWokerId());
+        long workerId = Utility.nextInt(4096);
+        Jedis redisConn = this.getJedisPoolMaster().getResource();
+        if (redisConn != null) {
+            workerId = redisConn.incr(Constant.CommonKey.WORKER_ID) % 4096;
+            redisConn.close();
+        }
+        
+        this.idWoker = new IdWoker(workerId);
         this.kafkaProducer = new KafkaProducer(this.configuration.getKafka().getBrokers(), 8, null);
         return this.kafkaProducer.start(LoggerUtil.getInstance());
     }

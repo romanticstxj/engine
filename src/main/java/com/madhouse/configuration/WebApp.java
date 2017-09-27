@@ -6,7 +6,6 @@ public class WebApp {
 	private String domain;
 	private String impression;
 	private String click;
-	private int wokerId;
 	private int port;
 	private Boolean gZipOn;
 	private List<Bid> bids;
@@ -48,14 +47,6 @@ public class WebApp {
 
 	public void setMaxTotal(int maxTotal) {
 		this.maxTotal = maxTotal;
-	}
-
-	public int getWokerId() {
-		return wokerId;
-	}
-
-	public void setWokerId(int wokerId) {
-		this.wokerId = wokerId;
 	}
 
 	public int getPort() {

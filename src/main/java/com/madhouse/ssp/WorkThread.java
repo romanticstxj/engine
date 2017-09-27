@@ -271,7 +271,7 @@ public class WorkThread {
             MediaBid.Builder mediaBid = MediaBid.newBuilder();
 
             //init mediaBid object
-            mediaBid.setImpid(StringUtil.getUUID());
+            mediaBid.setImpid(ResourceManager.getInstance().nextId());
             mediaBid.setIp(HttpUtil.getRealIp(req));
             mediaBid.setUa(HttpUtil.getUserAgent(req));
             mediaBid.setTime(System.currentTimeMillis());

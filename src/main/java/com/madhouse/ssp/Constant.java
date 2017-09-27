@@ -10,6 +10,8 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 public final class Constant {
 
     public static final class CommonKey {
+        public static final String WORKER_ID = "str:premiummad:worker_id";
+
         //deliverytype, targettype, targetinfo
         public static final String TARGET_KEY = "set:%d:%d:%s:policys";
         //valid check record
