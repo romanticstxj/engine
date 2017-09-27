@@ -3,12 +3,12 @@ package com.madhouse.util;
  * Created by WUJUNFENG on 2017/7/10.
  */
 public class IdWoker {
-    private final long workerIdBits = 12L;
-    private final long sequenceBits = 10L;
-    private final long maxWorkerId =  -1L ^ (-1L << workerIdBits);
-    private final long sequenceMask = -1L ^ (-1L << sequenceBits);
-    private final long timeLeftShift = workerIdBits + sequenceBits;
-    private final long workerIdLeftShift = sequenceBits;
+    private static final long workerIdBits = 12L;
+    private static final long sequenceBits = 10L;
+    private static final long maxWorkerId =  -1L ^ (-1L << workerIdBits);
+    private static final long sequenceMask = -1L ^ (-1L << sequenceBits);
+    private static final long timeLeftShift = workerIdBits + sequenceBits;
+    private static final long workerIdLeftShift = sequenceBits;
 
     private long workerId;
     private long lastTime = 0L;
@@ -20,6 +20,10 @@ public class IdWoker {
         }
 
         this.workerId = workerId;
+    }
+
+    public static long getMaxWorkerId() {
+        return maxWorkerId;
     }
 
     public synchronized long nextId() {

@@ -91,10 +91,10 @@ public class ResourceManager {
 			}
         }
 
-        long workerId = Utility.nextInt(4096);
+        long workerId = Utility.nextInt((int)IdWoker.getMaxWorkerId() + 1);
         Jedis redisConn = this.getJedisPoolMaster().getResource();
         if (redisConn != null) {
-            workerId = redisConn.incr(Constant.CommonKey.WORKER_ID) % 4096;
+            workerId = redisConn.incr(Constant.CommonKey.WORKER_ID) % (IdWoker.getMaxWorkerId() + 1);
             redisConn.close();
         }
         
