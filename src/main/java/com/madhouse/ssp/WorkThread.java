@@ -67,7 +67,6 @@ public class WorkThread {
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
-            String bidTime = req.getParameter("_ts");
             String sign = req.getParameter("_sn");
 
             //args check
@@ -82,8 +81,7 @@ public class WorkThread {
                     .append(impId)
                     .append(mediaId)
                     .append(plcmtId)
-                    .append(ext)
-                    .append(bidTime);
+                    .append(ext);
 
             CRC32 crc32 = new CRC32();
             crc32.update(sb.toString().getBytes("utf-8"));
@@ -100,7 +98,7 @@ public class WorkThread {
             impressionTrack.setTime(System.currentTimeMillis());
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
-            impressionTrack.setBidtime(Long.parseLong(bidTime));
+            impressionTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
             if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > trackingExpiredTime) {
@@ -161,7 +159,6 @@ public class WorkThread {
             String plcmtId = req.getParameter("_pid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
-            String bidTime = req.getParameter("_ts");
             String sign = req.getParameter("_sn");
 
             //args check
@@ -176,8 +173,7 @@ public class WorkThread {
                     .append(impId)
                     .append(mediaId)
                     .append(plcmtId)
-                    .append(ext)
-                    .append(bidTime);
+                    .append(ext);
 
             CRC32 crc32 = new CRC32();
             crc32.update(sb.toString().getBytes("utf-8"));
@@ -194,7 +190,7 @@ public class WorkThread {
             clickTrack.setTime(System.currentTimeMillis());
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
-            clickTrack.setBidtime(Long.parseLong(bidTime));
+            clickTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
             if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > trackingExpiredTime) {
@@ -356,7 +352,6 @@ public class WorkThread {
             trackingParam.setMediaId(plcmtMetaData.getMediaId());
             trackingParam.setAdspaceId(plcmtMetaData.getId());
             trackingParam.setLocation(mediaBid.getLocation());
-            trackingParam.setBidTime(System.currentTimeMillis());
 
             AuctionPriceInfo mediaIncome = new AuctionPriceInfo();
             mediaIncome.setBidPrice(plcmtMetaData.getBidFloor());

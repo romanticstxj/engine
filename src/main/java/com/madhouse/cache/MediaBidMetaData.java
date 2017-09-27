@@ -97,7 +97,6 @@ public class MediaBidMetaData {
         private String location;
         private AuctionPriceInfo mediaIncome;
         private AuctionPriceInfo dspCost;
-        private long bidTime;
         private String trackingParams = null;
 
         public String getReqId() {
@@ -156,14 +155,6 @@ public class MediaBidMetaData {
             this.location = location;
         }
 
-        public long getBidTime() {
-            return bidTime;
-        }
-
-        public void setBidTime(long bidTime) {
-            this.bidTime = bidTime;
-        }
-
         public AuctionPriceInfo getMediaIncome() {
             return mediaIncome;
         }
@@ -199,8 +190,7 @@ public class MediaBidMetaData {
                         .append(getImpId())
                         .append(getMediaId())
                         .append(getAdspaceId())
-                        .append(ext)
-                        .append(getBidTime());
+                        .append(ext);
 
                 CRC32 crc32 = new CRC32();
                 crc32.update(sb.toString().getBytes("utf-8"));
@@ -219,8 +209,6 @@ public class MediaBidMetaData {
                         .append(getLocation())
                         .append("&_ext=")
                         .append(StringUtil.urlSafeBase64Encode(ext.getBytes("utf-8")))
-                        .append("&_ts=")
-                        .append(getBidTime())
                         .append("&_sn=")
                         .append(sign);
 
