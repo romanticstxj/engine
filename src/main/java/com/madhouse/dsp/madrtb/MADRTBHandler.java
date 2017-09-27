@@ -23,13 +23,15 @@ import java.util.List;
  * Created by WUJUNFENG on 2017/7/19.
  */
 public class MADRTBHandler extends DSPBaseHandler {
+    private static final String MMRTB_VERSION = "1.3";
+
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
         DSPRequest.Builder dspRequest = dspBidMetaData.getDspBidBuilder().getRequestBuilder();
         MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
         HttpPost httpPost = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
-        httpPost.setHeader("x-madrtb-version", "1.2");
+        httpPost.setHeader("x-madrtb-version", MMRTB_VERSION);
         httpPost.setHeader("Content-Type", "application/x-protobuf; charset=utf-8");
 
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
