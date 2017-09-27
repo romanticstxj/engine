@@ -57,4 +57,8 @@ public class IdWoker {
 
         return ((lastTime << timeLeftShift) | (workerId << workerIdLeftShift) | sequenceId);
     }
+
+    public static long getCreateTimeMillis(long id) {
+        return id >> timeLeftShift;
+    }
 }
