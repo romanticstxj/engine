@@ -53,13 +53,13 @@
             }, {
                 "path": "/adcall/sina/bidrequest",
                 "className": "com.madhouse.media.sina.SinaHandler"
-            },{
+            }, {
                 "path": "/adcall/oppo/bidrequest",
                 "className": "com.madhouse.media.oppo.OppoHandler"
             }
         ],
-        "impression": "/adcall/impression",
-        "click": "/adcall/click"
+        "impression": "/adtrack/impression",
+        "click": "/adtrack/click"
     },
     "kafka": {
         "brokers": "@brokers@",
