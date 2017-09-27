@@ -64,7 +64,7 @@ public class WorkThread {
         try {
             String impId = req.getParameter("_impid");
             String mediaId = req.getParameter("_mid");
-            String plcmtId = req.getParameter("_pid");
+            String plcmtId = req.getParameter("_spid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
             String sign = req.getParameter("_sn");
@@ -156,7 +156,7 @@ public class WorkThread {
         try {
             String impId = req.getParameter("_impid");
             String mediaId = req.getParameter("_mid");
-            String plcmtId = req.getParameter("_pid");
+            String plcmtId = req.getParameter("_spid");
             String location = req.getParameter("_loc");
             String ext = req.getParameter("_ext");
             String sign = req.getParameter("_sn");

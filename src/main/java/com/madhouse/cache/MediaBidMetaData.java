@@ -203,7 +203,7 @@ public class MediaBidMetaData {
                         .append(getImpId())
                         .append("&_mid=")
                         .append(getMediaId())
-                        .append("&_pid=")
+                        .append("&_spid=")
                         .append(getAdspaceId())
                         .append("&_loc=")
                         .append(getLocation())
