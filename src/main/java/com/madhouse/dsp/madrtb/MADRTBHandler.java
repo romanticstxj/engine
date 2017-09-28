@@ -188,8 +188,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.COVER);
-                        image.setW(cover.getSizes().get(0).getW());
-                        image.setH(cover.getSizes().get(0).getH());
+                        image.setW(mediaRequest.getW());
+                        image.setH(mediaRequest.getH());
                         image.addAllMimes(cover.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setImage(image);
