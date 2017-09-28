@@ -10,9 +10,8 @@ import java.util.List;
 public class PlcmtMetaData {
     private long id;
     private long mediaId;
-    private int w;
-    private int h;
     private int adType;
+    private List<Size> sizes;
     private int layout;
     private long blockId;
 
@@ -47,6 +46,7 @@ public class PlcmtMetaData {
             this.h = h;
         }
     }
+
     public static class Image {
         private List<Size> sizes;
         private List<String> mimes;
@@ -207,22 +207,6 @@ public class PlcmtMetaData {
         this.mediaId = mediaId;
     }
 
-    public int getW() {
-        return w;
-    }
-
-    public void setW(int w) {
-        this.w = w;
-    }
-
-    public int getH() {
-        return h;
-    }
-
-    public void setH(int h) {
-        this.h = h;
-    }
-
     public int getAdType() {
         return adType;
     }
@@ -309,5 +293,13 @@ public class PlcmtMetaData {
 
     public void setEnableHttps(boolean enableHttps) {
         this.enableHttps = enableHttps;
+    }
+
+    public List<Size> getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(List<Size> sizes) {
+        this.sizes = sizes;
     }
 }

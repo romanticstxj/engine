@@ -313,14 +313,6 @@ public class WorkThread {
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
             mediaRequest.setType(mediaMetaData.getType());
 
-            if (!mediaRequest.hasW() || mediaRequest.getW() <= 0) {
-                mediaRequest.setW(plcmtMetaData.getW());
-            }
-
-            if (!mediaRequest.hasH() || mediaRequest.getH() <= 0) {
-                mediaRequest.setH(plcmtMetaData.getH());
-            }
-
             //init user ip
             if (!mediaRequest.hasIp()) {
                 mediaRequest.setIp(mediaBid.getIp());
