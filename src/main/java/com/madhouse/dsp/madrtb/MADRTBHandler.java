@@ -6,6 +6,7 @@ import com.madhouse.rtb.PremiumMADRTBProtocol;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.AESUtil;
+import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.lang3.StringUtils;
@@ -169,26 +170,26 @@ public class MADRTBHandler extends DSPBaseHandler {
 
                     int id = 1;
                     PlcmtMetaData.Native var1 = plcmtMetaData.getNatives();
-                    if (var1.getIcon() != null) {
+                    if (var1.getIcon() != null && !ObjectUtils.isEmpty(var1.getIcon().getSizes())) {
                         PlcmtMetaData.Image icon = var1.getIcon();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.ICON);
-                        image.setW(icon.getW());
-                        image.setH(icon.getH());
+                        image.setW(icon.getSizes().get(0).getW());
+                        image.setH(icon.getSizes().get(0).getH());
                         image.addAllMimes(icon.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setImage(image);
                         nativeRequest.addAssets(asset);
                     }
 
-                    if (var1.getCover() != null) {
+                    if (var1.getCover() != null && !ObjectUtils.isEmpty(var1.getCover().getSizes())) {
                         PlcmtMetaData.Image cover = var1.getCover();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Builder asset = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.newBuilder();
                         PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.Builder image = PremiumMADRTBProtocol.BidRequest.Impression.Native.NativeRequest.Asset.Image.newBuilder();
                         image.setType(Constant.NativeImageType.COVER);
-                        image.setW(cover.getW());
-                        image.setH(cover.getH());
+                        image.setW(cover.getSizes().get(0).getW());
+                        image.setH(cover.getSizes().get(0).getH());
                         image.addAllMimes(cover.getMimes());
                         asset.setId(Integer.toString(id++));
                         asset.setImage(image);
