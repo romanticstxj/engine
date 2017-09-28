@@ -323,6 +323,14 @@ public class WorkThread {
                 mediaRequest.setUa(mediaBid.getUa());
             }
 
+            if (!mediaRequest.hasW() || mediaRequest.getW() <= 0 || !mediaRequest.hasH() || mediaRequest.getH() <= 0) {
+                if (!ObjectUtils.isEmpty(plcmtMetaData.getSizes())) {
+                    PlcmtMetaData.Size size = plcmtMetaData.getSizes().get(Utility.nextInt(plcmtMetaData.getSizes().size()));
+                    mediaRequest.setW(size.getW());
+                    mediaRequest.setH(size.getH());
+                }
+            }
+
             //init location
             String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
             if (StringUtils.isEmpty(location)) {
