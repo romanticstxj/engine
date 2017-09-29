@@ -152,7 +152,7 @@ public class MADMaxHandler extends DSPBaseHandler {
                         int returnCode = madResponse.getReturncode();
                         if (returnCode == HttpServletResponse.SC_METHOD_NOT_ALLOWED ||
                                 returnCode == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED) {
-                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
+                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.NO_CONTENT);
                         } else if (returnCode == HttpServletResponse.SC_REQUEST_TIMEOUT){
                             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
                         } else if (returnCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR ){
