@@ -447,7 +447,7 @@ public class WorkThread {
                         continue;
                     }
 
-                    CacheManager.getInstance().decrPolicyBudget(policyMetaData);
+                    CacheManager.getInstance().incrPolicyBudgetBy(policyMetaData, -1L);
 
                     if (this.multiHttpClient.execute()) {
                         List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());
@@ -527,6 +527,8 @@ public class WorkThread {
                         }
 
                         return;
+                    } else {
+                        CacheManager.getInstance().incrPolicyBudgetBy(policyMetaData, 1L);
                     }
 
                     policyMetaDatas.remove(selectedPolicy);

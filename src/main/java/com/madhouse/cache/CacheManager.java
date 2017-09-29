@@ -171,10 +171,10 @@ public class CacheManager implements Runnable {
         return null;
     }
 
-    public void decrPolicyBudget(PolicyMetaData policyMetaData) {
+    public void incrPolicyBudgetBy(PolicyMetaData policyMetaData, Long count) {
         AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
-        if (policyBudgetBatch != null) {
-            policyBudgetBatch.decrementAndGet();
+        if (policyBudgetBatch != null && count != null) {
+            policyBudgetBatch.addAndGet(count);
         }
     }
 
