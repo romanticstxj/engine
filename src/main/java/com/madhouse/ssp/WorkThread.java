@@ -442,9 +442,14 @@ public class WorkThread {
                         }
                     }
 
-                    if (!this.multiHttpClient.isEmpty() && this.multiHttpClient.execute()) {
-                        CacheManager.getInstance().decrPolicyBudget(policyMetaData);
+                    if (this.multiHttpClient.isEmpty()) {
+                        policyMetaDatas.remove(selectedPolicy);
+                        continue;
+                    }
 
+                    CacheManager.getInstance().decrPolicyBudget(policyMetaData);
+
+                    if (this.multiHttpClient.execute()) {
                         List<DSPBidMetaData> bidderList = new ArrayList<>(selectedDspList.size());
                         for (Map.Entry entry : selectedDspList.entrySet()) {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();

@@ -187,7 +187,9 @@ public class CacheManager implements Runnable {
                 policyBudgetBatch = new AtomicLong(0L);
                 this.policyBudgetBatchMap.put(policyMetaData.getId(), policyBudgetBatch);
             }
+        }
 
+        synchronized (policyBudgetBatch) {
             if (policyBudgetBatch.get() > 0L) {
                 return true;
             }
@@ -493,7 +495,9 @@ public class CacheManager implements Runnable {
                 String dailyCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_DAILY, policyMetaData.getId(), currentDate));
 
                 Pair<Long, Long> budgetCount = this.getPolicyBudget(policyMetaData, Long.parseLong(totalCount), Long.parseLong(dailyCount));
-                if (budgetCount == null || budgetCount.getLeft() <= 0) {
+                AtomicLong policyBudgetBatch = this.policyBudgetBatchMap.get(policyMetaData.getId());
+
+                if (budgetCount == null || (budgetCount.getLeft() <= 0 && (policyBudgetBatch == null || policyBudgetBatch.get() <= 0))) {
                     continue;
                 }
             }
