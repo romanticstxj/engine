@@ -142,33 +142,38 @@ public class MADMaxHandler extends DSPBaseHandler {
     @Override
     public boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         try {
-            PremiumMADResponse madResponse = JSON.parseObject(JSON.parseObject(ObjectUtils.toEntityString(httpResponse.getEntity())).getString(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getTagid()), PremiumMADResponse.class);
             switch (httpResponse.getStatusLine().getStatusCode()){
-                case HttpServletResponse.SC_OK ://200
-                case HttpServletResponse.SC_METHOD_NOT_ALLOWED :    //405
-                case HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED : //407
-                case HttpServletResponse.SC_REQUEST_TIMEOUT : //408
+                case HttpServletResponse.SC_OK : {
+                    PremiumMADResponse madResponse = JSON.parseObject(JSON.parseObject(ObjectUtils.toEntityString(httpResponse.getEntity())).getString(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getTagid()), PremiumMADResponse.class);
                     if (madResponse != null && madResponse.getReturncode() != null) {
                         int returnCode = madResponse.getReturncode();
-                        if (returnCode == HttpServletResponse.SC_METHOD_NOT_ALLOWED ||
-                                returnCode == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED) {
-                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.NO_CONTENT);
-                        } else if (returnCode == HttpServletResponse.SC_REQUEST_TIMEOUT){
-                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
-                        } else if (returnCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR ){
-                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-                        }  else if (returnCode == HttpServletResponse.SC_OK){
+                        if (returnCode == HttpServletResponse.SC_OK) {
                             DSPResponse.Builder response= convertMADMaxResponse(madResponse,dspBidMetaData);
                             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
                             dspBidMetaData.getDspBidBuilder().setResponseBuilder(response);
+
                             return true;
+                        } else {
+                            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
                         }
+                    } else {
+                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
                     }
+
                     break;
-                case HttpServletResponse.SC_INTERNAL_SERVER_ERROR : //500
-                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
-                    break;   
+                }
+
+                case HttpServletResponse.SC_METHOD_NOT_ALLOWED : {
+                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.NO_CONTENT);
+                    break;
+                }
+
+                default: {
+                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
+                    break;
+                }
             }
+
             return false;
         } catch (Exception e) {
             logger.error(e.toString() + "MADMax_Response_error" + dspBidMetaData.getDspBidBuilder().toString());
@@ -176,6 +181,7 @@ public class MADMaxHandler extends DSPBaseHandler {
             return false;
         }
     }
+
     private Builder convertMADMaxResponse(PremiumMADResponse madResponse, DSPBidMetaData dspBidMetaData) {
         DSPRequest.Builder dspRequest = dspBidMetaData.getDspBidBuilder().getRequestBuilder();
 
