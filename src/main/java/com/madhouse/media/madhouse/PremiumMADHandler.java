@@ -373,16 +373,16 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     outputStreamWrite(premiumMADResponse,resp);
                     return true;
                 }
-            } else if (mediaBid.getStatus() == Constant.StatusCode.NO_CONTENT){
-                premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_405);
-                return outputStreamWrite(premiumMADResponse,resp);
             } else if (mediaBid.getStatus() == Constant.StatusCode.REQUEST_TIMEOUT){
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_502);
                 return outputStreamWrite(premiumMADResponse,resp);
             } else if (mediaBid.getStatus() == Constant.StatusCode.INTERNAL_ERROR){
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_501);
                 return outputStreamWrite(premiumMADResponse,resp);
-            }
+            } else {
+                premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_405);
+                return outputStreamWrite(premiumMADResponse,resp);
+            } 
             
         }
         return false;
@@ -396,6 +396,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             .append(JSON.toJSONString(premiumMADResponse))
             .append("}");
         try {
+            resp.setStatus(premiumMADResponse.getReturncode());
             resp.getOutputStream().write(sb.toString().getBytes("utf-8"));
             resp.setHeader("Content-Type", "application/json; charset=utf-8");
         } catch (Exception e) {
