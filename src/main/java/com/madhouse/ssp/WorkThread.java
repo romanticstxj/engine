@@ -470,7 +470,7 @@ public class WorkThread {
 
                             int executeTime = (int)dspBidMetaData.getHttpClient().getExecuteTime();
                             dspBidMetaData.getDspBidBuilder().setExecutetime(executeTime);
-                            logger.debug("DSP[id={}] execute time: {}ms", dspBidMetaData.getDspMetaData().getId(), executeTime);
+                            logger.debug("dsp [id={}] execute time: {}ms", dspBidMetaData.getDspMetaData().getId(), executeTime);
                             dspBidMetaData.getHttpRequestBase().releaseConnection();
                         }
 
