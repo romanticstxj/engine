@@ -98,6 +98,7 @@ public class WorkThread {
             impressionTrack.setTime(System.currentTimeMillis());
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
+            impressionTrack.setBid(StringUtil.toString(req.getParameter("_bid")));
             impressionTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
@@ -190,6 +191,7 @@ public class WorkThread {
             clickTrack.setTime(System.currentTimeMillis());
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
+            clickTrack.setBid(StringUtil.toString(req.getParameter("_bid")));
             clickTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();

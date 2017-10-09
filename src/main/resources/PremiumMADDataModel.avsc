@@ -383,6 +383,10 @@
 			"type": "int",
 			"name": "status"
 		}, {
+			"type": ["null", "string"],
+			"name": "bid",
+			"default": null
+		}, {
 			"type": "string",
 			"name": "impid"
 		}, {
@@ -440,6 +444,10 @@
 			"type": "int",
 			"name": "status"
 		}, {
+            "type": ["null", "string"],
+            "name": "bid",
+            "default": null
+        }, {
 			"type": "string",
 			"name": "impid"
 		}, {
