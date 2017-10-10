@@ -10,11 +10,8 @@ import com.madhouse.dsp.proctergamble.ProcterGambleHandler;
 import com.madhouse.dsp.reachMax.ReachMaxHandler;
 import com.madhouse.dsp.vamaker.VamakerHandler;
 import com.madhouse.ssp.Constant;
-import com.madhouse.util.IPLocation;
-import com.madhouse.util.IdWoker;
-import com.madhouse.util.StringUtil;
+import com.madhouse.util.*;
 
-import com.madhouse.util.Utility;
 import com.madhouse.util.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +40,7 @@ public class ResourceManager {
     private ConcurrentHashMap<Integer, DSPBaseHandler> dspBaseHandlerMap = new ConcurrentHashMap<Integer, DSPBaseHandler>();
     private ConcurrentHashMap<String, MediaBaseHandler> mediaApiType = new ConcurrentHashMap<String, MediaBaseHandler>();
 
+    private final IPTools ipTools = new IPTools(ResourceManager.class.getResourceAsStream("/ip.dat"));
     private final IPLocation ipTables = new IPLocation(ResourceManager.class.getResourceAsStream("/locations.dat"));
     private final Configuration configuration = JSON.parseObject(StringUtil.readFile(ResourceManager.class.getResourceAsStream("/config.json")), Configuration.class);
 
@@ -145,5 +143,9 @@ public class ResourceManager {
     
     public String nextId() {
         return Long.toString(this.idWoker.nextId());
+    }
+
+    public IPTools getIpTools() {
+        return ipTools;
     }
 }

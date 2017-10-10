@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.madhouse.resource.ResourceManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -185,11 +186,11 @@ public class ReachMaxHandler extends DSPBaseHandler {
             return null;
         }
         networkBuilder.setIpv4(ip);
-        networkBuilder.setIpv6(location);
+
+        networkBuilder.setIpv6(StringUtil.toString(ResourceManager.getInstance().getIpTools().getLocation(ip)));
         return networkBuilder;
     }
-    
-    
+
     private AdSlot.Builder getAdslot(MediaRequest.Builder builder, PlcmtMetaData plcmtMetaData, String adspaceId) {
         AdSlot.Builder adSlotBuilder = AdSlot.newBuilder().setId(adspaceId).setSize(Size.newBuilder().setWidth(builder.getW()).setHeight(builder.getH()));
         //optional
