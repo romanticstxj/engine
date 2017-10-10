@@ -3,9 +3,11 @@ package com.madhouse.dsp.reachMax;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.madhouse.resource.ResourceManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -294,6 +296,9 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         monitor.setClkurl(clicks);
                         monitor.setImpurl(tracks);
                         dspResponse.setMonitorBuilder(monitor);
+                        if (dspResponse.getAdm() == null) {
+                            dspResponse.setAdm(new LinkedList<>());
+                        }
                         dspResponse.getAdm().add(materialMeta.getMediaUrl());
                         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
