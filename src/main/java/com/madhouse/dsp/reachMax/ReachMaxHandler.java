@@ -299,10 +299,16 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
                         dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
                         return true;
+                    } else {
+                        dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
                     }
+                } else {
+                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
                 }
+            } else {
+                dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.NO_CONTENT);
             }
-            dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
+
         } catch (Exception e) {
             logger.error("ReachMax Response error:{}", JSON.toJSONString(dspResponse));
             dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.INTERNAL_ERROR);
