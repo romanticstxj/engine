@@ -121,7 +121,7 @@ public class MADRTBHandler extends DSPBaseHandler {
             if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
                 impression.setTagid(dspMappingMetaData.getMappingKey());
             } else {
-                impression.setTagid(plcmtMetaData.getAdspaceKey());
+                impression.setTagid(Long.toString(plcmtMetaData.getId()));
             }
 
             if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB) {
