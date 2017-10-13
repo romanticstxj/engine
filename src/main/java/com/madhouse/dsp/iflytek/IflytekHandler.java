@@ -54,8 +54,8 @@ public class IflytekHandler extends DSPBaseHandler {
             case Constant.OSType.ANDROID:
                 iflytek.setOs(IflytekStatusCode.Os.OS_ANDROID);
                 iflytek.setAdid(builder.getDpid());
-                iflytek.setAaid(builder.getIfa());
-                iflytek.setImei(builder.getDid());
+                iflytek.setAaid(! StringUtils.isEmpty(builder.getDpid()) ? builder.getDpid() : !StringUtils.isEmpty(builder.getDpidmd5()) ? builder.getDpidmd5(): null );
+                iflytek.setImei(!StringUtils.isEmpty(builder.getDid()) ? builder.getDid() : !StringUtils.isEmpty(builder.getDidmd5()) ? builder.getDidmd5(): null );
                 iflytek.setVendor("Google");
                 break;
             case Constant.OSType.IOS:
@@ -88,6 +88,7 @@ public class IflytekHandler extends DSPBaseHandler {
                     iflytek.setOperator(IflytekStatusCode.Carrier.CHINA_TELECOM);
                     break;
                 default:
+                    iflytek.setOperator(IflytekStatusCode.Carrier.CHINA_MOBILE);
                     break;
             }
             //联网类型(0—未知，
@@ -171,7 +172,7 @@ public class IflytekHandler extends DSPBaseHandler {
             }
             request.setHeader(HTTP.CONTENT_TYPE, "application/octet-stream");
             request.setHeader("X-protocol-ver", IflytekStatusCode.X_PROTOCOL_VER);
-            request.setHeader("Accept-Encoding", "none");
+            request.setHeader("Accept-Encoding", "gzip");
             if(plcmtMetaData.isEnableHttps()){
                 request.setHeader("X-USING-HTTPS", "YES");
             }
@@ -216,9 +217,8 @@ public class IflytekHandler extends DSPBaseHandler {
                 dspResponse.setLpgurl(StringUtil.toString(iflytekResponse.getBatch_ma().get(0).getLanding_url()));
                 dspResponse.setTitle(StringUtil.toString(iflytekResponse.getBatch_ma().get(0).getTitle()));
                 dspResponse.setDesc(StringUtil.toString(iflytekResponse.getBatch_ma().get(0).getSub_title()));
-                List<String> list = new ArrayList<String>();
-                list.add(iflytekResponse.getBatch_ma().get(0).getImage());
-                dspResponse.setAdm(list);
+                dspResponse.setAdm(new ArrayList<String>());
+                dspResponse.getAdm().add(iflytekResponse.getBatch_ma().get(0).getImage());
                 imprurl = iflytekResponse.getBatch_ma().get(0).getImpr_url();
                 thclkurl = iflytekResponse.getBatch_ma().get(0).getClick_url();
             } else {
@@ -235,6 +235,7 @@ public class IflytekHandler extends DSPBaseHandler {
                 monitor.setImpurl(tracks);
             }
             if (thclkurl != null && thclkurl.length > 0) {
+                monitor.setClkurl(new ArrayList<String>());
                 for (String thcl : thclkurl) {
                     monitor.getClkurl().add(thcl);
                 }
