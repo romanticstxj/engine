@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.StringUtil;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -39,7 +40,7 @@ public class VamakerHandler extends DSPBaseHandler {
         }
         StringBuilder sb = new StringBuilder(urlTemplate);
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
-        String adspaceId = plcmtMetaData.getAdspaceKey();
+        String adspaceId = Long.toString(plcmtMetaData.getId());
         if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
