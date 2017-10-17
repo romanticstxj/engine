@@ -99,6 +99,7 @@ public class WorkThread {
             impressionTrack.setIp(HttpUtil.getRealIp(req));
             impressionTrack.setUa(HttpUtil.getUserAgent(req));
             impressionTrack.setBid(StringUtil.toString(req.getParameter("_bid")));
+            impressionTrack.setCid(StringUtil.toString(req.getParameter("_cid")));
             impressionTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
@@ -192,6 +193,7 @@ public class WorkThread {
             clickTrack.setIp(HttpUtil.getRealIp(req));
             clickTrack.setUa(HttpUtil.getUserAgent(req));
             clickTrack.setBid(StringUtil.toString(req.getParameter("_bid")));
+            clickTrack.setCid(StringUtil.toString(req.getParameter("_cid")));
             clickTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
@@ -480,6 +482,8 @@ public class WorkThread {
                             if (winner != null) {
                                 trackingParam.setDspId(winner.getDspMetaData().getId());
                                 trackingParam.setDspCost(winner.getAuctionPriceInfo());
+                                trackingParam.setCid(StringUtil.toString(winner.getDspBidBuilder().getResponseBuilder().getCid()));
+
                                 winner.getDspBidBuilder().setWinner(1);
 
                                 if (policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB) {

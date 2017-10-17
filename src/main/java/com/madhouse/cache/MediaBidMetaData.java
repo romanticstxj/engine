@@ -94,6 +94,7 @@ public class MediaBidMetaData {
         private long adspaceId;
         private long policyId;
         private long dspId;
+        private String cid;
         private String location;
         private AuctionPriceInfo mediaIncome;
         private AuctionPriceInfo dspCost;
@@ -145,6 +146,14 @@ public class MediaBidMetaData {
 
         public void setDspId(long dspId) {
             this.dspId = dspId;
+        }
+
+        public String getCid() {
+            return cid;
+        }
+
+        public void setCid(String cid) {
+            this.cid = cid;
         }
 
         public String getLocation() {
@@ -205,6 +214,8 @@ public class MediaBidMetaData {
                         .append(getMediaId())
                         .append("&_spid=")
                         .append(getAdspaceId())
+                        .append("&_cid=")
+                        .append(getCid())
                         .append("&_loc=")
                         .append(getLocation())
                         .append("&_ext=")
