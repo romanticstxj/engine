@@ -66,7 +66,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         
         
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
-        String adspaceId = plcmtMetaData.getAdspaceKey();
+        String adspaceId = Long.toString(plcmtMetaData.getId());
         if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
