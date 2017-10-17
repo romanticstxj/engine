@@ -424,7 +424,8 @@
 			"name": "location"
 		}, {
 			"type": "string",
-			"name": "cid"
+			"name": "cid",
+			"default": ""
 		}
 	]
 }
@@ -492,7 +493,8 @@
 			"name": "location"
 		}, {
 			"type": "string",
-			"name": "cid"
+			"name": "cid",
+			"default": ""
 		}
 	]
 }
