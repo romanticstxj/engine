@@ -113,7 +113,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         //连网方式
         mediaRequest.setConnectiontype(Integer.parseInt(madBidRequest.getConn()));
         //设备类型
-        mediaRequest.setDevicetype(Integer.parseInt(madBidRequest.getDevicetype()));
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String mac = madBidRequest.getWma();
         if(!StringUtils.isEmpty(mac)){
             mediaRequest.setMac(mac);
@@ -209,7 +209,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.warn("adspaceid is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            String devicetype = mediaRequest.getDevicetype();
+            /*String devicetype = mediaRequest.getDevicetype();
             if (StringUtils.isEmpty(devicetype)) {
                 logger.warn("{}:devicetype is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
@@ -219,7 +219,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             } catch (Exception e) {
                 logger.warn("{}:devicetype is not correct _Ex", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
-            }
+            }*/
             String conn = mediaRequest.getConn();
             if (StringUtils.isEmpty(conn)) {
                 logger.warn("{}:conn is missing", adspaceid);
