@@ -3,9 +3,9 @@
         "domain": "http://172.16.25.47:8181",
         "resourcePath": "../html",
         "port": 8181,
-        "minIdle": 10,
-        "maxIdle": 20,
-        "maxTotal": 30,
+        "minIdle": 100,
+        "maxIdle": 200,
+        "maxTotal": 300,
         "gZipOn": true,
         "cacheExpiredTime": 60,
         "trackingExpiredTime": 86400,
@@ -81,9 +81,9 @@
         ]
     },
     "redis": {
-        "minIdle": 10,
-        "maxIdle": 20,
-        "maxTotal": 30,
+        "minIdle": 100,
+        "maxIdle": 200,
+        "maxTotal": 300,
         "slave": {
             "passwd": "",
             "host": "172.16.25.26",
