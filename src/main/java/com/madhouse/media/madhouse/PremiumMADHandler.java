@@ -232,8 +232,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
             }*/
             String conn = mediaRequest.getConn();
             if (StringUtils.isEmpty(conn)) {
+                mediaRequest.setConn("0");
                 logger.warn("{}:conn is missing", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
+                //return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 if (conn.equals("unknown")) {
@@ -243,8 +244,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     Integer.parseInt(conn); //是否合法
                 }
             } catch (Exception e) {
-                logger.warn("{}:conn is not correct", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
+                mediaRequest.setConn("0");
+                logger.warn("{}:conn is not correct[{}]", adspaceid, conn);
+                //return Constant.StatusCode.BAD_REQUEST;
             }
             String width = mediaRequest.getWidth();
             if (StringUtils.isEmpty(width)) {
@@ -304,8 +306,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
     
             String carrier = mediaRequest.getCarrier();
             if (StringUtils.isEmpty(carrier)) {
+                mediaRequest.setCarrier("0");
                 logger.warn("{}:carrier is missing", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
+                //return Constant.StatusCode.BAD_REQUEST;
             }
             try {
                 if (carrier.equals("unknown")) {
@@ -315,8 +318,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     Integer.parseInt(carrier); //是否合法
                 }
             } catch (Exception e) {
-                logger.warn("{}:carrier is not correct", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
+                mediaRequest.setCarrier("0");
+                logger.warn("{}:carrier is not correct[{}]", adspaceid, carrier);
+                //return Constant.StatusCode.BAD_REQUEST;
             }
             String os = mediaRequest.getOs();
             if (StringUtils.isEmpty(os)) {
