@@ -113,7 +113,12 @@ public class PremiumMADHandler extends MediaBaseHandler {
         //连网方式
         mediaRequest.setConnectiontype(Integer.parseInt(madBidRequest.getConn()));
         //设备类型
-        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        if (StringUtils.isEmpty(madBidRequest.getDevicetype())) {
+            mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        } else {
+            mediaRequest.setDevicetype(Integer.parseInt(madBidRequest.getDevicetype()));
+        }
+
         String mac = madBidRequest.getWma();
         if(!StringUtils.isEmpty(mac)){
             mediaRequest.setMac(mac);
