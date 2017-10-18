@@ -35,17 +35,19 @@ public class PremiumMADHandler extends MediaBaseHandler {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         try {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
-            logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             int status =  validateRequiredParam(mediaRequest);
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
             premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
             if(Constant.StatusCode.OK == status){
+                logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
                 MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
                 if(request != null){
                     mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
                     mediaBidMetaData.setRequestObject(request);
                     return true;
                 }
+            } else {
+                logger.warn("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
             }
             return outputStreamWrite(premiumMADResponse,resp);
         } catch (Exception e) {
