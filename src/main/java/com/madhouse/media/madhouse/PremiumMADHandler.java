@@ -195,7 +195,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
 
         if(!StringUtils.isEmpty(madBidRequest.getAppname())){
             try{
-                String appName = URLDecoder.decode(madBidRequest.getAppname());
+                String appName = URLDecoder.decode(madBidRequest.getAppname(), "utf-8");
                 mediaRequest.setBundle(appName);
             } catch(Exception e){
                 logger.warn("{}:ua appName error :",madBidRequest.getAppname());
