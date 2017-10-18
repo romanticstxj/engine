@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.util.StringUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -68,7 +69,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         //广告位标识
         mediaRequest.setAdspacekey(madBidRequest.getAdspaceid());
         //应用程序名称
-        mediaRequest.setName(madBidRequest.getAppname());
+        mediaRequest.setName(URLDecoder.decode(StringUtil.toString(madBidRequest.getAppname())));
         mediaRequest.setAdtype(Integer.parseInt(madBidRequest.getAdtype()));        
         mediaRequest.setW(Integer.parseInt(madBidRequest.getWidth()));
         mediaRequest.setH(Integer.parseInt(madBidRequest.getHeight()));
@@ -157,7 +158,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
         
         if(!StringUtils.isEmpty(madBidRequest.getLabel())){
             try{
-                String labels = URLDecoder.decode(madBidRequest.getLabel());
+                String labels = URLDecoder.decode(madBidRequest.getLabel(), "utf-8");
                 JSONArray jsonArray = JSON.parseArray(labels);
                 List<String> list = new ArrayList<>();
                 for(int i=0;i<jsonArray.size();i++){
@@ -177,7 +178,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 mediaRequest.setMake(device);
                 mediaRequest.setModel(device);
             } catch(Exception e){
-                logger.warn("{}:Device parsing error :",madBidRequest.getDevice());
+                logger.warn("{}:Device parsing error",madBidRequest.getDevice());
                 return null;
             }
         }
@@ -186,19 +187,18 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 String ua = URLDecoder.decode(madBidRequest.getUa(), "utf-8");
                 mediaRequest.setUa(ua);
             } catch(Exception e){
-                logger.warn("{}:ua parsing error :",madBidRequest.getUa());
+                logger.warn("{}:ua parsing error",madBidRequest.getUa());
                 return null;
             }
         } else {
             mediaRequest.setUa("");
         }
 
-        if(!StringUtils.isEmpty(madBidRequest.getAppname())){
+        if(!StringUtils.isEmpty(madBidRequest.getPkgname())){
             try{
-                String appName = URLDecoder.decode(madBidRequest.getAppname(), "utf-8");
-                mediaRequest.setBundle(appName);
+                mediaRequest.setBundle(madBidRequest.getPkgname());
             } catch(Exception e){
-                logger.warn("{}:ua appName error :",madBidRequest.getAppname());
+                logger.warn("{}:pkgName error",madBidRequest.getPkgname());
                 return null;
             }
         }
