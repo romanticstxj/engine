@@ -181,13 +181,16 @@ public class PremiumMADHandler extends MediaBaseHandler {
         }
         if(!StringUtils.isEmpty(madBidRequest.getUa())){
             try{
-                String ua = URLDecoder.decode(madBidRequest.getUa());
+                String ua = URLDecoder.decode(madBidRequest.getUa(), "utf-8");
                 mediaRequest.setUa(ua);
             } catch(Exception e){
                 logger.warn("{}:ua parsing error :",madBidRequest.getUa());
                 return null;
             }
+        } else {
+            mediaRequest.setUa("");
         }
+
         if(!StringUtils.isEmpty(madBidRequest.getAppname())){
             try{
                 String appName = URLDecoder.decode(madBidRequest.getAppname());
@@ -231,7 +234,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
-                Integer.parseInt(conn); //是否合法
+                if (conn.equals("unknown")) {
+                    mediaRequest.setConn("0");
+                } else {
+                    Integer.parseInt(conn); //是否合法
+                }
             } catch (Exception e) {
                 logger.warn("{}:conn is not correct _Ex", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
@@ -298,7 +305,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 return Constant.StatusCode.BAD_REQUEST;
             }
             try {
-                Integer.parseInt(carrier); //是否合法
+                if (carrier.equals("unknown")) {
+                    mediaRequest.setCarrier("0");
+                } else {
+                    Integer.parseInt(carrier); //是否合法
+                }
             } catch (Exception e) {
                 logger.warn("{}:carrier is not correct", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
@@ -342,11 +353,12 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.warn("{}:osv is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
+            /*
             String ua = mediaRequest.getUa();
             if (StringUtils.isEmpty(ua)) {
                 logger.warn("{}:ua is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
-            }
+            }*/
             String ip = mediaRequest.getIp();
             if (StringUtils.isEmpty(ip)) {
                 logger.warn("{}:ip is missing", adspaceid);
