@@ -236,11 +236,12 @@ public class PremiumMADHandler extends MediaBaseHandler {
             try {
                 if (conn.equals("unknown")) {
                     mediaRequest.setConn("0");
+                    logger.warn("{}:conn is not correct", adspaceid);
                 } else {
                     Integer.parseInt(conn); //是否合法
                 }
             } catch (Exception e) {
-                logger.warn("{}:conn is not correct _Ex", adspaceid);
+                logger.warn("{}:conn is not correct", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             String width = mediaRequest.getWidth();
@@ -307,6 +308,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             try {
                 if (carrier.equals("unknown")) {
                     mediaRequest.setCarrier("0");
+                    logger.warn("{}:carrier is not correct", adspaceid);
                 } else {
                     Integer.parseInt(carrier); //是否合法
                 }
@@ -353,12 +355,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.warn("{}:osv is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            /*
             String ua = mediaRequest.getUa();
             if (StringUtils.isEmpty(ua)) {
                 logger.warn("{}:ua is missing", adspaceid);
-                return Constant.StatusCode.BAD_REQUEST;
-            }*/
+                //return Constant.StatusCode.BAD_REQUEST;
+            }
             String ip = mediaRequest.getIp();
             if (StringUtils.isEmpty(ip)) {
                 logger.warn("{}:ip is missing", adspaceid);
