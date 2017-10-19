@@ -318,7 +318,7 @@ public class WorkThread {
             mediaRequest.setType(mediaMetaData.getType());
 
             //init user ip
-            if (!mediaRequest.hasIp()) {
+            if (!mediaRequest.hasIp() || StringUtils.isEmpty(mediaRequest.getIp())) {
                 mediaRequest.setIp(mediaBid.getIp());
             }
 

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.util.HttpUtil;
 import com.madhouse.util.StringUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +37,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
         try {
             BeanUtils.populate(mediaRequest, req.getParameterMap());
+
+            if (req.getRequestURI() != null && req.getRequestURI().startsWith("/client")) {
+                mediaRequest.setIp(HttpUtil.getRealIp(req));
+            }
+
             int status =  validateRequiredParam(mediaRequest);
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspaceid());
             premiumMADResponse.setReturncode(HttpStatus.NOT_ACCEPTABLE_406);
@@ -356,11 +362,11 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.warn("{}:ua is missing", adspaceid);
                 //return Constant.StatusCode.BAD_REQUEST;
             }
-            String ip = mediaRequest.getIp();
+            /*String ip = mediaRequest.getIp();
             if (StringUtils.isEmpty(ip)) {
                 logger.warn("{}:ip is missing", adspaceid);
                 return Constant.StatusCode.BAD_REQUEST;
-            }
+            }*/
             String pid = mediaRequest.getPid();
             if (StringUtils.isEmpty(pid)) {
                 logger.warn("{}:pid is missing", adspaceid);
