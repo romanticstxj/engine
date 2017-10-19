@@ -3,9 +3,9 @@
         "domain": "@domain@",
         "resourcePath": "../html",
         "port": 8181,
-        "minIdle": 100,
-        "maxIdle": 200,
-        "maxTotal": 300,
+        "minIdle": 50,
+        "maxIdle": 100,
+        "maxTotal": 200,
         "gZipOn": true,
         "cacheExpiredTime": 60,
         "trackingExpiredTime": 86400,
@@ -81,9 +81,9 @@
         ]
     },
     "redis": {
-        "minIdle": 100,
-        "maxIdle": 200,
-        "maxTotal": 300,
+        "minIdle": 50,
+        "maxIdle": 100,
+        "maxTotal": 200,
         "slave": {
             "passwd": "",
             "host": "@slavehost@",

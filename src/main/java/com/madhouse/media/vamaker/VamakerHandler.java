@@ -27,7 +27,6 @@ public class VamakerHandler extends MediaBaseHandler {
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         
         try {
-            logger.info(req.getRequestURL());
             VamakerRTB.VamRequest bidRequest = VamakerRTB.VamRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
             logger.info("Vamaker Request params is : {}",bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
