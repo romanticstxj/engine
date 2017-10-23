@@ -137,16 +137,23 @@ public class MomoHandler extends MediaBaseHandler {
         mediaRequest.setAdtype(6);//开屏
         mediaRequest.setW(imp.getW());
         mediaRequest.setH(imp.getH());
-        
+        StringBuilder adspaceKey = new StringBuilder();
+        adspaceKey.append("MM:").append(imp.getSplash_format()).append(":");
         String os = device.getOs();//"1"为iOS,"2"为安卓
         if(os.equals(MomoStatusCode.Os.OS_IOS)){//ios
             mediaRequest.setOs(Constant.OSType.IOS);
             mediaRequest.setIfa(device.getDid());
-        }else if(os.equals(os.equals(MomoStatusCode.Os.OS_ANDROID))){//安卓
+            mediaRequest.setBundle("com.wemomo.momoappdemo1");
+            adspaceKey.append("ios");
+        }else if(os.equals(MomoStatusCode.Os.OS_ANDROID)){//安卓
             mediaRequest.setOs(Constant.OSType.ANDROID);
             mediaRequest.setDid(device.getDid());
             mediaRequest.setDidmd5(device.getDidmd5());
+            mediaRequest.setBundle("com.immomo.momo");
+            adspaceKey.append("android");
         }
+        mediaRequest.setName("陌陌");
+        mediaRequest.setCategory(13);
         //"WIFI" "CELL_UNKNOWN
         String connection = device.getConnection_type();
         Campaign campaign = imp.getCampaign();
@@ -182,8 +189,7 @@ public class MomoHandler extends MediaBaseHandler {
         mediaRequest.setType(Constant.MediaType.APP);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         //开屏样式（SPLASH_IMG，SPLASH_GIF，SPLASH_VIDEO）
-        String adspaceKey = new StringBuffer().append("MM:").append(imp.getSplash_format()).append(":").append(os).toString();
-        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
+        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
         
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
@@ -195,7 +201,6 @@ public class MomoHandler extends MediaBaseHandler {
                 return null;
             }
         }
-        
         logger.info("Momorequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }
@@ -425,7 +430,7 @@ public class MomoHandler extends MediaBaseHandler {
         try {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     
                     Object[] objType = (Object[])mediaBidMetaData.getRequestObject();
                     
@@ -444,6 +449,9 @@ public class MomoHandler extends MediaBaseHandler {
                             resp.getOutputStream().write(JSON.toJSONString(response).getBytes());
                             resp.setStatus(Constant.StatusCode.OK);
                             return true;
+                        }else {
+                            resp.setStatus(Constant.StatusCode.NO_CONTENT);
+                            return false;
                         }
                     }
                 } else {
@@ -464,9 +472,9 @@ public class MomoHandler extends MediaBaseHandler {
         
         MomoResponse momoBidResponse = new MomoResponse();
         MomoResponse.Bid bid = momoBidResponse.new Bid(); 
-        MomoResponse.Bid.Image image = bid.new Image();
-        MomoResponse.Bid.Gif gif = bid.new Gif();
-        MomoResponse.Bid.Video video = bid.new Video();
+        MomoResponse.Bid.Url image = bid.new Url();
+        MomoResponse.Bid.Url gif = bid.new Url();
+        MomoResponse.Bid.Url video = bid.new Url();
         
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         
@@ -476,13 +484,21 @@ public class MomoHandler extends MediaBaseHandler {
         bid.setClick_url(mediaResponse.getLpgurl());
         
         List<Bid> bidList = new ArrayList<Bid>();
-        List<String> impTrackers = new ArrayList<String>();
+        List<MomoResponse.Bid.Url> impTrackers = new ArrayList<MomoResponse.Bid.Url>();
         for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
-            impTrackers.add(track.getUrl());
+        	MomoResponse.Bid.Url url = bid.new Url();
+        	url.setUrl(track.getUrl());
+        	impTrackers.add(url);
         }
-        
         bid.setImptrackers(impTrackers);
-        bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
+        
+        List<MomoResponse.Bid.Url> clicktrackers = new ArrayList<MomoResponse.Bid.Url>();
+        for (String clkurl : mediaResponse.getMonitorBuilder().getClkurl()) {
+        	MomoResponse.Bid.Url url = bid.new Url();
+        	url.setUrl(clkurl);
+        	clicktrackers.add(url);
+        }
+        bid.setClicktrackers(clicktrackers);
         
         String splashFormat = objType.getImp().get(0).getSplash_format();
         if(splashFormat.equals("SPLASH_IMG")){

@@ -5,7 +5,7 @@ import java.util.List;
 public class MomoResponse {
 	private String id;
 	private List<Bid> bid;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -27,67 +27,85 @@ public class MomoResponse {
 		private String crid;
 		private String nurl;
 		private String click_url;
-		private List<String> imptrackers;
-		private List<String> clicktrackers;
-		private Image image;
-		private Video video;
-		private Gif gif;
+		private List<Url> imptrackers;
+		private List<Url> clicktrackers;
+		private Url image;
+		private Url video;
+		private Url gif;
+
 		public String getImpid() {
 			return impid;
 		}
+
 		public void setImpid(String impid) {
 			this.impid = impid;
 		}
+
 		public String getCrid() {
 			return crid;
 		}
+
 		public void setCrid(String crid) {
 			this.crid = crid;
 		}
+
 		public String getNurl() {
 			return nurl;
 		}
+
 		public void setNurl(String nurl) {
 			this.nurl = nurl;
 		}
+
 		public String getClick_url() {
 			return click_url;
 		}
+
 		public void setClick_url(String click_url) {
 			this.click_url = click_url;
 		}
-		public List<String> getImptrackers() {
+
+		public List<Url> getImptrackers() {
 			return imptrackers;
 		}
-		public void setImptrackers(List<String> imptrackers) {
+
+		public void setImptrackers(List<Url> imptrackers) {
 			this.imptrackers = imptrackers;
 		}
-		public List<String> getClicktrackers() {
+
+		public List<Url> getClicktrackers() {
 			return clicktrackers;
 		}
-		public void setClicktrackers(List<String> clicktrackers) {
+
+		public void setClicktrackers(List<Url> clicktrackers) {
 			this.clicktrackers = clicktrackers;
 		}
-		public Image getImage() {
+
+		public Url getImage() {
 			return image;
 		}
-		public void setImage(Image image) {
+
+		public void setImage(Url image) {
 			this.image = image;
 		}
-		public Video getVideo() {
+
+		public Url getVideo() {
 			return video;
 		}
-		public void setVideo(Video video) {
+
+		public void setVideo(Url video) {
 			this.video = video;
 		}
-		public Gif getGif() {
+
+		public Url getGif() {
 			return gif;
 		}
-		public void setGif(Gif gif) {
+
+		public void setGif(Url gif) {
 			this.gif = gif;
 		}
-		
-		public class Image {
+
+		public class Url {
 			private String url;
 
 			public String getUrl() {
@@ -98,28 +116,7 @@ public class MomoResponse {
 				this.url = url;
 			}
 		}
-		public class Gif {
-			private String url;
 
-			public String getUrl() {
-				return url;
-			}
-
-			public void setUrl(String url) {
-				this.url = url;
-			}
-		}
-		public class Video {
-			private String url;
-
-			public String getUrl() {
-				return url;
-			}
-
-			public void setUrl(String url) {
-				this.url = url;
-			}
-		}
 	}
 
 }
