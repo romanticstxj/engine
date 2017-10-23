@@ -14,7 +14,6 @@ import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
@@ -132,6 +131,11 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
         if (StringUtils.isEmpty(mojiWeatherBidRequest.getAdid())) {
             logger.warn("adid is missing");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+
+        if (mojiWeatherBidRequest.getAdid().length() != 16) {
+            logger.warn("adid is not correct.");
             return Constant.StatusCode.BAD_REQUEST;
         }
 
@@ -308,7 +312,12 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         if (status != Constant.StatusCode.OK) {
             switch (status) {
                 case Constant.StatusCode.BAD_REQUEST: {
-                    moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_402);
+                    if (!StringUtils.isEmpty(mojiWeatherRequest.getAdid()) && mojiWeatherRequest.getAdid().length() != 16) {
+                        moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_401);
+                    } else {
+                        moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_402);
+                    }
+
                     break;
                 }
 
