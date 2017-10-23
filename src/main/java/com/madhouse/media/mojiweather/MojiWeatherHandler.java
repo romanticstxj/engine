@@ -14,7 +14,6 @@ import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
-import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
