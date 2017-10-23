@@ -32,10 +32,12 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             int status = validateRequiredParam(mojiWeatherBidRequest);
             if (status == Constant.StatusCode.OK) {
                 logger.info("MojiWeather Request params is : {}", JSON.toJSONString(mojiWeatherBidRequest));
-                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(mojiWeatherBidRequest); 
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
-                mediaBidMetaData.setRequestObject(mojiWeatherBidRequest);
-                return true;
+                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(mojiWeatherBidRequest);
+                if (mediaRequest != null) {
+                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.setRequestObject(mojiWeatherBidRequest);
+                    return true;
+                }
             } else {
                 logger.warn("MojiWeather Request params is : {}", JSON.toJSONString(mojiWeatherBidRequest));
             }
@@ -240,8 +242,9 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
 
         if (mojiWeatherBidRequest.getOs() == MojiWeatherStatusCode.MojiWeatherOs.OS_IOS) {
-            if (StringUtils.isEmpty(mojiWeatherBidRequest.getIdfa())) {
-                logger.warn("{}:ios idfa is missing.", adid);
+            if (StringUtils.isEmpty(mojiWeatherBidRequest.getIdfa()) &&
+                    StringUtils.isEmpty(mojiWeatherBidRequest.getOpenudid())) {
+                logger.warn("{}:ios device id is missing.", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
         }
@@ -259,8 +262,6 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        resp.setStatus(Constant.StatusCode.OK);
-
         if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
             MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
             MojiWeatherBidRequest mojiWeatherBidRequest = (MojiWeatherBidRequest)mediaBidMetaData.getRequestObject();
@@ -274,6 +275,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return true;
         }
 
+        resp.setStatus(Constant.StatusCode.INTERNAL_ERROR);
         return false;
     }
 
@@ -297,11 +299,11 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         data.setSessionid(StringUtil.toString(mojiWeatherRequest.getSessionid()));
 
         if (mojiWeatherRequest.getAdtype() != null) {
-            data.setAdtype(String.valueOf(mojiWeatherRequest.getAdtype()));
+            data.setAdtype(mojiWeatherRequest.getAdtype());
         }
 
         if (mojiWeatherRequest.getAdstyle() != null) {
-            data.setAdstyle(String.valueOf(mojiWeatherRequest.getAdstyle()));
+            data.setAdstyle(mojiWeatherRequest.getAdstyle());
         }
 
         if (status != Constant.StatusCode.OK) {
@@ -329,12 +331,12 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
         moWeatherBidResponse.setCode(MojiWeatherStatusCode.StatusCode.CODE_200);
-        data.setPrice(String.valueOf(mediaResponse.getPrice()));
-        data.setChargingtype("1");
+        data.setPrice(mediaResponse.getPrice());
+        data.setChargingtype(1);
         data.setUrlSeparator(";");
 
         if (mediaResponse.getDuration() != null && mediaResponse.getDuration() > 0) {
-            data.setType("2");
+            data.setType(2);
             data.setVedioimg(StringUtil.toString(mediaResponse.getCover()));
             data.setVedioPlaytime(mediaResponse.getDuration());
 
@@ -342,7 +344,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
                 data.setVediourl(mediaResponse.getAdm().get(0));
             }
         } else {
-            data.setType("1");
+            data.setType(1);
             if (ObjectUtils.isEmpty(mediaResponse.getAdm())) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < mediaResponse.getAdm().size() - 1; ++i) {
