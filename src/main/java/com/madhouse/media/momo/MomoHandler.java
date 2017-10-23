@@ -31,12 +31,11 @@ public class MomoHandler extends MediaBaseHandler {
     
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        
         try {
-          //开屏是json格式，信息流是protofu格式
-            if(null != req.getContentType()){
-                MediaRequest.Builder mediaRequest =MediaRequest.newBuilder();
-                if(req.getContentType().equalsIgnoreCase("application/json")){
+            //开屏是json格式，信息流是protobuf格式
+            if (null != req.getContentType()){
+                MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
+                if (req.getContentType().toLowerCase().startsWith("application/json")){
                     String bytes = HttpUtil.getRequestPostBytes(req);
                     MomoBidRequest bidRequest = JSON.parseObject(bytes, MomoBidRequest.class);
                     logger.info("Momo Request params is : {}",JSON.toJSONString(bidRequest));
@@ -49,7 +48,7 @@ public class MomoHandler extends MediaBaseHandler {
                             return true;
                         }
                     }
-                }else{
+                } else {
                     MomoExchange.BidRequest bidRequest = MomoExchange.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
                     logger.info("Momo Request params is : {}", bidRequest.toString());
                     int status = validateRequiredParam(bidRequest);
@@ -71,8 +70,6 @@ public class MomoHandler extends MediaBaseHandler {
             return false;
         }
     }
-    
-   
 
     private int validateParam(MomoBidRequest bidRequest) {
         if (ObjectUtils.isNotEmpty(bidRequest)) {
