@@ -92,6 +92,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
             mediaRequest.setOsv(mojiWeatherBidRequest.getOsv());
             mediaRequest.setConnectiontype(mojiWeatherBidRequest.getNet());
+            mediaRequest.setIp(mojiWeatherBidRequest.getIp());
             mediaRequest.setUa(URLDecoder.decode(mojiWeatherBidRequest.getUa()));
             mediaRequest.setDealid(StringUtil.toString(mojiWeatherBidRequest.getComment()));
 
