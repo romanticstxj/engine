@@ -67,6 +67,10 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             mediaRequest.setCarrier(mojiWeatherBidRequest.getCarrier());
             mediaRequest.setCategory(17);
 
+            if (mojiWeatherBidRequest.getDebug() != null && mojiWeatherBidRequest.getDebug() == 1) {
+                mediaRequest.setTest(Constant.Test.SIMULATION);
+            }
+            
             switch (mojiWeatherBidRequest.getOs()) {
                 case MojiWeather.OSType.ANDROID:
                     mediaRequest.setOs(Constant.OSType.ANDROID);
