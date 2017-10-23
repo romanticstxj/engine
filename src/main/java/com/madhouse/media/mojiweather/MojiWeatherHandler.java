@@ -135,6 +135,11 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
+        if (mojiWeatherBidRequest.getAdid().length() != 16) {
+            logger.warn("adid is not correct.");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+
         String adid = mojiWeatherBidRequest.getAdid();
         if (StringUtils.isEmpty(mojiWeatherBidRequest.getSessionid())) {
             logger.warn("{}:sessionid is missing", adid);
@@ -308,7 +313,12 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         if (status != Constant.StatusCode.OK) {
             switch (status) {
                 case Constant.StatusCode.BAD_REQUEST: {
-                    moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_402);
+                    if (!StringUtils.isEmpty(mojiWeatherRequest.getAdid()) && mojiWeatherRequest.getAdid().length() != 16) {
+                        moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_401);
+                    } else {
+                        moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_402);
+                    }
+
                     break;
                 }
 
