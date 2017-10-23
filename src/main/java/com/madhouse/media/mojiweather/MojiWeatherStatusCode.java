@@ -29,9 +29,9 @@ public final class MojiWeatherStatusCode {
     }
     //  操作系统类型
     public static final class MojiWeatherOs {
-        public static final String OS_ANDROID = "0";
-        public static final String OS_IOS = "1";
-        public static final String OS_WINDOWS_PHONE = "2";
-        public static final String OS_OTHERS = "3";
+        public static final int OS_ANDROID = 0;
+        public static final int OS_IOS = 1;
+        public static final int OS_WINDOWS_PHONE = 2;
+        public static final int OS_OTHERS = 3;
     }
 }
