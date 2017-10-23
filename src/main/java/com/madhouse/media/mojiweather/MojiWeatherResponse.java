@@ -40,7 +40,7 @@ public class MojiWeatherResponse {
 
         private Integer adstyle;
 
-        private String feed_type;
+        private Integer feed_type;
 
         private String show_date;
         /**
@@ -174,12 +174,14 @@ public class MojiWeatherResponse {
             this.adstyle = adstyle;
         }
 
-        public String getFeed_type() {
+        public Integer getFeed_type() {
             return feed_type;
         }
-        public void setFeed_type(String feed_type) {
+
+        public void setFeed_type(Integer feed_type) {
             this.feed_type = feed_type;
         }
+
         public String getShow_date() {
             return show_date;
         }

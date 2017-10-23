@@ -1,9 +1,7 @@
 package com.madhouse.media.mojiweather;
 
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,22 +69,22 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             mediaRequest.setCategory(17);
 
             switch (mojiWeatherBidRequest.getOs()) {
-                case MojiWeatherStatusCode.MojiWeatherOs.OS_ANDROID:
+                case MojiWeather.OSType.ANDROID:
                     mediaRequest.setOs(Constant.OSType.ANDROID);
                     mediaRequest.setDid(StringUtil.toString(mojiWeatherBidRequest.getImei()));
                     mediaRequest.setDpid(StringUtil.toString(mojiWeatherBidRequest.getAndid()));
                     mediaRequest.setIfa(StringUtil.toString(mojiWeatherBidRequest.getAndaid()));
                     break;
-                case MojiWeatherStatusCode.MojiWeatherOs.OS_IOS:
+                case MojiWeather.OSType.IOS:
                     mediaRequest.setOs(Constant.OSType.IOS);
                     mediaRequest.setIfa(StringUtil.toString(mojiWeatherBidRequest.getIdfa()));
                     mediaRequest.setDpid(StringUtil.toString(mojiWeatherBidRequest.getOpenudid()));
                     break;
-                case MojiWeatherStatusCode.MojiWeatherOs.OS_WINDOWS_PHONE:
+                case MojiWeather.OSType.WINDOWS_PHONE:
                     mediaRequest.setOs(Constant.OSType.WINDOWS_PHONE);
                     mediaRequest.setDpid(StringUtil.toString(mojiWeatherBidRequest.getUnqid()));
                     break;
-                case MojiWeatherStatusCode.MojiWeatherOs.OS_OTHERS:
+                case MojiWeather.OSType.OTHERS:
                     mediaRequest.setOs(Constant.OSType.UNKNOWN);
                     mediaRequest.setDpid(StringUtil.toString(mojiWeatherBidRequest.getUnqid()));
                     break;
@@ -152,7 +150,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (mojiWeatherBidRequest.getTradelevel() == null) {
+        /*if (mojiWeatherBidRequest.getTradelevel() == null) {
             logger.warn("{}:tradelevel is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -160,7 +158,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         if (mojiWeatherBidRequest.getTradelevel() < 1 || mojiWeatherBidRequest.getAdtype() > 3) {
             logger.warn("{}:tradelevel is not correct.", adid);
             return Constant.StatusCode.BAD_REQUEST;
-        }
+        }*/
 
         if (StringUtils.isEmpty(mojiWeatherBidRequest.getPkgname())) {
             logger.warn("{}:pkgname is missing", adid);
@@ -234,14 +232,14 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             }
         }
 
-        if (mojiWeatherBidRequest.getOs() == MojiWeatherStatusCode.MojiWeatherOs.OS_ANDROID) {
+        if (mojiWeatherBidRequest.getOs() == MojiWeather.OSType.ANDROID) {
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getImei()) && StringUtils.isEmpty(mojiWeatherBidRequest.getAndid()) && StringUtils.isEmpty(mojiWeatherBidRequest.getAndaid())) {
                 logger.warn("{}:android device id is missing.", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
         }
 
-        if (mojiWeatherBidRequest.getOs() == MojiWeatherStatusCode.MojiWeatherOs.OS_IOS) {
+        if (mojiWeatherBidRequest.getOs() == MojiWeather.OSType.IOS) {
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getIdfa()) &&
                     StringUtils.isEmpty(mojiWeatherBidRequest.getOpenudid())) {
                 logger.warn("{}:ios device id is missing.", adid);
@@ -249,8 +247,8 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             }
         }
 
-        if (mojiWeatherBidRequest.getOs() == MojiWeatherStatusCode.MojiWeatherOs.OS_WINDOWS_PHONE ||
-                mojiWeatherBidRequest.getOs() == MojiWeatherStatusCode.MojiWeatherOs.OS_OTHERS) {
+        if (mojiWeatherBidRequest.getOs() == MojiWeather.OSType.WINDOWS_PHONE ||
+                mojiWeatherBidRequest.getOs() == MojiWeather.OSType.OTHERS) {
             if (StringUtils.isEmpty(mojiWeatherBidRequest.getUnqid())) {
                 logger.warn("{}:device id is missing.", adid);
                 return Constant.StatusCode.BAD_REQUEST;
@@ -309,17 +307,17 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         if (status != Constant.StatusCode.OK) {
             switch (status) {
                 case Constant.StatusCode.BAD_REQUEST: {
-                    moWeatherBidResponse.setCode(MojiWeatherStatusCode.StatusCode.CODE_402);
+                    moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_402);
                     break;
                 }
 
                 case Constant.StatusCode.NO_CONTENT: {
-                    moWeatherBidResponse.setCode(MojiWeatherStatusCode.StatusCode.CODE_400);
+                    moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_400);
                     break;
                 }
 
                 default: {
-                    moWeatherBidResponse.setCode(MojiWeatherStatusCode.StatusCode.CODE_500);
+                    moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_500);
                     break;
                 }
             }
@@ -330,7 +328,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
         MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
         MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        moWeatherBidResponse.setCode(MojiWeatherStatusCode.StatusCode.CODE_200);
+        moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_200);
         data.setPrice(mediaResponse.getPrice());
         data.setChargingtype(1);
         data.setUrlSeparator(";");
@@ -357,6 +355,47 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
         data.setAdwidth(StringUtil.toString(mediaRequest.getW().toString()));
         data.setAdheight(StringUtil.toString(mediaRequest.getH().toString()));
+
+        if (!StringUtils.isEmpty(mojiWeatherRequest.getFeed_support_types())) {
+            String[] feeds = mojiWeatherRequest.getFeed_support_types().split(";");
+
+            Set<Integer> feedTypes = new HashSet<>();
+            for (int i = 0; i < feeds.length; ++i) {
+                if (StringUtil.isNumeric(feeds[i])) {
+                    feedTypes.add(Integer.parseInt(feeds[i]));
+                }
+            }
+
+            String size = String.format("%dx%d", mediaRequest.getW(), mediaRequest.getH());
+            switch (size) {
+                case "200x130": {
+                    if (mediaResponse.getAdm().size() > 1) {
+                        if (feedTypes.contains(MojiWeather.FeedType.FEED_TYPE_6)) {
+                            data.setFeed_type(MojiWeather.FeedType.FEED_TYPE_6);
+                        }
+                    } else {
+                        if (feedTypes.contains(MojiWeather.FeedType.FEED_TYPE_3)) {
+                            data.setFeed_type(MojiWeather.FeedType.FEED_TYPE_3);
+                        }
+                    }
+
+                    break;
+                }
+
+                case "700x300": {
+                    if (feedTypes.contains(MojiWeather.FeedType.FEED_TYPE_5)) {
+                        data.setFeed_type(MojiWeather.FeedType.FEED_TYPE_5);
+                    }
+
+                    break;
+                }
+
+                default: {
+                    break;
+                }
+            }
+        }
+
         data.setAdtitle(StringUtil.toString(mediaResponse.getTitle()));
         data.setAdtext(StringUtil.toString(mediaResponse.getDesc()));
         data.setClickurl(StringUtil.toString(mediaResponse.getLpgurl()));
