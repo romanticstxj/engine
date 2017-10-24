@@ -203,7 +203,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
 
         if (mojiWeatherBidRequest.getNet() < 0 || mojiWeatherBidRequest.getNet() > 4) {
-            logger.warn("{}:net is missing", adid);
+            logger.warn("{}:net is not correct.", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
 
@@ -213,7 +213,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
 
         if (mojiWeatherBidRequest.getCarrier() < 0 || mojiWeatherBidRequest.getCarrier() > 3) {
-            logger.warn("{}:carrier is missing", adid);
+            logger.warn("{}:carrier is not correct.", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
 
@@ -223,7 +223,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
 
         if (mojiWeatherBidRequest.getOs() < 0 || mojiWeatherBidRequest.getOs() > 3) {
-            logger.warn("{}:os is missing", adid);
+            logger.warn("{}:os is not correct.", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
 
