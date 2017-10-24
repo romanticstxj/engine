@@ -363,19 +363,19 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_200);
         data.setPrice(mediaResponse.getPrice());
         data.setChargingtype(1);
-        data.setUrlSeparator(";");
+        data.setUrlSeparator("|");
 
         if (mediaResponse.getDuration() != null && mediaResponse.getDuration() > 0) {
             data.setType(2);
             data.setVedioimg(StringUtil.toString(mediaResponse.getCover()));
             data.setVedioPlaytime(mediaResponse.getDuration());
 
-            if (ObjectUtils.isEmpty(mediaResponse.getAdm())) {
+            if (ObjectUtils.isNotEmpty(mediaResponse.getAdm())) {
                 data.setVediourl(mediaResponse.getAdm().get(0));
             }
         } else {
             data.setType(1);
-            if (ObjectUtils.isEmpty(mediaResponse.getAdm())) {
+            if (ObjectUtils.isNotEmpty(mediaResponse.getAdm())) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < mediaResponse.getAdm().size() - 1; ++i) {
                     sb.append(mediaResponse.getAdm().get(i)).append(data.getUrlSeparator());
@@ -433,17 +433,17 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         data.setClickurl(StringUtil.toString(mediaResponse.getLpgurl()));
         
         if (mediaResponse.getMonitorBuilder() != null) {
-            if (ObjectUtils.isEmpty(mediaResponse.getMonitorBuilder().getImpurl())) {
+            if (ObjectUtils.isNotEmpty(mediaResponse.getMonitorBuilder().getImpurl())) {
                 List<Track> imps = mediaResponse.getMonitorBuilder().getImpurl();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < imps.size() - 1; ++i) {
                     sb.append(imps.get(i).getUrl()).append(data.getUrlSeparator());
                 }
-                sb.append(imps.get(imps.size() - 1));
+                sb.append(imps.get(imps.size() - 1).getUrl());
                 data.setImptrack(sb.toString());
             }
 
-            if (ObjectUtils.isEmpty(mediaResponse.getMonitorBuilder().getClkurl())) {
+            if (ObjectUtils.isNotEmpty(mediaResponse.getMonitorBuilder().getClkurl())) {
                 List<String> clks = mediaResponse.getMonitorBuilder().getClkurl();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < clks.size() - 1; ++i) {
