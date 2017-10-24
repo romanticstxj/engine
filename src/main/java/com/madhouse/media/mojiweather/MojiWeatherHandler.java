@@ -18,7 +18,25 @@ import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 
 public class MojiWeatherHandler extends MediaBaseHandler {
-    
+    private static final Set<Integer> mojiAdStyles = new HashSet<>();
+
+    static {
+        mojiAdStyles.add(1);
+        mojiAdStyles.add(2);
+        mojiAdStyles.add(4);
+        mojiAdStyles.add(8);
+        mojiAdStyles.add(16);
+        mojiAdStyles.add(32);
+        mojiAdStyles.add(64);
+        mojiAdStyles.add(128);
+        mojiAdStyles.add(256);
+        mojiAdStyles.add(512);
+        mojiAdStyles.add(1024);
+        mojiAdStyles.add(2048);
+        mojiAdStyles.add(4096);
+        mojiAdStyles.add(8192);
+    }
+
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         
@@ -235,7 +253,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
                 return Constant.StatusCode.BAD_REQUEST;
             }
 
-            if (!MojiWeatherADStyle.contains(mojiWeatherBidRequest.getAdstyle())) {
+            if (!mojiAdStyles.contains(mojiWeatherBidRequest.getAdstyle())) {
                 logger.warn("{}:adstyle is not correct.", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
