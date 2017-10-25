@@ -53,10 +53,10 @@ public class MomoHandler extends MediaBaseHandler {
                     logger.info("Momo Request params is : {}", bidRequest.toString());
                     int status = validateRequiredParam(bidRequest);
                     if(Constant.StatusCode.OK == status){
-                        mediaRequest = conversionToPremiumMADDataModel(bidRequest);
-                        if(mediaRequest != null){
-                            mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
-                            mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.PROTOBUF,bidRequest});
+                        Object[]  object= conversionToPremiumMADDataModel(bidRequest);
+                        if(object != null){
+                            mediaBidMetaData.getMediaBidBuilder().setRequestBuilder((Builder) object[0]);
+                            mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.PROTOBUF,bidRequest, object[1]});
                             return true;
                         }
                     }
@@ -203,7 +203,7 @@ public class MomoHandler extends MediaBaseHandler {
     }
     
     
-    private MediaRequest.Builder conversionToPremiumMADDataModel(MomoExchange.BidRequest bidRequest) {
+    private Object[] conversionToPremiumMADDataModel(MomoExchange.BidRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         
         MomoExchange.BidRequest.Imp imp = bidRequest.getImpList().get(0);
@@ -220,7 +220,7 @@ public class MomoHandler extends MediaBaseHandler {
         }
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String campainType = getCampainType(imp.getNative());
-        String adspaceKey = new StringBuffer().append("MM:").append(imp.getSlotid()).append(":").append(bidRequest.getDevice().getOs().toLowerCase()).append(":").append(campainType).toString();
+        String adspaceKey = new StringBuffer().append("MM:").append(imp.getSlotid()).append(":").append(bidRequest.getDevice().getOs().toUpperCase()).append(":").append(campainType).toString();
         MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
@@ -316,9 +316,10 @@ public class MomoHandler extends MediaBaseHandler {
                 mediaRequest.setIfa(did);
             }
         }
+
         mediaRequest.setType(Constant.MediaType.APP);
-        logger.info("Momorequest convert mediaRequest is : {}", mediaRequest.toString());
-        return mediaRequest;
+        logger.info("Momorequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
+        return new Object[]{mediaRequest,campainType};
     }
 
     private int validateRequiredParam(BidRequest bidRequest) {
@@ -394,29 +395,29 @@ public class MomoHandler extends MediaBaseHandler {
                 int i = random.nextInt(aNative.getNativeFormatList().size()-1);
                 switch (list.get(i)){
                     case "FEED_LANDING_PAGE_LARGE_IMG":
-                        return  "img";
+                        return  "LARGE_IMG";
                     case "FEED_LANDING_PAGE_VIDEO":
-                        return "video";
+                        return "VIDEO";
                     case "FEED_LANDING_PAGE_SMALL_IMG":
-                        return  "smallImg";
+                        return  "SMALL_IMG";
                     case "NEARBY_LANDING_PAGE_NO_IMG":
-                        return "noImg";
+                        return "NO_IMG";
                     case "FEED_LANDING_PAGE_SQUARE_IMG":
-                        return  "squareImg";
+                        return  "SQUARE_IMG";
                 }
                 return "";
             }else if(aNative.getNativeFormatList().size() == 1){
                 
                 if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode())){
-                    return "img";
+                    return "LARGE_IMG";
                 }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())){
-                    return  "smallImg";
+                    return  "SMALL_IMG";
                 }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())){
-                     return "noImg";
+                     return "NO_IMG";
                 }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){
-                     return  "squareImg";
+                     return  "SQUARE_IMG";
                 }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())){
-                     return "video";
+                     return "VIDEO";
                 }
             }
         }
@@ -432,7 +433,7 @@ public class MomoHandler extends MediaBaseHandler {
                     Object[] objType = (Object[])mediaBidMetaData.getRequestObject();
                     
                     if(MomoStatusCode.Type.PROTOBUF.equals(objType[0])){
-                        MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(MomoExchange.BidRequest)objType[1]);
+                        MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(MomoExchange.BidRequest)objType[1],(String)objType[2]);
                         if(null != bidResponse){
                             resp.setContentType("application/octet-stream;charset=UTF-8");
                             resp.getOutputStream().write(bidResponse.toByteArray());
@@ -521,7 +522,7 @@ public class MomoHandler extends MediaBaseHandler {
 
 
 
-    private BidResponse convertToMomoResponse(MediaBidMetaData mediaBidMetaData, MomoExchange.BidRequest bidRequest) {
+    private BidResponse convertToMomoResponse(MediaBidMetaData mediaBidMetaData, MomoExchange.BidRequest bidRequest, String campainType) {
         
         
         MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
@@ -535,9 +536,8 @@ public class MomoHandler extends MediaBaseHandler {
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
         bidBuilder.setCrid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
-        //bidBuilder.setNativeCreative(nativeCreativeBuilder);
         
-        bidBuilder.setNativeCreative(getNativeCreative(bidRequest,mediaResponse,mediaRequest));
+        bidBuilder.setNativeCreative(getNativeCreative(bidRequest,mediaResponse,mediaRequest,campainType));
         
         /**
          * 设置dealid
@@ -577,26 +577,24 @@ public class MomoHandler extends MediaBaseHandler {
     }
 
 
-    private NativeCreative.Builder getNativeCreative(BidRequest bidRequest, MediaResponse.Builder mediaResponse, Builder mediaRequest) {
+    private NativeCreative.Builder getNativeCreative(BidRequest bidRequest, MediaResponse.Builder mediaResponse, Builder mediaRequest, String campainType) {
         
         MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Builder nativeCreativeBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.newBuilder();
-        nativeCreativeBuilder.setTitle(mediaResponse.getTitle());
-        nativeCreativeBuilder.setDesc(mediaResponse.getDesc());
-        nativeCreativeBuilder.setLogo(MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder());
-    
-        String url = mediaResponse.getAdm().get(0);
-        String suffix = url.substring(url.lastIndexOf(".")+1,url.length()).toLowerCase();
-        if (ImageTypeEnums.contains(suffix)) {//广告图片
-            nativeCreativeBuilder.setLandingpageUrl(getLink(mediaResponse));  //落地页
-            if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode())){//大图样式落地页
+        nativeCreativeBuilder.setTitle(mediaResponse.getBrand());
+        nativeCreativeBuilder.setDesc(mediaResponse.getContent());
+        nativeCreativeBuilder.setLogo(getLogo(mediaResponse,mediaResponse.getIcon()));
+        nativeCreativeBuilder.setLandingpageUrl(getLink(mediaResponse));  //落地页
+        
+        if (!"311".equals(mediaResponse.getLayout())) {//广告图片
+            if(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode().contains(campainType)){//大图样式落地页
                 nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode());
                 nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));
                 
-            }else if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){//单图样式落地页
+            }else if(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode().contains(campainType)){//单图样式落地页
                  nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode());
                  nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));    
                  
-            }else if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())){//三图样式落地页
+            }else if(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode().contains(campainType)){//三图样式落地页
                 nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode());
                 if(null != mediaResponse.getAdm() && mediaResponse.getAdm().size() >0){
                     for(int i=0;i < mediaResponse.getAdm().size();i++){
@@ -604,25 +602,38 @@ public class MomoHandler extends MediaBaseHandler {
                     }
                 }
                 
-            }else if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())){//图标样式落地页
+            }else if(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode().contains(campainType)){//图标样式落地页
                 nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode());
-                nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));    
+                nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse)); 
+                nativeCreativeBuilder.setLogo(getLogo(mediaResponse,mediaResponse.getAdm().get(0)));
             }
-        }else if (VideoTypeEnums.contains(suffix)) {//视频
+        } else {//视频
            nativeCreativeBuilder.addVideo(getVideo(mediaRequest,mediaResponse)); 
-           /*nativeCreativeBuilder.setCardTitle(jsonEntity.getExt().getTitle());
-           nativeCreativeBuilder.setCardDesc(jsonEntity.getExt().getDesc()); 
-           nativeCreativeBuilder.addDisplayLabels(jsonEntity.getExt().getLabels().get(0));*/
-           nativeCreativeBuilder.setCardImage(moMoVideoGetImage(mediaRequest,mediaResponse));
-           nativeCreativeBuilder.setLandingpageUrl(getLink(mediaResponse));  //落地页
-            
-            if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())){//横版视频落地页
-                nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode());
-            }
+           nativeCreativeBuilder.setCardTitle(mediaResponse.getTitle());
+           nativeCreativeBuilder.setCardDesc(mediaResponse.getDesc()); 
+           //nativeCreativeBuilder.addDisplayLabels(jsonEntity.getExt().getLabels().get(0));
+           nativeCreativeBuilder.setCardImage(getLogo(mediaResponse,mediaResponse.getIcon()));
+           if(bidRequest.getImpList().get(0).getNative().getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())){//横版视频落地页
+               nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode());
+           }
         }
         return nativeCreativeBuilder;
         
         
+    }
+    /**
+     * 多图
+     * @param jsonEntity
+     * @return
+     */
+    private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder getLogo(MediaResponse.Builder mediaResponse,String url) {
+    	MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
+    	imageBuilder.setHeight(150);
+    	imageBuilder.setWidth(150);
+        if(!StringUtils.isEmpty(url)){
+        	imageBuilder.setUrl(url);
+        }
+        return imageBuilder;
     }
     private MomoExchange.BidResponse.SeatBid.Bid.Link.Builder getLink(MediaResponse.Builder builder) {
         MomoExchange.BidResponse.SeatBid.Bid.Link.Builder linkBuilder = MomoExchange.BidResponse.SeatBid.Bid.Link.newBuilder();
@@ -650,10 +661,10 @@ public class MomoHandler extends MediaBaseHandler {
      * @return
      */
     private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder getImageList(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder,int i) {
-            MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
-            imageBuilder.setHeight(requestBuilder.getH());
-            imageBuilder.setWidth(requestBuilder.getW());
-            imageBuilder.setUrl(responseBuilder.getAdm().get(i));
+        MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder imageBuilder = MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.newBuilder();
+        imageBuilder.setHeight(requestBuilder.getH());
+        imageBuilder.setWidth(requestBuilder.getW());
+        imageBuilder.setUrl(responseBuilder.getAdm().get(i));
         return imageBuilder;
     }
 
