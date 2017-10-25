@@ -294,7 +294,7 @@ public class WorkThread {
             //get placement metadata
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
             if (plcmtMetaData == null) {
-                logger.error("media adspace mapping error.");
+                logger.error("media adspace[{}] mapping error.", mediaRequest.getAdspacekey());
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
@@ -305,7 +305,7 @@ public class WorkThread {
 
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
             if (mediaMetaData == null) {
-                logger.error("get media metadata error.");
+                logger.error("get media[{}] metadata error.", plcmtMetaData.getMediaId());
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
