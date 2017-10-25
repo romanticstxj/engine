@@ -167,7 +167,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (mojiWeatherBidRequest.getAdtype() == null) {
+        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getAdtype()))){
             logger.warn("{}:adtype is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -197,7 +197,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (mojiWeatherBidRequest.getNet() == null) {
+        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getNet()))) {
             logger.warn("{}:net is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -207,7 +207,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (mojiWeatherBidRequest.getCarrier() == null) {
+        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getCarrier()))) {
             logger.warn("{}:carrier is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -217,7 +217,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (mojiWeatherBidRequest.getOs() == null) {
+        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getOs()))) {
             logger.warn("{}:os is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -236,6 +236,15 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             logger.warn("{}:ip is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
+        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getBasic_price()))) {
+            logger.warn("{}:Basic_price is missing", adid);
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        
+        if (StringUtils.isEmpty(mojiWeatherBidRequest.getUa())) {
+            logger.warn("{}:up is missing", adid);
+            return Constant.StatusCode.BAD_REQUEST;
+        }
 
         if (StringUtils.isEmpty(mojiWeatherBidRequest.getDevice())) {
             logger.warn("{}:device is missing", adid);
@@ -248,7 +257,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
                 return Constant.StatusCode.BAD_REQUEST;
             }
         } else {
-            if (mojiWeatherBidRequest.getAdstyle() == null) {
+            if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getAdstyle()))) {
                 logger.warn("{}:adstyle is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
