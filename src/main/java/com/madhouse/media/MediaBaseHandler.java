@@ -59,7 +59,6 @@ public abstract class MediaBaseHandler {
             MediaMetaData mediaMetaData = mediaBidMetaData.getMediaMetaData();
             PlcmtMetaData plcmtMetaData = mediaBidMetaData.getPlcmtMetaData();
 
-            mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
             if (dspBid != null && dspBid.getStatus() == Constant.StatusCode.OK && dspBid.getRequestBuilder() != null) {
                 if (mediaMetaData.getMaterialAuditMode() == Constant.AuditMode.NONE || materialMetaData != null) {
                     DSPResponse.Builder dspResponse = dspBid.getResponseBuilder();
