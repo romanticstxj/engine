@@ -310,6 +310,11 @@ public class WorkThread {
                 return;
             }
 
+            //init mediaid, adspaceid, Type
+            mediaRequest.setMediaid(mediaMetaData.getId());
+            mediaRequest.setAdspaceid(plcmtMetaData.getId());
+            mediaRequest.setType(mediaMetaData.getType());
+
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
                 logger.warn("media or adspace is not allowed.");
                 mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
@@ -319,11 +324,6 @@ public class WorkThread {
 
             mediaBidMetaData.setMediaMetaData(mediaMetaData);
             mediaBidMetaData.setPlcmtMetaData(plcmtMetaData);
-
-            //init mediaid, adspaceid,Type
-            mediaRequest.setMediaid(mediaMetaData.getId());
-            mediaRequest.setAdspaceid(plcmtMetaData.getId());
-            mediaRequest.setType(mediaMetaData.getType());
 
             //init user ip
             if (!mediaRequest.hasIp() || StringUtils.isEmpty(mediaRequest.getIp())) {
