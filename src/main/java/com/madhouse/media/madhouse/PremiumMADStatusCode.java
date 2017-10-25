@@ -5,7 +5,7 @@ public final class PremiumMADStatusCode {
         //正常
         public static final int CODE_200 = 200;
         //网络超时，请重新发起请求
-        public static final int CODE_400=400; 
+        public static final int CODE_400 = 400;
         //非法的广告位ID 
         public static final int CODE_401 = 401;
         //UID验证失败

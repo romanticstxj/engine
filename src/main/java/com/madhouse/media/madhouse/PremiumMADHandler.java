@@ -393,8 +393,8 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     outputStreamWrite(premiumMADResponse,resp);
                     return true;
                 }
-            } else if (mediaBid.getStatus() == Constant.StatusCode.REQUEST_TIMEOUT){
-                premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_502);
+            } else if (mediaBid.getStatus() == Constant.StatusCode.BAD_REQUEST){
+                premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_406);
                 return outputStreamWrite(premiumMADResponse,resp);
             } else if (mediaBid.getStatus() == Constant.StatusCode.INTERNAL_ERROR){
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_501);
