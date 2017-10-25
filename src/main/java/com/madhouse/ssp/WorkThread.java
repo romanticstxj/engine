@@ -275,6 +275,9 @@ public class WorkThread {
             mediaBid.setIp(HttpUtil.getRealIp(req));
             mediaBid.setUa(HttpUtil.getUserAgent(req));
             mediaBid.setTime(System.currentTimeMillis());
+            mediaBid.setBidfloor(0);
+            mediaBid.setBidtype(Constant.BidType.CPM);
+            mediaBid.setLocation("1000000000");
             mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
 
             mediaBidMetaData.setMediaBidBuilder(mediaBid);
@@ -295,6 +298,10 @@ public class WorkThread {
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
+
+            //bidfloor, bidtype
+            mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
+            mediaBid.setBidtype(plcmtMetaData.getBidType());
 
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
             if (mediaMetaData == null) {
@@ -346,9 +353,6 @@ public class WorkThread {
             }
 
             mediaBid.setLocation(location);
-            //bidfloor, bidtype
-            mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
-            mediaBid.setBidtype(plcmtMetaData.getBidType());
 
             MediaBidMetaData.TrackingParam trackingParam = new MediaBidMetaData.TrackingParam();
             mediaBidMetaData.setTrackingParam(trackingParam);
