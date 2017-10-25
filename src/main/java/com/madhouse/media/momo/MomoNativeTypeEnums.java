@@ -13,7 +13,7 @@ public enum MomoNativeTypeEnums {
     /**
      * 三图样式落地页广告
      */
-	FEED_LANDING_PAGE_SMALL_IMG("FEED _LANDING_PAGE_SMALL_IMG"),
+	FEED_LANDING_PAGE_SMALL_IMG("FEED_LANDING_PAGE_SMALL_IMG"),
 
     /**
      * 图标样式落地页广告

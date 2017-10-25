@@ -13,7 +13,9 @@ import org.apache.http.util.EntityUtils;
 public class MomoTests {
     public static void main(String[] arg) {
         MomoExchange.BidRequest.Imp.Native.Builder nativeBuilder = MomoExchange.BidRequest.Imp.Native.newBuilder();
-        nativeBuilder.addNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode());
+      nativeBuilder.addNativeFormat(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode());//图标样式落地页
+//        nativeBuilder.addNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode());//三图样式落地页
+//        nativeBuilder.addNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode());//单图样式落地页
 //        nativeBuilder.addNativeFormat(MomoExchange.NativeFormat.FEED_LANDING_PAGE_VIDEO);
         
         MomoExchange.BidRequest.Imp.Pmp.Deal.Builder dealBuilder = MomoExchange.BidRequest.Imp.Pmp.Deal.newBuilder();
@@ -23,7 +25,7 @@ public class MomoTests {
         
         MomoExchange.BidRequest.Imp.Builder impBuilder = MomoExchange.BidRequest.Imp.newBuilder();
         impBuilder.setId("3c7a762982484fb4");
-        impBuilder.setSlotid("1-2");
+        impBuilder.setSlotid("4-3");
         impBuilder.setBidfloor(2);
         impBuilder.setPmp(pmpBuilder);
         impBuilder.setNative(nativeBuilder);
