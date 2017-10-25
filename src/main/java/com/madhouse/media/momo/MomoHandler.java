@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
 
+import com.madhouse.util.Utility;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -385,44 +386,25 @@ public class MomoHandler extends MediaBaseHandler {
         return Constant.StatusCode.BAD_REQUEST;
     }
     private String getCampainType(MomoExchange.BidRequest.Imp.Native aNative){
-        Random random = new Random();
-        if(null != aNative.getNativeFormatList() && aNative.getNativeFormatList().size() >0){
-            if(aNative.getNativeFormatList().size() >1){
-                List<String> list = new ArrayList<String>();
-                for(int i=0;i < aNative.getNativeFormatList().size();i++){
-                    list.add(aNative.getNativeFormatList().get(i));
-                }
-                int i = random.nextInt(aNative.getNativeFormatList().size()-1);
-                switch (list.get(i)){
-                    case "FEED_LANDING_PAGE_LARGE_IMG":
-                        return  "LARGE_IMG";
-                    case "FEED_LANDING_PAGE_VIDEO":
-                        return "VIDEO";
-                    case "FEED_LANDING_PAGE_SMALL_IMG":
-                        return  "SMALL_IMG";
-                    case "NEARBY_LANDING_PAGE_NO_IMG":
-                        return "NO_IMG";
-                    case "FEED_LANDING_PAGE_SQUARE_IMG":
-                        return  "SQUARE_IMG";
-                }
-                return "";
-            }else if(aNative.getNativeFormatList().size() == 1){
-                
-                if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode())){
-                    return "LARGE_IMG";
-                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SMALL_IMG.getCode())){
+        if(null != aNative.getNativeFormatList() && aNative.getNativeFormatList().size() > 0){
+            int i = Utility.nextInt(aNative.getNativeFormatList().size());
+            switch (aNative.getNativeFormatList().get(i)) {
+                case "FEED_LANDING_PAGE_LARGE_IMG":
+                    return  "LARGE_IMG";
+                case "FEED_LANDING_PAGE_VIDEO":
+                    return "VIDEO";
+                case "FEED_LANDING_PAGE_SMALL_IMG":
                     return  "SMALL_IMG";
-                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode())){
-                     return "NO_IMG";
-                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_SQUARE_IMG.getCode())){
-                     return  "SQUARE_IMG";
-                }else if(aNative.getNativeFormatList().contains(MomoNativeTypeEnums.FEED_LANDING_PAGE_VIDEO.getCode())){
-                     return "VIDEO";
-                }
+                case "NEARBY_LANDING_PAGE_NO_IMG":
+                    return "NO_IMG";
+                case "FEED_LANDING_PAGE_SQUARE_IMG":
+                    return  "SQUARE_IMG";
             }
         }
+
         return "";
     }
+
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
