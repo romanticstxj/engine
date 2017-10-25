@@ -58,26 +58,30 @@ public class IPLocation {
     }
 
     public String getLocation(String ip) {
-        if (this.iptables == null || this.iptables.isEmpty()) {
-            return null;
-        }
-
-        String[] ips = ip.split("\\.");
-        if (ips.length >= 4) {
-            Long addr = (Long.parseLong(ips[0]) << 24) | (Long.parseLong(ips[1]) << 16 ) | (Long.parseLong(ips[2]) << 8) | Long.parseLong(ips[3]);
-
-            int start = 0;
-            int end = this.iptables.size();
-            while (end - start > 1) {
-                int mid = (start + end) / 2;
-                if (this.iptables.get(mid).getLeft() > addr) {
-                    end = mid;
-                } else {
-                    start = mid;
-                }
+        try {
+            if (this.iptables == null || this.iptables.isEmpty()) {
+                return null;
             }
 
-            return this.iptables.get(start).getRight();
+            String[] ips = ip.split("\\.");
+            if (ips.length >= 4) {
+                Long addr = (Long.parseLong(ips[0]) << 24) | (Long.parseLong(ips[1]) << 16 ) | (Long.parseLong(ips[2]) << 8) | Long.parseLong(ips[3]);
+
+                int start = 0;
+                int end = this.iptables.size();
+                while (end - start > 1) {
+                    int mid = (start + end) / 2;
+                    if (this.iptables.get(mid).getLeft() > addr) {
+                        end = mid;
+                    } else {
+                        start = mid;
+                    }
+                }
+
+                return this.iptables.get(start).getRight();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return null;
