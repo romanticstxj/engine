@@ -236,7 +236,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             logger.warn("{}:ip is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
-        if (mojiWeatherBidRequest.getBasic_price() !=null ) {
+        if (mojiWeatherBidRequest.getBasic_price() == null ) {
             logger.warn("{}:Basic_price is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
