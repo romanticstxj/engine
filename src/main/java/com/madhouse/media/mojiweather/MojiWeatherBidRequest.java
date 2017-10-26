@@ -52,7 +52,7 @@ public class MojiWeatherBidRequest {
     /**
      * 操作系统类型,必填项 (0：Android 1：iOS 2：Windows Phone 3：Others)
      */
-    private String os;
+    private Integer os;
     
     /**
      * 操作系统版本,必填项
@@ -150,238 +150,247 @@ public class MojiWeatherBidRequest {
      * 多个类型分号隔开，如：3;5;6
      * )
      */
-    private String feed_Support_Types;
-    
+    private String feed_support_types;
+
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Integer getOs() {
+        return os;
+    }
+
+    public void setOs(Integer os) {
+        this.os = os;
+    }
+
     public String getAdid() {
         return adid;
     }
-    
+
     public void setAdid(String adid) {
         this.adid = adid;
     }
-    
+
     public String getSessionid() {
         return sessionid;
     }
-    
+
     public void setSessionid(String sessionid) {
         this.sessionid = sessionid;
     }
-    
+
     public Integer getAdtype() {
         return adtype;
     }
-    
+
     public void setAdtype(Integer adtype) {
         this.adtype = adtype;
     }
-    
+
     public Integer getAdstyle() {
         return adstyle;
     }
-    
+
     public void setAdstyle(Integer adstyle) {
         this.adstyle = adstyle;
     }
-    
+
     public Integer getTradelevel() {
         return tradelevel;
     }
-    
+
     public void setTradelevel(Integer tradelevel) {
         this.tradelevel = tradelevel;
     }
-    
+
     public String getPkgname() {
         return pkgname;
     }
-    
+
     public void setPkgname(String pkgname) {
         this.pkgname = pkgname;
     }
-    
+
     public String getAppname() {
         return appname;
     }
-    
+
     public void setAppname(String appname) {
         this.appname = appname;
     }
-    
+
     public Integer getNet() {
         return net;
     }
-    
+
     public void setNet(Integer net) {
         this.net = net;
     }
-    
+
     public Integer getCarrier() {
         return carrier;
     }
-    
+
     public void setCarrier(Integer carrier) {
         this.carrier = carrier;
     }
-    
-    public String getOs() {
-        return os;
-    }
-    
-    public void setOs(String os) {
-        this.os = os;
-    }
-    
+
     public String getOsv() {
         return osv;
     }
-    
+
     public void setOsv(String osv) {
         this.osv = osv;
     }
-    
+
     public Integer getBasic_price() {
         return basic_price;
     }
-    
+
     public void setBasic_price(Integer basic_price) {
         this.basic_price = basic_price;
     }
-    
+
     public String getDevice() {
         return device;
     }
-    
+
     public void setDevice(String device) {
         this.device = device;
     }
-    
+
     public String getUa() {
         return ua;
     }
-    
+
     public void setUa(String ua) {
         this.ua = ua;
     }
-    
+
     public String getIp() {
         return ip;
     }
-    
+
     public void setIp(String ip) {
         this.ip = ip;
     }
-    
+
     public String getImei() {
         return imei;
     }
-    
+
     public void setImei(String imei) {
         this.imei = imei;
     }
-    
+
     public String getWma() {
         return wma;
     }
-    
+
     public void setWma(String wma) {
         this.wma = wma;
     }
-    
+
     public String getAndid() {
         return andid;
     }
-    
+
     public void setAndid(String andid) {
         this.andid = andid;
     }
-    
+
     public String getAndaid() {
         return andaid;
     }
-    
+
     public void setAndaid(String andaid) {
         this.andaid = andaid;
     }
-    
+
     public String getIdfa() {
         return idfa;
     }
-    
+
     public void setIdfa(String idfa) {
         this.idfa = idfa;
     }
-    
+
     public String getOpenudid() {
         return openudid;
     }
-    
+
     public void setOpenudid(String openudid) {
         this.openudid = openudid;
     }
-    
+
     public String getUnqid() {
         return unqid;
     }
-    
+
     public void setUnqid(String unqid) {
         this.unqid = unqid;
     }
-    
+
     public String getScrro() {
         return scrro;
     }
-    
+
     public void setScrro(String scrro) {
         this.scrro = scrro;
     }
-    
+
     public Integer getScrwidth() {
         return scrwidth;
     }
-    
+
     public void setScrwidth(Integer scrwidth) {
         this.scrwidth = scrwidth;
     }
-    
+
     public Integer getScrheight() {
         return scrheight;
     }
-    
+
     public void setScrheight(Integer scrheight) {
         this.scrheight = scrheight;
     }
-    
+
     public Integer getDebug() {
         return debug;
     }
-    
+
     public void setDebug(Integer debug) {
         this.debug = debug;
     }
-    
+
     public String getLon() {
         return lon;
     }
-    
+
     public void setLon(String lon) {
         this.lon = lon;
     }
-    
+
     public String getLat() {
         return lat;
     }
-    
+
     public void setLat(String lat) {
         this.lat = lat;
     }
-    
-    public String getFeed_Support_Types() {
-        return feed_Support_Types;
+
+    public String getFeed_support_types() {
+        return feed_support_types;
     }
-    
-    public void setFeed_Support_Types(String feed_Support_Types) {
-        this.feed_Support_Types = feed_Support_Types;
+
+    public void setFeed_support_types(String feed_support_types) {
+        this.feed_support_types = feed_support_types;
     }
-    
 }

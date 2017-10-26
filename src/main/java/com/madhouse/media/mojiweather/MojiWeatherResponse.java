@@ -12,9 +12,9 @@ public class MojiWeatherResponse {
 
         private String sessionid;
 
-        private String price;
+        private Integer price;
 
-        private String chargingtype;
+        private Integer chargingtype;
 
         private String imgurl;
 
@@ -36,17 +36,17 @@ public class MojiWeatherResponse {
 
         private String adtext;
 
-        private String adtype;
+        private Integer adtype;
 
-        private String adstyle;
+        private Integer adstyle;
 
-        private String feed_type;
+        private Integer feed_type;
 
         private String show_date;
         /**
          * 1 图片 2 视频 
          */
-        private String type;
+        private Integer type;
         /**
          * 视频封面图片地址 （710*396 视频封面） 
          */
@@ -58,7 +58,16 @@ public class MojiWeatherResponse {
         /**
          * 播放时长 单位秒 
          */
-        private int vedioPlaytime;
+        private Integer vedioPlaytime;
+
+        public Integer getVedioPlaytime() {
+            return vedioPlaytime;
+        }
+
+        public void setVedioPlaytime(Integer vedioPlaytime) {
+            this.vedioPlaytime = vedioPlaytime;
+        }
+
         public String getAdid() {
             return adid;
         }
@@ -71,18 +80,23 @@ public class MojiWeatherResponse {
         public void setSessionid(String sessionid) {
             this.sessionid = sessionid;
         }
-        public String getPrice() {
+
+        public Integer getPrice() {
             return price;
         }
-        public void setPrice(String price) {
+
+        public void setPrice(Integer price) {
             this.price = price;
         }
-        public String getChargingtype() {
+
+        public Integer getChargingtype() {
             return chargingtype;
         }
-        public void setChargingtype(String chargingtype) {
+
+        public void setChargingtype(Integer chargingtype) {
             this.chargingtype = chargingtype;
         }
+
         public String getImgurl() {
             return imgurl;
         }
@@ -143,36 +157,46 @@ public class MojiWeatherResponse {
         public void setAdtext(String adtext) {
             this.adtext = adtext;
         }
-        public String getAdtype() {
+
+        public Integer getAdtype() {
             return adtype;
         }
-        public void setAdtype(String adtype) {
+
+        public void setAdtype(Integer adtype) {
             this.adtype = adtype;
         }
-        public String getAdstyle() {
+
+        public Integer getAdstyle() {
             return adstyle;
         }
-        public void setAdstyle(String adstyle) {
+
+        public void setAdstyle(Integer adstyle) {
             this.adstyle = adstyle;
         }
-        public String getFeed_type() {
+
+        public Integer getFeed_type() {
             return feed_type;
         }
-        public void setFeed_type(String feed_type) {
+
+        public void setFeed_type(Integer feed_type) {
             this.feed_type = feed_type;
         }
+
         public String getShow_date() {
             return show_date;
         }
         public void setShow_date(String show_date) {
             this.show_date = show_date;
         }
-        public String getType() {
+
+        public Integer getType() {
             return type;
         }
-        public void setType(String type) {
+
+        public void setType(Integer type) {
             this.type = type;
         }
+
         public String getVedioimg() {
             return vedioimg;
         }
@@ -184,12 +208,6 @@ public class MojiWeatherResponse {
         }
         public void setVediourl(String vediourl) {
             this.vediourl = vediourl;
-        }
-        public int getVedioPlaytime() {
-            return vedioPlaytime;
-        }
-        public void setVedioPlaytime(int vedioPlaytime) {
-            this.vedioPlaytime = vedioPlaytime;
         }
     }
 
