@@ -252,6 +252,10 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
 
         if (mojiWeatherBidRequest.getAdtype() == 3) {
+        	if (mojiWeatherBidRequest.getScrwidth() == null|| mojiWeatherBidRequest.getScrheight()  == null) {
+                logger.warn("{}:scrwidth and scrheight is missing", adid);
+                return Constant.StatusCode.BAD_REQUEST;
+            }
             if (mojiWeatherBidRequest.getScrwidth() <= 0 || mojiWeatherBidRequest.getScrheight() <= 0) {
                 logger.warn("{}:scrwidth or scrheight is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
