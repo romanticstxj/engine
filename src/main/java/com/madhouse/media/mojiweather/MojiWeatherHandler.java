@@ -167,7 +167,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getAdtype()))){
+        if (mojiWeatherBidRequest.getAdtype() == null) {
             logger.warn("{}:adtype is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -197,7 +197,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getNet()))) {
+        if (mojiWeatherBidRequest.getNet() == null) {
             logger.warn("{}:net is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -207,7 +207,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getCarrier()))) {
+        if (mojiWeatherBidRequest.getCarrier() == null) {
             logger.warn("{}:carrier is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -217,7 +217,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return Constant.StatusCode.BAD_REQUEST;
         }
 
-        if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getOs()))) {
+        if (mojiWeatherBidRequest.getOs() == null) {
             logger.warn("{}:os is missing", adid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -252,12 +252,16 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         }
 
         if (mojiWeatherBidRequest.getAdtype() == 3) {
+        	if (mojiWeatherBidRequest.getScrwidth() == null|| mojiWeatherBidRequest.getScrheight()  == null) {
+                logger.warn("{}:scrwidth and scrheight is missing", adid);
+                return Constant.StatusCode.BAD_REQUEST;
+            }
             if (mojiWeatherBidRequest.getScrwidth() <= 0 || mojiWeatherBidRequest.getScrheight() <= 0) {
                 logger.warn("{}:scrwidth or scrheight is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
         } else {
-            if (StringUtils.isEmpty(String.valueOf(mojiWeatherBidRequest.getAdstyle()))) {
+        	if (mojiWeatherBidRequest.getAdstyle() == null) {
                 logger.warn("{}:adstyle is missing", adid);
                 return Constant.StatusCode.BAD_REQUEST;
             }
