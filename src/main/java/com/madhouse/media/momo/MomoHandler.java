@@ -75,12 +75,11 @@ public class MomoHandler extends MediaBaseHandler {
     private int validateParam(MomoBidRequest bidRequest) {
         if (ObjectUtils.isNotEmpty(bidRequest)) {
             String id = bidRequest.getId();
-            if (null == id){
+            if (StringUtils.isEmpty(id)){
                 logger.warn("MomoBidRequest.id is null");
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            
-            if(null == bidRequest.getVersion()){
+            if(StringUtils.isEmpty(bidRequest.getVersion())){
                 logger.warn("{}:MomoBidRequest.Version is null",id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
@@ -98,6 +97,14 @@ public class MomoHandler extends MediaBaseHandler {
                      logger.warn("{}:MomoBidRequest.Imp.id is null",id);
                      return Constant.StatusCode.BAD_REQUEST;
                  }
+                 if (imp.getW()<=0) {
+                     logger.warn("{}:MomoBidRequest.Imp.W is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
+                 if (imp.getH()<=0) {
+                     logger.warn("{}:MomoBidRequest.Imp.H is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
                  if (StringUtils.isEmpty(imp.getSplash_format())) {
                      logger.warn("{}:MomoBidRequest.Imp.Splash_format is null",id);
                      return Constant.StatusCode.BAD_REQUEST;
@@ -107,20 +114,45 @@ public class MomoHandler extends MediaBaseHandler {
                      return Constant.StatusCode.BAD_REQUEST;
                  }else{
                      MomoBidRequest.Impression.Campaign campaign = imp.getCampaign();
-                     if(null == campaign.getCampaign_id()){
+                     if(StringUtils.isEmpty(campaign.getCampaign_id())){
                          logger.warn("{}:MomoBidRequest.Imp.campaign.id is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
-                     if(null == campaign.getCampaign_begin_date()){
+                     if(StringUtils.isEmpty(campaign.getCampaign_begin_date())){
                          logger.warn("{}:MomoBidRequest.Imp.campaign.begin_date is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
-                     if(null == campaign.getCampaign_end_date()){
+                     if(StringUtils.isEmpty(campaign.getCampaign_end_date())){
                          logger.warn("{}:MomoBidRequest.Imp.campaign.end_date is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
                  }
-                 return Constant.StatusCode.OK;
+                 if (StringUtils.isEmpty(imp.getSplash_format())) {
+                     logger.warn("{}:MomoBidRequest.Imp.Splash_format is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
+                 Device device = bidRequest.getDevice();
+                 if(ObjectUtils.isNotEmpty(device)){
+                	 String os = device.getOs();
+                	 if(StringUtils.isEmpty(os)){
+                         logger.warn("{}:MomoBidRequest.os is null",id);
+                         return Constant.StatusCode.BAD_REQUEST;
+                     }
+            		 if(StringUtils.isEmpty(device.getDid())){
+                         logger.warn("{}:MomoBidRequest.Did is null",id);
+                         return Constant.StatusCode.BAD_REQUEST;
+                     }
+            		 if(StringUtils.isEmpty(device.getDidmd5())){
+                         logger.warn("{}:MomoBidRequest.Didmad5 is null",id);
+                         return Constant.StatusCode.BAD_REQUEST;
+                     }
+            		 return Constant.StatusCode.OK;
+                 }else{
+                	 logger.warn("{}:MomoBidRequest.device is null",id);
+                     return Constant.StatusCode.BAD_REQUEST;
+                 }
+                 
+                 
             }
         }
         return  Constant.StatusCode.BAD_REQUEST;
