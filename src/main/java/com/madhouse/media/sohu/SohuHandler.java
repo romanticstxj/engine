@@ -47,7 +47,7 @@ public class SohuHandler extends MediaBaseHandler {
         convertToSohuResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,resp);
         return false;
     }
-    private int 嗯嗯(Request bidRequest) {
+    private int validateRequiredParam(Request bidRequest) {
         if (ObjectUtils.isEmpty(bidRequest)) {
             logger.warn("bidRequest is missing");
             return Constant.StatusCode.BAD_REQUEST;
@@ -263,4 +263,5 @@ public class SohuHandler extends MediaBaseHandler {
 		}
         resp.setStatus(Constant.StatusCode.OK);
     }
+    
 }
