@@ -142,13 +142,13 @@ public class MomoHandler extends MediaBaseHandler {
             mediaRequest.setOs(Constant.OSType.IOS);
             mediaRequest.setIfa(device.getDid());
             mediaRequest.setBundle("com.wemomo.momoappdemo1");
-            adspaceKey.append("ios");
+            adspaceKey.append("IOS");
         }else if(os.equals(MomoStatusCode.Os.OS_ANDROID)){//安卓
             mediaRequest.setOs(Constant.OSType.ANDROID);
             mediaRequest.setDid(device.getDid());
             mediaRequest.setDidmd5(device.getDidmd5());
             mediaRequest.setBundle("com.immomo.momo");
-            adspaceKey.append("android");
+            adspaceKey.append("ANDROID");
         }
         mediaRequest.setName("陌陌");
         mediaRequest.setCategory(13);

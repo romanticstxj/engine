@@ -376,7 +376,7 @@ public class MojiWeatherHandler extends MediaBaseHandler {
         moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_200);
         data.setPrice(mediaResponse.getPrice());
         data.setChargingtype(1);
-        data.setUrlSeparator("|");
+        data.setUrlSeparator("###");
 
         if (mediaResponse.getDuration() != null && mediaResponse.getDuration() > 0) {
             data.setType(2);
