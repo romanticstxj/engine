@@ -397,9 +397,9 @@ public class MojiWeatherHandler extends MediaBaseHandler {
                 data.setImgurl(sb.toString());
             }
         }
-
-        data.setAdwidth(StringUtil.toString(mediaRequest.getW().toString()));
-        data.setAdheight(StringUtil.toString(mediaRequest.getH().toString()));
+        
+        data.setAdwidth(mediaRequest.getW());
+        data.setAdheight(mediaRequest.getH());
 
         if (!StringUtils.isEmpty(mojiWeatherRequest.getFeed_support_types())) {
             String[] feeds = mojiWeatherRequest.getFeed_support_types().split(";");

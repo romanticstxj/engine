@@ -28,9 +28,9 @@ public class MojiWeatherResponse {
 
         private String urlSeparator;
 
-        private String adwidth;
+        private Integer adwidth;
 
-        private String adheight;
+        private Integer adheight;
 
         private String adtitle;
 
@@ -133,18 +133,23 @@ public class MojiWeatherResponse {
         public void setUrlSeparator(String urlSeparator) {
             this.urlSeparator = urlSeparator;
         }
-        public String getAdwidth() {
+
+        public Integer getAdwidth() {
             return adwidth;
         }
-        public void setAdwidth(String adwidth) {
+
+        public void setAdwidth(Integer adwidth) {
             this.adwidth = adwidth;
         }
-        public String getAdheight() {
+
+        public Integer getAdheight() {
             return adheight;
         }
-        public void setAdheight(String adheight) {
+
+        public void setAdheight(Integer adheight) {
             this.adheight = adheight;
         }
+
         public String getAdtitle() {
             return adtitle;
         }
