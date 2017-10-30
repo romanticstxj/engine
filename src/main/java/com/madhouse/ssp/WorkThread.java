@@ -275,6 +275,9 @@ public class WorkThread {
             mediaBid.setIp(HttpUtil.getRealIp(req));
             mediaBid.setUa(HttpUtil.getUserAgent(req));
             mediaBid.setTime(System.currentTimeMillis());
+            mediaBid.setBidfloor(0);
+            mediaBid.setBidtype(Constant.BidType.CPM);
+            mediaBid.setLocation("1000000000");
             mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
 
             mediaBidMetaData.setMediaBidBuilder(mediaBid);
@@ -291,31 +294,36 @@ public class WorkThread {
             //get placement metadata
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
             if (plcmtMetaData == null) {
-                logger.error("media adspace mapping error.");
+                logger.error("media adspace[{}] mapping error.", mediaRequest.getAdspacekey());
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
+
+            //bidfloor, bidtype
+            mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
+            mediaBid.setBidtype(plcmtMetaData.getBidType());
 
             MediaMetaData mediaMetaData = CacheManager.getInstance().getMediaMetaData(plcmtMetaData.getMediaId());
             if (mediaMetaData == null) {
-                logger.error("get media metadata error.");
+                logger.error("get media[{}] metadata error.", plcmtMetaData.getMediaId());
                 resp.setStatus(Constant.StatusCode.NOT_ALLOWED);
                 return;
             }
 
+            //init mediaid, adspaceid, Type
+            mediaRequest.setMediaid(mediaMetaData.getId());
+            mediaRequest.setAdspaceid(plcmtMetaData.getId());
+            mediaRequest.setType(mediaMetaData.getType());
+
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
                 logger.warn("media or adspace is not allowed.");
+                mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
                 mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
                 return;
             }
 
             mediaBidMetaData.setMediaMetaData(mediaMetaData);
             mediaBidMetaData.setPlcmtMetaData(plcmtMetaData);
-
-            //init mediaid, adspaceid,Type
-            mediaRequest.setMediaid(mediaMetaData.getId());
-            mediaRequest.setAdspaceid(plcmtMetaData.getId());
-            mediaRequest.setType(mediaMetaData.getType());
 
             //init user ip
             if (!mediaRequest.hasIp() || StringUtils.isEmpty(mediaRequest.getIp())) {
@@ -339,14 +347,12 @@ public class WorkThread {
             String location = ResourceManager.getInstance().getLocation(mediaRequest.getIp());
             if (StringUtils.isEmpty(location)) {
                 logger.error("get user's location error.");
+                mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
                 mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
                 return;
             }
 
             mediaBid.setLocation(location);
-            //bidfloor, bidtype
-            mediaBid.setBidfloor(plcmtMetaData.getBidFloor());
-            mediaBid.setBidtype(plcmtMetaData.getBidType());
 
             MediaBidMetaData.TrackingParam trackingParam = new MediaBidMetaData.TrackingParam();
             mediaBidMetaData.setTrackingParam(trackingParam);
@@ -409,7 +415,7 @@ public class WorkThread {
                         DSPMetaData dspMetaData = CacheManager.getInstance().getDSPMetaData(dspInfo.getId());
                         if (dspInfo.getStatus() > 0 && dspMetaData != null && dspMetaData.getStatus() > 0) {
 
-                            //QPS Contorl
+                            //QPS Control
                             if (dspMetaData.getMaxQPS() > 0) {
                                 String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
                                 redisMaster.set(qpsControl, "0", "NX", "EX", 15);
@@ -436,7 +442,7 @@ public class WorkThread {
                             HttpRequestBase httpRequestBase = dspBaseHandler.packageRequest(mediaBid, mediaMetaData, plcmtMetaData, adBlockMetaData, policyMetaData, dspBidMetaData);
                             if (httpRequestBase != null) {
                                 HttpClient httpClient = this.getHttpClient(dspMetaData.getId());
-                                int timeout = dspMetaData.getTimeout() > 0 ? dspMetaData.getTimeout() : mediaMetaData.getTimeout();
+                                int timeout = dspMetaData.getTimeout() >= mediaMetaData.getTimeout() ? dspMetaData.getTimeout() : mediaMetaData.getTimeout();
                                 httpClient.setHttpRequest(httpRequestBase, timeout);
                                 this.multiHttpClient.addHttpClient(httpClient);
                                 dspBidMetaData.setHttpClient(httpClient);

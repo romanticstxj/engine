@@ -65,7 +65,10 @@ public class PremiumMADResponse {
     
     //品牌安全监测
     private List<String> securl;
-    
+
+    //宏替换参数
+    private List<String> exts;
+
     //PDB、PD模式的deal id
     private String dealid;
     
@@ -251,5 +254,13 @@ public class PremiumMADResponse {
 
     public void setCrid(String crid) {
         this.crid = crid;
+    }
+
+    public List<String> getExts() {
+        return exts;
+    }
+
+    public void setExts(List<String> exts) {
+        this.exts = exts;
     }
 }

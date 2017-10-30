@@ -114,8 +114,8 @@ public class MADMaxHandler extends DSPBaseHandler {
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(imei)
-                   .append("&aid=").append(aid)
+                   .append("&imei=").append(StringUtil.toString(imei))
+                   .append("&aid=").append(StringUtil.toString(aid))
                    .append("&aaid=").append(StringUtil.toString(mediaRequest.getIfa()));
                 break;
             case Constant.OSType.IOS:
@@ -209,6 +209,8 @@ public class MADMaxHandler extends DSPBaseHandler {
         monitor.setImpurl(tracks);
         monitor.setClkurl(madResponse.getThclkurl());
         monitor.setSecurl(madResponse.getSecurl());
+        monitor.setExts(madResponse.getExts());
+
         dspResponse.setMonitorBuilder(monitor);
         logger.info("MADMax Response is:{}", dspResponse.build().toString());
         return dspResponse;

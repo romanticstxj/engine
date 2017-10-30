@@ -84,33 +84,34 @@ public class PremiumMADHandler extends MediaBaseHandler {
         switch (madBidRequest.getOs()) {
             case PremiumMADStatusCode.PremiumMadOs.OS_ANDROID:
                 mediaRequest.setOs(Constant.OSType.ANDROID);
-
-                if (madBidRequest.getImei().length() > 20) {
-                    mediaRequest.setDidmd5(madBidRequest.getImei());
-                } else {
-                    mediaRequest.setDid(madBidRequest.getImei());
+                if(!StringUtils.isEmpty(madBidRequest.getImei()) ){
+	                if (madBidRequest.getImei().length() > 20) {
+	                    mediaRequest.setDidmd5(madBidRequest.getImei());
+	                } else {
+	                    mediaRequest.setDid(madBidRequest.getImei());
+	                }
                 }
-
-                if (!StringUtils.isEmpty(madBidRequest.getAid()) && madBidRequest.getAid().length() > 20) {
-                    mediaRequest.setDpidmd5(madBidRequest.getAid());
-                } else {
-                    mediaRequest.setDpid(madBidRequest.getAid());
+                if(!StringUtils.isEmpty(madBidRequest.getAid()) ){
+                	if (madBidRequest.getAid().length() > 20) {
+                        mediaRequest.setDpidmd5(madBidRequest.getAid());
+                    } else {
+                        mediaRequest.setDpid(madBidRequest.getAid());
+                    }
                 }
-
-                mediaRequest.setIfa(madBidRequest.getAaid());
+                mediaRequest.setIfa(StringUtil.toString(madBidRequest.getAaid()));
                 break;
             case PremiumMADStatusCode.PremiumMadOs.OS_IOS:
                 mediaRequest.setOs(Constant.OSType.IOS);
-                mediaRequest.setIfa(madBidRequest.getIdfa());
-                mediaRequest.setDpid(madBidRequest.getOid());
+                mediaRequest.setIfa(StringUtil.toString(madBidRequest.getIdfa()));
+                mediaRequest.setDpid(StringUtil.toString(madBidRequest.getOid()));
                 break;
             case PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE:
                 mediaRequest.setOs(Constant.OSType.WINDOWS_PHONE);
-                mediaRequest.setDpid(madBidRequest.getUid());
+                mediaRequest.setDpid(StringUtil.toString(madBidRequest.getUid()));
                 break;
             default:
                 mediaRequest.setOs(Constant.OSType.UNKNOWN);
-                mediaRequest.setDpid(madBidRequest.getUid());
+                mediaRequest.setDpid(StringUtil.toString(madBidRequest.getUid()));
                 break;
         }
         /**
@@ -393,8 +394,8 @@ public class PremiumMADHandler extends MediaBaseHandler {
                     outputStreamWrite(premiumMADResponse,resp);
                     return true;
                 }
-            } else if (mediaBid.getStatus() == Constant.StatusCode.REQUEST_TIMEOUT){
-                premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_502);
+            } else if (mediaBid.getStatus() == Constant.StatusCode.BAD_REQUEST){
+                premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_406);
                 return outputStreamWrite(premiumMADResponse,resp);
             } else if (mediaBid.getStatus() == Constant.StatusCode.INTERNAL_ERROR){
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,PremiumMADStatusCode.StatusCode.CODE_501);
