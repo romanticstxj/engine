@@ -138,12 +138,8 @@ public class MomoHandler extends MediaBaseHandler {
                          logger.warn("{}:MomoBidRequest.os is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
-            		 if(StringUtils.isEmpty(device.getDid())){
+            		 if(StringUtils.isEmpty(device.getDid()) && StringUtils.isEmpty(device.getDidmd5())){
                          logger.warn("{}:MomoBidRequest.Did is null",id);
-                         return Constant.StatusCode.BAD_REQUEST;
-                     }
-            		 if(StringUtils.isEmpty(device.getDidmd5())){
-                         logger.warn("{}:MomoBidRequest.Didmad5 is null",id);
                          return Constant.StatusCode.BAD_REQUEST;
                      }
             		 return Constant.StatusCode.OK;
@@ -172,7 +168,7 @@ public class MomoHandler extends MediaBaseHandler {
         String os = device.getOs();//"1"为iOS,"2"为安卓
         if(os.equals(MomoStatusCode.Os.OS_IOS)){//ios
             mediaRequest.setOs(Constant.OSType.IOS);
-            mediaRequest.setIfa(device.getDid());
+            mediaRequest.setIfa(!StringUtils.isEmpty(device.getDid()) ? device.getDid() : !StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : "");
             mediaRequest.setBundle("com.wemomo.momoappdemo1");
             adspaceKey.append("IOS");
         }else if(os.equals(MomoStatusCode.Os.OS_ANDROID)){//安卓
