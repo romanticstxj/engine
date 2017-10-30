@@ -330,22 +330,12 @@ public class MomoHandler extends MediaBaseHandler {
         }
         if(MomoStatusCode.Os.OS_IOS_P.equalsIgnoreCase(device.getOs().toLowerCase())){
             mediaRequest.setOs(Constant.OSType.IOS);
-            String did = device.getDid();
-            if(!StringUtils.isEmpty(did)){
-                mediaRequest.setDid(did);
-            }
-            String didmd5 = device.getDidmd5();
-            if(!StringUtils.isEmpty(didmd5)){
-                mediaRequest.setDidmd5(didmd5);
-            }
+            mediaRequest.setIfa(!StringUtils.isEmpty(device.getDid()) ? device.getDid() : !StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : "");
         }else{
             mediaRequest.setOs(Constant.OSType.ANDROID);
-            String did = device.getDid();
-            if(!StringUtils.isEmpty(did)){
-                mediaRequest.setIfa(did);
-            }
+            mediaRequest.setDid(device.getDid());
+            mediaRequest.setDidmd5(device.getDidmd5());
         }
-
         mediaRequest.setType(Constant.MediaType.APP);
         logger.info("Momorequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return new Object[]{mediaRequest,campainType};
@@ -409,6 +399,17 @@ public class MomoHandler extends MediaBaseHandler {
                 logger.warn("MomoExchange.bidRequest.Device is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
+            String os = device.getOs();
+       	 	if(StringUtils.isEmpty(os)){
+                logger.warn("MomoExchange.os is null");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+       	 	if(StringUtils.isEmpty(device.getDid()) && StringUtils.isEmpty(device.getDidmd5())){
+                logger.warn("MomoExchange.Did is null");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+            
+            
             return Constant.StatusCode.OK;
         }
         return Constant.StatusCode.BAD_REQUEST;
