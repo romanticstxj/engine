@@ -317,7 +317,6 @@ public class WorkThread {
 
             if (mediaMetaData.getStatus() <= 0 || plcmtMetaData.getStatus() <= 0) {
                 logger.warn("media or adspace is not allowed.");
-                mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
                 mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
                 return;
             }
