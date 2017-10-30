@@ -114,8 +114,8 @@ public class MADMaxHandler extends DSPBaseHandler {
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(imei)
-                   .append("&aid=").append(aid)
+                   .append("&imei=").append(StringUtil.toString(imei))
+                   .append("&aid=").append(StringUtil.toString(aid))
                    .append("&aaid=").append(StringUtil.toString(mediaRequest.getIfa()));
                 break;
             case Constant.OSType.IOS:
