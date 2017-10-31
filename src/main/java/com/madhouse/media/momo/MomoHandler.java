@@ -6,9 +6,10 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.ssp.avro.*;
-
 import com.madhouse.util.Utility;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,7 +52,7 @@ public class MomoHandler extends MediaBaseHandler {
                     }
                 } else {
                     MomoExchange.BidRequest bidRequest = MomoExchange.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-                    logger.info("Momo Request params is : {}", bidRequest.toString());
+                    logger.info("Momo Request params is : {}", JsonFormat.printToString(bidRequest));
                     int status = validateRequiredParam(bidRequest);
                     if(Constant.StatusCode.OK == status){
                         Object[]  object= conversionToPremiumMADDataModel(bidRequest);
@@ -582,9 +583,9 @@ public class MomoHandler extends MediaBaseHandler {
         bidResposeBuilder.setId(bidRequest.getId());
         bidResposeBuilder.addSeatbid(seatBidBuilder);
         bidResposeBuilder.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
-        
-        logger.info("MoMO Response params is : {}", bidResposeBuilder.toString());
-        return bidResposeBuilder.build();
+        MomoExchange.BidResponse resposeBuilder = bidResposeBuilder.build();
+        logger.info("MoMO Response params is : {}", JsonFormat.printToString(resposeBuilder));
+        return resposeBuilder;
     }
 
 
