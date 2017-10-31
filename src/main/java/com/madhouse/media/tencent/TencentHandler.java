@@ -105,7 +105,7 @@ public class TencentHandler extends MediaBaseHandler {
             sb.append(":"+impression.getVideo().getHeight());
             sb.append(":VIDEO");
         }
-        if(!device.hasCarrier()){
+        if(device.hasCarrier()){
             int carrier = device.getCarrier();
             switch (carrier) {
                 case TencentStatusCode.Carrier.CHINA_MOBILE:
@@ -124,7 +124,7 @@ public class TencentHandler extends MediaBaseHandler {
         }else{
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         }
-        if(!device.hasConnectiontype()){
+        if(device.hasConnectiontype()){
             int connectiontype = device.getConnectiontype();
             switch (connectiontype) {
                 case TencentStatusCode.ConnectionType.Ethernet:
@@ -153,19 +153,19 @@ public class TencentHandler extends MediaBaseHandler {
         if(!StringUtils.isEmpty(dealId)){
             mediaRequest.setDealid(dealId);
         }
-        if (!device.hasOsv()) {
-            mediaRequest.setOsv(device.getOs());
+        if (device.hasOsv()) {
+            mediaRequest.setOsv(device.getOsv());
         }
-        if(!device.hasMac()){
+        if(device.hasMac()){
             mediaRequest.setMacmd5(device.getMac());
         }
-        if (!app.hasName()) {
+        if (app.hasName()) {
             mediaRequest.setName(app.getName());
         }
-        if (!device.hasMake()) {
+        if (device.hasMake()) {
             mediaRequest.setMake(device.getMake());
         }
-        if (!device.hasModel()) {
+        if (device.hasModel()) {
             mediaRequest.setModel(device.getModel());
         }
         if (!StringUtils.isEmpty(device.getUa())) {
