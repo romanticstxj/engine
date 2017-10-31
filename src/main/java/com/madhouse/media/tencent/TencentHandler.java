@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
@@ -32,7 +33,7 @@ public class TencentHandler extends MediaBaseHandler {
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
     	try {
             GPBForDSP.Request bidRequest = GPBForDSP.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("Tencent Request params is : {}",bidRequest.toString());
+            logger.info("Tencent Request params is : {}",JsonFormat.printToString(bidRequest));
             int status = validateRequiredParam(bidRequest);
             mediaBidMetaData.setRequestObject(bidRequest);
             if(Constant.StatusCode.OK == status){
@@ -266,14 +267,15 @@ public class TencentHandler extends MediaBaseHandler {
     }
     
     private boolean outputStreamWrite(HttpServletResponse resp, GPBForDSP.Response.Builder bidResponse)  {
+    	GPBForDSP.Response response = bidResponse.build();
         try {
             resp.setContentType("application/octet-stream;charset=UTF-8");
-            resp.getOutputStream().write(bidResponse.build().toByteArray());
+            resp.getOutputStream().write(response.toByteArray());
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        logger.info("Tencent outputStreamWrite is:{}",bidResponse.toString());
+        logger.info("Tencent outputStreamWrite is:{}",JsonFormat.printToString(response));
         return true;
     }
 

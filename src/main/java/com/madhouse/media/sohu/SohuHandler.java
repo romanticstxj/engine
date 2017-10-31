@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
@@ -31,7 +32,7 @@ public class SohuHandler extends MediaBaseHandler {
         
         try {
             SohuRTB.Request bidRequest = SohuRTB.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("Sohu Request params is : {}", bidRequest.toString());
+            logger.info("Sohu Request params is : {}",JsonFormat.printToString(bidRequest));
             mediaBidMetaData.setRequestObject(bidRequest);
             int status =  validateRequiredParam(bidRequest);
             if(status == Constant.StatusCode.OK){
@@ -253,11 +254,12 @@ public class SohuHandler extends MediaBaseHandler {
             }
             seatBuilder.addBid(bidBuilder);
             bidResponseBuiler.addSeatbid(seatBuilder);
-            logger.info("sohu Response params is : {}", bidResponseBuiler.toString());
     	}
-    	resp.setContentType("application/octet-stream;charset=UTF-8");
-        try {
-			resp.getOutputStream().write(bidResponseBuiler.build().toByteArray());
+    	try {
+    		SohuRTB.Response responseBuiler = bidResponseBuiler.build();
+    		logger.info("sohu Response params is : {}", JsonFormat.printToString(responseBuiler));
+    		resp.setContentType("application/octet-stream;charset=UTF-8");
+			resp.getOutputStream().write(responseBuiler.toByteArray());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
