@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.resource.ResourceManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,13 +90,14 @@ public class ReachMaxHandler extends DSPBaseHandler {
             .setNetwork(networkBuilder)//
             .addAdslots(adSlotBuilder);
 
-        logger.info("ReachMax request url:{}", pg.toString());
-        
+        BidRequest bidRequest = pg.build();
+        logger.info("ReachMax request url:{}", JsonFormat.printToString(bidRequest));
         HttpPost request = new HttpPost(dspBidMetaData.getDspMetaData().getBidUrl());
         request.setHeader(HTTP.CONTENT_TYPE, HTTP.OCTET_STREAM_TYPE);
-        request.setEntity(new ByteArrayEntity(pg.build().toByteArray()));
+        request.setEntity(new ByteArrayEntity(bidRequest.toByteArray()));
         return request;
     }
+
     private com.madhouse.dsp.reachMax.ReachMaxAds.Device.Builder getDevice(com.madhouse.ssp.avro.MediaRequest.Builder builder) {
         // Type
         Device.Builder deviceBuilder = Device.newBuilder().setType(Device.Type.PHONE);
@@ -249,7 +251,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         try {
             if(statusCode == Constant.StatusCode.OK){
                 BidResponse bidResponse = BidResponse.parseFrom(EntityUtils.toByteArray(httpResponse.getEntity()));
-                logger.info("ReachMax Response is:{}",bidResponse.toString());
+                logger.info("ReachMax Response is:{}", JsonFormat.printToString(bidResponse));
                 List<Ad> ads = bidResponse.getAdsList();
                 if (ads != null && ads.size() != 0) { // 只取第一个广告
                     Ad ad = ads.get(0);
