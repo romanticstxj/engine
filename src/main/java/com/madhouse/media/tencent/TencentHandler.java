@@ -1,13 +1,5 @@
 package com.madhouse.media.tencent;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
@@ -22,23 +14,29 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.Geo;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
-import com.madhouse.ssp.avro.Track;
 import com.madhouse.ssp.avro.MediaResponse.Builder;
+import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class TencentHandler extends MediaBaseHandler {
-    
+
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-    	try {
+        try {
             GPBForDSP.Request bidRequest = GPBForDSP.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("Tencent Request params is : {}",JsonFormat.printToString(bidRequest));
+            logger.info("Tencent Request params is : {}", JsonFormat.printToString(bidRequest));
             int status = validateRequiredParam(bidRequest);
             mediaBidMetaData.setRequestObject(bidRequest);
-            if(Constant.StatusCode.OK == status){
+            if (Constant.StatusCode.OK == status) {
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
-                if(mediaRequest != null){
+                if (mediaRequest != null) {
                     mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     return true;
                 }
@@ -46,66 +44,76 @@ public class TencentHandler extends MediaBaseHandler {
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
         }
-    	GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT);
+        GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
         outputStreamWrite(resp, bidResponse);
         resp.setStatus(Constant.StatusCode.OK);
         return false;
-        
+
     }
-    
-   
+
+
     private MediaRequest.Builder conversionToPremiumMADDataModel(Request bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
-        
-        Impression impression =bidRequest.getImpression(0);
-        Device device=bidRequest.getDevice();
-        App app=bidRequest.getApp();
+
+        Impression impression = bidRequest.getImpression(0);
+        Device device = bidRequest.getDevice();
+        App app = bidRequest.getApp();
         StringBuilder sb = new StringBuilder();
         sb.append("TENC:");
         String TencAdspaceId = bidRequest.getImpression(0).getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
         sb.append(TencAdspaceId).append(":");
-        
+
         mediaRequest.setBid(bidRequest.getId());
-        
-        
+
+
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String os = device.getOs();//iPhone.OS.9.3.2
         if (!StringUtils.isEmpty(os)) {
-            if(os.toLowerCase().contains(TencentStatusCode.Os.OS_IPHONE) || os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)){
+            if (os.toLowerCase().contains(TencentStatusCode.Os.OS_IPHONE) || os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)) {
                 mediaRequest.setOs(Constant.OSType.IOS);
                 sb.append("IOS");
-                if(TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()){
+                if (TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()) {
                     mediaRequest.setIfa(device.getIdfa());
                 }
-                if(device.hasOpenudid()){
+                if (device.hasOpenudid()) {
                     mediaRequest.setDpid(device.getOpenudid());
                 }
-            }else{
+            } else {
                 sb.append("ANDROID");
                 mediaRequest.setOs(Constant.OSType.ANDROID);
-                if(device.hasImei()){
+                if (device.hasImei()) {
                     mediaRequest.setDidmd5(device.getImei());
                 }
-                if(device.hasAndroidid()){
+                if (device.hasAndroidid()) {
                     mediaRequest.setDpidmd5(device.getAndroidid());
                 }
             }
         }
-        
-        if(impression.hasBanner()){
-            mediaRequest.setW(impression.getBanner().getWidth());
-            mediaRequest.setH(impression.getBanner().getHeight());
-            sb.append(":"+impression.getBanner().getWidth());
-            sb.append(":"+impression.getBanner().getHeight());
-            sb.append(":BANNER");
-        }else if(impression.hasVideo()){
+        // banner&video同时存在 优先响应video广告
+        if (impression.hasVideo()) {
             mediaRequest.setW(impression.getVideo().getWidth());
             mediaRequest.setH(impression.getVideo().getHeight());
-            sb.append(":"+impression.getVideo().getWidth());
-            sb.append(":"+impression.getVideo().getHeight());
+            sb.append(":" + impression.getVideo().getWidth());
+            sb.append(":" + impression.getVideo().getHeight());
             sb.append(":VIDEO");
+        } else if (impression.hasBanner()) {
+            // 优先使用最大尺寸
+            Impression.MaterialFormat maxMaterialFormat = getMaxSizeMaterialFormat(impression);
+            if (maxMaterialFormat != null) {
+                mediaRequest.setW(maxMaterialFormat.getWidth());
+                mediaRequest.setH(maxMaterialFormat.getHeight());
+                sb.append(":" + maxMaterialFormat.getWidth());
+                sb.append(":" + maxMaterialFormat.getHeight());
+                sb.append(":BANNER");
+            } else {
+                mediaRequest.setW(impression.getBanner().getWidth());
+                mediaRequest.setH(impression.getBanner().getHeight());
+                sb.append(":" + impression.getBanner().getWidth());
+                sb.append(":" + impression.getBanner().getHeight());
+                sb.append(":BANNER");
+            }
         }
-        if(device.hasCarrier()){
+        if (device.hasCarrier()) {
             int carrier = device.getCarrier();
             switch (carrier) {
                 case TencentStatusCode.Carrier.CHINA_MOBILE:
@@ -121,10 +129,10 @@ public class TencentHandler extends MediaBaseHandler {
                     mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
                     break;
             }
-        }else{
+        } else {
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         }
-        if(device.hasConnectiontype()){
+        if (device.hasConnectiontype()) {
             int connectiontype = device.getConnectiontype();
             switch (connectiontype) {
                 case TencentStatusCode.ConnectionType.Ethernet:
@@ -146,17 +154,17 @@ public class TencentHandler extends MediaBaseHandler {
                     mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
                     break;
             }
-        }else{
+        } else {
             mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
         }
-        String dealId =impression.getDealid();
-        if(!StringUtils.isEmpty(dealId)){
+        String dealId = impression.getDealid();
+        if (!StringUtils.isEmpty(dealId)) {
             mediaRequest.setDealid(dealId);
         }
         if (device.hasOsv()) {
             mediaRequest.setOsv(device.getOsv());
         }
-        if(device.hasMac()){
+        if (device.hasMac()) {
             mediaRequest.setMacmd5(device.getMac());
         }
         if (app.hasName()) {
@@ -183,21 +191,42 @@ public class TencentHandler extends MediaBaseHandler {
                 mediaRequest.setGeoBuilder(geo);
             }
         }
-        
+
         MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-        } else { 
+        } else {
             mappingMetaData = CacheManager.getInstance().getMediaMapping("TENC:0:");
-            if(mappingMetaData != null){
+            if (mappingMetaData != null) {
                 mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-            }else{
+            } else {
                 return null;
             }
         }
         mediaRequest.setAdtype(2);
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest;
+    }
+
+
+    /**
+     * find max size material
+     * @param impression
+     * @return
+     */
+    private Impression.MaterialFormat getMaxSizeMaterialFormat(Impression impression) {
+        Impression.MaterialFormat maxSizeMaterialFormat = null;
+        int maxMaterialSize = 0;
+        for (Impression.MaterialFormat currentMaterialFormat : impression.getAdmRequireList()) {
+            if (currentMaterialFormat.getMimes().contains("jpg") || currentMaterialFormat.getMimes().contains("png")) {
+                int currentMaterialSize = currentMaterialFormat.getWidth() * currentMaterialFormat.getHeight();
+                if (currentMaterialSize > maxMaterialSize) {
+                    maxMaterialSize = currentMaterialSize;
+                    maxSizeMaterialFormat = currentMaterialFormat;
+                }
+            }
+        }
+        return maxSizeMaterialFormat;
     }
 
     private int validateRequiredParam(Request bidRequest) {
@@ -207,37 +236,37 @@ public class TencentHandler extends MediaBaseHandler {
                 logger.warn("Tencent.bidRequest.id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            Impression impression =bidRequest.getImpression(0);
-            if(ObjectUtils.isNotEmpty(impression)){
-                if(impression.hasBanner()){
-                    if(!impression.getBanner().hasWidth()){
-                        logger.warn("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
+            Impression impression = bidRequest.getImpression(0);
+            if (ObjectUtils.isNotEmpty(impression)) {
+                if (impression.hasBanner()) {
+                    if (!impression.getBanner().hasWidth()) {
+                        logger.warn("{}:Tencent.bidRequest.impression.Banner.W is missing", id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
-                    if(!impression.getBanner().hasWidth()){
-                        logger.warn("{}:Tencent.bidRequest.impression.Video.H is missing",id);
+                    if (!impression.getBanner().hasWidth()) {
+                        logger.warn("{}:Tencent.bidRequest.impression.Video.H is missing", id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
-                }else if(impression.hasVideo()){
-                    if(!impression.getVideo().hasWidth()){
-                        logger.warn("{}:Tencent.bidRequest.impression.Banner.W is missing",id);
+                } else if (impression.hasVideo()) {
+                    if (!impression.getVideo().hasWidth()) {
+                        logger.warn("{}:Tencent.bidRequest.impression.Banner.W is missing", id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
-                    if(!impression.getVideo().hasHeight()){
-                        logger.warn("{}:Tencent.bidRequest.impression.Video.H is missing",id);
+                    if (!impression.getVideo().hasHeight()) {
+                        logger.warn("{}:Tencent.bidRequest.impression.Video.H is missing", id);
                         return Constant.StatusCode.BAD_REQUEST;
                     }
                 }
-            }else{
-                logger.warn("{}:Tencent.bidRequest.impression is missing",id);
+            } else {
+                logger.warn("{}:Tencent.bidRequest.impression is missing", id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            if(!bidRequest.hasDevice()){
-                logger.warn("{}:Tencent.bidRequest.Device is missing",id);
+            if (!bidRequest.hasDevice()) {
+                logger.warn("{}:Tencent.bidRequest.Device is missing", id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            if(!bidRequest.hasApp()){
-                logger.warn("{}:Tencent.bidRequest.App is missing",id);
+            if (!bidRequest.hasApp()) {
+                logger.warn("{}:Tencent.bidRequest.App is missing", id);
                 return Constant.StatusCode.BAD_REQUEST;
             }
             return Constant.StatusCode.OK;
@@ -252,9 +281,9 @@ public class TencentHandler extends MediaBaseHandler {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    bidResponse = convertToTencentResponse(mediaBidMetaData,mediaBid.getStatus());
+                    bidResponse = convertToTencentResponse(mediaBidMetaData, mediaBid.getStatus());
                 } else {
-                    bidResponse = convertToTencentResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT);
+                    bidResponse = convertToTencentResponse(mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
                 }
             }
             outputStreamWrite(resp, bidResponse);
@@ -265,9 +294,9 @@ public class TencentHandler extends MediaBaseHandler {
             return false;
         }
     }
-    
-    private boolean outputStreamWrite(HttpServletResponse resp, GPBForDSP.Response.Builder bidResponse)  {
-    	GPBForDSP.Response response = bidResponse.build();
+
+    private boolean outputStreamWrite(HttpServletResponse resp, GPBForDSP.Response.Builder bidResponse) {
+        GPBForDSP.Response response = bidResponse.build();
         try {
             resp.setContentType("application/octet-stream;charset=UTF-8");
             resp.getOutputStream().write(response.toByteArray());
@@ -275,47 +304,47 @@ public class TencentHandler extends MediaBaseHandler {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        logger.info("Tencent outputStreamWrite is:{}",JsonFormat.printToString(response));
+        logger.info("Tencent outputStreamWrite is:{}", JsonFormat.printToString(response));
         return true;
     }
 
-    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData,int status) {
+    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData, int status) {
         GPBForDSP.Response.Builder responseBuiler = GPBForDSP.Response.newBuilder();
-        GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
+        GPBForDSP.Request bidRequest = (GPBForDSP.Request) mediaBidMetaData.getRequestObject();
         responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
-        if(Constant.StatusCode.OK == status){
+        if (Constant.StatusCode.OK == status) {
             GPBForDSP.Response.SeatBid.Builder seatBuilder = GPBForDSP.Response.SeatBid.newBuilder();
             Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
-            bidResponseBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid(): "");
+            bidResponseBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");
             //宏替换
             List<String> extList = mediaResponse.getMonitorBuilder().getExts();
-            if(!ObjectUtils.isEmpty(extList)){
-            	bidResponseBuilder.setExt(extList.size() >=1 ? StringUtil.toString(extList.get(0)) : "");
-            	bidResponseBuilder.setExt2(extList.size() >=2 ? StringUtil.toString(extList.get(1)) : "");
-            	bidResponseBuilder.setExt3(extList.size() >=3 ? StringUtil.toString(extList.get(2)) : "");
+            if (!ObjectUtils.isEmpty(extList)) {
+                bidResponseBuilder.setExt(extList.size() >= 1 ? StringUtil.toString(extList.get(0)) : "");
+                bidResponseBuilder.setExt2(extList.size() >= 2 ? StringUtil.toString(extList.get(1)) : "");
+                bidResponseBuilder.setExt3(extList.size() >= 3 ? StringUtil.toString(extList.get(2)) : "");
             }
             //ssp自己的展示和点击监测:去掉域名
-            List<Track> tracks= mediaResponse.getMonitorBuilder().getImpurl();
-            if(!tracks.isEmpty()){
-            	String impUrl = tracks.get(tracks.size()-1).getUrl();
-            	bidResponseBuilder.addDispExts(impUrl.substring(impUrl.lastIndexOf("?")+1, impUrl.length()));
+            List<Track> tracks = mediaResponse.getMonitorBuilder().getImpurl();
+            if (!tracks.isEmpty()) {
+                String impUrl = tracks.get(tracks.size() - 1).getUrl();
+                bidResponseBuilder.addDispExts(impUrl.substring(impUrl.lastIndexOf("?") + 1, impUrl.length()));
             }
-            
-            List<String> clkUrls= mediaResponse.getMonitorBuilder().getClkurl();
-            if(!clkUrls.isEmpty()){
-            	String clkUrl = clkUrls.get(clkUrls.size()-1).toString();
-            	bidResponseBuilder.addClickExts(clkUrl.substring(clkUrl.lastIndexOf("?")+1, clkUrl.length()));
+
+            List<String> clkUrls = mediaResponse.getMonitorBuilder().getClkurl();
+            if (!clkUrls.isEmpty()) {
+                String clkUrl = clkUrls.get(clkUrls.size() - 1).toString();
+                bidResponseBuilder.addClickExts(clkUrl.substring(clkUrl.lastIndexOf("?") + 1, clkUrl.length()));
             }
-            
+
             seatBuilder.addBid(bidResponseBuilder);//与request中的impression对应，可以对多个impression回复参与竞价，也可以对其中一部分回复参与竞价
             responseBuiler.addSeatbid(seatBuilder);
-            
+
         }
         return responseBuiler;
     }
-    
+
 }
