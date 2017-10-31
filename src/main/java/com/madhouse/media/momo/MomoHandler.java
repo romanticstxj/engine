@@ -29,6 +29,7 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
+import com.madhouse.util.StringUtil;
 public class MomoHandler extends MediaBaseHandler {
     
     @Override
@@ -543,10 +544,10 @@ public class MomoHandler extends MediaBaseHandler {
         MomoExchange.BidResponse.SeatBid.Bid.Builder bidBuilder = MomoExchange.BidResponse.SeatBid.Bid.newBuilder();
         bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
         bidBuilder.setImpid(bidRequest.getImpList().get(0).getId());
-        bidBuilder.setPrice(mediaResponse.getPrice());
+        bidBuilder.setPrice(mediaResponse.getPrice()/100);
         bidBuilder.setCid(mediaResponse.getCid());
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
-        bidBuilder.setCrid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");  //物料id
+        bidBuilder.setCrid(StringUtil.toString(mediaResponse.getCrid()));  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
         
         bidBuilder.setNativeCreative(getNativeCreative(bidRequest,mediaResponse,mediaRequest,campainType));
