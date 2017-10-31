@@ -1,5 +1,7 @@
 package com.madhouse.media.tencent;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +21,7 @@ import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.Geo;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.ssp.avro.Track;
 import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
@@ -27,28 +30,26 @@ public class TencentHandler extends MediaBaseHandler {
     
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        
-        try {
+    	try {
             GPBForDSP.Request bidRequest = GPBForDSP.Request.parseFrom(IOUtils.toByteArray(req.getInputStream()));
             logger.info("Tencent Request params is : {}",bidRequest.toString());
             int status = validateRequiredParam(bidRequest);
+            mediaBidMetaData.setRequestObject(bidRequest);
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if(mediaRequest != null){
                     mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
-                    mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
             }
-            GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData,status,bidRequest.getId());
-            outputStreamWrite(resp, bidResponse);
-            resp.setStatus(Constant.StatusCode.OK);
-            return false;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
-            resp.setStatus(Constant.StatusCode.OK);
-            return false;
         }
+    	GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT);
+        outputStreamWrite(resp, bidResponse);
+        resp.setStatus(Constant.StatusCode.OK);
+        return false;
+        
     }
     
    
@@ -71,37 +72,37 @@ public class TencentHandler extends MediaBaseHandler {
         if (!StringUtils.isEmpty(os)) {
             if(os.toLowerCase().contains(TencentStatusCode.Os.OS_IPHONE) || os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)){
                 mediaRequest.setOs(Constant.OSType.IOS);
-                sb.append("ios");
+                sb.append("IOS");
                 if(TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()){
                     mediaRequest.setIfa(device.getIdfa());
                 }
-                if(!device.hasOpenudid()){
+                if(device.hasOpenudid()){
                     mediaRequest.setDpid(device.getOpenudid());
                 }
             }else{
-                sb.append("android");
+                sb.append("ANDROID");
                 mediaRequest.setOs(Constant.OSType.ANDROID);
-                if(!device.hasImei()){
+                if(device.hasImei()){
                     mediaRequest.setDidmd5(device.getImei());
                 }
-                if(!device.hasAndroidid()){
+                if(device.hasAndroidid()){
                     mediaRequest.setDpidmd5(device.getAndroidid());
                 }
             }
         }
         
-        if(!impression.hasBanner()){
+        if(impression.hasBanner()){
             mediaRequest.setW(impression.getBanner().getWidth());
             mediaRequest.setH(impression.getBanner().getHeight());
-            sb.append(":w:"+impression.getBanner().getWidth());
-            sb.append(":h:"+impression.getBanner().getWidth());
-            sb.append(":banner");
-        }else if(!impression.hasVideo()){
+            sb.append(":"+impression.getBanner().getWidth());
+            sb.append(":"+impression.getBanner().getHeight());
+            sb.append(":BANNER");
+        }else if(impression.hasVideo()){
             mediaRequest.setW(impression.getVideo().getWidth());
             mediaRequest.setH(impression.getVideo().getHeight());
-            sb.append(":w:"+impression.getVideo().getWidth());
-            sb.append(":h:"+impression.getVideo().getWidth());
-            sb.append(":video");
+            sb.append(":"+impression.getVideo().getWidth());
+            sb.append(":"+impression.getVideo().getHeight());
+            sb.append(":VIDEO");
         }
         if(!device.hasCarrier()){
             int carrier = device.getCarrier();
@@ -249,10 +250,10 @@ public class TencentHandler extends MediaBaseHandler {
             GPBForDSP.Response.Builder bidResponse = GPBForDSP.Response.newBuilder();
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    bidResponse = convertToTencentResponse(mediaBidMetaData,mediaBid.getStatus(),null);
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                    bidResponse = convertToTencentResponse(mediaBidMetaData,mediaBid.getStatus());
                 } else {
-                    bidResponse = convertToTencentResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,mediaBid.getRequest().getBid());
+                    bidResponse = convertToTencentResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT);
                 }
             }
             outputStreamWrite(resp, bidResponse);
@@ -276,43 +277,38 @@ public class TencentHandler extends MediaBaseHandler {
         return true;
     }
 
-    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData,int status,String requestId) {
+    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData,int status) {
         GPBForDSP.Response.Builder responseBuiler = GPBForDSP.Response.newBuilder();
-        responseBuiler.setId(StringUtil.toString(requestId));
+        GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
+        responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
         if(Constant.StatusCode.OK == status){
             GPBForDSP.Response.SeatBid.Builder seatBuilder = GPBForDSP.Response.SeatBid.newBuilder();
-            GPBForDSP.Request bidRequest = (GPBForDSP.Request)mediaBidMetaData.getRequestObject();
             Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
             bidResponseBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid(): "");
-            if (mediaResponse.getMonitorBuilder() != null && mediaResponse.getMonitorBuilder().getImpurl() != null && mediaResponse.getMonitorBuilder().getImpurl().size() > 0) {
-                if (mediaResponse.getMonitorBuilder().getImpurl().size() >= 2) {
-                    String impurl = mediaResponse.getMonitorBuilder().getImpurl().get(0).getUrl();
-                    if(impurl.contains("v2")){
-                        bidResponseBuilder.setExt2(impurl.substring(impurl.indexOf("v2")+2, impurl.length()));//设置为dsp的监测
-                    }
-                }
-                String impTrack = mediaResponse.getMonitorBuilder().getImpurl().get(mediaResponse.getMonitorBuilder().getImpurl().size() - 1).getUrl();//取最后一个（exchange自己的建波）
-                
-                bidResponseBuilder.addDispExts(impTrack.substring(impTrack.lastIndexOf("imp")+3,impTrack.length()));
+            //宏替换
+            List<String> extList = mediaResponse.getMonitorBuilder().getExts();
+            if(!ObjectUtils.isEmpty(extList)){
+            	bidResponseBuilder.setExt(extList.size() >=1 ? StringUtil.toString(extList.get(0)) : "");
+            	bidResponseBuilder.setExt2(extList.size() >=2 ? StringUtil.toString(extList.get(1)) : "");
+            	bidResponseBuilder.setExt3(extList.size() >=3 ? StringUtil.toString(extList.get(2)) : "");
             }
-            //如果有落地页就取值，如果没有，判断thclkurl的大小，如果size=2，第一条设置为ClickMonitor，第二条设置为ext2，；如果size=1，则只设置为ext2的值
-            if (mediaResponse.getMonitorBuilder().getClkurl() != null ) {
-                if (mediaResponse.getLpgurl() != null && mediaResponse.getLpgurl() != "") {
-                    bidResponseBuilder.setExt(mediaResponse.getLpgurl());//落地页地址
-                } else {
-                    if (mediaResponse.getMonitorBuilder().getClkurl().size() >=2){
-                        bidResponseBuilder.setExt(mediaResponse.getMonitorBuilder().getClkurl().get(0));
-                    }
-                }
-                
-                if (mediaResponse.getMonitorBuilder().getClkurl().size() >= 0) {
-                    bidResponseBuilder.addClickExts(mediaResponse.getMonitorBuilder().getClkurl().get(mediaResponse.getMonitorBuilder().getClkurl().size() - 1));
-                }
+            //ssp自己的展示和点击监测:去掉域名
+            List<Track> tracks= mediaResponse.getMonitorBuilder().getImpurl();
+            if(!tracks.isEmpty()){
+            	String impUrl = tracks.get(tracks.size()-1).getUrl();
+            	bidResponseBuilder.addDispExts(impUrl.substring(impUrl.lastIndexOf("?")+1, impUrl.length()));
             }
+            
+            List<String> clkUrls= mediaResponse.getMonitorBuilder().getClkurl();
+            if(!clkUrls.isEmpty()){
+            	String clkUrl = clkUrls.get(clkUrls.size()-1).toString();
+            	bidResponseBuilder.addClickExts(clkUrl.substring(clkUrl.lastIndexOf("?")+1, clkUrl.length()));
+            }
+            
             seatBuilder.addBid(bidResponseBuilder);//与request中的impression对应，可以对多个impression回复参与竞价，也可以对其中一部分回复参与竞价
             responseBuiler.addSeatbid(seatBuilder);
             

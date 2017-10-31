@@ -231,7 +231,7 @@ public class SohuHandler extends MediaBaseHandler {
             
             bidBuilder.setAdurl(mediaResponse.getAdm().get(0));
             
-            //ssp自己的展示和点击监播
+            //ssp自己的展示和点击监播:去掉域名
             List<Track> tracks= mediaResponse.getMonitorBuilder().getImpurl();
             if(!tracks.isEmpty()){
             	String impUrl = tracks.get(tracks.size()-1).getUrl();
