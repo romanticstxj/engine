@@ -566,13 +566,13 @@ public class MomoHandler extends MediaBaseHandler {
         List<Track> imgtracking = mediaResponse.getMonitorBuilder().getImpurl();
         if (imgtracking != null && imgtracking.size() != 0) {
             for (Track track : imgtracking) {
-                bidBuilder.addClicktrackers(track.getUrl().toString());
+                bidBuilder.addImptrackers(track.getUrl().toString());
             }
         }
         List<String> thclkurl = mediaResponse.getMonitorBuilder().getClkurl();
         if (thclkurl != null && thclkurl.size() != 0) {
             for (String thclk : thclkurl) {
-                bidBuilder.addImptrackers(thclk.toString());
+                bidBuilder.addClicktrackers(thclk.toString());
             }
         }
         
