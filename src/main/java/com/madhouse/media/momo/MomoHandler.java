@@ -598,7 +598,7 @@ public class MomoHandler extends MediaBaseHandler {
         nativeCreativeBuilder.setLogo(getLogo(mediaResponse,mediaResponse.getIcon()));
         nativeCreativeBuilder.setLandingpageUrl(getLink(mediaResponse));  //落地页
         
-        if (!"311".equals(mediaResponse.getLayout())) {//广告图片
+        if (!"311".equals(String.valueOf(mediaResponse.getLayout()))) {//广告图片
             if(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode().contains(campainType)){//大图样式落地页
                 nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.FEED_LANDING_PAGE_LARGE_IMG.getCode());
                 nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse));
@@ -617,7 +617,7 @@ public class MomoHandler extends MediaBaseHandler {
                 
             }else if(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode().contains(campainType)){//图标样式落地页
                 nativeCreativeBuilder.setNativeFormat(MomoNativeTypeEnums.NEARBY_LANDING_PAGE_NO_IMG.getCode());
-                nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse)); 
+                //nativeCreativeBuilder.addImage(getImage(mediaRequest,mediaResponse)); 
                 nativeCreativeBuilder.setLogo(getLogo(mediaResponse,mediaResponse.getAdm().get(0)));
             }
         } else {//视频
