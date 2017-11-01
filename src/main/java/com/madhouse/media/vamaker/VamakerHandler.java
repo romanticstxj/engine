@@ -131,15 +131,18 @@ public class VamakerHandler extends MediaBaseHandler {
                 }
 
                 mediaRequest.setIfa(StringUtil.toString(mobile.getAaid()));
+                break;
             }
 
             case VamakerStatusCode.OSType.IOS: {
                 mediaRequest.setOs(Constant.OSType.IOS);
                 mediaRequest.setIfa(StringUtil.toString(mobile.getIDFA()));
+                break;
             }
 
             default: {
                 mediaRequest.setOs(Constant.OSType.UNKNOWN);
+                break;
             }
         }
 
