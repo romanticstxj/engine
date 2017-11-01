@@ -315,6 +315,10 @@ public class WorkThread {
             mediaRequest.setAdspaceid(plcmtMetaData.getId());
             mediaRequest.setType(mediaMetaData.getType());
 
+            if (!mediaRequest.hasCategory()) {
+                mediaRequest.setCategory(mediaMetaData.getCategory());
+            }
+            
             mediaBidMetaData.setMediaMetaData(mediaMetaData);
             mediaBidMetaData.setPlcmtMetaData(plcmtMetaData);
 
