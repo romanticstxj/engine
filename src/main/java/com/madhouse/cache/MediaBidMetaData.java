@@ -18,6 +18,15 @@ public class MediaBidMetaData {
     private TrackingParam trackingParam;
     private MediaMetaData mediaMetaData;
     private PlcmtMetaData plcmtMetaData;
+    private MaterialMetaData materialMetaData;
+
+    public MaterialMetaData getMaterialMetaData() {
+        return materialMetaData;
+    }
+
+    public void setMaterialMetaData(MaterialMetaData materialMetaData) {
+        this.materialMetaData = materialMetaData;
+    }
 
     public Object getRequestObject() {
         return requestObject;

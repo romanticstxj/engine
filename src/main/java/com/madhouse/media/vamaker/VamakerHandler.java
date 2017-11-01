@@ -29,8 +29,9 @@ public class VamakerHandler extends MediaBaseHandler {
         try {
             VamakerRTB.VamRequest bidRequest = VamakerRTB.VamRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
             logger.info("Vamaker Request params is : {}",bidRequest.toString());
+
             int status = validateRequiredParam(bidRequest);
-            if(Constant.StatusCode.OK == status){
+            if (Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if(null != mediaRequest){
                     mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
@@ -38,6 +39,7 @@ public class VamakerHandler extends MediaBaseHandler {
                     return true;
                 }
             }
+
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         } catch (Exception e) {
@@ -49,133 +51,168 @@ public class VamakerHandler extends MediaBaseHandler {
     
     private MediaRequest.Builder conversionToPremiumMADDataModel(VamRequest bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
+
         mediaRequest.setBid(bidRequest.getId());
         VamakerRTB.VamRequest.Mobile mobile = bidRequest.getVamMobile();
         StringBuilder sb = new StringBuilder();
-        sb.append("VAM:");
-        sb.append(mobile.getAdspaceId()).append(":");
-        if (VamakerStatusCode.Os.ANDROID == mobile.getOs()) {
-            sb.append("android");
-        } else if (VamakerStatusCode.Os.IOS == mobile.getOs()) {
-            sb.append("ios");
+        sb.append("VAM:").append(mobile.getAdspaceId());
+        if (VamakerStatusCode.OSType.ANDROID == mobile.getOs()) {
+            sb.append(":ANDROID");
+        } else if (VamakerStatusCode.OSType.IOS == mobile.getOs()) {
+            sb.append(":IOS");
         }
-        logger.warn("crid not found:{}", sb.toString());
-        
-        switch (mobile.getOs()) {
-            case VamakerStatusCode.Os.ANDROID:
-                mediaRequest.setOs(Constant.OSType.ANDROID);
-                String imei = mobile.getImei();
-                if (!StringUtils.isEmpty(imei)) {
-                    mediaRequest.setDidmd5(imei);
-                }
-                String aid = mobile.getAid();
-                if (!StringUtils.isEmpty(aid)) {
-                    mediaRequest.setDpidmd5(aid);
-                }
-                String aaid = mobile.getAaid();
-                if (!StringUtils.isEmpty(aaid)) {
-                    mediaRequest.setIfa(aaid);
-                }
-                break;
-            case VamakerStatusCode.Os.IOS:
-                mediaRequest.setOs(Constant.OSType.IOS);
-                
-                String idfa = mobile.getIDFA();
-                if (!StringUtils.isEmpty(idfa)) {
-                    mediaRequest.setIfa(idfa);
-                }
-                String openUDID = mobile.getOpenUDID();
-                if (!StringUtils.isEmpty(openUDID)) {
-                    mediaRequest.setDpidmd5(openUDID);
-                }
-                break;
-            default:
-                mediaRequest.setOs(Constant.OSType.UNKNOWN);
-                break;
-        }
-        String mac = mobile.getMac();
-        if (!StringUtils.isEmpty(mac)) {
-            mediaRequest.setMacmd5(mac);
-        }
-        mediaRequest.setAdtype(2);
-        mediaRequest.setW(mobile.getWidth());
-        mediaRequest.setH(mobile.getHeight());
-        mediaRequest.setBidfloor(mobile.getBidfloor());
-        mediaRequest.setMake(StringUtil.toString(mobile.getBrand()));
-        mediaRequest.setModel(StringUtil.toString(mobile.getModel()));
-        mediaRequest.setBundle(StringUtil.toString(mobile.getPgn()));
-        mediaRequest.setName(StringUtil.toString(mobile.getAppName()));
-        mediaRequest.setCarrier(mobile.getOperateId());
-        mediaRequest.setConnectiontype(mobile.getNetwork() > 5 ? mobile.getNetwork() : Constant.ConnectionType.CELL);
-        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
-        VamakerRTB.VamRequest.Mobile.Point point = mobile.getCorner();
-        if (point != null) {
-            Geo.Builder geo = Geo.newBuilder();
-            geo.setLon(point.getLongitude());
-            geo.setLat(point.getLatitude());
-            mediaRequest.setGeoBuilder(geo);
-        }
-        String osv = mobile.getOsVersion();
-        if (!StringUtils.isEmpty(osv)) {
-            mediaRequest.setOsv(osv);
-        }
-        String ua = bidRequest.getUserAgent();
-        if (!StringUtils.isEmpty(ua)) {
-            mediaRequest.setUa(ua);
-        }
-        String ip = bidRequest.getIp();
-        if (!StringUtils.isEmpty(ip)) {
-            mediaRequest.setIp(ip);
-        }
-        mediaRequest.setType(Constant.MediaType.APP);
-        MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
-        if (null != mappingMetaData) {
-            mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-        }else{
+
+        MediaMappingMetaData mediaMappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
+        if (mediaMappingMetaData == null) {
             return null;
         }
-        logger.info("Vamakerrequest convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
-        mediaRequest.build();
+
+        mediaRequest.setType(Constant.MediaType.APP);
+        mediaRequest.setAdspacekey(mediaMappingMetaData.getAdspaceKey());
+        mediaRequest.setName(mobile.getAppName());
+        mediaRequest.setBundle(mobile.getPgn());
+        mediaRequest.setModel(StringUtil.toString(mobile.getModel()));
+        mediaRequest.setMake(StringUtil.toString(mobile.getBrand()));
+        mediaRequest.setMacmd5(StringUtil.toString(mobile.getMac()));
+        mediaRequest.setUa(StringUtil.toString(bidRequest.getUserAgent()));
+
+        mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
+        if (mobile.hasNetwork()) {
+            mediaRequest.setConnectiontype(mobile.getNetwork());
+        }
+
+        mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
+        if (mobile.hasOperateId()) {
+            mediaRequest.setCarrier(mobile.getOperateId());
+        }
+
+        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        if (bidRequest.hasDeviceType()) {
+            switch (bidRequest.getDeviceType()) {
+                case PC: {
+                    mediaRequest.setDevicetype(Constant.DeviceType.COMPUTER);
+                    break;
+                }
+
+                case MOBILE: {
+                    mediaRequest.setDevicetype(Constant.DeviceType.PHONE);
+                    break;
+                }
+
+                case PAD: {
+                    mediaRequest.setDevicetype(Constant.DeviceType.PAD);
+                    break;
+                }
+
+                case SMART_TV: {
+                    mediaRequest.setDevicetype(Constant.DeviceType.TV);
+                    break;
+                }
+            }
+        }
+
+        mediaRequest.setOsv(StringUtil.toString(mobile.getOsVersion()));
+
+        switch (mobile.getOs()) {
+            case VamakerStatusCode.OSType.ANDROID: {
+                mediaRequest.setOs(Constant.OSType.ANDROID);
+                String imei = StringUtil.toString(mobile.getImei());
+                if (imei.length() < 20) {
+                    mediaRequest.setDid(imei);
+                } else {
+                    mediaRequest.setDidmd5(imei);
+                }
+
+                String aid = StringUtil.toString(mobile.getAid());
+                if (aid.length() < 20) {
+                    mediaRequest.setDpid(aid);
+                } else {
+                    mediaRequest.setDpidmd5(aid);
+                }
+
+                mediaRequest.setIfa(StringUtil.toString(mobile.getAaid()));
+            }
+
+            case VamakerStatusCode.OSType.IOS: {
+                mediaRequest.setOs(Constant.OSType.IOS);
+                mediaRequest.setIfa(StringUtil.toString(mobile.getIDFA()));
+            }
+
+            default: {
+                mediaRequest.setOs(Constant.OSType.UNKNOWN);
+            }
+        }
+
+        if (bidRequest.getPmpInfoCount() > 0) {
+            mediaRequest.setDealid(Integer.toString(bidRequest.getPmpInfo(0).getDealId()));
+        }
+
+        if (mobile.hasCorner() && mobile.getCorner() != null) {
+            Geo.Builder geo = Geo.newBuilder();
+            geo.setLon(mobile.getCorner().getLongitude());
+            geo.setLat(mobile.getCorner().getLatitude());
+            mediaRequest.setGeoBuilder(geo);
+        }
+
+        if (mobile.hasWidth() && mobile.hasHeight()) {
+            mediaRequest.setW(mobile.getWidth());
+            mediaRequest.setH(mobile.getHeight());
+        }
+
+        mediaRequest.setBidfloor(mobile.getBidfloor());
         return mediaRequest;
     }
 
     private int validateRequiredParam(VamRequest bidRequest) {
         if(ObjectUtils.isNotEmpty(bidRequest)){
-            String id = bidRequest.getId();
-            if(StringUtils.isEmpty(id)){
+            if (StringUtils.isEmpty(bidRequest.getId())) {
                 logger.warn("VamakerRTB.id is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
-            VamakerRTB.VamRequest.Mobile vamMobile = bidRequest.getVamMobile();
-            if (ObjectUtils.isEmpty(vamMobile)) {
-                logger.warn("{},VamakerRTB.VamMobile is missing",id);
-                return Constant.StatusCode.BAD_REQUEST;
-            }  
-            //0-其他,1-android，2-ios
-            int os = vamMobile.getOs();
-            switch (os) {
-            case VamakerStatusCode.Os.ANDROID:
-                String imei = vamMobile.getImei();
-                String aid = vamMobile.getAid();
-                if (StringUtils.isEmpty(imei) && StringUtils.isEmpty(aid)) {
-                    logger.warn("{},VamakerRTB.VamMobile:imei,aid is missing",id);
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                break;
-            case VamakerStatusCode.Os.IOS:
-                String idfa = vamMobile.getIDFA();
-                if (StringUtils.isEmpty(idfa)) {
-                    logger.warn("{},VamakerRTB.VamMobile.idfa is missing",id);
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                break;
-            }
-            if (vamMobile.getAdspaceId() <= 0) {
-                logger.warn("{},VamakerRTB.VamMobile.AdspaceId is missing",id);
+
+            if (StringUtils.isEmpty(bidRequest.getIp())) {
+                logger.warn("VamakerRTB.ip is missing");
                 return Constant.StatusCode.BAD_REQUEST;
             }
+
+            if (StringUtils.isEmpty(bidRequest.getUserAgent())) {
+                logger.warn("VamakerRTB.ua is missing");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+
+            if (bidRequest.getVamMobile() == null) {
+                logger.warn("VamakerRTB.VamMobile object is missing");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+
+            VamRequest.Mobile mobile = bidRequest.getVamMobile();
+            if (mobile.getAdspaceId() <= 0) {
+                logger.warn("VamakerRTB.adspaceid is missing");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+
+            if (mobile.getOs() == VamakerStatusCode.OSType.ANDROID) {
+                if (StringUtils.isEmpty(mobile.getImei()) && StringUtils.isEmpty(mobile.getAid()) && StringUtils.isEmpty(mobile.getAaid())) {
+                    logger.warn("VamakerRTB android device id is missing");
+                    return Constant.StatusCode.BAD_REQUEST;
+                }
+            }
+
+            if (mobile.getOs() == VamakerStatusCode.OSType.IOS) {
+                if (StringUtils.isEmpty(mobile.getIDFA()) && StringUtils.isEmpty(mobile.getOpenUDID())) {
+                    logger.warn("VamakerRTB ios device id is missing");
+                    return Constant.StatusCode.BAD_REQUEST;
+                }
+            }
+
+            if (StringUtils.isEmpty(mobile.getAppName()) || StringUtils.isEmpty(mobile.getPgn())) {
+                logger.warn("VamakerRTB appname or pkgname is missing");
+                return Constant.StatusCode.BAD_REQUEST;
+            }
+
             return Constant.StatusCode.OK;
         }
+
         return Constant.StatusCode.BAD_REQUEST;
     }
 
@@ -188,7 +225,7 @@ public class VamakerHandler extends MediaBaseHandler {
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     VamakerRTB.VamResponse.Builder vamResponse = convertToVamakerResponse(mediaBidMetaData);
                     if(null != vamResponse){
-                        resp.setContentType("application/octet-stream;charset=UTF-8");
+                        resp.setContentType("application/octet-stream; charset=utf-8");
                         resp.getOutputStream().write(vamResponse.build().toByteArray());
                         return true;
                     }
@@ -202,40 +239,51 @@ public class VamakerHandler extends MediaBaseHandler {
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         }
+
         resp.setStatus(Constant.StatusCode.NO_CONTENT);
         return false;
     }
 
     private Builder convertToVamakerResponse(MediaBidMetaData mediaBidMetaData) {
-        VamakerRTB.VamResponse.Builder bidResposeBuilder = VamakerRTB.VamResponse.newBuilder();
+        VamakerRTB.VamResponse.Builder vamResponse = VamakerRTB.VamResponse.newBuilder();
         VamakerRTB.VamResponse.Bid.Builder bidBuilder = VamakerRTB.VamResponse.Bid.newBuilder();
-        VamakerRTB.VamRequest bidRequest=(VamRequest)mediaBidMetaData.getRequestObject();
+        VamakerRTB.VamRequest bidRequest= (VamRequest)mediaBidMetaData.getRequestObject();
+
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        
-        
-        bidResposeBuilder.setId(bidRequest.getId());
-        bidBuilder.setCrid(StringUtil.toString(mediaResponse.getCrid()));
+
+        vamResponse.setId(bidRequest.getId());
+
+        if (mediaBidMetaData.getMaterialMetaData() != null) {
+            bidBuilder.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
+        }
+
         bidBuilder.setPrice(mediaResponse.getPrice());
-        
-        
+
+        if (mediaResponse.hasDealid() && !StringUtils.isEmpty(mediaResponse.getDealid())) {
+            bidBuilder.setDealId(Integer.parseInt(mediaResponse.getDealid()));
+        }
+
         VamakerRTB.VamResponse.Bid.Mobile.Builder mobileBuilder = VamakerRTB.VamResponse.Bid.Mobile.newBuilder();
         List<Track> imgtracking = mediaResponse.getMonitorBuilder().getImpurl();
-        if (imgtracking != null && imgtracking.size() != 0) {
+        if (imgtracking != null && imgtracking.size() > 0) {
             for (Track track : imgtracking) {
                 mobileBuilder.addShowUrls(track.getUrl());
             }
         }
+
         mobileBuilder.addClickUrls(UrlEncoded.encodeString(String.valueOf(mediaResponse.getLayout())));//第一个是landingpage，还要对整个urldecode，其余的都是建波
-        List<String> thclkurls = mediaResponse.getMonitorBuilder().getClkurl();
-        if (thclkurls != null && thclkurls.size() != 0) {
-            for (String thclkurl : thclkurls) {
-                mobileBuilder.addShowUrls(thclkurl);
+        List<String> clkurls = mediaResponse.getMonitorBuilder().getClkurl();
+        if (clkurls != null && clkurls.size() > 0) {
+            for (String clkurl : clkurls) {
+                mobileBuilder.addShowUrls(clkurl);
             }
         }
+
         bidBuilder.setMobileBidding(mobileBuilder);
-        bidResposeBuilder.addBid(bidBuilder);
-        logger.info("VamaKer Response params is : {}", bidResposeBuilder.toString());
-        return bidResposeBuilder;
+        vamResponse.addBid(bidBuilder);
+        logger.info("VamaKer Response params is : {}", vamResponse.toString());
+
+        return vamResponse;
     }
     
 }
