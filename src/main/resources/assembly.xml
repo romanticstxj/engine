@@ -11,7 +11,7 @@
     <files>
         <file>
             <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
-            <destName>engine.jar</destName>
+            <destName>engine-${project.version}.jar</destName>
             <outputDirectory>/</outputDirectory>
         </file>
     </files>

@@ -14,7 +14,9 @@ public final class SohuStatusCode {
         public static final String OS_IPAD = "iPad";
         public static final String OS_ANDROIDPHONE = "AndroidPhone";
         public static final String OS_ANDROIDPAD = "AndroidPad";
-        public static final String ANDROID = "android";
+        
+        public static final String IOS = "IOS";
+        public static final String ANDROID = "ANDROID";
     }
     //网络类型(不区分大小写)：2G，3G，4G，WIFI 
     public static final class ConnectionType{

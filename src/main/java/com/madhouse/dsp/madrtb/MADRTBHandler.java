@@ -1,5 +1,6 @@
 package com.madhouse.dsp.madrtb;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.cache.*;
 import com.madhouse.dsp.DSPBaseHandler;
 import com.madhouse.rtb.PremiumMADRTBProtocol;
@@ -264,7 +265,9 @@ public class MADRTBHandler extends DSPBaseHandler {
         }
 
         try {
-            ByteArrayEntity entity = new ByteArrayEntity(bidRequest.build().toByteArray());
+            PremiumMADRTBProtocol.BidRequest request = bidRequest.build();
+            logger.info("MAD RTB Request is: {}", JsonFormat.printToString(request));
+            ByteArrayEntity entity = new ByteArrayEntity(request.toByteArray());
             httpPost.setEntity(entity);
         } catch (Exception ex) {
             System.err.println(ex.toString());
@@ -294,6 +297,8 @@ public class MADRTBHandler extends DSPBaseHandler {
                 HttpEntity entity = httpResponse.getEntity();
                 PremiumMADRTBProtocol.BidResponse bidResponse = PremiumMADRTBProtocol.BidResponse.parseFrom(EntityUtils.toByteArray(entity));
                 if (bidResponse != null) {
+                    logger.info("MAD RTB Response is: {}", JsonFormat.printToString(bidResponse));
+
                     if (bidResponse.hasNbr() && bidResponse.getNbr() >= 0) {
                         dspBid.setStatus(Constant.StatusCode.NO_CONTENT);
                         return false;
