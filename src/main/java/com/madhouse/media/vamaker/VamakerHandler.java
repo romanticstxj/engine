@@ -275,7 +275,7 @@ public class VamakerHandler extends MediaBaseHandler {
             }
         }
 
-        mobileBuilder.addClickUrls(UrlEncoded.encodeString(String.valueOf(mediaResponse.getLpgurl())));//第一个是landingpage，还要对整个urldecode，其余的都是建波
+        //mobileBuilder.addClickUrls(mediaResponse.getLpgurl());
         List<String> clkurls = mediaResponse.getMonitorBuilder().getClkurl();
         if (clkurls != null && clkurls.size() > 0) {
             for (String clkurl : clkurls) {
