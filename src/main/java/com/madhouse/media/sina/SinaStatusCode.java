@@ -3,8 +3,8 @@ package com.madhouse.media.sina;
 public final class SinaStatusCode {
     //  操作系统类型
     public static final class Os {
-        public static final String OS_ANDROID = "android";
-        public static final String OS_IOS = "ios";
+        public static final String OS_ANDROID = "ANDROID";
+        public static final String OS_IOS = "IOS";
     }
     //运行商 移动46000；联通46001；电信46003
     public static final class Carrier   {
