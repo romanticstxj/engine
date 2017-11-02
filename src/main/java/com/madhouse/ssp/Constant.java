@@ -5,6 +5,7 @@ package com.madhouse.ssp;
  */
 
 public final class Constant {
+    public static final String LOCATION_UNKNOWN = "1000000000";
 
     public static final class CommonKey {
         public static final String WORKER_ID = "str:premiummad:worker_id";

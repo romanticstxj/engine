@@ -277,7 +277,7 @@ public class WorkThread {
             mediaBid.setTime(System.currentTimeMillis());
             mediaBid.setBidfloor(0);
             mediaBid.setBidtype(Constant.BidType.CPM);
-            mediaBid.setLocation("1000000000");
+            mediaBid.setLocation(Constant.LOCATION_UNKNOWN);
             mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
 
             mediaBidMetaData.setMediaBidBuilder(mediaBid);
@@ -590,7 +590,6 @@ public class WorkThread {
         //location
         {
             List<String> info = new LinkedList<>();
-            info.add(mediaBidBuilder.getLocation().subSequence(0, 1) + "000000000");
             info.add(mediaBidBuilder.getLocation().subSequence(0, 4) + "000000");
             info.add(mediaBidBuilder.getLocation().subSequence(0, 6) + "0000");
             info.add(mediaBidBuilder.getLocation());
