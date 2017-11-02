@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.ssp.avro.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,7 @@ public class VamakerHandler extends MediaBaseHandler {
         
         try {
             VamakerRTB.VamRequest bidRequest = VamakerRTB.VamRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
-            logger.info("Vamaker Request params is : {}",bidRequest.toString());
+            logger.info("Vamaker Request params is : {}", JsonFormat.printToString(bidRequest));
 
             int status = validateRequiredParam(bidRequest);
             if (Constant.StatusCode.OK == status){
@@ -226,10 +227,10 @@ public class VamakerHandler extends MediaBaseHandler {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    VamakerRTB.VamResponse.Builder vamResponse = convertToVamakerResponse(mediaBidMetaData);
+                    VamakerRTB.VamResponse vamResponse = convertToVamakerResponse(mediaBidMetaData);
                     if(null != vamResponse){
                         resp.setContentType("application/octet-stream; charset=utf-8");
-                        resp.getOutputStream().write(vamResponse.build().toByteArray());
+                        resp.getOutputStream().write(vamResponse.toByteArray());
                         return true;
                     }
                 } else {
@@ -247,7 +248,11 @@ public class VamakerHandler extends MediaBaseHandler {
         return false;
     }
 
-    private Builder convertToVamakerResponse(MediaBidMetaData mediaBidMetaData) {
+    private VamakerRTB.VamResponse convertToVamakerResponse(MediaBidMetaData mediaBidMetaData) {
+        if (mediaBidMetaData.getMaterialMetaData() == null) {
+            return null;
+        }
+
         VamakerRTB.VamResponse.Builder vamResponse = VamakerRTB.VamResponse.newBuilder();
         VamakerRTB.VamResponse.Bid.Builder bidBuilder = VamakerRTB.VamResponse.Bid.newBuilder();
         VamakerRTB.VamRequest bidRequest= (VamRequest)mediaBidMetaData.getRequestObject();
@@ -255,11 +260,7 @@ public class VamakerHandler extends MediaBaseHandler {
         MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
 
         vamResponse.setId(bidRequest.getId());
-
-        if (mediaBidMetaData.getMaterialMetaData() != null) {
-            bidBuilder.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
-        }
-
+        bidBuilder.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
         bidBuilder.setPrice(mediaResponse.getPrice());
 
         if (mediaResponse.hasDealid() && !StringUtils.isEmpty(mediaResponse.getDealid())) {
@@ -284,9 +285,14 @@ public class VamakerHandler extends MediaBaseHandler {
 
         bidBuilder.setMobileBidding(mobileBuilder);
         vamResponse.addBid(bidBuilder);
-        logger.info("VamaKer Response params is : {}", vamResponse.toString());
 
-        return vamResponse;
+        try {
+            VamakerRTB.VamResponse bidResponse = vamResponse.build();
+            logger.info("VamaKer Response params is : {}", JsonFormat.printToString(bidResponse));
+            return bidResponse;
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return null;
+        }
     }
-    
 }
