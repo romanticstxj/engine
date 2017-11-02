@@ -67,7 +67,7 @@ public class VamakerHandler extends MediaBaseHandler {
         if (mediaMappingMetaData == null) {
             return null;
         }
-
+        mediaRequest.setAdtype(2);
         mediaRequest.setType(Constant.MediaType.APP);
         mediaRequest.setAdspacekey(mediaMappingMetaData.getAdspaceKey());
         mediaRequest.setName(mobile.getAppName());
@@ -226,7 +226,7 @@ public class VamakerHandler extends MediaBaseHandler {
         try {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     VamakerRTB.VamResponse vamResponse = convertToVamakerResponse(mediaBidMetaData);
                     if(null != vamResponse){
                         resp.setContentType("application/octet-stream; charset=utf-8");
@@ -275,11 +275,11 @@ public class VamakerHandler extends MediaBaseHandler {
             }
         }
 
-        mobileBuilder.addClickUrls(UrlEncoded.encodeString(String.valueOf(mediaResponse.getLayout())));//第一个是landingpage，还要对整个urldecode，其余的都是建波
+        mobileBuilder.addClickUrls(UrlEncoded.encodeString(String.valueOf(mediaResponse.getLpgurl())));//第一个是landingpage，还要对整个urldecode，其余的都是建波
         List<String> clkurls = mediaResponse.getMonitorBuilder().getClkurl();
         if (clkurls != null && clkurls.size() > 0) {
             for (String clkurl : clkurls) {
-                mobileBuilder.addShowUrls(clkurl);
+                mobileBuilder.addClickUrls(clkurl);
             }
         }
 
