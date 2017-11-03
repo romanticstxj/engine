@@ -20,27 +20,9 @@ public class SinaBidRequest{
     	private String tagid;//广告位id
     	private int bidfloor;//底价，单位是分、前次曝光，即CPM
     	private String bidfloorcur;//底价货币单位，默认为RMB
-    	private Banner banner;
     	private Video video;//暂不支持投放
     	private Feed feed;
     	private Repeat ext;
-    	
-    	public class Banner{
-    		private int w;//广告位宽
-    		private int h;//广告位高
-			public int getW() {
-				return w;
-			}
-			public void setW(int w) {
-				this.w = w;
-			}
-			public int getH() {
-				return h;
-			}
-			public void setH(int h) {
-				this.h = h;
-			}
-    	}
     	
     	public class Video{
     		
@@ -93,12 +75,6 @@ public class SinaBidRequest{
 		}
 		public void setBidfloorcur(String bidfloorcur) {
 			this.bidfloorcur = bidfloorcur;
-		}
-		public Banner getBanner() {
-			return banner;
-		}
-		public void setBanner(Banner banner) {
-			this.banner = banner;
 		}
 		public Video getVideo() {
 			return video;
