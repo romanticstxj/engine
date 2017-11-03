@@ -34,20 +34,20 @@ public class VamakerHandler extends MediaBaseHandler {
             int status = validateRequiredParam(bidRequest);
             if (Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
-                if(null != mediaRequest){
+                if (null != mediaRequest){
                     mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
             }
 
-            resp.setStatus(Constant.StatusCode.NO_CONTENT);
-            return false;
+            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
         } catch (Exception e) {
-            logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
-            resp.setStatus(Constant.StatusCode.NO_CONTENT);
-            return false;
+            logger.error(e.toString() + "_Status_" + Constant.StatusCode.INTERNAL_ERROR);
+            resp.setStatus(Constant.StatusCode.INTERNAL_ERROR);
         }
+
+        return false;
     }
     
     private MediaRequest.Builder conversionToPremiumMADDataModel(VamRequest bidRequest) {
@@ -233,15 +233,10 @@ public class VamakerHandler extends MediaBaseHandler {
                         resp.getOutputStream().write(vamResponse.toByteArray());
                         return true;
                     }
-                } else {
-                    resp.setStatus(mediaBid.getStatus());
-                    return false;
                 }
             }
         } catch (Exception e) {
-            logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
-            resp.setStatus(Constant.StatusCode.NO_CONTENT);
-            return false;
+            logger.error(e.toString() + "_Status_" + Constant.StatusCode.INTERNAL_ERROR);
         }
 
         resp.setStatus(Constant.StatusCode.NO_CONTENT);
