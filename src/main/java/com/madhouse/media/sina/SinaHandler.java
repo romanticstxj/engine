@@ -15,6 +15,7 @@ import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.sina.SinaBidRequest.Device.Geo;
+import com.madhouse.media.sina.SinaResponse.Seatbid.Bid.Ext;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
@@ -31,6 +32,7 @@ public class SinaHandler extends MediaBaseHandler {
             req.setCharacterEncoding("UTF-8");
             String bytes = HttpUtil.getRequestPostBytes(req);
             SinaBidRequest sinaBidRequest = JSON.parseObject(bytes, SinaBidRequest.class);
+            logger.info("Sina Request params is : {}", JSON.toJSONString(sinaBidRequest));
             int status = validateRequiredParam(sinaBidRequest, resp);
             if (status == Constant.StatusCode.OK) {
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(sinaBidRequest);
@@ -78,14 +80,7 @@ public class SinaHandler extends MediaBaseHandler {
             mediaRequest.setIfa(device.getExt().getIdfa());
             mediaRequest.setOs(Constant.OSType.IOS);
         }
-        
-        if(null !=imp.getBanner()){
-            mediaRequest.setW(imp.getBanner().getW());
-            mediaRequest.setH(imp.getBanner().getH());
-            sb.append(":banner");
-        }else{
-             sb.append(":feed");
-        }
+        sb.append(":FEED");
         
         //0—未知，1—Ethernet，2—wifi，3—蜂窝网络，未知代，4—蜂窝网络，2G，5—蜂窝网络，3G，6—蜂窝网络，4G。
         switch (device.getConnectionType()) {
@@ -184,16 +179,33 @@ public class SinaHandler extends MediaBaseHandler {
                     logger.warn("sinaBidRequest.Device is null");
                     return Constant.StatusCode.BAD_REQUEST;
                 }
-                if (ObjectUtils.isEmpty(sinaBidRequest.getDevice().getOs())) {
+                String os =  sinaBidRequest.getDevice().getOs();
+                if (ObjectUtils.isEmpty(os)) {
                     logger.warn("{}:sinaBidRequest.Device.os is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
+                com.madhouse.media.sina.SinaBidRequest.Device.Ext ext = sinaBidRequest.getDevice().getExt();
+                if (ObjectUtils.isEmpty(ext)) {
+                    logger.warn("{}:sinaBidRequest.Device.ext is null",id);
+                    return Constant.StatusCode.BAD_REQUEST;
+                }
+                if (SinaStatusCode.Os.OS_ANDROID.equalsIgnoreCase(os)) {
+                	if(StringUtils.isEmpty(ext.getImei())){
+                		logger.warn("{}:sinaBidRequest.Device.ext.Imei is null",id);
+                        return Constant.StatusCode.BAD_REQUEST;
+                	}
+                } else if(SinaStatusCode.Os.OS_IOS.equalsIgnoreCase(os)){
+                	if(StringUtils.isEmpty(ext.getIdfa())){
+                		logger.warn("{}:sinaBidRequest.Device.ext.idfa is null",id);
+                        return Constant.StatusCode.BAD_REQUEST;
+                	}
+                }
                 if (ObjectUtils.isEmpty(sinaBidRequest.getImp().get(0))) {
-                    logger.warn("sinaBidRequest.Imp[0] is null");
+                    logger.warn("{}:sinaBidRequest.Imp[0] is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 if (ObjectUtils.isEmpty(sinaBidRequest.getApp())) {
-                    logger.warn("sinaBidRequest.App is null");
+                    logger.warn("{}:sinaBidRequest.App is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
                 return Constant.StatusCode.OK;
@@ -208,7 +220,7 @@ public class SinaHandler extends MediaBaseHandler {
         try {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     SinaResponse result = convertToSinaResponse(mediaBidMetaData);
                     if (result != null) {
                         resp.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -269,7 +281,7 @@ public class SinaHandler extends MediaBaseHandler {
         response.setId(sinaRequest.getId());
         response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
         response.setSeatbid(seatbids);
-        logger.info("MoMO Response params is : {}", JSON.toJSONString(response));
+        logger.info("Sina Response params is : {}", JSON.toJSONString(response));
         return response;
     }
     

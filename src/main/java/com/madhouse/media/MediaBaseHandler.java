@@ -105,6 +105,8 @@ public abstract class MediaBaseHandler {
                             monitor.setExts(dspResponse.getMonitorBuilder().getExts());
                             mediaResponse.setMonitorBuilder(monitor);
                         }
+
+                        mediaBidMetaData.setMaterialMetaData(materialMetaData);
                     } else {
                         mediaResponse.setBrand(dspResponse.getBrand());
                         mediaResponse.setTitle(dspResponse.getTitle());
