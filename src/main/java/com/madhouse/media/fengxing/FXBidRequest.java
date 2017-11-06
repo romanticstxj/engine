@@ -10,7 +10,7 @@ public class FXBidRequest {
     private String version;
     private Integer istest;
     private Integer isping;
-    private Impression imp;
+    private List<Impression> imp;
     private Site site;
     private App app;
     private Device device;
@@ -49,11 +49,11 @@ public class FXBidRequest {
         this.isping = isping;
     }
 
-    public Impression getImp() {
+    public List<Impression> getImp() {
         return imp;
     }
 
-    public void setImp(Impression imp) {
+    public void setImp(List<Impression> imp) {
         this.imp = imp;
     }
 
