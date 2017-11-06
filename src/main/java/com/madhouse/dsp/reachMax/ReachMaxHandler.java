@@ -55,16 +55,16 @@ public class ReachMaxHandler extends DSPBaseHandler {
     protected HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
         DSPBidMetaData dspBidMetaData) {
         
-        MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
+        MediaRequest.Builder builder = mediaBidBuilder.getRequestBuilder();
         Device.Builder deviceBuilder = getDevice(builder);
         if (deviceBuilder == null) {
             return null;
         }
+
         Network.Builder networkBuilder = getNetwork(builder,mediaBidBuilder.getLocation() == null ? "" : mediaBidBuilder.getLocation());
         if (networkBuilder == null) {
             return null;
         }
-        
         
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
         String adspaceId = Long.toString(plcmtMetaData.getId());
@@ -75,12 +75,12 @@ public class ReachMaxHandler extends DSPBaseHandler {
         if (adSlotBuilder == null) {
             return null;
         }
-        
-        
+
         App.Builder appBuilder = getApp(builder, adspaceId);
         if (appBuilder == null) {
             return null;
         }
+
         BidRequest.Builder pg = BidRequest.newBuilder()//
             .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())//价格必填
             .setRequestId(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId())//
@@ -127,7 +127,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
 
             case Constant.OSType.IOS:
                 deviceBuilder.setOs(Os.IOS);
-                if (StringUtils.isEmpty(builder.getIfa())) {
+                if (!StringUtils.isEmpty(builder.getIfa())) {
                     udidBuilder.setIdfa(builder.getIfa());
                 }
 
