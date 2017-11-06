@@ -1,7 +1,13 @@
 package com.madhouse.media.fengxing;
 
+import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.media.MediaBaseHandler;
+import com.madhouse.ssp.Constant;
+import com.madhouse.ssp.avro.MediaRequest;
+import com.madhouse.util.HttpUtil;
+import com.madhouse.util.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +18,38 @@ import javax.servlet.http.HttpServletResponse;
 public class FengXingHandler extends MediaBaseHandler {
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
+        try {
+            String bytes = HttpUtil.getRequestPostBytes(req);
+            if (!StringUtils.isEmpty(bytes)) {
+                FXBidRequest bidRequest = JSON.parseObject(bytes, FXBidRequest.class);
+                logger.info("FUNADX Request params is : {}", JSON.toJSONString(bidRequest));
+
+                if (this.validateRequestParam(bidRequest) == Constant.StatusCode.OK) {
+                    MediaRequest.Builder mediaRequest = this.conversionToPremiumMADData(bidRequest);
+                    if (mediaRequest != null) {
+                        mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                        return true;
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+
+        }
+
         return false;
+    }
+
+    private int validateRequestParam(FXBidRequest bidRequest) {
+        if (!ObjectUtils.isEmpty(bidRequest)) {
+
+        }
+
+        return Constant.StatusCode.BAD_REQUEST;
+    }
+
+    private MediaRequest.Builder conversionToPremiumMADData(FXBidRequest bidRequest) {
+        return null;
     }
 
     @Override
