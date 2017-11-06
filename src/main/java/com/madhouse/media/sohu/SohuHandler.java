@@ -80,41 +80,45 @@ public class SohuHandler extends MediaBaseHandler {
         }
         return Constant.StatusCode.OK ;
     }
+
     private MediaRequest.Builder conversionToPremiumMADDataModel(Request bidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         mediaRequest.setBid(bidRequest.getBidid());
         //是否为测试流量，0 为非测试，1 为测试 
         mediaRequest.setTest(bidRequest.getIsTest() == 0 ? Constant.Test.REAL : Constant.Test.PING);
-        Impression impression =bidRequest.getImpression(0);
+
+        Impression impression = bidRequest.getImpression(0);
         Device device = bidRequest.getDevice();
+        Request.Site site = bidRequest.getSite();
+
+        if (site != null) {
+            mediaRequest.setName(StringUtil.toString(site.getName()));
+        } else {
+            mediaRequest.setName("SOHU");
+        }
+
+        mediaRequest.setBundle("com.sohu.adx");
+
         //曝光底价，CPM 计，单位为人民币分 
         mediaRequest.setBidfloor(impression.getBidFloor());
-        if(impression.getBanner() !=null && ! impression.getBanner().equals("")){
+
+        if(impression.getBanner() != null){
             mediaRequest.setW(impression.getBanner().getWidth());
             mediaRequest.setH(impression.getBanner().getHeight());
         }else{
             mediaRequest.setW(impression.getVideo().getWidth());
             mediaRequest.setH(impression.getVideo().getHeight());
         }
-        String campaignId = impression.getCampaignId();
-        if(!StringUtils.isEmpty(campaignId)){
-            mediaRequest.setDealid(campaignId);
-        }
-        String ip = device.getIp();
-        if (!StringUtils.isEmpty(ip)) {
-            mediaRequest.setIp(ip);
-        }
-        String ua =device.getUa();
-        if (!StringUtils.isEmpty(ua)) {
-            mediaRequest.setUa(ua);
-        }
+
+        mediaRequest.setIp(StringUtil.toString(device.getIp()));
+        mediaRequest.setUa(StringUtil.toString(device.getUa()));
+        mediaRequest.setDealid(StringUtil.toString(impression.getCampaignId()));
+
         mediaRequest.setAdtype(2);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
-        String mac =device.getMac();
-        if (!StringUtils.isEmpty(mac)) {
-            mediaRequest.setMacmd5(mac);
-        }
+        mediaRequest.setMacmd5(StringUtil.toString(device.getMac()));
+
         //网络类型(不区分大小写)：2G，3G，4G，WIFI 
         switch (device.getNetType()) {
             case SohuStatusCode.ConnectionType._2G:
@@ -133,8 +137,8 @@ public class SohuHandler extends MediaBaseHandler {
                 mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
                 break;
         }
-        //搜狐广告位不区分ios和安卓，所以这里写死.数据库里配置的广告位也都是安卓的
-        if(device.getType().equalsIgnoreCase(SohuStatusCode.Devicetype.MOBILE)){
+
+        if (device.getType().equalsIgnoreCase(SohuStatusCode.Devicetype.MOBILE)){
             switch (device.getMobileType()) {
                 case SohuStatusCode.Os.OS_IPHONE:
                 case SohuStatusCode.Os.OS_IPAD:
@@ -152,29 +156,24 @@ public class SohuHandler extends MediaBaseHandler {
         }else{
             mediaRequest.setType(Constant.MediaType.SITE);
         }
-    	String idfa = bidRequest.getDevice().getIdfa();
-        if (!StringUtils.isEmpty(idfa)) {
+
+    	String idfa = StringUtil.toString(bidRequest.getDevice().getIdfa());
+        String openUDID = StringUtil.toString(bidRequest.getDevice().getOpenUDID());
+        if (!StringUtils.isEmpty(idfa) || !StringUtils.isEmpty(openUDID)) {
+            mediaRequest.setDpid(openUDID);
             mediaRequest.setIfa(idfa);
             mediaRequest.setOs(Constant.OSType.IOS);
         }
-        String openUDID = bidRequest.getDevice().getOpenUDID();
-        if (!StringUtils.isEmpty(openUDID)) {
-            mediaRequest.setDpid(openUDID);
-            mediaRequest.setOs(Constant.OSType.IOS);
+
+        String imei = StringUtil.toString(device.getImei());
+        String androidId = StringUtil.toString(bidRequest.getDevice().getAndroidID());
+        if (!StringUtils.isEmpty(imei) || !StringUtils.isEmpty(androidId)) {
+            mediaRequest.setDidmd5(imei);
+            mediaRequest.setDpidmd5(androidId);
+            mediaRequest.setOs(Constant.OSType.ANDROID);
         }
-        if(!mediaRequest.getOs().equals(Constant.OSType.IOS)){
-        	String imei =device.getImei();
-            if (!StringUtils.isEmpty(imei)) {
-                mediaRequest.setDidmd5(imei) ;
-                mediaRequest.setOs(Constant.OSType.ANDROID);
-            }
-            String androidId =bidRequest.getDevice().getAndroidID();
-            if (!StringUtils.isEmpty(androidId)) {
-                mediaRequest.setDpid(androidId);
-                mediaRequest.setOs(Constant.OSType.ANDROID);
-            }
-        }
-        if(mediaRequest.hasOs()){
+
+        if (mediaRequest.hasOs()){
         	StringBuilder adspaceKey = new StringBuilder();
         	adspaceKey.append("SOHU:").append(bidRequest.getImpression(0).getPid()).append(":");
         	if(mediaRequest.getOs().equals(Constant.OSType.IOS)){
@@ -182,6 +181,7 @@ public class SohuHandler extends MediaBaseHandler {
         	} else {
         		adspaceKey.append(SohuStatusCode.Os.ANDROID);
         	}
+
         	adspaceKey.append(":"+mediaRequest.getW()+":"+mediaRequest.getH());;
             MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
             if (mappingMetaData != null) {
@@ -195,6 +195,7 @@ public class SohuHandler extends MediaBaseHandler {
         
         return mediaRequest;
     }
+
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
