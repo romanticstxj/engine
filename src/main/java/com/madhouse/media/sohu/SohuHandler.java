@@ -111,9 +111,10 @@ public class SohuHandler extends MediaBaseHandler {
         mediaRequest.setAdtype(2);
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
-        
-        
-        
+        String mac =device.getMac();
+        if (!StringUtils.isEmpty(mac)) {
+            mediaRequest.setMacmd5(mac);
+        }
         //网络类型(不区分大小写)：2G，3G，4G，WIFI 
         switch (device.getNetType()) {
             case SohuStatusCode.ConnectionType._2G:
@@ -151,31 +152,28 @@ public class SohuHandler extends MediaBaseHandler {
         }else{
             mediaRequest.setType(Constant.MediaType.SITE);
         }
-        String imei =device.getImei();
-        if (!StringUtils.isEmpty(imei)) {
-        	mediaRequest.setOs(Constant.OSType.ANDROID);
-            mediaRequest.setDidmd5(imei);
-        }
-        String mac =device.getMac();
-        if (!StringUtils.isEmpty(mac)) {
-            mediaRequest.setMacmd5(mac);
-        }
-        String idfa = bidRequest.getDevice().getIdfa();
+    	String idfa = bidRequest.getDevice().getIdfa();
         if (!StringUtils.isEmpty(idfa)) {
-        	mediaRequest.setOs(Constant.OSType.IOS);
-            mediaRequest.setDpid(idfa);
-        }
-        String androidId =bidRequest.getDevice().getAndroidID();
-        if (!StringUtils.isEmpty(androidId)) {
-        	mediaRequest.setOs(Constant.OSType.ANDROID);
-            mediaRequest.setDpid(androidId);
+            mediaRequest.setIfa(idfa);
+            mediaRequest.setOs(Constant.OSType.IOS);
         }
         String openUDID = bidRequest.getDevice().getOpenUDID();
         if (!StringUtils.isEmpty(openUDID)) {
-        	mediaRequest.setOs(Constant.OSType.IOS);
             mediaRequest.setDpid(openUDID);
+            mediaRequest.setOs(Constant.OSType.IOS);
         }
-        
+        if(!mediaRequest.getOs().equals(Constant.OSType.IOS)){
+        	String imei =device.getImei();
+            if (!StringUtils.isEmpty(imei)) {
+                mediaRequest.setDidmd5(imei) ;
+                mediaRequest.setOs(Constant.OSType.ANDROID);
+            }
+            String androidId =bidRequest.getDevice().getAndroidID();
+            if (!StringUtils.isEmpty(androidId)) {
+                mediaRequest.setDpid(androidId);
+                mediaRequest.setOs(Constant.OSType.ANDROID);
+            }
+        }
         if(mediaRequest.hasOs()){
         	StringBuilder adspaceKey = new StringBuilder();
         	adspaceKey.append("SOHU:").append(bidRequest.getImpression(0).getPid()).append(":");
@@ -184,14 +182,12 @@ public class SohuHandler extends MediaBaseHandler {
         	} else {
         		adspaceKey.append(SohuStatusCode.Os.ANDROID);
         	}
-        	
-            
         	adspaceKey.append(":"+mediaRequest.getW()+":"+mediaRequest.getH());;
             MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
             if (mappingMetaData != null) {
                 mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             } else {
-                return null;
+            	return null;
             }
         } else {
         	return null;
