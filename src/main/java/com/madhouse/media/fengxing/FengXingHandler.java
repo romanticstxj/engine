@@ -30,11 +30,33 @@ public class FengXingHandler extends MediaBaseHandler {
                         mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                         return true;
                     }
+                } else {
+                    return outputStreamWrite(resp, null);
                 }
+            } else {
+                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             }
-
         } catch (Exception e) {
+            logger.error(e.toString());
+            resp.setStatus(Constant.StatusCode.INTERNAL_ERROR);
+        }
 
+        return false;
+    }
+
+    private boolean outputStreamWrite(HttpServletResponse resp, FXBidResponse bidResponse) {
+        try {
+            if (bidResponse != null) {
+                resp.setStatus(Constant.StatusCode.OK);
+                resp.setHeader("Content-Type", "application/json; charset=utf-8");
+                resp.getOutputStream().write(JSON.toJSONString(bidResponse).getBytes());
+                return true;
+            } else {
+                resp.setStatus(Constant.StatusCode.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            logger.error(e.toString());
+            resp.setStatus(Constant.StatusCode.INTERNAL_ERROR);
         }
 
         return false;
