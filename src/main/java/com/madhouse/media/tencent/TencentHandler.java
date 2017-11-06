@@ -65,6 +65,14 @@ public class TencentHandler extends MediaBaseHandler {
 
         mediaRequest.setBid(bidRequest.getId());
 
+        if (app != null) {
+            mediaRequest.setName(StringUtil.toString(app.getName()));
+        } else {
+            mediaRequest.setName(StringUtil.toString("TENCENT"));
+        }
+
+        mediaRequest.setBundle("com.tencent.adx");
+
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String os = device.getOs();//iPhone.OS.9.3.2
         if (!StringUtils.isEmpty(os)) {
@@ -187,7 +195,6 @@ public class TencentHandler extends MediaBaseHandler {
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest;
     }
-
 
     /**
      * find max size material
