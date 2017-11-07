@@ -55,32 +55,37 @@ public class ReachMaxHandler extends DSPBaseHandler {
     protected HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
         DSPBidMetaData dspBidMetaData) {
         
-        MediaRequest.Builder builder=  mediaBidBuilder.getRequestBuilder();
+        MediaRequest.Builder builder = mediaBidBuilder.getRequestBuilder();
         Device.Builder deviceBuilder = getDevice(builder);
         if (deviceBuilder == null) {
             return null;
         }
+
         Network.Builder networkBuilder = getNetwork(builder,mediaBidBuilder.getLocation() == null ? "" : mediaBidBuilder.getLocation());
         if (networkBuilder == null) {
             return null;
         }
-        
         
         DSPMappingMetaData dspMappingMetaData = CacheManager.getInstance().getDSPMapping(dspBidMetaData.getDspMetaData().getId(), plcmtMetaData.getId());
         String adspaceId = Long.toString(plcmtMetaData.getId());
         if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
+		
         AdSlot.Builder adSlotBuilder = getAdslot(builder, plcmtMetaData,adspaceId);
         if (adSlotBuilder == null) {
             return null;
         }
-        
-        
+
+		if (!StringUtils.isEmpty(policyMetaData.getDealId())) {
+            adSlotBuilder.setDealid(policyMetaData.getDealId());
+        }
+		
         App.Builder appBuilder = getApp(builder, adspaceId);
         if (appBuilder == null) {
             return null;
         }
+
         BidRequest.Builder pg = BidRequest.newBuilder()//
             .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())//价格必填
             .setRequestId(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId())//
@@ -101,37 +106,51 @@ public class ReachMaxHandler extends DSPBaseHandler {
     private com.madhouse.dsp.reachMax.ReachMaxAds.Device.Builder getDevice(com.madhouse.ssp.avro.MediaRequest.Builder builder) {
         // Type
         Device.Builder deviceBuilder = Device.newBuilder().setType(Device.Type.PHONE);
+        UdId.Builder udidBuilder = UdId.newBuilder();
+
         switch (builder.getOs()) {
             case Constant.OSType.ANDROID:
                 deviceBuilder.setOs(Os.ANDROID);
-                UdId.Builder udidBuilder = UdId.newBuilder();
-                String aid=! StringUtils.isEmpty(builder.getDpid()) ? builder.getDpid() : !StringUtils.isEmpty(builder.getDpidmd5()) ? builder.getDpidmd5(): null  ;
-                String imei=! StringUtils.isEmpty(builder.getDid()) ? builder.getDid() : !StringUtils.isEmpty(builder.getDidmd5()) ? builder.getDidmd5(): null  ;
-                if (aid != null) {
-                    udidBuilder.setAndroidId(aid);
-                } else if (imei != null) {
-                    udidBuilder.setAndroidId(imei);
+
+                if (!StringUtils.isEmpty(builder.getDidmd5())) {
+                    udidBuilder.setImei(builder.getDidmd5());
+                } else {
+                    if (!StringUtils.isEmpty(builder.getDid())) {
+                        udidBuilder.setImei(StringUtil.getMD5(builder.getDid()));
+                    }
                 }
-                if (imei != null) {
-                    deviceBuilder = deviceBuilder.setUdid(udidBuilder.setImei(imei));
-                } else if (builder.getMac() != null) {
-                    deviceBuilder = deviceBuilder.setUdid(udidBuilder.setMac(builder.getMac()));
+
+                if (!StringUtils.isEmpty(builder.getDpidmd5())) {
+                    udidBuilder.setAndroidId(builder.getDpidmd5());
+                } else {
+                    if (!StringUtils.isEmpty(builder.getDpid())) {
+                        udidBuilder.setAndroidId(StringUtil.getMD5(builder.getDpid()));
+                    }
                 }
+
                 break;
+
             case Constant.OSType.IOS:
                 deviceBuilder.setOs(Os.IOS);
-                String idfa = builder.getIfa();
-                if (idfa != null) {
-                    deviceBuilder.setUdid(UdId.newBuilder().setIdfa(idfa));
-                } else if (builder.getMac() != null) {
-                    deviceBuilder.setUdid(UdId.newBuilder().setMac(builder.getMac()));
-                } else {
-                    return null;
+                if (!StringUtils.isEmpty(builder.getIfa())) {
+                    udidBuilder.setIdfa(builder.getIfa());
                 }
+
                 break;
             default:
                 return null;
         }
+
+        if (!StringUtils.isEmpty(builder.getMacmd5())) {
+            udidBuilder.setMac(builder.getMacmd5());
+        } else {
+            if (!StringUtils.isEmpty(builder.getMac())) {
+                udidBuilder.setMac(StringUtil.getMD5(builder.getMac()));
+            }
+        }
+
+        deviceBuilder.setUdid(udidBuilder);
+
         // os version
         String osv = builder.getOsv();// os版本，必填点号分割
         if (osv != null) {

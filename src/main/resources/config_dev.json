@@ -55,6 +55,9 @@
             }, {
                 "path": "/adcall/oppo/bidrequest",
                 "className": "com.madhouse.media.oppo.OppoHandler"
+            }, {
+                "path": "/adcall/fengxing/bidrequest",
+                "className": "com.madhouse.media.fengxing.FengXingHandler"
             }
         ],
         "impression": "/adtrack/impression",

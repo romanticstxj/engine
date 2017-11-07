@@ -65,6 +65,13 @@ public class TencentHandler extends MediaBaseHandler {
 
         mediaRequest.setBid(bidRequest.getId());
 
+        if (app != null) {
+            mediaRequest.setName(StringUtil.toString(app.getName()));
+        } else {
+            mediaRequest.setName(StringUtil.toString("TENCENT"));
+        }
+
+        mediaRequest.setBundle("com.tencent.adx");
 
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         String os = device.getOs();//iPhone.OS.9.3.2
@@ -113,6 +120,7 @@ public class TencentHandler extends MediaBaseHandler {
                 sb.append(":BANNER");
             }
         }
+
         if (device.hasCarrier()) {
             int carrier = device.getCarrier();
             switch (carrier) {
@@ -157,31 +165,15 @@ public class TencentHandler extends MediaBaseHandler {
         } else {
             mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
         }
-        String dealId = impression.getDealid();
-        if (!StringUtils.isEmpty(dealId)) {
-            mediaRequest.setDealid(dealId);
-        }
-        if (device.hasOsv()) {
-            mediaRequest.setOsv(device.getOsv());
-        }
-        if (device.hasMac()) {
-            mediaRequest.setMacmd5(device.getMac());
-        }
-        if (app.hasName()) {
-            mediaRequest.setName(app.getName());
-        }
-        if (device.hasMake()) {
-            mediaRequest.setMake(device.getMake());
-        }
-        if (device.hasModel()) {
-            mediaRequest.setModel(device.getModel());
-        }
-        if (!StringUtils.isEmpty(device.getUa())) {
-            mediaRequest.setUa(device.getUa());
-        }
-        if (!StringUtils.isEmpty(device.getIp())) {
-            mediaRequest.setIp(device.getIp());
-        }
+
+        mediaRequest.setDealid(StringUtil.toString(impression.getDealid()));
+        mediaRequest.setOsv(StringUtil.toString(device.getOsv()));
+        mediaRequest.setMacmd5(StringUtil.toString(device.getMac()));
+        mediaRequest.setName(StringUtil.toString(app.getName()));
+        mediaRequest.setMake(StringUtil.toString(device.getMake()));
+        mediaRequest.setModel(StringUtil.toString(device.getModel()));
+        mediaRequest.setUa(StringUtil.toString(device.getUa()));
+        mediaRequest.setIp(StringUtil.toString(device.getIp()));
 
         if (device.getGeo() != null) {
             if (device.getGeo().hasLongitude() && device.getGeo().hasLongitude()) {
@@ -196,18 +188,13 @@ public class TencentHandler extends MediaBaseHandler {
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
-            mappingMetaData = CacheManager.getInstance().getMediaMapping("TENC:0:");
-            if (mappingMetaData != null) {
-                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-            } else {
-                return null;
-            }
+            return null;
         }
+
         mediaRequest.setAdtype(2);
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest;
     }
-
 
     /**
      * find max size material

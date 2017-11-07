@@ -45,7 +45,7 @@ public class MomoHandler extends MediaBaseHandler {
                     int status = validateParam(bidRequest);
                     if(Constant.StatusCode.OK == status){
                         mediaRequest = conversionToPremiumMADData(bidRequest);
-                        if(mediaRequest != null){
+                        if (mediaRequest != null){
                             mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
                             mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.JSON,bidRequest});
                             return true;
