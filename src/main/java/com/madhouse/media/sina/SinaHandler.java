@@ -23,6 +23,7 @@ import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
+import com.madhouse.util.StringUtil;
 
 public class SinaHandler extends MediaBaseHandler {
     
@@ -64,7 +65,7 @@ public class SinaHandler extends MediaBaseHandler {
         mediaRequest.setAdtype(2);
         
         mediaRequest.setName(app.getName());
-        
+        mediaRequest.setBundle("com.sina.weibo");
         StringBuilder sb = new StringBuilder();
         sb.append("SINA:");
         //广告位id
@@ -80,7 +81,6 @@ public class SinaHandler extends MediaBaseHandler {
             mediaRequest.setIfa(device.getExt().getIdfa());
             mediaRequest.setOs(Constant.OSType.IOS);
         }
-        sb.append(":FEED");
         
         //0—未知，1—Ethernet，2—wifi，3—蜂窝网络，未知代，4—蜂窝网络，2G，5—蜂窝网络，3G，6—蜂窝网络，4G。
         switch (device.getConnectionType()) {
@@ -208,6 +208,10 @@ public class SinaHandler extends MediaBaseHandler {
                     logger.warn("{}:sinaBidRequest.App is null",id);
                     return Constant.StatusCode.BAD_REQUEST;
                 }
+                if (ObjectUtils.isEmpty(sinaBidRequest.getApp().getName())) {
+                    logger.warn("{}:sinaBidRequest.App.name is null",id);
+                    return Constant.StatusCode.BAD_REQUEST;
+                }
                 return Constant.StatusCode.OK;
             }
             logger.warn("baoFengBidRequest.id is null");
@@ -226,7 +230,6 @@ public class SinaHandler extends MediaBaseHandler {
                         resp.setHeader("Content-Type", "application/json; charset=utf-8");
                         resp.getOutputStream().write(JSON.toJSONString(result).getBytes("utf-8"));
                         resp.setStatus(Constant.StatusCode.OK);
-                        logger.warn("_Status_" + Constant.StatusCode.OK);
                         return true;
                     }
                 } else {
@@ -235,14 +238,18 @@ public class SinaHandler extends MediaBaseHandler {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.toString() + "_Status_" + Constant.StatusCode.BAD_REQUEST);
-            resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+            logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
+            resp.setStatus(Constant.StatusCode.NO_CONTENT);
             return false;
         }
-        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+        resp.setStatus(Constant.StatusCode.NO_CONTENT);
         return false;
     }
 
+    /**
+     * @param mediaBidMetaData
+     * @return
+     */
     private SinaResponse convertToSinaResponse(MediaBidMetaData mediaBidMetaData) {
         SinaResponse response=new SinaResponse();
         
@@ -262,7 +269,7 @@ public class SinaHandler extends MediaBaseHandler {
         ext.setCm(mediaResponse.getMonitorBuilder().getClkurl());
         
         bid.setExt(ext);
-        bid.setAdm(mediaResponse.getAdm().get(0));
+        bid.setAdm(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaMaterialKey()));
         // TODO DSP对该次出价分配的ID
         String impid = sinaRequest.getImp().get(0).getId();
         bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
@@ -281,6 +288,7 @@ public class SinaHandler extends MediaBaseHandler {
         response.setId(sinaRequest.getId());
         response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
         response.setSeatbid(seatbids);
+        response.setDealid(StringUtil.toString(sinaRequest.getDealid()));
         logger.info("Sina Response params is : {}", JSON.toJSONString(response));
         return response;
     }
