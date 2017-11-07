@@ -69,7 +69,11 @@ public class FengXingHandler extends MediaBaseHandler {
             if (bidResponse != null) {
                 resp.setStatus(Constant.StatusCode.OK);
                 resp.setHeader("Content-Type", "application/json; charset=utf-8");
-                resp.getOutputStream().write(JSON.toJSONString(bidResponse).getBytes());
+
+                String response = JSON.toJSONString(bidResponse);
+                logger.info("FUNADX Response is: {}", response);
+
+                resp.getOutputStream().write(response.getBytes());
                 return true;
             } else {
                 resp.setStatus(Constant.StatusCode.NO_CONTENT);
