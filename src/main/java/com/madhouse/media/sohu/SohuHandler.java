@@ -66,10 +66,6 @@ public class SohuHandler extends MediaBaseHandler {
             logger.warn("{},bidRequest.Impression is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
-        if (!bidRequest.getImpression(0).hasIdx()) {
-            logger.warn("{},bidRequest.Impression.Idx is missing",bid);
-            return Constant.StatusCode.BAD_REQUEST;
-        }
         if (ObjectUtils.isEmpty(bidRequest.getImpression(0).getPid())) {
             logger.warn("{},bidRequest.Impression.pid is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
