@@ -66,10 +66,6 @@ public class SohuHandler extends MediaBaseHandler {
             logger.warn("{},bidRequest.Impression is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
-        if (!bidRequest.getImpression(0).hasIdx()) {
-            logger.warn("{},bidRequest.Impression.Idx is missing",bid);
-            return Constant.StatusCode.BAD_REQUEST;
-        }
         if (ObjectUtils.isEmpty(bidRequest.getImpression(0).getPid())) {
             logger.warn("{},bidRequest.Impression.pid is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
@@ -220,8 +216,10 @@ public class SohuHandler extends MediaBaseHandler {
         
     	if(status == Constant.StatusCode.OK){
     		MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-            SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();  
-            seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
+            SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();
+            if(bidRequest.getImpression(0).hasIdx()){
+            	seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
+            }
             //bid对象
             SohuRTB.Response.Bid.Builder bidBuilder = SohuRTB.Response.Bid.newBuilder();
             //在底价上加一分
