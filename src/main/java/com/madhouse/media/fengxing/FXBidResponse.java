@@ -8,7 +8,7 @@ import java.util.List;
 public class FXBidResponse {
     private String id;
     private String bidid;
-    private SeatBid seatBid;
+    private List<SeatBid> seatbid;
 
     public String getId() {
         return id;
@@ -26,12 +26,12 @@ public class FXBidResponse {
         this.bidid = bidid;
     }
 
-    public SeatBid getSeatBid() {
-        return seatBid;
+    public List<SeatBid> getSeatbid() {
+        return seatbid;
     }
 
-    public void setSeatBid(SeatBid seatBid) {
-        this.seatBid = seatBid;
+    public void setSeatbid(List<SeatBid> seatbid) {
+        this.seatbid = seatbid;
     }
 
     public static class SeatBid {
@@ -52,6 +52,54 @@ public class FXBidResponse {
             private String adm;
             private Float price;
             private String crid;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getImpid() {
+                return impid;
+            }
+
+            public void setImpid(String impid) {
+                this.impid = impid;
+            }
+
+            public String getNurl() {
+                return nurl;
+            }
+
+            public void setNurl(String nurl) {
+                this.nurl = nurl;
+            }
+
+            public String getAdm() {
+                return adm;
+            }
+
+            public void setAdm(String adm) {
+                this.adm = adm;
+            }
+
+            public Float getPrice() {
+                return price;
+            }
+
+            public void setPrice(Float price) {
+                this.price = price;
+            }
+
+            public String getCrid() {
+                return crid;
+            }
+
+            public void setCrid(String crid) {
+                this.crid = crid;
+            }
 
             public static class Ext {
                 private String lpg;
