@@ -124,6 +124,12 @@ public class FengXingHandler extends MediaBaseHandler {
             mediaRequest.setModel(StringUtil.toString(device.getModel()));
             mediaRequest.setOsv(StringUtil.toString(device.getOsv()));
 
+            if (bidRequest.getIstest() != null && bidRequest.getIstest() == 1) {
+                mediaRequest.setTest(Constant.Test.SIMULATION);
+            } else {
+                mediaRequest.setTest(Constant.Test.REAL);
+            }
+            
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
             if (StringUtils.isEmpty(device.getCarrier())) {
                 switch (device.getCarrier()) {
