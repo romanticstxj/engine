@@ -123,7 +123,26 @@ public class FengXingHandler extends MediaBaseHandler {
             mediaRequest.setMake(StringUtil.toString(device.getMake()));
             mediaRequest.setModel(StringUtil.toString(device.getModel()));
             mediaRequest.setOsv(StringUtil.toString(device.getOsv()));
+
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
+            if (StringUtils.isEmpty(device.getCarrier())) {
+                switch (device.getCarrier()) {
+                    case FXConstant.Carrier.CHINA_MOBILE: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
+                        break;
+                    }
+
+                    case FXConstant.Carrier.CHINA_UNICOM: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_UNICOM);
+                        break;
+                    }
+
+                    case FXConstant.Carrier.CHINA_TELECOM: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_TELECOM);
+                        break;
+                    }
+                }
+            }
 
             if (impression.getBidfloor() != null) {
                 mediaRequest.setBidfloor(impression.getBidfloor().intValue());
@@ -132,32 +151,32 @@ public class FengXingHandler extends MediaBaseHandler {
             mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
             if (device.getConnectiontype() != null) {
                 switch (device.getConnectiontype()) {
-                    case 1: {
+                    case FXConstant.ConnectionType.ETHERNET: {
                         mediaRequest.setConnectiontype(Constant.ConnectionType.ETHERNET);
                         break;
                     }
 
-                    case 2: {
+                    case FXConstant.ConnectionType.WIFI: {
                         mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
                         break;
                     }
 
-                    case 3: {
+                    case FXConstant.ConnectionType.CELL: {
                         mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
                         break;
                     }
 
-                    case 4: {
+                    case FXConstant.ConnectionType._2G: {
                         mediaRequest.setConnectiontype(Constant.ConnectionType._2G);
                         break;
                     }
 
-                    case 5: {
+                    case FXConstant.ConnectionType._3G: {
                         mediaRequest.setConnectiontype(Constant.ConnectionType._3G);
                         break;
                     }
 
-                    case 6: {
+                    case FXConstant.ConnectionType._4G: {
                         mediaRequest.setConnectiontype(Constant.ConnectionType._4G);
                         break;
                     }
@@ -167,22 +186,22 @@ public class FengXingHandler extends MediaBaseHandler {
             mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
             if (device.getDevicetype() != null) {
                 switch (device.getDevicetype()) {
-                    case 0: {
+                    case FXConstant.DeviceType.PHONE: {
                         mediaRequest.setDevicetype(Constant.DeviceType.PHONE);
                         break;
                     }
 
-                    case 1: {
+                    case FXConstant.DeviceType.PAD: {
                         mediaRequest.setDevicetype(Constant.DeviceType.PAD);
                         break;
                     }
 
-                    case 2: {
+                    case FXConstant.DeviceType.PC: {
                         mediaRequest.setDevicetype(Constant.DeviceType.COMPUTER);
                         break;
                     }
 
-                    case 3: {
+                    case FXConstant.DeviceType.TV: {
                         mediaRequest.setDevicetype(Constant.DeviceType.TV);
                         break;
                     }
