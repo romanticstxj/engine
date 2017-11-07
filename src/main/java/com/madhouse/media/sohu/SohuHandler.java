@@ -216,8 +216,10 @@ public class SohuHandler extends MediaBaseHandler {
         
     	if(status == Constant.StatusCode.OK){
     		MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-            SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();  
-            seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
+            SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();
+            if(bidRequest.getImpression(0).getIdx()>0){
+            	seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
+            }
             //bid对象
             SohuRTB.Response.Bid.Builder bidBuilder = SohuRTB.Response.Bid.newBuilder();
             //在底价上加一分
