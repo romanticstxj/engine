@@ -217,7 +217,7 @@ public class SohuHandler extends MediaBaseHandler {
     	if(status == Constant.StatusCode.OK){
     		MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();
-            if(bidRequest.getImpression(0).getIdx()>0){
+            if(bidRequest.getImpression(0).hasIdx()){
             	seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
             }
             //bid对象
