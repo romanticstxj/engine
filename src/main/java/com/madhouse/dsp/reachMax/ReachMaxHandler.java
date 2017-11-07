@@ -71,11 +71,16 @@ public class ReachMaxHandler extends DSPBaseHandler {
         if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
+		
         AdSlot.Builder adSlotBuilder = getAdslot(builder, plcmtMetaData,adspaceId);
         if (adSlotBuilder == null) {
             return null;
         }
 
+		if (!StringUtils.isEmpty(policyMetaData.getDealId())) {
+            adSlotBuilder.setDealid(policyMetaData.getDealId());
+        }
+		
         App.Builder appBuilder = getApp(builder, adspaceId);
         if (appBuilder == null) {
             return null;
