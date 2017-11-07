@@ -412,14 +412,26 @@ public class FXBidRequest {
         }
 
         public static class Content {
-            private String channel;
+            private String id;
 
-            public String getChannel() {
-                return channel;
+            public String getId() {
+                return id;
             }
 
-            public void setChannel(String channel) {
-                this.channel = channel;
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public static class Ext {
+                private String channel;
+
+                public String getChannel() {
+                    return channel;
+                }
+
+                public void setChannel(String channel) {
+                    this.channel = channel;
+                }
             }
         }
     }
@@ -573,6 +585,7 @@ public class FXBidRequest {
         public static class Geo {
             private Float lat;
             private Float lon;
+            private Ext ext;
 
             public Float getLat() {
                 return lat;
@@ -588,6 +601,26 @@ public class FXBidRequest {
 
             public void setLon(Float lon) {
                 this.lon = lon;
+            }
+
+            public Ext getExt() {
+                return ext;
+            }
+
+            public void setExt(Ext ext) {
+                this.ext = ext;
+            }
+
+            public static class Ext {
+                private Integer accuracy;
+
+                public Integer getAccuracy() {
+                    return accuracy;
+                }
+
+                public void setAccuracy(Integer accuracy) {
+                    this.accuracy = accuracy;
+                }
             }
         }
 
