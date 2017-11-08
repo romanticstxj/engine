@@ -62,7 +62,7 @@ public class SohuHandler extends MediaBaseHandler {
             logger.warn("version is missing");
             return Constant.StatusCode.BAD_REQUEST;
         }
-        if (ObjectUtils.isEmpty(bidRequest.getImpression(0))) {
+        if (ObjectUtils.isEmpty(bidRequest.getImpressionList())) {
             logger.warn("{},bidRequest.Impression is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
