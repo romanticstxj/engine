@@ -86,7 +86,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         }
 
         BidRequest.Builder pg = BidRequest.newBuilder()//
-            .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())//价格必填
+            .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : 0)//价格必填
             .setRequestId(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId())//
             .setApiVersion(Version.newBuilder().setMajor(2).setMinor(3))//
             .setApp(appBuilder)//
