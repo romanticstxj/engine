@@ -10,6 +10,7 @@ import com.madhouse.ssp.avro.*;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
+import com.madhouse.util.Utility;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -261,7 +262,8 @@ public class FengXingHandler extends MediaBaseHandler {
 
             if (impression.getPmp() != null) {
                 if (!ObjectUtils.isEmpty(impression.getPmp().getDeals())) {
-                    mediaRequest.setDealid(StringUtil.toString(impression.getPmp().getDeals().get(0).getId()));
+                    int size = impression.getPmp().getDeals().size();
+                    mediaRequest.setDealid(StringUtil.toString(impression.getPmp().getDeals().get(Utility.nextInt(size)).getId()));
                 }
             }
 
@@ -386,9 +388,9 @@ public class FengXingHandler extends MediaBaseHandler {
                     FXBidResponse.SeatBid.Bid bid = new FXBidResponse.SeatBid.Bid();
                     seatBid.setBid(new LinkedList<>());
                     seatBid.getBid().add(bid);
-                    
-                    bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
+
                     bid.setId(mediaBid.getImpid());
+                    bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
                     bid.setAdm(mediaResponse.getAdm().get(0));
                     bid.setCrid(StringUtil.toString(mediaResponse.getCrid()));
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() : 0);
