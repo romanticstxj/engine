@@ -91,6 +91,8 @@ public class WorkThread {
                 return;
             }
 
+            logger.info("Impression tracking: {}", req.getQueryString());
+
             String policyId = exts[0];
             String dspId = exts[1];
 
@@ -184,6 +186,8 @@ public class WorkThread {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
+
+            logger.info("Click tracking: {}", req.getQueryString());
 
             String policyId = exts[0];
             String dspId = exts[1];
