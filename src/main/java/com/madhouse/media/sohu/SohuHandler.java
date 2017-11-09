@@ -251,10 +251,15 @@ public class SohuHandler extends MediaBaseHandler {
             
             List<String> exts = mediaResponse.getMonitorBuilder().getExts();
             if (!ObjectUtils.isEmpty(exts)) {
-                bidBuilder.setExt1(exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "");
-                bidBuilder.setExt2(exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "");
-                bidBuilder.setExt3(exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "");
-                
+            	if(exts.size() >= 1){
+            		bidBuilder.setExt1(exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "");
+            	}
+            	if(exts.size() >= 2){
+            		bidBuilder.setExt2(exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "");
+            	}
+            	if(exts.size() >= 3){
+            		bidBuilder.setExt3(exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "");
+            	}
             }
             seatBuilder.addBid(bidBuilder);
             bidResponseBuiler.addSeatbid(seatBuilder);
