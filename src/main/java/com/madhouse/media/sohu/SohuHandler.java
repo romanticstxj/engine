@@ -62,7 +62,7 @@ public class SohuHandler extends MediaBaseHandler {
             logger.warn("version is missing");
             return Constant.StatusCode.BAD_REQUEST;
         }
-        if (ObjectUtils.isEmpty(bidRequest.getImpression(0))) {
+        if (ObjectUtils.isEmpty(bidRequest.getImpressionList())) {
             logger.warn("{},bidRequest.Impression is missing",bid);
             return Constant.StatusCode.BAD_REQUEST;
         }
@@ -171,14 +171,23 @@ public class SohuHandler extends MediaBaseHandler {
 
         if (mediaRequest.hasOs()){
         	StringBuilder adspaceKey = new StringBuilder();
-        	adspaceKey.append("SOHU:").append(bidRequest.getImpression(0).getPid()).append(":");
+            String adspaceId = bidRequest.getImpression(0).getPid();
+
+        	adspaceKey.append("SOHU:").append(adspaceId).append(":");
         	if(mediaRequest.getOs().equals(Constant.OSType.IOS)){
         		adspaceKey.append(SohuStatusCode.Os.IOS);
         	} else {
         		adspaceKey.append(SohuStatusCode.Os.ANDROID);
         	}
 
-        	adspaceKey.append(":"+mediaRequest.getW()+":"+mediaRequest.getH());;
+            String tagId = SohuConstant.AdStyle.get(adspaceId);
+            if (tagId == null) {
+                if ((tagId = SohuConstant.AdStyle.get(String.format("%s-%d-%d", adspaceId, mediaRequest.getW(), mediaRequest.getH()))) == null) {
+                    return null;
+                }
+            }
+
+        	adspaceKey.append(":"+ tagId);;
             MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
             if (mappingMetaData != null) {
                 mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
@@ -242,10 +251,15 @@ public class SohuHandler extends MediaBaseHandler {
             
             List<String> exts = mediaResponse.getMonitorBuilder().getExts();
             if (!ObjectUtils.isEmpty(exts)) {
-                bidBuilder.setExt1(exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "");
-                bidBuilder.setExt2(exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "");
-                bidBuilder.setExt3(exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "");
-                
+            	if(exts.size() >= 1){
+            		bidBuilder.setExt1(exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "");
+            	}
+            	if(exts.size() >= 2){
+            		bidBuilder.setExt2(exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "");
+            	}
+            	if(exts.size() >= 3){
+            		bidBuilder.setExt3(exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "");
+            	}
             }
             seatBuilder.addBid(bidBuilder);
             bidResponseBuiler.addSeatbid(seatBuilder);
