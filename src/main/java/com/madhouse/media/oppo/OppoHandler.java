@@ -14,6 +14,7 @@ import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
+import com.madhouse.util.Utility;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -148,7 +149,9 @@ public class OppoHandler extends MediaBaseHandler {
                 ObjectUtils.isNotEmpty(imp.getPmp().getDelas()) &&
                 StringUtils.isNotEmpty(imp.getPmp().getDelas().get(0).getId())
                 ) {
-            mediaRequest.setDealid(imp.getPmp().getDelas().get(0).getId());
+            List<OppoBidRequest.Imp.Pmp.Deal> delas = imp.getPmp().getDelas();
+            // 如果有多个pmp对象，随机取一个返回
+            mediaRequest.setDealid(delas.get(Utility.nextInt(delas.size())).getId());
             imp.setImpressionType(OppoStatusCode.ImpressionType.PMP);
         } else {
             // 没有pmp对象时，不管有没有native，设置为native
