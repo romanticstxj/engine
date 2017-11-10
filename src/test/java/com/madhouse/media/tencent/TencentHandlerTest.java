@@ -1,7 +1,5 @@
 package com.madhouse.media.tencent;
 
-import java.io.IOException;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -9,6 +7,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 
 public class TencentHandlerTest {
@@ -39,26 +39,26 @@ public class TencentHandlerTest {
         banner.addMimes("txt");
         banner.setVisibility(0);
         // 测试banner最大尺寸功能
-        GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
-        adm_require.setWidth(320);
-        adm_require.setHeight(246);
-        adm_require.setMimes("jpg");
-
-        GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require2 = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
-        adm_require2.setWidth(640);
-        adm_require2.setHeight(246);
-        adm_require2.setMimes("png");
-
-        GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require3 = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
-        adm_require3.setWidth(1080);
-        adm_require3.setHeight(900);
-        adm_require3.setMimes("txt");
+//        GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
+//        adm_require.setWidth(320);
+//        adm_require.setHeight(246);
+//        adm_require.setMimes("jpg");
+//
+//        GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require2 = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
+//        adm_require2.setWidth(640);
+//        adm_require2.setHeight(246);
+//        adm_require2.setMimes("png");
+//
+//        GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require3 = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
+//        adm_require3.setWidth(1080);
+//        adm_require3.setHeight(900);
+//        adm_require3.setMimes("txt");
 
         imp.setBanner(banner);
 //        imp.setVideo(video);
-        imp.addAdmRequire(adm_require);
-        imp.addAdmRequire(adm_require2);
-        imp.addAdmRequire(adm_require3);
+//        imp.addAdmRequire(adm_require);
+//        imp.addAdmRequire(adm_require2);
+//        imp.addAdmRequire(adm_require3);
 
         GPBForDSP.Request.Impression.DisplayType.Builder displya_type = GPBForDSP.Request.Impression.DisplayType.newBuilder();
 
@@ -67,8 +67,8 @@ public class TencentHandlerTest {
         displya_type.addClickType(0);
 
         GPBForDSP.Request.Impression.MaterialFormat.Builder adm_require1 = GPBForDSP.Request.Impression.MaterialFormat.newBuilder();
-        adm_require1.setWidth(640);
-        adm_require1.setHeight(246);
+        adm_require1.setWidth(200);
+        adm_require1.setHeight(130);
         adm_require1.setMimes("txt");
         displya_type.addAdmRequire(adm_require1);
 
@@ -96,7 +96,7 @@ public class TencentHandlerTest {
         GPBForDSP.Request.App.Builder app = GPBForDSP.Request.App.newBuilder();
 
         app.setId("appid0001");
-        app.setName("tencent_app_name");
+        app.setName("App_Stream_news_news");
         re.setApp(app);
         re.addImpression(imp);
         System.out.println(re.build().toString());

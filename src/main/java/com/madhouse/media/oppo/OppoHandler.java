@@ -1,15 +1,6 @@
 package com.madhouse.media.oppo;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MediaBidMetaData;
@@ -23,27 +14,35 @@ import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@SuppressWarnings("unused")
 public class OppoHandler extends MediaBaseHandler {
-    
+
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
             req.setCharacterEncoding("UTF-8");
             String bytes = HttpUtil.getRequestPostBytes(req);
             OppoBidRequest oppoBidRequest = JSON.parseObject(bytes, OppoBidRequest.class);
-            int status = validateRequiredParam(oppoBidRequest, resp);
+            int status = validateRequiredParam(oppoBidRequest);
             if (status == Constant.StatusCode.OK) {
+                mediaBidMetaData.setRequestObject(oppoBidRequest);
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(oppoBidRequest);
-                if(mediaRequest != null){
+                if (mediaRequest != null) {
                     mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
-                    mediaBidMetaData.setRequestObject(oppoBidRequest);
                     return true;
-                }else{
-                	status =Constant.StatusCode.BAD_REQUEST;
+                } else {
+                    status = Constant.StatusCode.BAD_REQUEST;
                 }
             }
-            OppoResponse oppoBidResponse = convertToOppoResponse(mediaBidMetaData,status,oppoBidRequest.getId(),oppoBidRequest.getImp().get(0).getId());
+            OppoResponse oppoBidResponse = convertToOppoResponse(mediaBidMetaData, status);
             outputStreamWrite(resp, oppoBidResponse);
             resp.setStatus(Constant.StatusCode.OK);
             return false;
@@ -53,80 +52,60 @@ public class OppoHandler extends MediaBaseHandler {
             return false;
         }
     }
-    
+
     /**
-     * 获取request中native对象中的assets 和ver
-     * @param oppoBidRequest
-     * @return
+     * 转换OppoNativeRequest的json结构数据，到OppoNativeRequest对象
+     *
+     * @return OppoNativeRequest
      */
-    private OppoNativeRequest getRequestNative(String nativeStr){
-    	OppoNativeRequest oppoNativeRequest=null;
-		try {
-			Map nativeLast = JSON.parseObject(nativeStr);  
-			 for (Object obj : nativeLast.keySet()){  
-				 if(obj.equals("native")){
-		            String natives =nativeLast.get(obj).toString();
-		            oppoNativeRequest = JSON.parseObject(natives, OppoNativeRequest.class);
-				 }
-			 } 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 return oppoNativeRequest;
-    	
+    private OppoNativeRequest getRequestNative(String nativeStr) {
+        OppoNativeRequest oppoNativeRequest = null;
+        try {
+            Map nativeLast = JSON.parseObject(nativeStr);
+            for (Object obj : nativeLast.keySet()) {
+                if (obj.equals("native")) {
+                    String natives = nativeLast.get(obj).toString();
+                    oppoNativeRequest = JSON.parseObject(natives, OppoNativeRequest.class);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("json to OppoNativeRequest failed:", e);
+        }
+        return oppoNativeRequest;
+
     }
-    
-    
+
+
     private MediaRequest.Builder conversionToPremiumMADDataModel(OppoBidRequest oppoBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
-        
+
         OppoBidRequest.App app = oppoBidRequest.getApp();
         OppoBidRequest.Device device = oppoBidRequest.getDevice();
         OppoBidRequest.Imp imp = oppoBidRequest.getImp().get(0);
 //        OppoBidRequest.Imp.Pmp pmp =oppoBidRequest.getImp().get(0).getPmp();
-        
+
         // 广告请求唯一id
         mediaRequest.setAdtype(2);
-        if(!StringUtils.isEmpty(oppoBidRequest.getId())){
-        	mediaRequest.setBid(oppoBidRequest.getId());
-        }
-        if(!StringUtils.isEmpty(app.getName())){
-        	 mediaRequest.setName(app.getName());
-        }
-        if(!StringUtils.isEmpty(app.getBundle())){
-        	 mediaRequest.setBundle(app.getBundle()); 
-        }
-        if(imp.getBidfloor() !=0){
-        	mediaRequest.setBidfloor(Integer.parseInt(imp.getBidfloor()+""));
-        }
-        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
+        mediaRequest.setBid(oppoBidRequest.getId());
+        mediaRequest.setName(app.getName());
+        mediaRequest.setBundle(app.getBundle());
+        mediaRequest.setBidfloor(Integer.parseInt(String.valueOf(imp.getBidfloor())));
+        mediaRequest.setDevicetype(Constant.DeviceType.PHONE);
         mediaRequest.setType(Constant.MediaType.APP);
-        
+
         StringBuilder sb = new StringBuilder();
         sb.append("OPPO:");
         //广告位id
-        if(!StringUtils.isEmpty(imp.getTagid())){
-        	sb.append(imp.getTagid()).append(":");
+        if (!StringUtils.isEmpty(imp.getTagid())) {
+            sb.append(imp.getTagid());
         }
-        // 操作系统的类型
-        if(!StringUtils.isEmpty(device.getOs())){
-        	 String os = device.getOs(); 
-	        if (OppoStatusCode.Os.OS_ANDROID.equalsIgnoreCase(os)) {
-	            sb.append(OppoStatusCode.Os.OS_ANDROID);
-	            mediaRequest.setDid(device.getDidmd5());
-	            mediaRequest.setOs(Constant.OSType.ANDROID);
-	        } else if(OppoStatusCode.Os.OS_IOS.equalsIgnoreCase(os)){
-	            sb.append(OppoStatusCode.Os.OS_IOS);
-	            mediaRequest.setIfa(device.getDidmd5());
-	            mediaRequest.setOs(Constant.OSType.IOS);
-	        }
-        }
+        // oppo没有ios，操作系统的类型
+        mediaRequest.setDid(device.getDidmd5());
+        mediaRequest.setOs(Constant.OSType.ANDROID);
+        // OPPO bidRequest参数中没有运营商字段
+        mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         //0—未知，1—Ethernet，2—wifi，3—蜂窝网络，未知代，4—蜂窝网络，2G，5—蜂窝网络，3G，6—蜂窝网络，4G。
         switch (device.getConnectiontype()) {
-            case OppoStatusCode.ConnectionType.UNKNOWN:
-                mediaRequest.setConnectiontype(Constant.ConnectionType.ETHERNET);
-                break;
             case OppoStatusCode.ConnectionType.WIFI:
                 mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
                 break;
@@ -143,72 +122,118 @@ public class OppoHandler extends MediaBaseHandler {
                 mediaRequest.setConnectiontype(Constant.ConnectionType.ETHERNET);
                 break;
             default:
-                mediaRequest.setConnectiontype(Constant.ConnectionType.CELL);
+                mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
                 break;
         }
-        
-        if(!StringUtils.isEmpty(device.getIp())){
-            mediaRequest.setIp(device.getIp());
+
+        mediaRequest.setIp(device.getIp());
+        mediaRequest.setUa(device.getUa());
+        mediaRequest.setOsv(device.getOsv());
+        mediaRequest.setMake(device.getMake());
+        mediaRequest.setModel(device.getModel());
+        // native和pmp是却是，wordThread会设置宽高，pmp可以没有，所以验证方法中没有对native和pmp做验证，所以这里取值时要多一些判断。
+        if (ObjectUtils.isNotEmpty(imp.getNatives()) && StringUtils.isNotEmpty(imp.getNatives().getRequest())) {
+            OppoNativeRequest nativeRequest = getRequestNative(imp.getNatives().getRequest());
+            if (ObjectUtils.isNotEmpty(nativeRequest.getAssets()) &&
+                    ObjectUtils.isNotEmpty(nativeRequest.getAssets().get(0).getImg()) &&
+                    nativeRequest.getAssets().get(0).getImg().getH() > 0 &&
+                    nativeRequest.getAssets().get(0).getImg().getW() > 0
+                    ) {
+                mediaRequest.setH(nativeRequest.getAssets().get(0).getImg().getH());
+                mediaRequest.setW(nativeRequest.getAssets().get(0).getImg().getW());
+                imp.getNatives().setNativeObj(nativeRequest);
+            }
         }
-        if(!StringUtils.isEmpty(device.getUa())){
-            mediaRequest.setUa(device.getUa());
+        if (ObjectUtils.isNotEmpty(imp.getPmp()) &&
+                ObjectUtils.isNotEmpty(imp.getPmp().getDelas()) &&
+                StringUtils.isNotEmpty(imp.getPmp().getDelas().get(0).getId())
+                ) {
+            mediaRequest.setDealid(imp.getPmp().getDelas().get(0).getId());
+            imp.setImpressionType(OppoStatusCode.ImpressionType.PMP);
+        } else {
+            // 没有pmp对象时，不管有没有native，设置为native
+            imp.setImpressionType(OppoStatusCode.ImpressionType.NATIVE);
         }
-        if(!StringUtils.isEmpty(device.getOsv())){
-        	mediaRequest.setOsv(device.getOsv());
-        }
-        if(!StringUtils.isEmpty(device.getMake())){
-            mediaRequest.setMake(device.getMake());
-        }
-        if(!StringUtils.isEmpty(device.getModel())){
-            mediaRequest.setModel(device.getModel()); 
-        }
-        if(null !=device.getH()){
-            mediaRequest.setH(device.getH());
-        }
-        if(null != device.getW()){
-            mediaRequest.setW(device.getW());
-        }
-        
         MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
         } else {
-            mappingMetaData = CacheManager.getInstance().getMediaMapping("OPPO:0:0");
-            if(mappingMetaData != null){
-                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-            }else{
-                return null;
-            }
+            return null;
         }
-        logger.info("OPPO convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
+        logger.debug("OPPO convert mediaRequest is : {}", JSON.toJSONString(mediaRequest));
         return mediaRequest;
     }
 
-    private int validateRequiredParam(OppoBidRequest oppoBidRequest, HttpServletResponse resp) {
-        if (ObjectUtils.isNotEmpty(oppoBidRequest)) {
-            String id = oppoBidRequest.getId();
-            if (StringUtils.isNotEmpty(id)) {
-                if (ObjectUtils.isEmpty(oppoBidRequest.getDevice())) {
-                    logger.warn("oppoBidRequest.Device is null");
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                if (ObjectUtils.isEmpty(oppoBidRequest.getDevice().getOs())) {
-                    logger.warn("{}:oppoBidRequest.Device.os is null",id);
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                if (ObjectUtils.isEmpty(oppoBidRequest.getImp().get(0))) {
-                    logger.warn("oppoBidRequest.Imp[0] is null");
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                if (ObjectUtils.isEmpty(oppoBidRequest.getApp())) {
-                    logger.warn("oppoBidRequest.App is null");
-                    return Constant.StatusCode.BAD_REQUEST;
-                }
-                return Constant.StatusCode.OK;
-            }
-            logger.warn("oppoBidRequest.id is null");
+    private int validateRequiredParam(OppoBidRequest oppoBidRequest) {
+        if (ObjectUtils.isEmpty(oppoBidRequest)) {
+            logger.warn("oppoBidRequest is null");
+            return Constant.StatusCode.BAD_REQUEST;
         }
-        return Constant.StatusCode.BAD_REQUEST;
+        if (StringUtils.isEmpty(oppoBidRequest.getId())) {
+            logger.warn("oppoBidRequest.id is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (ObjectUtils.isEmpty(oppoBidRequest.getImp())) {
+            logger.warn("oppoBidRequest.Imp is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (ObjectUtils.isEmpty(oppoBidRequest.getDevice())) {
+            logger.warn("oppoBidRequest.Device is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (ObjectUtils.isEmpty(oppoBidRequest.getApp())) {
+            logger.warn("oppoBidRequest.App is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getApp().getBundle())) {
+            logger.warn("oppoBidRequest.App.Bundle is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getApp().getName())) {
+            logger.warn("oppoBidRequest.App.Name is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (ObjectUtils.isEmpty(oppoBidRequest.getDevice().getConnectiontype())) {
+            logger.warn("oppoBidRequest.Device.Connectiontype is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (ObjectUtils.isEmpty(oppoBidRequest.getDevice().getDevicetype())) {
+            logger.warn("oppoBidRequest.Device.devicetype is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getDevice().getUa())) {
+            logger.warn("oppoBidRequest.Device.ua is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getDevice().getIp())) {
+            logger.warn("oppoBidRequest.Device.ip is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getDevice().getOsv())) {
+            logger.warn("oppoBidRequest.Device.osv is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getDevice().getOs())) {
+            logger.warn("oppoBidRequest.Device.os is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getDevice().getDidmd5())) {
+            logger.warn("oppoBidRequest.Device.didmd5 is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (!OppoStatusCode.Os.OS_ANDROID.equalsIgnoreCase(oppoBidRequest.getDevice().getOs())) {
+            logger.warn("oppoBidRequest.Device.os is {},not is android", oppoBidRequest.getDevice().getOs() == null ? "null" : oppoBidRequest.getDevice().getOs());
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (oppoBidRequest.getImp().get(0).getBidfloor() <= 0) {
+            logger.warn("oppoBidRequest.Imp[0].Bidfloor <= 0");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        if (StringUtils.isEmpty(oppoBidRequest.getImp().get(0).getTagid())) {
+            logger.warn("oppoBidRequest.Imp[0].tagId is null");
+            return Constant.StatusCode.BAD_REQUEST;
+        }
+        return Constant.StatusCode.OK;
     }
 
     @Override
@@ -216,11 +241,11 @@ public class OppoHandler extends MediaBaseHandler {
         try {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                OppoResponse result =null;
+                OppoResponse result;
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    result = convertToOppoResponse(mediaBidMetaData,mediaBid.getStatus(),null,null);
+                    result = convertToOppoResponse(mediaBidMetaData, mediaBid.getStatus());
                 } else {
-                	result = convertToOppoResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,null,null);
+                    result = convertToOppoResponse(mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
                 }
                 outputStreamWrite(resp, result);
             }
@@ -229,14 +254,14 @@ public class OppoHandler extends MediaBaseHandler {
             resp.setStatus(Constant.StatusCode.BAD_REQUEST);
             return false;
         }
-        resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+        resp.setStatus(Constant.StatusCode.OK);
         return false;
     }
-    
-    
-    private boolean outputStreamWrite(HttpServletResponse resp, OppoResponse oppoResponse)  {
+
+
+    private void outputStreamWrite(HttpServletResponse resp, OppoResponse oppoResponse) {
         try {
-        	if (oppoResponse != null) {
+            if (oppoResponse != null) {
                 resp.setHeader("Content-Type", "application/json; charset=utf-8");
                 resp.getOutputStream().write(JSON.toJSONString(oppoResponse).getBytes("utf-8"));
                 resp.setStatus(Constant.StatusCode.OK);
@@ -244,123 +269,126 @@ public class OppoHandler extends MediaBaseHandler {
             }
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
-            return false;
+            return;
         }
-        logger.info("Tencent outputStreamWrite is:{}",oppoResponse.toString());
-        return true;
+        logger.debug("OPPO outputStreamWrite is:{}", JSON.toJSONString(oppoResponse));
     }
 
-    private OppoResponse convertToOppoResponse(MediaBidMetaData mediaBidMetaData,int status,String requestId,String bidid) {
-    	//response DSP对象
-    	Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-    	OppoResponse response = new OppoResponse();
-    	List<OppoResponse.SeatBid.Bid> bids = new ArrayList<>(1);
-    	List<OppoResponse.SeatBid> seatbids = new ArrayList<>(1);
-    	OppoResponse.SeatBid seatBid = response.new SeatBid();
-    	OppoResponse.SeatBid.Bid bid = seatBid.new Bid();
-    	//Oppo Bidresponse
-    	
-    	if(Constant.StatusCode.OK != status){
-    		response.setNbr(2);
-    		response.setId(requestId);//竞价请求id
-	    	response.setBidid(bidid);//竞价者生成的id唯一标识
-    	}else{
-	    	//request请求对象
-	    	OppoBidRequest oppoBidRequest =(OppoBidRequest)mediaBidMetaData.getRequestObject();
-	    	//判断native模式，还是pmp模式曝光
-	    	if(null != oppoBidRequest && null != oppoBidRequest.getImp().get(0) && null !=oppoBidRequest.getImp().get(0).getNatives() && null !=oppoBidRequest.getImp().get(0).getNatives().getRequest()){
-	    		OppoNativeRequest oppoNativeRequest = getRequestNative(oppoBidRequest.getImp().get(0).getNatives().getRequest());
-	    		OppoNativeResponse oppoNativeResponse = new OppoNativeResponse();
-	        	if(null != oppoNativeRequest && null !=oppoNativeRequest.getAssets() && oppoNativeRequest.getAssets().size() > 0){
-	        		List<com.madhouse.media.oppo.OppoNativeResponse.Asset> assetNativeResponseList =new ArrayList<OppoNativeResponse.Asset>();
-	        		
-	        		for(Asset assetNativeRequest:oppoNativeRequest.getAssets()){
-	        			OppoNativeResponse.Asset assetResponse = oppoNativeResponse.new Asset();
-	        			int h=0;
-	        			int w=0;
-	        			
-	        			if(null !=assetNativeRequest.getTitle()){
-	        				OppoNativeResponse.Asset.Title titleResponse = assetResponse.new Title();
-	        				titleResponse.setText(assetNativeRequest.getTitle().getLen());
-	        				assetResponse.setTitle(titleResponse);
-	        			}
-	        			if(null !=assetNativeRequest.getImg()){
-	        				OppoNativeResponse.Asset.Img imgResponse = assetResponse.new Img();
-	        				imgResponse.setH(assetNativeRequest.getImg().getH());
-	        				imgResponse.setW(assetNativeRequest.getImg().getW());
-	        				imgResponse.setUrl(mediaResponse.getAdm().get(0));//物料url
-	        				assetResponse.setImg(imgResponse);
-	        				h =assetNativeRequest.getImg().getH();
-	        				w=assetNativeRequest.getImg().getW();
-	        			}
-	        			if(null !=assetNativeRequest.getData()){
-	        				OppoNativeResponse.Asset.Data dataResponse = assetResponse.new Data();
-	        				dataResponse.setValue(mediaResponse.getTitle());//指定类型的数据内容
-	        				assetResponse.setData(dataResponse);
-	        			}
-	        			if(null !=assetNativeRequest.getSpecificFeeds()){
-	        				OppoNativeResponse.Asset.SpecificFeeds specificFeeds = assetResponse.new SpecificFeeds();
-	        				if(h*w ==640*320 && null !=mediaResponse.getAdm() && mediaResponse.getAdm().size()==1){
-	        					specificFeeds.setFormateType(1);//信息流大图
-	        				}else if(h*w ==320*210 && null !=mediaResponse.getAdm() && mediaResponse.getAdm().size()==1){
-	        					specificFeeds.setFormateType(2);//信息流小图
-	        				}else if(h*w ==640*210 && null !=mediaResponse.getAdm() && mediaResponse.getAdm().size()==3){
-	        					specificFeeds.setFormateType(3);//信息流多图
-	        				}
-	        				if(null != mediaResponse.getAdm()){
-	        					specificFeeds.setImageUrls(mediaResponse.getAdm());
-	        				}
-	        				assetResponse.setSpecificFeeds(specificFeeds);
-	        			}
-	        			assetNativeResponseList.add(assetResponse);
-	        		}
-	        		oppoNativeResponse.setAssets(assetNativeResponseList);
-	        		//Link 对象:落地页和点击监测
-	    			OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
-	    			linkResponse.setUrl(mediaResponse.getLpgurl());
-	    			linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-	        		oppoNativeResponse.setLint(linkResponse);
-	        		//展示监测
-	        		List<String> imptrackers = new ArrayList<String>();
-	        		for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
-	        			imptrackers.add(track.getUrl());
-	                } 
-	        		oppoNativeResponse.setImptrackers(imptrackers);
-	        		oppoNativeResponse.setVer("1.1");
-	        	}
-	        	bid.setAdm(JSON.toJSONString(oppoNativeResponse).toString());
-	        	
-	    	}else if(null != oppoBidRequest && null != oppoBidRequest.getImp().get(0) && null !=oppoBidRequest.getImp().get(0).getPmp()){
-	    		if(null != oppoBidRequest.getImp().get(0).getPmp().getDelas() && oppoBidRequest.getImp().get(0).getPmp().getDelas().size() >0){
-	    			bid.setDealid(oppoBidRequest.getImp().get(0).getPmp().getDelas().get(0).getId());
-	    		}
-	    	}
-	    	
-	    	//设置点击和展示监测:如果asset对象中有，以asset为主，如果没有，则以bid对象中为主
-			bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-			List<String> imptrackers = new ArrayList<String>();
-			for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
-				imptrackers.add(track.getUrl());
-	        } 
-			bid.setImptrackers(imptrackers);
-			
-	    	//seatBid中的bid对象
-	    	bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
-	    	bid.setImpid(oppoBidRequest.getImp().get(0).getId());
-	    	bid.setPrice(mediaResponse.getPrice());
-	    	bid.setAdid(mediaResponse.getCid());//预加载的广告id(dsp广告活动id)
-	    	
-	    	//设置List值，组装到response中
-	    	bids.add(bid);
-	    	seatBid.setBid(bids);
-	    	seatbids.add(seatBid);
-	    	response.setSeatbid(seatbids);
-	    	
-	    	response.setId(oppoBidRequest.getId());//竞价请求id
-	    	response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());//竞价者生成的id唯一标识
-    	}
-    	logger.info("OPPO Response params is : {}", JSON.toJSONString(response));
+    private OppoResponse convertToOppoResponse(MediaBidMetaData mediaBidMetaData, int status) {
+        OppoBidRequest oppoBidRequest = (OppoBidRequest) mediaBidMetaData.getRequestObject();
+        //response DSP对象
+        Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        OppoResponse response = new OppoResponse();
+        List<OppoResponse.SeatBid.Bid> bids = new ArrayList<>(1);
+        List<OppoResponse.SeatBid> seatbids = new ArrayList<>(1);
+        OppoResponse.SeatBid seatBid = response.new SeatBid();
+        OppoResponse.SeatBid.Bid bid = seatBid.new Bid();
+        //Oppo Bidresponse
+
+        if (Constant.StatusCode.OK != status) {
+            if (status == Constant.StatusCode.NO_CONTENT) {
+                response.setNbr(1002);
+            } else {
+                response.setNbr(1001);
+            }
+            response.setId(oppoBidRequest.getId());//竞价请求id
+            response.setBidid(oppoBidRequest.getImp().get(0).getId());//竞价者生成的id唯一标识
+        } else {
+            //request请求对象
+            //判断native模式，还是pmp模式曝光
+            if (oppoBidRequest.getImp().get(0).getImpressionType() == OppoStatusCode.ImpressionType.NATIVE) {
+                OppoNativeRequest oppoNativeRequest = getRequestNative(oppoBidRequest.getImp().get(0).getNatives().getRequest());
+                OppoNativeResponse oppoNativeResponse = new OppoNativeResponse();
+                if (null != oppoNativeRequest && null != oppoNativeRequest.getAssets() && oppoNativeRequest.getAssets().size() > 0) {
+                    List<com.madhouse.media.oppo.OppoNativeResponse.Asset> assetNativeResponseList = new ArrayList<OppoNativeResponse.Asset>();
+
+                    for (Asset assetNativeRequest : oppoNativeRequest.getAssets()) {
+                        OppoNativeResponse.Asset assetResponse = oppoNativeResponse.new Asset();
+                        int h = 0;
+                        int w = 0;
+
+                        if (null != assetNativeRequest.getTitle()) {
+                            OppoNativeResponse.Asset.Title titleResponse = assetResponse.new Title();
+                            titleResponse.setText(assetNativeRequest.getTitle().getLen());
+                            assetResponse.setTitle(titleResponse);
+                        }
+                        if (null != assetNativeRequest.getImg()) {
+                            OppoNativeResponse.Asset.Img imgResponse = assetResponse.new Img();
+                            imgResponse.setH(assetNativeRequest.getImg().getH());
+                            imgResponse.setW(assetNativeRequest.getImg().getW());
+                            imgResponse.setUrl(mediaResponse.getAdm().get(0));//物料url
+                            assetResponse.setImg(imgResponse);
+                            h = assetNativeRequest.getImg().getH();
+                            w = assetNativeRequest.getImg().getW();
+                        }
+                        if (null != assetNativeRequest.getData()) {
+                            OppoNativeResponse.Asset.Data dataResponse = assetResponse.new Data();
+                            dataResponse.setValue(mediaResponse.getTitle());//指定类型的数据内容
+                            assetResponse.setData(dataResponse);
+                        }
+                        if (null != assetNativeRequest.getSpecificFeeds()) {
+                            OppoNativeResponse.Asset.SpecificFeeds specificFeeds = assetResponse.new SpecificFeeds();
+                            if (h * w == 640 * 320 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
+                                specificFeeds.setFormateType(1);//信息流大图
+                            } else if (h * w == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
+                                specificFeeds.setFormateType(2);//信息流小图
+                            } else if (h * w == 640 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 3) {
+                                specificFeeds.setFormateType(3);//信息流多图
+                            }
+                            if (null != mediaResponse.getAdm()) {
+                                specificFeeds.setImageUrls(mediaResponse.getAdm());
+                            }
+                            assetResponse.setSpecificFeeds(specificFeeds);
+                        }
+                        assetNativeResponseList.add(assetResponse);
+                    }
+                    oppoNativeResponse.setAssets(assetNativeResponseList);
+                    //Link 对象:落地页和点击监测
+                    OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
+                    linkResponse.setUrl(mediaResponse.getLpgurl());
+                    linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
+                    oppoNativeResponse.setLint(linkResponse);
+                    //展示监测
+                    List<String> imptrackers = new ArrayList<String>();
+                    for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
+                        imptrackers.add(track.getUrl());
+                    }
+                    oppoNativeResponse.setImptrackers(imptrackers);
+                    oppoNativeResponse.setVer("1.1");
+                }
+                bid.setAdm(JSON.toJSONString(oppoNativeResponse).toString());
+
+            } else if (oppoBidRequest.getImp().get(0).getImpressionType() == OppoStatusCode.ImpressionType.PMP) {
+                if (null != oppoBidRequest.getImp().get(0).getPmp().getDelas() && oppoBidRequest.getImp().get(0).getPmp().getDelas().size() > 0) {
+                    bid.setDealid(oppoBidRequest.getImp().get(0).getPmp().getDelas().get(0).getId());
+                }
+            }
+
+            //设置点击和展示监测:如果asset对象中有，以asset为主，如果没有，则以bid对象中为主
+            bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
+            List<String> imptrackers = new ArrayList<String>();
+            for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
+                imptrackers.add(track.getUrl());
+            }
+            bid.setImptrackers(imptrackers);
+
+            //seatBid中的bid对象
+            bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
+            bid.setImpid(oppoBidRequest.getImp().get(0).getId());
+            bid.setPrice(mediaResponse.getPrice());
+            bid.setAdid(mediaResponse.getCid());//预加载的广告id(dsp广告活动id)
+
+            //设置List值，组装到response中
+            bids.add(bid);
+            seatBid.setBid(bids);
+            seatbids.add(seatBid);
+            response.setSeatbid(seatbids);
+
+            response.setId(oppoBidRequest.getId());//竞价请求id
+            response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());//竞价者生成的id唯一标识
+        }
+        logger.debug("OPPO Response params is : {}", JSON.toJSONString(response));
         return response;
     }
-    
+
 }
