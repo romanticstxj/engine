@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.cache.MaterialMetaData;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -217,13 +218,14 @@ public class SohuHandler extends MediaBaseHandler {
         convertToSohuResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,resp);
         return false;
     }
-    private void convertToSohuResponse(MediaBidMetaData mediaBidMetaData,int status, HttpServletResponse resp) {
+    private void convertToSohuResponse(MediaBidMetaData mediaBidMetaData, int status, HttpServletResponse resp) {
     	SohuRTB.Response.Builder bidResponseBuiler = SohuRTB.Response.newBuilder();
         SohuRTB.Request bidRequest = (Request) mediaBidMetaData.getRequestObject();
         bidResponseBuiler.setBidid(bidRequest.getBidid());
         bidResponseBuiler.setVersion(bidRequest.getVersion());
-        
-    	if(status == Constant.StatusCode.OK){
+
+        MaterialMetaData materialMetaData = mediaBidMetaData.getMaterialMetaData();
+    	if (status == Constant.StatusCode.OK && materialMetaData != null){
     		MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();
             if(bidRequest.getImpression(0).hasIdx()){
@@ -231,11 +233,10 @@ public class SohuHandler extends MediaBaseHandler {
             }
             //bid对象
             SohuRTB.Response.Bid.Builder bidBuilder = SohuRTB.Response.Bid.newBuilder();
-            //在底价上加一分
+
             bidBuilder.setPrice(mediaResponse.getPrice());
-            
-            bidBuilder.setAdurl(mediaResponse.getAdm().get(0));
-            
+            bidBuilder.setAdurl(StringUtil.toString(materialMetaData.getMediaQueryKey()));
+
             //ssp自己的展示和点击监播:去掉域名
             List<Track> tracks= mediaResponse.getMonitorBuilder().getImpurl();
             if(!tracks.isEmpty()){
@@ -252,13 +253,13 @@ public class SohuHandler extends MediaBaseHandler {
             List<String> exts = mediaResponse.getMonitorBuilder().getExts();
             if (!ObjectUtils.isEmpty(exts)) {
             	if(exts.size() >= 1){
-            		bidBuilder.setExt1(exts.size() >= 1 ? StringUtil.toString(exts.get(0)) : "");
+            		bidBuilder.setExt1(StringUtil.toString(exts.get(0)));
             	}
             	if(exts.size() >= 2){
-            		bidBuilder.setExt2(exts.size() >= 2 ? StringUtil.toString(exts.get(1)) : "");
+            		bidBuilder.setExt2(StringUtil.toString(exts.get(1)));
             	}
             	if(exts.size() >= 3){
-            		bidBuilder.setExt3(exts.size() >= 3 ? StringUtil.toString(exts.get(2)) : "");
+            		bidBuilder.setExt3(StringUtil.toString(exts.get(2)));
             	}
             }
             seatBuilder.addBid(bidBuilder);
