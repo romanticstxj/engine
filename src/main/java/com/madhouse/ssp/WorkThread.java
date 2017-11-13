@@ -572,6 +572,9 @@ public class WorkThread {
 
         MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
         //placement
         {
             List<String> info = new LinkedList<>();
@@ -580,11 +583,18 @@ public class WorkThread {
             targetInfo.add(Pair.of(Constant.TargetType.PLACEMENT, info));
         }
 
+        //date
+        {
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+            List<String> info = new LinkedList<>();
+            info.add(currentDate);
+            targetInfo.add(Pair.of(Constant.TargetType.DATE, info));
+        }
+
         //week time
         {
             List<String> info = new LinkedList<>();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
+
             int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
             info.add(String.format("%d-%02d", weekday, hour));

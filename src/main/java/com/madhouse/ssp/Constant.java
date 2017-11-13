@@ -194,10 +194,11 @@ public final class Constant {
 
     public static final class TargetType {
         public static final int PLACEMENT = 1;
-        public static final int WEEKDAY_HOUR = 2;
-        public static final int LOCATION = 4;
-        public static final int OS = 8;
-        public static final int CONNECTION_TYPE = 16;
+        public static final int DATE = 2;
+        public static final int WEEKDAY_HOUR = 4;
+        public static final int LOCATION = 8;
+        public static final int OS = 16;
+        public static final int CONNECTION_TYPE = 32;
     }
 
     public static final class PolicyControlType {

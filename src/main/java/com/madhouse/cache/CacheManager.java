@@ -518,6 +518,18 @@ public class CacheManager implements Runnable {
                 }
             }
 
+            //date
+            {
+                String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.DATE, currentDate);
+                HashSet<Long> var2 = var.get(key);
+                if (var2 == null) {
+                    var2 = new HashSet<>();
+                    var.put(key, var2);
+                }
+
+                var2.add(policyMetaData.getId());
+            }
+
             //weekdayHour
             if (!ObjectUtils.isEmpty(policyMetaData.getWeekdayHoursMap())) {
                 Map<Integer, List<Integer>> weekHours = policyMetaData.getWeekdayHoursMap();
