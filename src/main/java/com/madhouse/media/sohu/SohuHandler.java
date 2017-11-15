@@ -117,7 +117,7 @@ public class SohuHandler extends MediaBaseHandler {
         mediaRequest.setMacmd5(StringUtil.toString(device.getMac()));
 
         //网络类型(不区分大小写)：2G，3G，4G，WIFI 
-        switch (device.getNetType()) {
+        switch (device.getNetType().toUpperCase()) {
             case SohuStatusCode.ConnectionType._2G:
                 mediaRequest.setConnectiontype(Constant.ConnectionType._2G);
                 break;
