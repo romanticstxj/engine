@@ -58,7 +58,10 @@
             }, {
                 "path": "/adcall/fengxing/bidrequest",
                 "className": "com.madhouse.media.fengxing.FengXingHandler"
-            }
+            }, {
+                "path": "/adcall/baidu/bidrequest",
+                "className": "com.madhouse.media.baidu.BaiduHandler"
+             }
         ],
         "impression": "/adtrack/impression",
         "click": "/adtrack/click"
