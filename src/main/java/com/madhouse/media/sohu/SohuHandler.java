@@ -135,7 +135,7 @@ public class SohuHandler extends MediaBaseHandler {
 	                break;
 	        }
         }
-        if (device.getType().equalsIgnoreCase(SohuStatusCode.Devicetype.MOBILE)){
+        if (device.getType().toString().equalsIgnoreCase(SohuStatusCode.Devicetype.MOBILE)){
         	if(!StringUtils.isEmpty(device.getMobileType())){
         		switch (device.getMobileType().toUpperCase()) {
 	                case SohuStatusCode.Os.OS_IPHONE:
