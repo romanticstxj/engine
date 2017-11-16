@@ -61,6 +61,43 @@ public class CacheManager implements Runnable {
         private ConcurrentHashMap<String, HashSet<Long>> policyTargetMap = new ConcurrentHashMap<String, HashSet<Long>>();
         //dspid:material_key:media_id:adspaceid, materialMetaData
         private ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap = new ConcurrentHashMap<>();
+        //blocked device
+        private ConcurrentHashSet<String> blockedDeviceIP = new ConcurrentHashSet<>();
+        private ConcurrentHashSet<String> blockedDeviceIFA = new ConcurrentHashSet<>();
+        private ConcurrentHashSet<String> blockedDeviceDidmd5 = new ConcurrentHashSet<>();
+        private ConcurrentHashSet<String> blockedDeviceDpidmd5 = new ConcurrentHashSet<>();
+
+        public ConcurrentHashSet<String> getBlockedDeviceIP() {
+            return blockedDeviceIP;
+        }
+
+        public void setBlockedDeviceIP(ConcurrentHashSet<String> blockedDeviceIP) {
+            this.blockedDeviceIP = blockedDeviceIP;
+        }
+
+        public ConcurrentHashSet<String> getBlockedDeviceIFA() {
+            return blockedDeviceIFA;
+        }
+
+        public void setBlockedDeviceIFA(ConcurrentHashSet<String> blockedDeviceIFA) {
+            this.blockedDeviceIFA = blockedDeviceIFA;
+        }
+
+        public ConcurrentHashSet<String> getBlockedDeviceDidmd5() {
+            return blockedDeviceDidmd5;
+        }
+
+        public void setBlockedDeviceDidmd5(ConcurrentHashSet<String> blockedDeviceDidmd5) {
+            this.blockedDeviceDidmd5 = blockedDeviceDidmd5;
+        }
+
+        public ConcurrentHashSet<String> getBlockedDeviceDpidmd5() {
+            return blockedDeviceDpidmd5;
+        }
+
+        public void setBlockedDeviceDpidmd5(ConcurrentHashSet<String> blockedDeviceDpidmd5) {
+            this.blockedDeviceDpidmd5 = blockedDeviceDpidmd5;
+        }
 
         public ConcurrentHashMap<Long, DSPMetaData> getDspMetaDataMap() {
             return dspMetaDataMap;
@@ -290,6 +327,11 @@ public class CacheManager implements Runnable {
         var.setDspMappingMetaDataMap(this.loadDSPMappingData());
         logger.debug("loading material metadata.");
         var.setMaterialMetaDataMap(this.loadMaterialMappingData());
+        logger.debug("loading blocked device metadata.");
+        var.setBlockedDeviceIP(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IP));
+        var.setBlockedDeviceIFA(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IFA));
+        var.setBlockedDeviceDidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DIDMD5));
+        var.setBlockedDeviceDpidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DPIDMD5));
         logger.debug("updating policy targeting metadata.");
         var.setPolicyTargetMap(this.updatePolicyTargetInfo(var.getPolicyMetaDataMap()));
 
@@ -305,6 +347,47 @@ public class CacheManager implements Runnable {
         }
 
         logger.info("load metadata cache end.");
+    }
+
+    public boolean isBlockedDevice(String ip, String ifa, String didmd5, String dpidmd5) {
+        if (!StringUtils.isEmpty(ip) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP())) {
+            if (this.metaData.getBlockedDeviceIP().contains(ip)) {
+                return true;
+            }
+        }
+
+        if (!StringUtils.isEmpty(ifa) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA())) {
+            if (this.metaData.getBlockedDeviceIFA().contains(ifa)) {
+                return true;
+            }
+        }
+
+        if (!StringUtils.isEmpty(didmd5) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5())) {
+            if (this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
+                return true;
+            }
+        }
+
+        if (!StringUtils.isEmpty(dpidmd5) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5())) {
+            if (this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private ConcurrentHashSet<String> loadBlockedDeviceMetaData(String key) {
+        ConcurrentHashSet<String> var = new ConcurrentHashSet<>();
+
+        Set<String> blockedDevices = this.redisSlave.smembers(key);
+        if (!ObjectUtils.isEmpty(blockedDevices)) {
+            for (String str : blockedDevices) {
+                var.add(str);
+            }
+        }
+
+        return var;
     }
 
     private ConcurrentHashMap<String, MaterialMetaData> loadMaterialMappingData() {

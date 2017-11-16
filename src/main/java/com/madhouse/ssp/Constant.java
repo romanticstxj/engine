@@ -39,6 +39,12 @@ public final class Constant {
         public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
         //str:dspid,materialId,mediaId,adspaceId:adm
         public static final String MATERIAL_MAPPING_DATA = "str:%d:%s:%d:%d:adm";
+
+        //blocked device
+        public static final String ALL_BLOCKED_DEVICE_IP = "set:all_blocked_ip";
+        public static final String ALL_BLOCKED_DEVICE_IFA = "set:all_blocked_ifa";
+        public static final String ALL_BLOCKED_DEVICE_DIDMD5 = "set:all_blocked_didmd5";
+        public static final String ALL_BLOCKED_DEVICE_DPIDMD5 = "set:all_blocked_dpidmd5";
     }
 
     public static final class StatusCode {
