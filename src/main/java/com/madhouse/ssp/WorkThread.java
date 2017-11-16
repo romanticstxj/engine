@@ -91,6 +91,8 @@ public class WorkThread {
                 return;
             }
 
+            logger.info("Impression tracking: {}", req.getQueryString());
+
             String policyId = exts[0];
             String dspId = exts[1];
 
@@ -184,6 +186,8 @@ public class WorkThread {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
+
+            logger.info("Click tracking: {}", req.getQueryString());
 
             String policyId = exts[0];
             String dspId = exts[1];
@@ -355,6 +359,28 @@ public class WorkThread {
                     mediaRequest.setW(size.getW());
                     mediaRequest.setH(size.getH());
                 }
+            }
+
+            String ip = mediaRequest.getIp();
+            String ifa = StringUtil.toString(mediaRequest.getIfa()).toUpperCase();
+
+            String didmd5 = StringUtil.toString(mediaRequest.getDidmd5()).toLowerCase();
+            if (StringUtils.isEmpty(didmd5) && !StringUtils.isEmpty(mediaRequest.getDid())) {
+                didmd5 = StringUtil.getMD5(mediaRequest.getDid());
+                mediaRequest.setDidmd5(didmd5);
+            }
+
+            String dpidmd5 = StringUtil.toString(mediaRequest.getDpidmd5()).toLowerCase();
+            if (StringUtils.isEmpty(dpidmd5) && !StringUtils.isEmpty(mediaRequest.getDpid())) {
+                dpidmd5 = StringUtil.getMD5(mediaRequest.getDpid());
+                mediaRequest.setDpidmd5(dpidmd5);
+            }
+
+            if (CacheManager.getInstance().isBlockedDevice(ip, ifa, didmd5, dpidmd5)) {
+                logger.error("[{}] device is blocked.", mediaRequest.getAdspacekey());
+                mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
+                mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
+                return;
             }
 
             MediaBidMetaData.TrackingParam trackingParam = new MediaBidMetaData.TrackingParam();
@@ -568,6 +594,9 @@ public class WorkThread {
 
         MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
 
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
         //placement
         {
             List<String> info = new LinkedList<>();
@@ -576,11 +605,18 @@ public class WorkThread {
             targetInfo.add(Pair.of(Constant.TargetType.PLACEMENT, info));
         }
 
+        //date
+        {
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+            List<String> info = new LinkedList<>();
+            info.add(currentDate);
+            targetInfo.add(Pair.of(Constant.TargetType.DATE, info));
+        }
+
         //week time
         {
             List<String> info = new LinkedList<>();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
+
             int weekday = cal.get(Calendar.DAY_OF_WEEK) - 1;
             int hour = cal.get(Calendar.HOUR_OF_DAY);
             info.add(String.format("%d-%02d", weekday, hour));
@@ -705,5 +741,3 @@ public class WorkThread {
         return winner;
     }
 }
-
-

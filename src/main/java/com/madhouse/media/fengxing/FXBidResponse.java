@@ -52,7 +52,8 @@ public class FXBidResponse {
             private String adm;
             private Float price;
             private String crid;
-
+            private Ext ext;
+            
             public String getId() {
                 return id;
             }
@@ -101,7 +102,15 @@ public class FXBidResponse {
                 this.crid = crid;
             }
 
-            public static class Ext {
+            public Ext getExt() {
+				return ext;
+			}
+
+			public void setExt(Ext ext) {
+				this.ext = ext;
+			}
+
+			public static class Ext {
                 private String lpg;
                 private List<PM> pm;
                 private List<String> cm;

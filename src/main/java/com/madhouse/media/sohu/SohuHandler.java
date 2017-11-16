@@ -117,38 +117,40 @@ public class SohuHandler extends MediaBaseHandler {
         mediaRequest.setMacmd5(StringUtil.toString(device.getMac()));
 
         //网络类型(不区分大小写)：2G，3G，4G，WIFI 
-        switch (device.getNetType()) {
-            case SohuStatusCode.ConnectionType._2G:
-                mediaRequest.setConnectiontype(Constant.ConnectionType._2G);
-                break;
-            case SohuStatusCode.ConnectionType._3G:
-                mediaRequest.setConnectiontype(Constant.ConnectionType._3G);
-                break;
-            case SohuStatusCode.ConnectionType._4G:
-                mediaRequest.setConnectiontype(Constant.ConnectionType._4G);
-                break;
-            case SohuStatusCode.ConnectionType.WIFI:
-                mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
-                break;
-            default:
-                mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
-                break;
+        
+        mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
+        if(!StringUtils.isEmpty(device.getNetType())){
+        	switch (device.getNetType().toUpperCase()) {
+	            case SohuStatusCode.ConnectionType._2G:
+	                mediaRequest.setConnectiontype(Constant.ConnectionType._2G);
+	                break;
+	            case SohuStatusCode.ConnectionType._3G:
+	                mediaRequest.setConnectiontype(Constant.ConnectionType._3G);
+	                break;
+	            case SohuStatusCode.ConnectionType._4G:
+	                mediaRequest.setConnectiontype(Constant.ConnectionType._4G);
+	                break;
+	            case SohuStatusCode.ConnectionType.WIFI:
+	                mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
+	                break;
+	        }
         }
-
-        if (device.getType().equalsIgnoreCase(SohuStatusCode.Devicetype.MOBILE)){
-            switch (device.getMobileType()) {
-                case SohuStatusCode.Os.OS_IPHONE:
-                case SohuStatusCode.Os.OS_IPAD:
-                    mediaRequest.setOs(Constant.OSType.IOS);
-                    break;
-                case SohuStatusCode.Os.OS_ANDROIDPAD:
-                case SohuStatusCode.Os.OS_ANDROIDPHONE:
-                    mediaRequest.setOs(Constant.OSType.ANDROID);
-                    break;
-                default:
-                    mediaRequest.setOs(Constant.OSType.ANDROID);
-                    break;
-            }
+        if (device.getType().toString().equalsIgnoreCase(SohuStatusCode.Devicetype.MOBILE)){
+        	if(!StringUtils.isEmpty(device.getMobileType())){
+        		switch (device.getMobileType().toUpperCase()) {
+	                case SohuStatusCode.Os.OS_IPHONE:
+	                case SohuStatusCode.Os.OS_IPAD:
+	                    mediaRequest.setOs(Constant.OSType.IOS);
+	                    break;
+	                case SohuStatusCode.Os.OS_ANDROIDPAD:
+	                case SohuStatusCode.Os.OS_ANDROIDPHONE:
+	                    mediaRequest.setOs(Constant.OSType.ANDROID);
+	                    break;
+	                default:
+	                    mediaRequest.setOs(Constant.OSType.ANDROID);
+	                    break;
+	            }
+        	}
             mediaRequest.setType(Constant.MediaType.APP);
         }else{
             mediaRequest.setType(Constant.MediaType.SITE);

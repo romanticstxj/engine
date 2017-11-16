@@ -10,6 +10,7 @@ import com.madhouse.ssp.avro.*;
 import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
+import com.madhouse.util.Utility;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -135,7 +136,7 @@ public class FengXingHandler extends MediaBaseHandler {
             }
             
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
-            if (StringUtils.isEmpty(device.getCarrier())) {
+            if (!StringUtils.isEmpty(device.getCarrier())) {
                 switch (device.getCarrier()) {
                     case FXConstant.Carrier.CHINA_MOBILE: {
                         mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
@@ -261,7 +262,8 @@ public class FengXingHandler extends MediaBaseHandler {
 
             if (impression.getPmp() != null) {
                 if (!ObjectUtils.isEmpty(impression.getPmp().getDeals())) {
-                    mediaRequest.setDealid(StringUtil.toString(impression.getPmp().getDeals().get(0).getId()));
+                    int size = impression.getPmp().getDeals().size();
+                    mediaRequest.setDealid(StringUtil.toString(impression.getPmp().getDeals().get(Utility.nextInt(size)).getId()));
                 }
             }
 
@@ -388,18 +390,19 @@ public class FengXingHandler extends MediaBaseHandler {
                     seatBid.getBid().add(bid);
 
                     bid.setId(mediaBid.getImpid());
+                    bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
                     bid.setAdm(mediaResponse.getAdm().get(0));
                     bid.setCrid(StringUtil.toString(mediaResponse.getCrid()));
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() : 0);
-
+                    
                     FXBidResponse.SeatBid.Bid.Ext ext = new FXBidResponse.SeatBid.Bid.Ext();
                     ext.setLpg(StringUtil.toString(mediaResponse.getLpgurl()));
                     ext.setTitle(StringUtil.toString(mediaResponse.getTitle()));
                     ext.setDescription(StringUtil.toString(mediaResponse.getDesc()));
 
-                    Monitor monitor = mediaResponse.getMonitor();
+                    Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
                     if (monitor != null) {
-                        if (ObjectUtils.isEmpty(monitor.getClkurl())) {
+                        if (ObjectUtils.isNotEmpty(monitor.getClkurl())) {
                             List<String> clkurls = new LinkedList<>();
                             for (int i = 0; i < monitor.getClkurl().size(); ++i) {
                                 clkurls.add(monitor.getClkurl().get(i));
@@ -407,7 +410,7 @@ public class FengXingHandler extends MediaBaseHandler {
                             ext.setCm(clkurls);
                         }
 
-                        if (ObjectUtils.isEmpty(monitor.getImpurl())) {
+                        if (ObjectUtils.isNotEmpty(monitor.getImpurl())) {
                             List<FXBidResponse.SeatBid.Bid.Ext.PM> impurls = new LinkedList<>();
                             for (int i = 0; i < monitor.getImpurl().size(); ++i) {
                                 FXBidResponse.SeatBid.Bid.Ext.PM pm = new FXBidResponse.SeatBid.Bid.Ext.PM();
@@ -418,7 +421,8 @@ public class FengXingHandler extends MediaBaseHandler {
                             ext.setPm(impurls);
                         }
                     }
-
+                    
+                    bid.setExt(ext);
                     return outputStreamWrite(resp, bidResponse);
                 }
             }

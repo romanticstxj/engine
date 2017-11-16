@@ -10,10 +10,10 @@ public final class SohuStatusCode {
     
     //  移动设备的类型(不区分大小 写)，如 iPhone、iPad、AndroidPhone、AndroidPad。当Device type 为 Mobile 时有效 
     public static final class Os {
-        public static final String OS_IPHONE = "iPhone";
-        public static final String OS_IPAD = "iPad";
-        public static final String OS_ANDROIDPHONE = "AndroidPhone";
-        public static final String OS_ANDROIDPAD = "AndroidPad";
+        public static final String OS_IPHONE = "IPHONE";
+        public static final String OS_IPAD = "IPAD";
+        public static final String OS_ANDROIDPHONE = "ANDROIDPHONE";
+        public static final String OS_ANDROIDPAD = "ANDROIDPAD";
         
         public static final String IOS = "IOS";
         public static final String ANDROID = "ANDROID";

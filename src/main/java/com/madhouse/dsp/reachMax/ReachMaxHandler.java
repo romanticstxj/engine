@@ -71,23 +71,22 @@ public class ReachMaxHandler extends DSPBaseHandler {
         if (dspMappingMetaData != null && !StringUtils.isEmpty(dspMappingMetaData.getMappingKey())) {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
-		
         AdSlot.Builder adSlotBuilder = getAdslot(builder, plcmtMetaData,adspaceId);
         if (adSlotBuilder == null) {
             return null;
         }
 
-		if (!StringUtils.isEmpty(policyMetaData.getDealId())) {
+        if (!StringUtils.isEmpty(policyMetaData.getDealId())) {
             adSlotBuilder.setDealid(policyMetaData.getDealId());
         }
-		
+
         App.Builder appBuilder = getApp(builder, adspaceId);
         if (appBuilder == null) {
             return null;
         }
 
         BidRequest.Builder pg = BidRequest.newBuilder()//
-            .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : policyMetaData.getAdspaceInfoMap().get(plcmtMetaData.getId()).getBidFloor())//价格必填
+            .setPrice(policyMetaData.getDeliveryType() == Constant.DeliveryType.RTB ? plcmtMetaData.getBidFloor() : 0)//价格必填
             .setRequestId(dspBidMetaData.getDspBidBuilder().getRequestBuilder().getId())//
             .setApiVersion(Version.newBuilder().setMajor(2).setMinor(3))//
             .setApp(appBuilder)//
