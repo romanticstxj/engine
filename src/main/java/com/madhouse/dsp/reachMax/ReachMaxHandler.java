@@ -50,7 +50,6 @@ import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.StringUtil;
 
 public class ReachMaxHandler extends DSPBaseHandler {
-
     @Override
     protected HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
         DSPBidMetaData dspBidMetaData) {
@@ -262,6 +261,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         appBuilder.setStaticInfo(appStaticInfoBuilder);
         return appBuilder;
     }
+
     @Override
     protected boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
@@ -284,7 +284,24 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspResponse.setDesc(StringUtil.toString(materialMeta.getDescription1()));
                         dspResponse.setTitle(StringUtil.toString(materialMeta.getTitle()));
                         dspResponse.setIcon(StringUtil.toString(materialMeta.getIconUrl()));
-                        
+
+                        if (dspResponse.getAdm() == null) {
+                            dspResponse.setAdm(new LinkedList<>());
+                        }
+
+                        //material
+                        dspResponse.getAdm().add(StringUtil.toString(materialMeta.getMediaUrl()));
+
+                        //duration
+                        if (materialMeta.hasDuration() && materialMeta.getDuration() > 0) {
+                            dspResponse.setDuration(materialMeta.getDuration());
+                        }
+
+                        //cover url
+                        if (materialMeta.hasCover()) {
+                            dspResponse.setCover(StringUtil.toString(materialMeta.getCover()));
+                        }
+
                         Monitor.Builder monitor = Monitor.newBuilder();
                         
                         //点击监测
@@ -311,16 +328,13 @@ public class ReachMaxHandler extends DSPBaseHandler {
                             }
                             tracks.add(new Track(0, noticeurl));
                         }
-                        
-                        
+
                         monitor.setClkurl(clicks);
                         monitor.setImpurl(tracks);
+
                         dspResponse.setMonitorBuilder(monitor);
-                        if (dspResponse.getAdm() == null) {
-                            dspResponse.setAdm(new LinkedList<>());
-                        }
-                        dspResponse.getAdm().add(materialMeta.getMediaUrl());
                         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
+
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
                         dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
                         return true;
@@ -341,6 +355,4 @@ public class ReachMaxHandler extends DSPBaseHandler {
         }
         return false;
     }
-    
-    
 }
