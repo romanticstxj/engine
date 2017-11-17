@@ -289,19 +289,17 @@ public class ReachMaxHandler extends DSPBaseHandler {
                             dspResponse.setAdm(new LinkedList<>());
                         }
 
-                        String[] adm = StringUtil.toString(materialMeta.getMediaUrl()).split("\\|");
-
                         //material
-                        dspResponse.getAdm().add(adm[0]);
+                        dspResponse.getAdm().add(StringUtil.toString(materialMeta.getMediaUrl()));
 
                         //duration
-                        if (adm.length >= 2 && StringUtil.isNumeric(adm[1])) {
-                            dspResponse.setDuration(Integer.parseInt(adm[1]));
+                        if (materialMeta.hasDuration() && materialMeta.getDuration() > 0) {
+                            dspResponse.setDuration(materialMeta.getDuration());
                         }
 
                         //cover url
-                        if (adm.length >= 3) {
-                            dspResponse.setCover(StringUtil.toString(adm[2]));
+                        if (materialMeta.hasCover()) {
+                            dspResponse.setCover(StringUtil.toString(materialMeta.getCover()));
                         }
 
                         Monitor.Builder monitor = Monitor.newBuilder();
