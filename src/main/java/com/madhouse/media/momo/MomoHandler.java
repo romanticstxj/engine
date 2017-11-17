@@ -512,15 +512,16 @@ public class MomoHandler extends MediaBaseHandler {
         bid.setClicktrackers(clicktrackers);
         
         String splashFormat = objType.getImp().get(0).getSplash_format();
+        String materialUrl = mediaResponse.getAdm().get(0);
         if(splashFormat.equals("SPLASH_IMG")){
-            image.setUrl(mediaResponse.getAdm().get(0));
+            image.setUrl(materialUrl);
         }else if(splashFormat.equals("SPLASH_GIF")){
-            image.setUrl(mediaResponse.getCover());
-            gif.setUrl(mediaResponse.getAdm().get(0));
+            image.setUrl(StringUtil.toString(mediaResponse.getCover()));
+            gif.setUrl(materialUrl);
             bid.setGif(gif);
         }else if(splashFormat.equals("SPLASH_VIDEO")){
-            image.setUrl(mediaResponse.getCover());
-            video.setUrl(mediaResponse.getAdm().get(0));
+            image.setUrl(StringUtil.toString(mediaResponse.getCover()));
+            video.setUrl(materialUrl);
             bid.setVideo(video);
         }
         bid.setImage(image);

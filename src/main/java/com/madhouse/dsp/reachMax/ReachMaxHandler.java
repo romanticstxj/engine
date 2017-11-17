@@ -284,7 +284,26 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspResponse.setDesc(StringUtil.toString(materialMeta.getDescription1()));
                         dspResponse.setTitle(StringUtil.toString(materialMeta.getTitle()));
                         dspResponse.setIcon(StringUtil.toString(materialMeta.getIconUrl()));
-                        
+
+                        if (dspResponse.getAdm() == null) {
+                            dspResponse.setAdm(new LinkedList<>());
+                        }
+
+                        String[] adm = StringUtil.toString(materialMeta.getMediaUrl()).split("\\|");
+
+                        //material
+                        dspResponse.getAdm().add(adm[0]);
+
+                        //duration
+                        if (adm.length >= 2 && StringUtil.isNumeric(adm[1])) {
+                            dspResponse.setDuration(Integer.parseInt(adm[1]));
+                        }
+
+                        //cover url
+                        if (adm.length >= 3) {
+                            dspResponse.setCover(StringUtil.toString(adm[2]));
+                        }
+
                         Monitor.Builder monitor = Monitor.newBuilder();
                         
                         //点击监测
@@ -315,12 +334,10 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         
                         monitor.setClkurl(clicks);
                         monitor.setImpurl(tracks);
+
                         dspResponse.setMonitorBuilder(monitor);
-                        if (dspResponse.getAdm() == null) {
-                            dspResponse.setAdm(new LinkedList<>());
-                        }
-                        dspResponse.getAdm().add(materialMeta.getMediaUrl());
                         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
+
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
                         dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
                         return true;
