@@ -18668,6 +18668,29 @@ public final class ReachMaxAds {
        */
       com.google.protobuf.ByteString
           getClickTrackingBytes(int index);
+
+      /**
+       * <code>optional uint32 duration = 18;</code>
+       */
+      boolean hasDuration();
+      /**
+       * <code>optional uint32 duration = 18;</code>
+       */
+      int getDuration();
+
+      /**
+       * <code>optional string cover = 19;</code>
+       */
+      boolean hasCover();
+      /**
+       * <code>optional string cover = 19;</code>
+       */
+      java.lang.String getCover();
+      /**
+       * <code>optional string cover = 19;</code>
+       */
+      com.google.protobuf.ByteString
+          getCoverBytes();
     }
     /**
      * Protobuf type {@code com.madhouse.dsp.reachMax.Ad.MaterialMeta}
@@ -18826,6 +18849,17 @@ public final class ReachMaxAds {
                   mutable_bitField0_ |= 0x00004000;
                 }
                 clickTracking_.add(bs);
+                break;
+              }
+              case 144: {
+                bitField0_ |= 0x00001000;
+                duration_ = input.readUInt32();
+                break;
+              }
+              case 154: {
+                com.google.protobuf.ByteString bs = input.readBytes();
+                bitField0_ |= 0x00002000;
+                cover_ = bs;
                 break;
               }
             }
@@ -19360,6 +19394,63 @@ public final class ReachMaxAds {
         return clickTracking_.getByteString(index);
       }
 
+      public static final int DURATION_FIELD_NUMBER = 18;
+      private int duration_;
+      /**
+       * <code>optional uint32 duration = 18;</code>
+       */
+      public boolean hasDuration() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional uint32 duration = 18;</code>
+       */
+      public int getDuration() {
+        return duration_;
+      }
+
+      public static final int COVER_FIELD_NUMBER = 19;
+      private java.lang.Object cover_;
+      /**
+       * <code>optional string cover = 19;</code>
+       */
+      public boolean hasCover() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional string cover = 19;</code>
+       */
+      public java.lang.String getCover() {
+        java.lang.Object ref = cover_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            cover_ = s;
+          }
+          return s;
+        }
+      }
+      /**
+       * <code>optional string cover = 19;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCoverBytes() {
+        java.lang.Object ref = cover_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          cover_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
       private void initFields() {
         creativeType_ = com.madhouse.dsp.reachMax.ReachMaxAds.CreativeType.TEXT;
         interactionType_ = com.madhouse.dsp.reachMax.ReachMaxAds.InteractionType.NO_INTERACTION;
@@ -19376,6 +19467,8 @@ public final class ReachMaxAds {
         mediaHeight_ = 0;
         mediaWidth_ = 0;
         clickTracking_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        duration_ = 0;
+        cover_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -19442,6 +19535,12 @@ public final class ReachMaxAds {
         }
         for (int i = 0; i < clickTracking_.size(); i++) {
           output.writeBytes(17, clickTracking_.getByteString(i));
+        }
+        if (((bitField0_ & 0x00001000) == 0x00001000)) {
+          output.writeUInt32(18, duration_);
+        }
+        if (((bitField0_ & 0x00002000) == 0x00002000)) {
+          output.writeBytes(19, getCoverBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -19526,6 +19625,14 @@ public final class ReachMaxAds {
           }
           size += dataSize;
           size += 2 * getClickTrackingList().size();
+        }
+        if (((bitField0_ & 0x00001000) == 0x00001000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeUInt32Size(18, duration_);
+        }
+        if (((bitField0_ & 0x00002000) == 0x00002000)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(19, getCoverBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -19674,6 +19781,10 @@ public final class ReachMaxAds {
           bitField0_ = (bitField0_ & ~0x00002000);
           clickTracking_ = com.google.protobuf.LazyStringArrayList.EMPTY;
           bitField0_ = (bitField0_ & ~0x00004000);
+          duration_ = 0;
+          bitField0_ = (bitField0_ & ~0x00008000);
+          cover_ = "";
+          bitField0_ = (bitField0_ & ~0x00010000);
           return this;
         }
 
@@ -19765,6 +19876,14 @@ public final class ReachMaxAds {
             bitField0_ = (bitField0_ & ~0x00004000);
           }
           result.clickTracking_ = clickTracking_;
+          if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+            to_bitField0_ |= 0x00001000;
+          }
+          result.duration_ = duration_;
+          if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+            to_bitField0_ |= 0x00002000;
+          }
+          result.cover_ = cover_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -19861,6 +19980,14 @@ public final class ReachMaxAds {
               ensureClickTrackingIsMutable();
               clickTracking_.addAll(other.clickTracking_);
             }
+            onChanged();
+          }
+          if (other.hasDuration()) {
+            setDuration(other.getDuration());
+          }
+          if (other.hasCover()) {
+            bitField0_ |= 0x00010000;
+            cover_ = other.cover_;
             onChanged();
           }
           this.mergeUnknownFields(other.getUnknownFields());
@@ -20915,6 +21042,114 @@ public final class ReachMaxAds {
   }
   ensureClickTrackingIsMutable();
           clickTracking_.add(value);
+          onChanged();
+          return this;
+        }
+
+        private int duration_ ;
+        /**
+         * <code>optional uint32 duration = 18;</code>
+         */
+        public boolean hasDuration() {
+          return ((bitField0_ & 0x00008000) == 0x00008000);
+        }
+        /**
+         * <code>optional uint32 duration = 18;</code>
+         */
+        public int getDuration() {
+          return duration_;
+        }
+        /**
+         * <code>optional uint32 duration = 18;</code>
+         */
+        public Builder setDuration(int value) {
+          bitField0_ |= 0x00008000;
+          duration_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional uint32 duration = 18;</code>
+         */
+        public Builder clearDuration() {
+          bitField0_ = (bitField0_ & ~0x00008000);
+          duration_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object cover_ = "";
+        /**
+         * <code>optional string cover = 19;</code>
+         */
+        public boolean hasCover() {
+          return ((bitField0_ & 0x00010000) == 0x00010000);
+        }
+        /**
+         * <code>optional string cover = 19;</code>
+         */
+        public java.lang.String getCover() {
+          java.lang.Object ref = cover_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              cover_ = s;
+            }
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>optional string cover = 19;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCoverBytes() {
+          java.lang.Object ref = cover_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            cover_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>optional string cover = 19;</code>
+         */
+        public Builder setCover(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00010000;
+          cover_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string cover = 19;</code>
+         */
+        public Builder clearCover() {
+          bitField0_ = (bitField0_ & ~0x00010000);
+          cover_ = getDefaultInstance().getCover();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>optional string cover = 19;</code>
+         */
+        public Builder setCoverBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00010000;
+          cover_ = value;
           onChanged();
           return this;
         }
@@ -25727,12 +25962,12 @@ public final class ReachMaxAds {
       "_FEED\020\005\"E\n\010Position\022\007\n\003TOP\020\001\022\n\n\006BOTTOM\020\002",
       "\022\010\n\004FLOW\020\003\022\n\n\006MIDDLE\020\004\022\016\n\nFULLSCREEN\020\005\"<" +
       "\n\005Asset\022\t\n\005TITLE\020\001\022\010\n\004TEXT\020\002\022\016\n\nICON_IMA" +
-      "GE\020\003\022\016\n\nMAIN_IMAGE\020\004\"\353\004\n\002Ad\022\021\n\tadslot_id" +
+      "GE\020\003\022\016\n\nMAIN_IMAGE\020\004\"\214\005\n\002Ad\022\021\n\tadslot_id" +
       "\030\001 \001(\t\022\020\n\010buyer_id\030\002 \001(\r\022\r\n\005ad_id\030\003 \001(\t\022" +
       "\024\n\014html_snippet\030\004 \001(\t\022A\n\rmaterial_meta\030\005" +
       " \001(\0132*.com.madhouse.dsp.reachMax.Ad.Mate" +
       "rialMeta\022\027\n\017impression_time\030\006 \001(\r\022\026\n\016tar" +
-      "geted_hours\030\007 \001(\r\022\016\n\006dealid\030\010 \001(\t\032\226\003\n\014Ma" +
+      "geted_hours\030\007 \001(\r\022\016\n\006dealid\030\010 \001(\t\032\267\003\n\014Ma" +
       "terialMeta\022>\n\rcreative_type\030\001 \002(\0162\'.com." +
       "madhouse.dsp.reachMax.CreativeType\022D\n\020in",
       "teraction_type\030\002 \002(\0162*.com.madhouse.dsp." +
@@ -25743,27 +25978,28 @@ public final class ReachMaxAds {
       "\001(\t\022\020\n\010icon_url\030\n \001(\t\022\022\n\ncached_url\030\014 \003(" +
       "\t\022\014\n\004name\030\r \001(\t\022\024\n\014media_height\030\017 \001(\r\022\023\n" +
       "\013media_width\030\020 \001(\r\022\026\n\016click_tracking\030\021 \003" +
-      "(\t\"\336\003\n\nBidRequest\022\022\n\nrequest_id\030\001 \002(\t\0227\n" +
-      "\013api_version\030\002 \002(\0132\".com.madhouse.dsp.re",
-      "achMax.Version\022+\n\003app\030\003 \002(\0132\036.com.madhou" +
-      "se.dsp.reachMax.App\0221\n\006device\030\004 \002(\0132!.co" +
-      "m.madhouse.dsp.reachMax.Device\0223\n\007networ" +
-      "k\030\005 \002(\0132\".com.madhouse.dsp.reachMax.Netw" +
-      "ork\022+\n\003gps\030\006 \001(\0132\036.com.madhouse.dsp.reac" +
-      "hMax.Gps\0223\n\007content\030\007 \001(\0132\".com.madhouse" +
-      ".dsp.reachMax.Content\022-\n\004user\030\010 \001(\0132\037.co" +
-      "m.madhouse.dsp.reachMax.User\0222\n\007adslots\030" +
-      "\t \003(\0132!.com.madhouse.dsp.reachMax.AdSlot" +
-      "\022\027\n\010is_debug\030\n \001(\010:\005false\022\020\n\005price\030\013 \001(\001",
-      ":\0010\"z\n\013BidResponse\022\022\n\nrequest_id\030\001 \002(\t\022*" +
-      "\n\003ads\030\002 \003(\0132\035.com.madhouse.dsp.reachMax." +
-      "Ad\022\022\n\nerror_code\030\003 \001(\004\022\027\n\017expiration_tim" +
-      "e\030\004 \001(\r*G\n\014CreativeType\022\010\n\004TEXT\020\001\022\t\n\005IMA" +
-      "GE\020\002\022\010\n\004HTML\020\003\022\t\n\005VIDEO\020\004\022\r\n\tTEXT_ICON\020\005" +
-      "*d\n\017InteractionType\022\022\n\016NO_INTERACTION\020\000\022" +
-      "\013\n\007SURFING\020\001\022\014\n\010DOWNLOAD\020\002\022\013\n\007DIALING\020\003\022" +
-      "\013\n\007MESSAGE\020\004\022\010\n\004MAIL\020\005B(\n\031com.madhouse.d" +
-      "sp.reachMaxB\013ReachMaxAds"
+      "(\t\022\020\n\010duration\030\022 \001(\r\022\r\n\005cover\030\023 \001(\t\"\336\003\n\n" +
+      "BidRequest\022\022\n\nrequest_id\030\001 \002(\t\0227\n\013api_ve",
+      "rsion\030\002 \002(\0132\".com.madhouse.dsp.reachMax." +
+      "Version\022+\n\003app\030\003 \002(\0132\036.com.madhouse.dsp." +
+      "reachMax.App\0221\n\006device\030\004 \002(\0132!.com.madho" +
+      "use.dsp.reachMax.Device\0223\n\007network\030\005 \002(\013" +
+      "2\".com.madhouse.dsp.reachMax.Network\022+\n\003" +
+      "gps\030\006 \001(\0132\036.com.madhouse.dsp.reachMax.Gp" +
+      "s\0223\n\007content\030\007 \001(\0132\".com.madhouse.dsp.re" +
+      "achMax.Content\022-\n\004user\030\010 \001(\0132\037.com.madho" +
+      "use.dsp.reachMax.User\0222\n\007adslots\030\t \003(\0132!" +
+      ".com.madhouse.dsp.reachMax.AdSlot\022\027\n\010is_",
+      "debug\030\n \001(\010:\005false\022\020\n\005price\030\013 \001(\001:\0010\"z\n\013" +
+      "BidResponse\022\022\n\nrequest_id\030\001 \002(\t\022*\n\003ads\030\002" +
+      " \003(\0132\035.com.madhouse.dsp.reachMax.Ad\022\022\n\ne" +
+      "rror_code\030\003 \001(\004\022\027\n\017expiration_time\030\004 \001(\r" +
+      "*G\n\014CreativeType\022\010\n\004TEXT\020\001\022\t\n\005IMAGE\020\002\022\010\n" +
+      "\004HTML\020\003\022\t\n\005VIDEO\020\004\022\r\n\tTEXT_ICON\020\005*d\n\017Int" +
+      "eractionType\022\022\n\016NO_INTERACTION\020\000\022\013\n\007SURF" +
+      "ING\020\001\022\014\n\010DOWNLOAD\020\002\022\013\n\007DIALING\020\003\022\013\n\007MESS" +
+      "AGE\020\004\022\010\n\004MAIL\020\005B(\n\031com.madhouse.dsp.reac" +
+      "hMaxB\013ReachMaxAds"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -25884,7 +26120,7 @@ public final class ReachMaxAds {
     internal_static_com_madhouse_dsp_reachMax_Ad_MaterialMeta_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_madhouse_dsp_reachMax_Ad_MaterialMeta_descriptor,
-        new java.lang.String[] { "CreativeType", "InteractionType", "WinNoticeUrl", "Title", "Description1", "Description2", "MediaUrl", "ShowUrl", "ClickUrl", "IconUrl", "CachedUrl", "Name", "MediaHeight", "MediaWidth", "ClickTracking", });
+        new java.lang.String[] { "CreativeType", "InteractionType", "WinNoticeUrl", "Title", "Description1", "Description2", "MediaUrl", "ShowUrl", "ClickUrl", "IconUrl", "CachedUrl", "Name", "MediaHeight", "MediaWidth", "ClickTracking", "Duration", "Cover", });
     internal_static_com_madhouse_dsp_reachMax_BidRequest_descriptor =
       getDescriptor().getMessageTypes().get(11);
     internal_static_com_madhouse_dsp_reachMax_BidRequest_fieldAccessorTable = new

@@ -284,7 +284,24 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         dspResponse.setDesc(StringUtil.toString(materialMeta.getDescription1()));
                         dspResponse.setTitle(StringUtil.toString(materialMeta.getTitle()));
                         dspResponse.setIcon(StringUtil.toString(materialMeta.getIconUrl()));
-                        
+
+                        if (dspResponse.getAdm() == null) {
+                            dspResponse.setAdm(new LinkedList<>());
+                        }
+
+                        //material
+                        dspResponse.getAdm().add(StringUtil.toString(materialMeta.getMediaUrl()));
+
+                        //duration
+                        if (materialMeta.hasDuration() && materialMeta.getDuration() > 0) {
+                            dspResponse.setDuration(materialMeta.getDuration());
+                        }
+
+                        //cover url
+                        if (materialMeta.hasCover()) {
+                            dspResponse.setCover(StringUtil.toString(materialMeta.getCover()));
+                        }
+
                         Monitor.Builder monitor = Monitor.newBuilder();
                         
                         //点击监测
@@ -315,12 +332,10 @@ public class ReachMaxHandler extends DSPBaseHandler {
                         
                         monitor.setClkurl(clicks);
                         monitor.setImpurl(tracks);
+
                         dspResponse.setMonitorBuilder(monitor);
-                        if (dspResponse.getAdm() == null) {
-                            dspResponse.setAdm(new LinkedList<>());
-                        }
-                        dspResponse.getAdm().add(materialMeta.getMediaUrl());
                         dspResponse.setActtype(Constant.ActionType.OPEN_IN_APP);
+
                         dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.OK);
                         dspBidMetaData.getDspBidBuilder().setResponseBuilder(dspResponse);
                         return true;
