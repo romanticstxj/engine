@@ -2,6 +2,7 @@ package com.madhouse.media.tencent;
 
 import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
@@ -299,14 +300,15 @@ public class TencentHandler extends MediaBaseHandler {
         GPBForDSP.Response.Builder responseBuiler = GPBForDSP.Response.newBuilder();
         GPBForDSP.Request bidRequest = (GPBForDSP.Request) mediaBidMetaData.getRequestObject();
         responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
-        if (Constant.StatusCode.OK == status) {
+        MaterialMetaData materialMetaData = mediaBidMetaData.getMaterialMetaData();
+        if (Constant.StatusCode.OK == status && materialMetaData != null) {
             GPBForDSP.Response.SeatBid.Builder seatBuilder = GPBForDSP.Response.SeatBid.newBuilder();
             Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
             responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
             GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
             bidResponseBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
             bidResponseBuilder.setImpid(bidRequest.getImpression(0).getId());
-            bidResponseBuilder.setAdid(!StringUtils.isEmpty(mediaResponse.getCrid()) ? mediaResponse.getCrid() : "");
+            bidResponseBuilder.setAdid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
             //宏替换
             List<String> extList = mediaResponse.getMonitorBuilder().getExts();
             if (!ObjectUtils.isEmpty(extList)) {
