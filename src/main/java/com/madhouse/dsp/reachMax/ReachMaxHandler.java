@@ -50,7 +50,6 @@ import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.StringUtil;
 
 public class ReachMaxHandler extends DSPBaseHandler {
-
     @Override
     protected HttpRequestBase packageBidRequest(Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData,
         DSPBidMetaData dspBidMetaData) {
@@ -262,6 +261,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
         appBuilder.setStaticInfo(appStaticInfoBuilder);
         return appBuilder;
     }
+
     @Override
     protected boolean parseBidResponse(HttpResponse httpResponse, DSPBidMetaData dspBidMetaData) {
         DSPResponse.Builder dspResponse = DSPResponse.newBuilder();
@@ -328,8 +328,7 @@ public class ReachMaxHandler extends DSPBaseHandler {
                             }
                             tracks.add(new Track(0, noticeurl));
                         }
-                        
-                        
+
                         monitor.setClkurl(clicks);
                         monitor.setImpurl(tracks);
 
@@ -356,6 +355,4 @@ public class ReachMaxHandler extends DSPBaseHandler {
         }
         return false;
     }
-    
-    
 }
