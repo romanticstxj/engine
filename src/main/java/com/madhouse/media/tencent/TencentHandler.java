@@ -199,6 +199,7 @@ public class TencentHandler extends MediaBaseHandler {
 
     /**
      * find max size material
+     *
      * @param impression
      * @return
      */
@@ -312,9 +313,15 @@ public class TencentHandler extends MediaBaseHandler {
             //宏替换
             List<String> extList = mediaResponse.getMonitorBuilder().getExts();
             if (!ObjectUtils.isEmpty(extList)) {
-                bidResponseBuilder.setExt(extList.size() >= 1 ? StringUtil.toString(extList.get(0)) : "");
-                bidResponseBuilder.setExt2(extList.size() >= 2 ? StringUtil.toString(extList.get(1)) : "");
-                bidResponseBuilder.setExt3(extList.size() >= 3 ? StringUtil.toString(extList.get(2)) : "");
+                if (extList.size() >= 1) {
+                    bidResponseBuilder.setExt(StringUtil.toString(extList.get(0)));
+                }
+                if (extList.size() >= 2) {
+                    bidResponseBuilder.setExt2(StringUtil.toString(extList.get(1)));
+                }
+                if (extList.size() >= 3) {
+                    bidResponseBuilder.setExt3(StringUtil.toString(extList.get(2)));
+                }
             }
             //ssp自己的展示和点击监测:去掉域名
             List<Track> tracks = mediaResponse.getMonitorBuilder().getImpurl();
