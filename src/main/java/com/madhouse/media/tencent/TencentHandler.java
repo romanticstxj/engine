@@ -98,12 +98,13 @@ public class TencentHandler extends MediaBaseHandler {
             }
         }
         // banner&video同时存在 优先响应video广告
+
+
         if (impression.hasVideo()) {
             mediaRequest.setW(impression.getVideo().getWidth());
             mediaRequest.setH(impression.getVideo().getHeight());
             sb.append(":" + impression.getVideo().getWidth());
             sb.append(":" + impression.getVideo().getHeight());
-            sb.append(":VIDEO");
         } else if (impression.hasBanner()) {
             // 优先使用最大尺寸
             Impression.MaterialFormat maxMaterialFormat = getMaxSizeMaterialFormat(impression);
@@ -112,15 +113,20 @@ public class TencentHandler extends MediaBaseHandler {
                 mediaRequest.setH(maxMaterialFormat.getHeight());
                 sb.append(":" + maxMaterialFormat.getWidth());
                 sb.append(":" + maxMaterialFormat.getHeight());
-                sb.append(":BANNER");
             } else {
                 mediaRequest.setW(impression.getBanner().getWidth());
                 mediaRequest.setH(impression.getBanner().getHeight());
                 sb.append(":" + impression.getBanner().getWidth());
                 sb.append(":" + impression.getBanner().getHeight());
-                sb.append(":BANNER");
             }
         }
+
+        if (isBanner(impression)) {
+            sb.append(":BANNER");
+        } else {
+            sb.append(":VIDEO");
+        }
+
 
         if (device.hasCarrier()) {
             int carrier = device.getCarrier();
@@ -197,8 +203,18 @@ public class TencentHandler extends MediaBaseHandler {
         return mediaRequest;
     }
 
+    private boolean isBanner(Impression impression) {
+        for (Impression.MaterialFormat currentMaterialFormat : impression.getAdmRequireList()) {
+            if (currentMaterialFormat.getMimes().contains("mp4") || currentMaterialFormat.getMimes().contains("flv")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * find max size material
+     *
      * @param impression
      * @return
      */
@@ -312,9 +328,15 @@ public class TencentHandler extends MediaBaseHandler {
             //宏替换
             List<String> extList = mediaResponse.getMonitorBuilder().getExts();
             if (!ObjectUtils.isEmpty(extList)) {
-                bidResponseBuilder.setExt(extList.size() >= 1 ? StringUtil.toString(extList.get(0)) : "");
-                bidResponseBuilder.setExt2(extList.size() >= 2 ? StringUtil.toString(extList.get(1)) : "");
-                bidResponseBuilder.setExt3(extList.size() >= 3 ? StringUtil.toString(extList.get(2)) : "");
+                if (extList.size() >= 1) {
+                    bidResponseBuilder.setExt(StringUtil.toString(extList.get(0)));
+                }
+                if (extList.size() >= 2) {
+                    bidResponseBuilder.setExt2(StringUtil.toString(extList.get(1)));
+                }
+                if (extList.size() >= 3) {
+                    bidResponseBuilder.setExt3(StringUtil.toString(extList.get(2)));
+                }
             }
             //ssp自己的展示和点击监测:去掉域名
             List<Track> tracks = mediaResponse.getMonitorBuilder().getImpurl();
