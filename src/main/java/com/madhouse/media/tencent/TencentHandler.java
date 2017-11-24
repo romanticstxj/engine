@@ -98,12 +98,13 @@ public class TencentHandler extends MediaBaseHandler {
             }
         }
         // banner&video同时存在 优先响应video广告
+
+
         if (impression.hasVideo()) {
             mediaRequest.setW(impression.getVideo().getWidth());
             mediaRequest.setH(impression.getVideo().getHeight());
             sb.append(":" + impression.getVideo().getWidth());
             sb.append(":" + impression.getVideo().getHeight());
-            sb.append(":VIDEO");
         } else if (impression.hasBanner()) {
             // 优先使用最大尺寸
             Impression.MaterialFormat maxMaterialFormat = getMaxSizeMaterialFormat(impression);
@@ -112,15 +113,20 @@ public class TencentHandler extends MediaBaseHandler {
                 mediaRequest.setH(maxMaterialFormat.getHeight());
                 sb.append(":" + maxMaterialFormat.getWidth());
                 sb.append(":" + maxMaterialFormat.getHeight());
-                sb.append(":BANNER");
             } else {
                 mediaRequest.setW(impression.getBanner().getWidth());
                 mediaRequest.setH(impression.getBanner().getHeight());
                 sb.append(":" + impression.getBanner().getWidth());
                 sb.append(":" + impression.getBanner().getHeight());
-                sb.append(":BANNER");
             }
         }
+
+        if (isBanner(impression)) {
+            sb.append(":BANNER");
+        } else {
+            sb.append(":VIDEO");
+        }
+
 
         if (device.hasCarrier()) {
             int carrier = device.getCarrier();
@@ -195,6 +201,15 @@ public class TencentHandler extends MediaBaseHandler {
         mediaRequest.setAdtype(2);
         mediaRequest.setType(bidRequest.hasSite() ? Constant.MediaType.APP : Constant.MediaType.SITE);
         return mediaRequest;
+    }
+
+    private boolean isBanner(Impression impression) {
+        for (Impression.MaterialFormat currentMaterialFormat : impression.getAdmRequireList()) {
+            if (currentMaterialFormat.getMimes().contains("mp4") || currentMaterialFormat.getMimes().contains("flv")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
