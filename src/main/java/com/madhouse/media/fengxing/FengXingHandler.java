@@ -374,8 +374,7 @@ public class FengXingHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-        	MaterialMetaData materialMetaData = mediaBidMetaData.getMaterialMetaData();
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && materialMetaData != null) {
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && mediaBidMetaData.getMaterialMetaData() != null) {
                 if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
                     FXBidRequest bidRequest = (FXBidRequest)mediaBidMetaData.getRequestObject();
                     MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
@@ -396,7 +395,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     bid.setId(mediaBid.getImpid());
                     bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
                     bid.setAdm(mediaResponse.getAdm().get(0));
-                    bid.setCrid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
+                    bid.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() : 0);
                     
                     FXBidResponse.SeatBid.Bid.Ext ext = new FXBidResponse.SeatBid.Bid.Ext();
