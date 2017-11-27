@@ -2,6 +2,7 @@ package com.madhouse.media.fengxing;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
@@ -11,10 +12,12 @@ import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import com.madhouse.util.Utility;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -371,7 +374,8 @@ public class FengXingHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
+        	MaterialMetaData materialMetaData = mediaBidMetaData.getMaterialMetaData();
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && materialMetaData != null) {
                 if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
                     FXBidRequest bidRequest = (FXBidRequest)mediaBidMetaData.getRequestObject();
                     MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
@@ -392,7 +396,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     bid.setId(mediaBid.getImpid());
                     bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
                     bid.setAdm(mediaResponse.getAdm().get(0));
-                    bid.setCrid(StringUtil.toString(mediaResponse.getCrid()));
+                    bid.setCrid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() : 0);
                     
                     FXBidResponse.SeatBid.Bid.Ext ext = new FXBidResponse.SeatBid.Bid.Ext();
