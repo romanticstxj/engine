@@ -1,9 +1,19 @@
 package com.madhouse.media.fengxing;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by wujunfeng on 2017-11-07.
  */
 public class FXConstant {
+	public static Map<String, String> TagId = new HashMap<>();
+
+    static {
+    	//OTT资源
+    	TagId.put("ftv_bt_2", "OTT");
+    	TagId.put("ftv_pr", "OTT");
+    }
     public static class DeviceType {
         public static final int PHONE = 0;
         public static final int PAD = 1;
