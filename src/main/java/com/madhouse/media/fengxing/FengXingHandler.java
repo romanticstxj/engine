@@ -49,7 +49,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                if (this.validateMediaRequest(mediaRequest)) {
+                if (!this.validateMediaRequest(mediaRequest)) {
                     outputStreamWrite(resp, null);
                     return false;
                 }
@@ -266,14 +266,22 @@ public class FengXingHandler extends MediaBaseHandler {
 
             if (impression.getBanner() != null) {
                 FXBidRequest.Impression.Banner banner = impression.getBanner();
-                mediaRequest.setW(banner.getW());
-                mediaRequest.setH(banner.getH());
+                if(banner.getW() != null){
+                	mediaRequest.setW(banner.getW());
+                }
+                if(banner.getH() != null){
+                	mediaRequest.setH(banner.getH());
+                }
             }
 
             if (impression.getVideo() != null) {
                 FXBidRequest.Impression.Video video = impression.getVideo();
-                mediaRequest.setW(video.getW());
-                mediaRequest.setH(video.getH());
+                if(video.getW() != null){
+                	mediaRequest.setW(video.getW());
+                }
+                if(video.getH() != null){
+                	mediaRequest.setH(video.getH());
+                }
             }
 
             return mediaRequest;
@@ -301,7 +309,7 @@ public class FengXingHandler extends MediaBaseHandler {
                 logger.warn("[{}]ua is missing.", adspaceKey);
                 return false;
             }
-
+            
             if (StringUtils.isEmpty(mediaRequest.getName())) {
                 logger.warn("[{}]appName is missing.", adspaceKey);
                 return false;
@@ -319,6 +327,16 @@ public class FengXingHandler extends MediaBaseHandler {
 
             if (!mediaRequest.hasOs()) {
                 logger.warn("[{}]os is missing.", adspaceKey);
+                return false;
+            }
+            
+            if (!mediaRequest.hasW()) {
+                logger.warn("[{}]W is missing.", adspaceKey);
+                return false;
+            }
+            
+            if (!mediaRequest.hasH()) {
+                logger.warn("[{}]H is missing.", adspaceKey);
                 return false;
             }
 
@@ -372,6 +390,7 @@ public class FengXingHandler extends MediaBaseHandler {
                 logger.warn("[{}]carrier is missing.", adspaceKey);
                 return false;
             }
+            return true;
         }
 
         return false;
