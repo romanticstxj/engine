@@ -283,6 +283,10 @@ public class FengXingHandler extends MediaBaseHandler {
                 	mediaRequest.setH(video.getH());
                 }
             }
+            if (impression.getVideo() != null && impression.getBanner() != null) {
+            	logger.warn("Video and Banner Cannot exist at the same time");
+                return null;
+            }
 
             return mediaRequest;
         } catch (Exception e) {
@@ -329,17 +333,7 @@ public class FengXingHandler extends MediaBaseHandler {
                 logger.warn("[{}]os is missing.", adspaceKey);
                 return false;
             }
-            
-            if (!mediaRequest.hasW()) {
-                logger.warn("[{}]W is missing.", adspaceKey);
-                return false;
-            }
-            
-            if (!mediaRequest.hasH()) {
-                logger.warn("[{}]H is missing.", adspaceKey);
-                return false;
-            }
-
+           
             switch (mediaRequest.getOs()) {
                 case Constant.OSType.ANDROID: {
                     if (StringUtils.isEmpty(mediaRequest.getDid()) && StringUtils.isEmpty(mediaRequest.getDidmd5()) &&
