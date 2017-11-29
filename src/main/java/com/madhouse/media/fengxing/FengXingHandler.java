@@ -49,7 +49,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                if (this.validateMediaRequest(mediaRequest)) {
+                if (!this.validateMediaRequest(mediaRequest)) {
                     outputStreamWrite(resp, null);
                     return false;
                 }
@@ -101,10 +101,23 @@ public class FengXingHandler extends MediaBaseHandler {
             FXBidRequest.Impression impression = bidRequest.getImp().get(0);
             FXBidRequest.Device device = bidRequest.getDevice();
             String os = StringUtil.toString(device.getOs()).toUpperCase();
-
+            
+            if (impression.getPmp() != null) {
+                if (!ObjectUtils.isEmpty(impression.getPmp().getDeals())) {
+                    int size = impression.getPmp().getDeals().size();
+                    mediaRequest.setDealid(StringUtil.toString(impression.getPmp().getDeals().get(Utility.nextInt(size)).getId()));
+                }
+            }
+            
             StringBuilder adspaceKey = new StringBuilder();
-            adspaceKey.append("FUNADX:").append(StringUtil.toString(impression.getTagid()));
-
+            adspaceKey.append("FUNADX:");
+            if(!StringUtils.isEmpty(FXConstant.TagId.get(impression.getTagid()))){
+            	String dealId = mediaRequest.getDealid();
+            	if(!StringUtils.isEmpty(dealId) && dealId.length() >=2){
+            		adspaceKey.append(dealId.substring(0,2)).append(":");
+            	}
+            }
+            adspaceKey.append(StringUtil.toString(impression.getTagid()));
             mediaRequest.setOs(Constant.OSType.UNKNOWN);
             if (os.equals("ANDROID")) {
                 adspaceKey.append(":ANDROID");
@@ -253,21 +266,26 @@ public class FengXingHandler extends MediaBaseHandler {
 
             if (impression.getBanner() != null) {
                 FXBidRequest.Impression.Banner banner = impression.getBanner();
-                mediaRequest.setW(banner.getW());
-                mediaRequest.setH(banner.getH());
+                if(banner.getW() != null){
+                	mediaRequest.setW(banner.getW());
+                }
+                if(banner.getH() != null){
+                	mediaRequest.setH(banner.getH());
+                }
             }
 
             if (impression.getVideo() != null) {
                 FXBidRequest.Impression.Video video = impression.getVideo();
-                mediaRequest.setW(video.getW());
-                mediaRequest.setH(video.getH());
-            }
-
-            if (impression.getPmp() != null) {
-                if (!ObjectUtils.isEmpty(impression.getPmp().getDeals())) {
-                    int size = impression.getPmp().getDeals().size();
-                    mediaRequest.setDealid(StringUtil.toString(impression.getPmp().getDeals().get(Utility.nextInt(size)).getId()));
+                if(video.getW() != null){
+                	mediaRequest.setW(video.getW());
                 }
+                if(video.getH() != null){
+                	mediaRequest.setH(video.getH());
+                }
+            }
+            if (impression.getVideo() != null && impression.getBanner() != null) {
+            	logger.warn("Video and Banner Cannot exist at the same time");
+                return null;
             }
 
             return mediaRequest;
@@ -295,7 +313,7 @@ public class FengXingHandler extends MediaBaseHandler {
                 logger.warn("[{}]ua is missing.", adspaceKey);
                 return false;
             }
-
+            
             if (StringUtils.isEmpty(mediaRequest.getName())) {
                 logger.warn("[{}]appName is missing.", adspaceKey);
                 return false;
@@ -315,7 +333,7 @@ public class FengXingHandler extends MediaBaseHandler {
                 logger.warn("[{}]os is missing.", adspaceKey);
                 return false;
             }
-
+           
             switch (mediaRequest.getOs()) {
                 case Constant.OSType.ANDROID: {
                     if (StringUtils.isEmpty(mediaRequest.getDid()) && StringUtils.isEmpty(mediaRequest.getDidmd5()) &&
@@ -366,6 +384,7 @@ public class FengXingHandler extends MediaBaseHandler {
                 logger.warn("[{}]carrier is missing.", adspaceKey);
                 return false;
             }
+            return true;
         }
 
         return false;

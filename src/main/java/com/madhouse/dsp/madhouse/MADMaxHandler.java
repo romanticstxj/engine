@@ -121,15 +121,15 @@ public class MADMaxHandler extends DSPBaseHandler {
             case Constant.OSType.IOS:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_IOS)
                     .append("&idfa=").append(StringUtil.toString(mediaRequest.getIfa()))
-                    .append("&oid=").append(StringUtil.toString(mediaRequest.getDpid()));
+                    .append("&oid=").append(StringUtil.toString(mediaRequest.getDpidmd5()));
                 break;
             case Constant.OSType.WINDOWS_PHONE:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE)
-                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpid()));
+                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpidmd5()));
                 break;
             default:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_OTHERS)
-                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpid()));
+                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpidmd5()));
                 break;
         }
         String str = sb.toString().replace(" ", "%20");
