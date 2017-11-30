@@ -83,7 +83,7 @@ public class BaiduHandler extends MediaBaseHandler {
         	!StringUtils.isEmpty(device.getMacmd5()) ? device.getMacmd5() : 
         		!StringUtils.isEmpty(device.getMacsha1()) ? device.getMacsha1() : "");
         
-        if(pmp!=null && pmp.getDealsList().size() >0 && pmp.getDealsList().get(0).hasBidfloor()){
+        if(pmp!=null && pmp.getDealsList().size() >0 ){
         	int size = Utility.nextInt(pmp.getDealsList().size());
         	if(pmp.getDealsList().get(size).hasBidfloor()){
         		mediaRequest.setBidfloor((int)pmp.getDealsList().get(size).getBidfloor());
