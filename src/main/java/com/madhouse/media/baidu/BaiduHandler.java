@@ -171,8 +171,8 @@ public class BaiduHandler extends MediaBaseHandler {
         } else if (os.equalsIgnoreCase(BaiduStatusCode.OSType.ANDROID)){
         	adspaceKey.append(BaiduStatusCode.OSType.ANDROID);
         	mediaRequest.setDid(StringUtil.toString(device.getDid()));
-        	mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() : 
-				 !StringUtils.isEmpty(device.getDpidsha1()) ? device.getDpidsha1() : "");
+        	mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : 
+				 !StringUtils.isEmpty(device.getDidsha1()) ? device.getDidsha1() : "");
         	
         	mediaRequest.setDpid(StringUtil.toString(device.getDpid()));
         	mediaRequest.setDpidmd5(!StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() : 
@@ -210,35 +210,47 @@ public class BaiduHandler extends MediaBaseHandler {
 			 }
 			 Imp imp = bidRequest.getImp(0);
 			 if (ObjectUtils.isEmpty(imp)) {
-                logger.warn("{},Baidu.bidRequest.imp is missing",id);
+                logger.warn("[{}],Baidu.bidRequest.imp is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 String impId = imp.getId();
 			 if (StringUtils.isEmpty(impId)) {
-                logger.warn("{},Baidu.bidRequest.impId is missing",id);
+                logger.warn("[{}],Baidu.bidRequest.impId is missing",id);
                 return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 if (!bidRequest.hasApp()) {
-	            logger.warn("{},Baidu.bidRequest.App is missing",id);
+	            logger.warn("[{}],Baidu.bidRequest.App is missing",id);
 	            return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 if (StringUtils.isEmpty(bidRequest.getApp().getName())) {
-	            logger.warn("{},Baidu.bidRequest.App.Name is missing",id);
+	            logger.warn("[{}],Baidu.bidRequest.App.Name is missing",id);
 	            return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 if (StringUtils.isEmpty(bidRequest.getApp().getBundle())) {
-	            logger.warn("{},Baidu.bidRequest.App.Bundle is missing",id);
+	            logger.warn("[{}],Baidu.bidRequest.App.Bundle is missing",id);
 	            return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 if (!bidRequest.hasDevice()) {
-	            logger.warn("{},Baidu.bidRequest.Device is missing",id);
+	            logger.warn("[{}],Baidu.bidRequest.Device is missing",id);
             	return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 Device device = bidRequest.getDevice();
 			 String os = device.getOs();
 			 if (StringUtils.isEmpty(os)) {
-	            logger.warn("{},Baidu.bidRequest.Device.os is missing",id);
+	            logger.warn("[{}],Baidu.bidRequest.Device.os is missing",id);
 	            return Constant.StatusCode.BAD_REQUEST;
+			 }
+			 if (!device.hasOsv()) {
+                logger.warn("[{}],osv is missing.", id);
+                return Constant.StatusCode.BAD_REQUEST;
+			 }
+			 if (!device.hasUa()) {
+                logger.warn("[{}],ua is missing.", id);
+                return Constant.StatusCode.BAD_REQUEST;
+			 }
+			 if (!device.hasIp()) {
+                logger.warn("[{}],ip is missing.", id);
+                return Constant.StatusCode.BAD_REQUEST;
 			 }
 			 if(os.equalsIgnoreCase(BaiduStatusCode.OSType.IOS)){
 				 String ifa = !StringUtils.isEmpty(device.getIdfa()) ? device.getIdfa() : 
@@ -309,7 +321,7 @@ public class BaiduHandler extends MediaBaseHandler {
     	bid.setId(mediaBid.getImpid());
     	bid.setImpid(bidRequest.getImp(0).getId());
     	bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice() : 0);
-    	bid.setBidtype(mediaBidMetaData.getPlcmtMetaData().getBidType());
+    	bid.setBidtype(mediaBidMetaData.getPlcmtMetaData().getBidType()-1);
     	bid.setCrid(mediaResponse.getCrid());
     	bid.setCid(mediaResponse.getCid());
     	bid.setAction(AdActionType.IN_APP_WEBVIEW);
