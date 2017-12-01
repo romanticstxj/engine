@@ -73,6 +73,7 @@ public class WorkThread {
             if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mediaId) || StringUtils.isEmpty(plcmtId) ||
                     StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                logger.warn("Tracking args[{}] check error.", req.getQueryString());
                 return;
             }
 
@@ -88,6 +89,7 @@ public class WorkThread {
             String[] exts = ext.split(",");
             if (Long.parseLong(sign) != crc32.getValue() || exts == null || exts.length < 6) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                logger.warn("Tracking args[{}] check error.", req.getQueryString());
                 return;
             }
 
@@ -171,6 +173,7 @@ public class WorkThread {
             if (StringUtils.isEmpty(impId) || StringUtils.isEmpty(mediaId) || StringUtils.isEmpty(plcmtId) ||
                     StringUtils.isEmpty(location) || StringUtils.isEmpty(ext) || StringUtils.isEmpty(sign)) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                logger.warn("Tracking args[{}] check error.", req.getQueryString());
                 return;
             }
 
@@ -186,6 +189,7 @@ public class WorkThread {
             String[] exts = ext.split(",");
             if (Long.parseLong(sign) != crc32.getValue() || exts == null || exts.length < 6) {
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                logger.warn("Tracking args[{}] check error.", req.getQueryString());
                 return;
             }
 
