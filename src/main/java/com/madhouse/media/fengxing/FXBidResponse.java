@@ -111,22 +111,22 @@ public class FXBidResponse {
 			}
 
 			public static class Ext {
-                private String lpg;
+                private String ldp;
                 private List<PM> pm;
                 private List<String> cm;
                 private List<CM_Ext> cm_ext;
                 private String title;
                 private String description;
 
-                public String getLpg() {
-                    return lpg;
-                }
+                public String getLdp() {
+					return ldp;
+				}
 
-                public void setLpg(String lpg) {
-                    this.lpg = lpg;
-                }
+				public void setLdp(String ldp) {
+					this.ldp = ldp;
+				}
 
-                public List<PM> getPm() {
+				public List<PM> getPm() {
                     return pm;
                 }
 

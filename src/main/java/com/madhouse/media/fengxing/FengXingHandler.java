@@ -418,7 +418,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() : 0);
                     
                     FXBidResponse.SeatBid.Bid.Ext ext = new FXBidResponse.SeatBid.Bid.Ext();
-                    ext.setLpg(StringUtil.toString(mediaResponse.getLpgurl()));
+                    ext.setLdp(StringUtil.toString(mediaResponse.getLpgurl()));
                     ext.setTitle(StringUtil.toString(mediaResponse.getTitle()));
                     ext.setDescription(StringUtil.toString(mediaResponse.getDesc()));
 
