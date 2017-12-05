@@ -104,16 +104,18 @@ public class WorkThread {
             impressionTrack.setCid(StringUtil.toString(req.getParameter("_cid")));
             impressionTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
+            int invalidType = 0;
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
             if ((System.currentTimeMillis() - impressionTrack.getBidtime()) / 1000 > trackingExpiredTime) {
-                impressionTrack.setInvalid(Constant.InvalidType.EXPIRED);
+                invalidType |= Constant.InvalidType.EXPIRED;
             }
 
             long count = redisMaster.incr(String.format(Constant.CommonKey.IMP_RECORD, impId));
             if (count > 1) {
-                impressionTrack.setInvalid(Constant.InvalidType.DUPLICATE);
+                invalidType |= Constant.InvalidType.DUPLICATE;
             }
 
+            impressionTrack.setInvalid(invalidType);
             redisMaster.expire(String.format(Constant.CommonKey.IMP_RECORD, impId), 86400);
 
             impressionTrack.setImpid(impId);
@@ -200,16 +202,18 @@ public class WorkThread {
             clickTrack.setCid(StringUtil.toString(req.getParameter("_cid")));
             clickTrack.setBidtime(IdWoker.getCreateTimeMillis(Long.parseLong(impId)));
 
+            int invalidType = 0;
             int trackingExpiredTime = ResourceManager.getInstance().getConfiguration().getWebapp().getTrackingExpiredTime();
             if ((System.currentTimeMillis() - clickTrack.getBidtime()) / 1000 > trackingExpiredTime) {
-                clickTrack.setInvalid(Constant.InvalidType.EXPIRED);
+                invalidType |= Constant.InvalidType.EXPIRED;
             }
 
             long count = redisMaster.incr(String.format(Constant.CommonKey.CLK_RECORD, impId));
             if (count > 1) {
-                clickTrack.setInvalid(Constant.InvalidType.DUPLICATE);
+                invalidType |= Constant.InvalidType.DUPLICATE;
             }
 
+            clickTrack.setInvalid(invalidType);
             redisMaster.expire(String.format(Constant.CommonKey.CLK_RECORD, impId), 86400);
 
             clickTrack.setImpid(impId);
@@ -366,13 +370,13 @@ public class WorkThread {
 
             String didmd5 = StringUtil.toString(mediaRequest.getDidmd5()).toLowerCase();
             if (StringUtils.isEmpty(didmd5) && !StringUtils.isEmpty(mediaRequest.getDid())) {
-                didmd5 = StringUtil.getMD5(mediaRequest.getDid());
+                didmd5 = StringUtil.getMD5(mediaRequest.getDid().toLowerCase());
                 mediaRequest.setDidmd5(didmd5);
             }
 
             String dpidmd5 = StringUtil.toString(mediaRequest.getDpidmd5()).toLowerCase();
             if (StringUtils.isEmpty(dpidmd5) && !StringUtils.isEmpty(mediaRequest.getDpid())) {
-                dpidmd5 = StringUtil.getMD5(mediaRequest.getDpid());
+                dpidmd5 = StringUtil.getMD5(mediaRequest.getDpid().toLowerCase());
                 mediaRequest.setDpidmd5(dpidmd5);
             }
 
@@ -446,11 +450,11 @@ public class WorkThread {
 
                             //QPS Control
                             if (dspMetaData.getMaxQPS() > 0) {
-                                String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), System.currentTimeMillis() / 1000);
-                                redisMaster.set(qpsControl, "0", "NX", "EX", 15);
+                                String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId());
+                                redisMaster.set(qpsControl, "0", "NX", "EX", 1);
                                 long totalCount = redisMaster.incr(qpsControl);
                                 if (totalCount > dspMetaData.getMaxQPS()) {
-                                    logger.warn("out of dsp [id=%d] max qps.", dspInfo.getId());
+                                    logger.warn("out of dsp[{}] max qps.", dspInfo.getId());
                                     continue;
                                 }
                             }
