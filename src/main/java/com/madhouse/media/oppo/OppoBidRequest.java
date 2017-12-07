@@ -65,7 +65,7 @@ public class OppoBidRequest {
         }
 
         public class Pmp {
-            private List<Deal> delas;
+            private List<Deal> deals;
 
             public class Deal {
                 private String id;
@@ -79,12 +79,12 @@ public class OppoBidRequest {
                 }
             }
 
-            public List<Deal> getDelas() {
-                return delas;
+            public List<Deal> getDeals() {
+                return deals;
             }
 
-            public void setDelas(List<Deal> delas) {
-                this.delas = delas;
+            public void setDeals(List<Deal> deals) {
+                this.deals = deals;
             }
         }
 
