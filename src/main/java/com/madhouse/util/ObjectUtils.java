@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -15,6 +16,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 
 public class ObjectUtils {
+    private static XStream xStream = new XStream();
     public static boolean isNotEmpty(Object obj) {
         return !isEmpty(obj);
     }
@@ -87,5 +89,8 @@ public class ObjectUtils {
         }
 
         return outStr;
+    }
+    public String objectToXml (Object obj) {
+        return xStream.toXML(obj);
     }
 }

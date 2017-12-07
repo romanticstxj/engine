@@ -1,0 +1,108 @@
+{
+  "webapp": {
+    "domain": "http://ad.beta.madserving.com",
+    "resourcePath": "../html",
+    "port": 8181,
+    "minIdle": 50,
+    "maxIdle": 100,
+    "maxTotal": 200,
+    "gZipOn": true,
+    "cacheExpiredTime": 60,
+    "trackingExpiredTime": 86400,
+    "budgetBatchSize": 1000,
+    "bids": [{
+      "path": "/adcall/bidrequest",
+      "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+    }, {
+      "path": "/client/bidrequest",
+      "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+    }, {
+      "path": "/motv/bidrequest",
+      "className": "com.madhouse.media.madhouse.PremiumMADHandler"
+    }, {
+      "path": "/adcall/xtrader/bidrequest",
+      "className": "com.madhouse.media.xtrader.XtraderHandler"
+    }, {
+      "path": "/adcall/dianping/bidrequest",
+      "className": "com.madhouse.media.mtdp.MTDPHandler"
+    }, {
+      "path": "/adcall/xiaomi/bidrequest",
+      "className": "com.madhouse.media.xiaomi.XiaoMiHandler"
+    }, {
+      "path": "/adcall/moweather/bidrequest",
+      "className": "com.madhouse.media.mojiweather.MojiWeatherHandler"
+    }, {
+      "path": "/adcall/baofeng/bidrequest",
+      "className": "com.madhouse.media.baofeng.BaoFengHandler"
+    }, {
+      "path": "/adcall/momo/bidrequest",
+      "className": "com.madhouse.media.momo.MomoHandler"
+    }, {
+      "path": "/adcall/toutiao/bidrequest",
+      "className": "com.madhouse.media.toutiao.ToutiaoHandler"
+    }, {
+      "path": "/adcall/vam/bidrequest",
+      "className": "com.madhouse.media.vamaker.VamakerHandler"
+    }, {
+      "path": "/adcall/sohu/bidrequest",
+      "className": "com.madhouse.media.sohu.SohuHandler"
+    }, {
+      "path": "/adcall/tencent/bidrequest",
+      "className": "com.madhouse.media.tencent.TencentHandler"
+    }, {
+      "path": "/adcall/sina/bidrequest",
+      "className": "com.madhouse.media.sina.SinaHandler"
+    }, {
+      "path": "/adcall/oppo/bidrequest",
+      "className": "com.madhouse.media.oppo.OppoHandler"
+    }, {
+      "path": "/adcall/fengxing/bidrequest",
+      "className": "com.madhouse.media.fengxing.FengXingHandler"
+    }, {
+      "path": "/adcall/baidu/bidrequest",
+      "className": "com.madhouse.media.baidu.BaiduHandler"
+    }, {
+      "path": "/adcall/liebao/bidrequest",
+      "className": "com.madhouse.media.liebao.LieBaoHandler"
+    }],
+    "impression": "/adtrack/impression",
+    "click": "/adtrack/click"
+  },
+  "kafka": {
+    "brokers": "172.16.25.27:9092,172.16.25.28:9092,172.16.25.29:9092",
+    "topics": [{
+      "type": "KAFKA_MEDIA_BID",
+      "topic": "topic_mediabid"
+    }, {
+      "type": "KAFKA_DSP_BID",
+      "topic": "topic_dspbid"
+    }, {
+      "type": "KAFKA_WIN_NOTICE",
+      "topic": "topic_winnotice"
+    }, {
+      "type": "KAFKA_IMPRESSION",
+      "topic": "topic_impression"
+    }, {
+      "type": "KAFKA_CLICK",
+      "topic": "topic_click"
+    }
+    ]
+  },
+  "redis": {
+    "minIdle": 50,
+    "maxIdle": 100,
+    "maxTotal": 200,
+    "slave": {
+      "passwd": "",
+      "host": "172.16.25.27",
+      "port": 6379,
+      "db": 0
+    },
+    "master": {
+      "passwd": "",
+      "host": "172.16.25.27",
+      "port": 6379,
+      "db": 0
+    }
+  }
+}
