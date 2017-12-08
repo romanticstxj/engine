@@ -350,7 +350,7 @@ public class OppoHandler extends MediaBaseHandler {
                     OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
                     linkResponse.setUrl(mediaResponse.getLpgurl());
                     linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-                    oppoNativeResponse.setLint(linkResponse);
+                    oppoNativeResponse.setLink(linkResponse);
                     //展示监测
                     List<String> imptrackers = new ArrayList<String>();
                     for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
