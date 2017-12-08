@@ -108,12 +108,13 @@ public class FengXingHandler extends MediaBaseHandler {
             
             StringBuilder adspaceKey = new StringBuilder();
             adspaceKey.append("FUNADX:");
-            if(!StringUtils.isEmpty(FXConstant.TagId.get(impression.getTagid()))){
+            if (FXConstant.OTTagIds.contains(StringUtil.toString(impression.getTagid()))) {
             	String dealId = mediaRequest.getDealid();
             	if(!StringUtils.isEmpty(dealId) && dealId.length() >=2){
             		adspaceKey.append(dealId.substring(0,2)).append(":");
             	}
             }
+
             adspaceKey.append(StringUtil.toString(impression.getTagid()));
             mediaRequest.setOs(Constant.OSType.UNKNOWN);
             if (os.equals("ANDROID")) {
