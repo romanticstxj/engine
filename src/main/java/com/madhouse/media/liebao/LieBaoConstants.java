@@ -31,4 +31,9 @@ public class LieBaoConstants {
         public static final int VAST_VIDEO = 4;
         public static final int BANNER = 5;
     }
+
+    public class App {
+        public static final String APPNAME = "liebao";
+        public static final String BUNDLE = "com.liebao";
+    }
 }

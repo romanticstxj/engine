@@ -245,6 +245,15 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setName(StringUtil.toString(bidRequest.getApp().getName()));
                 mediaRequest.setBundle(StringUtil.toString(bidRequest.getApp().getBundle()));
                 mediaRequest.setType(Constant.MediaType.APP);
+            }else{
+                mediaRequest.setName(LieBaoConstants.App.APPNAME);
+                mediaRequest.setBundle(LieBaoConstants.App.BUNDLE);
+                mediaRequest.setType(Constant.MediaType.APP);
+                // TODO app非必填，response的必填参数bundle怎么填？
+                LieBaoBidRequest.App app = bidRequest.new App();
+                app.setBundle(LieBaoConstants.App.BUNDLE);
+                app.setName(LieBaoConstants.App.APPNAME);
+                bidRequest.setApp(app);
             }
 
 
@@ -252,7 +261,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                 logger.warn("LieBao Video and Banner Cannot exist at the same time");
                 return null;
             }
-            if (bidRequest.getSelectedAssetsId() > 0) {
+            if ((bidRequest.getAdmType()==LieBaoConstants.AdType.NATIVE_BIG || bidRequest.getAdmType()==LieBaoConstants.AdType.NATIVE_SMALL) && bidRequest.getSelectedAssetsId() <= 0) {
                 logger.warn("LieBao bidRequest Native.Assets.id is null");
                 return null;
             }
@@ -353,6 +362,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         LieBaoBidResponse.Seatbid.Bid.AdmNative admNative = bid.new AdmNative();
         bid.setAdmNative(admNative);
         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative adsResNative = admNative.new ResponseNative();
+        admNative.setResponseNative(adsResNative);
         // 封装展示，点击跟踪链接
         if (monitor != null) {
             // 设置展示跟踪链接
