@@ -350,7 +350,7 @@ public class OppoHandler extends MediaBaseHandler {
                     OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
                     linkResponse.setUrl(mediaResponse.getLpgurl());
                     linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-                    oppoNativeResponse.setLint(linkResponse);
+                    oppoNativeResponse.setLink(linkResponse);
                     //展示监测
                     List<String> imptrackers = new ArrayList<String>();
                     for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
@@ -364,16 +364,16 @@ public class OppoHandler extends MediaBaseHandler {
             } else if (oppoBidRequest.getImp().get(0).getImpressionType() == OppoStatusCode.ImpressionType.PMP) {
                 if (null != oppoBidRequest.getImp().get(0).getPmp().getDeals() && oppoBidRequest.getImp().get(0).getPmp().getDeals().size() > 0) {
                     bid.setDealid(oppoBidRequest.getImp().get(0).getPmp().getDeals().get(0).getId());
+                    //设置点击和展示监测:如果asset对象中有，以asset为主，如果没有，则以bid对象中为主
+                    bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
+                    List<String> imptrackers = new ArrayList<String>();
+                    for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
+                        imptrackers.add(track.getUrl());
+                    }
+                    bid.setImptrackers(imptrackers);
                 }
             }
 
-            //设置点击和展示监测:如果asset对象中有，以asset为主，如果没有，则以bid对象中为主
-            bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-            List<String> imptrackers = new ArrayList<String>();
-            for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
-                imptrackers.add(track.getUrl());
-            }
-            bid.setImptrackers(imptrackers);
 
             //seatBid中的bid对象
             bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
