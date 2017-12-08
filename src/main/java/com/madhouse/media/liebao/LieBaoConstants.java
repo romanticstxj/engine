@@ -24,4 +24,11 @@ public class LieBaoConstants {
         public static final int PHONE = 4;
         public static final int TABLET = 5;
     }
+    public class ImgType{
+        public static final int ICON = 1;
+        public static final int LOGO = 2;
+        public static final int MAIN_IGMAGE = 3;
+        public static final int VAST_VIDEO = 4;
+        public static final int BANNER = 5;
+    }
 }

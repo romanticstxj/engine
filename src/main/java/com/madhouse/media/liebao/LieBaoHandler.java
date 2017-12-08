@@ -109,6 +109,15 @@ public class LieBaoHandler extends MediaBaseHandler {
                 adspaceKey.append(impression.getVideo().getH()).append(":");
                 mediaRequest.setW(impression.getVideo().getW());
                 mediaRequest.setH(impression.getVideo().getH());
+            } else if (impression.getNativeObject() != null && impression.getNativeObject().getRequestNativeObject() != null) {
+                LieBaoNative nativeObject = impression.getNativeObject().getRequestNativeObject();
+                List<LieBaoNative.NativeTopLevel.Assets> assetsList = nativeObject.getNativeTopLevel().getAssets();
+                LieBaoNative.NativeTopLevel.Assets assets = getMainImageAssets(assetsList);
+                bidRequest.setSelectedAssetsId(assets.getId());
+                adspaceKey.append(assets.getImg().getW()).append(":");
+                adspaceKey.append(assets.getImg().getH()).append(":");
+                mediaRequest.setW(assets.getImg().getW());
+                mediaRequest.setH(assets.getImg().getH());
             }
             mediaRequest.setOs(Constant.OSType.UNKNOWN);
             if (os.equals("ANDROID")) {
@@ -227,15 +236,14 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (device.getGeo() != null) {
                 LieBaoBidRequest.Device.Geo geo = device.getGeo();
                 Geo.Builder builder = Geo.newBuilder();
-                builder.setLat(geo.getLat().floatValue());
-                builder.setLon(geo.getLon().floatValue());
+                builder.setLat(geo.getLat() == null ? 0f : geo.getLat().floatValue());
+                builder.setLon(geo.getLon() == null ? 0f : geo.getLon().floatValue());
                 mediaRequest.setGeoBuilder(builder);
             }
 
             if (bidRequest.getApp() != null) {
-                LieBaoBidRequest.App app = bidRequest.getApp();
-                mediaRequest.setName(StringUtil.toString(app.getName()));
-                mediaRequest.setBundle(StringUtil.toString(app.getBundle()));
+                mediaRequest.setName(StringUtil.toString(bidRequest.getApp().getName()));
+                mediaRequest.setBundle(StringUtil.toString(bidRequest.getApp().getBundle()));
                 mediaRequest.setType(Constant.MediaType.APP);
             }
 
@@ -244,18 +252,23 @@ public class LieBaoHandler extends MediaBaseHandler {
                 logger.warn("LieBao Video and Banner Cannot exist at the same time");
                 return null;
             }
-            if (impression.getNativeObject() == null ||
-                    impression.getNativeObject().getRequestNativeObject() == null ||
-                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel() == null ||
-                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets() == null ||
-                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets().size() == 0 ||
-                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets().get(0).getId() == null) {
+            if (bidRequest.getSelectedAssetsId() > 0) {
                 logger.warn("LieBao bidRequest Native.Assets.id is null");
                 return null;
             }
             return mediaRequest;
         } catch (Exception e) {
             logger.error(e.toString());
+        }
+
+        return null;
+    }
+
+    private LieBaoNative.NativeTopLevel.Assets getMainImageAssets(List<LieBaoNative.NativeTopLevel.Assets> assetsList) {
+        for (LieBaoNative.NativeTopLevel.Assets assets : assetsList) {
+            if (assets.getImg().getType()== LieBaoConstants.ImgType.MAIN_IGMAGE) {
+                return assets;
+            }
         }
 
         return null;
@@ -296,10 +309,10 @@ public class LieBaoHandler extends MediaBaseHandler {
                     if (admType == LieBaoConstants.AdType.NATIVE_BIG || admType == LieBaoConstants.AdType.NATIVE_SMALL) {
                         // native时：
                         buildAdmNative(bidRequest, mediaResponse, bid, monitor);
-                    }else if(admType == LieBaoConstants.AdType.BANNER_IAB || admType == LieBaoConstants.AdType.BANNER_OPEN){
+                    } else if (admType == LieBaoConstants.AdType.BANNER_IAB || admType == LieBaoConstants.AdType.BANNER_OPEN) {
                         // banner时：
                         buildAdmBanner(mediaBidMetaData, mediaResponse, bid, monitor);
-                    }else if(admType == LieBaoConstants.AdType.VIDEO_HOR || admType == LieBaoConstants.AdType.VIDEO_VER){
+                    } else if (admType == LieBaoConstants.AdType.VIDEO_HOR || admType == LieBaoConstants.AdType.VIDEO_VER) {
                         // video时：
 
                     }
@@ -360,7 +373,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         ArrayList<LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets> assetsArrayList = new ArrayList<>();
         assetsArrayList.add(assets);
         adsResNative.setAssets(assetsArrayList);
-        assets.setId(bidRequest.getImp().get(0).getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets().get(0).getId());
+        assets.setId(bidRequest.getSelectedAssetsId());
         /**
          // 由于assets只有id是必须的，其他的可以先不设置，需要的时候再打开。节省带宽
          // 设置素材title

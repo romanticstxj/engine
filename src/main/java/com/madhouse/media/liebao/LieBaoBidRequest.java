@@ -21,7 +21,18 @@ public class LieBaoBidRequest {
     private List<String> bcat;//string array optional 广告行业黑名单
     private List<String> badv;//string array optional 域名黑名单，例如：(eg: test.com)
     private Object ext;//object optional 扩展字段
+    // 这个字段是为了辅助response构建创建的
     private float admType;
+    // 由于assets有多个，这里记录一下使用的assetsid，方便在构建response时使用
+    private int selectedAssetsId;
+
+    public int getSelectedAssetsId() {
+        return selectedAssetsId;
+    }
+
+    public void setSelectedAssetsId(int selectedAssetsId) {
+        this.selectedAssetsId = selectedAssetsId;
+    }
 
     public float getAdmType() {
         return admType;
