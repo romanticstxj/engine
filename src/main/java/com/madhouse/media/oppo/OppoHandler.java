@@ -146,10 +146,10 @@ public class OppoHandler extends MediaBaseHandler {
             }
         }
         if (ObjectUtils.isNotEmpty(imp.getPmp()) &&
-                ObjectUtils.isNotEmpty(imp.getPmp().getDelas()) &&
-                StringUtils.isNotEmpty(imp.getPmp().getDelas().get(0).getId())
+                ObjectUtils.isNotEmpty(imp.getPmp().getDeals()) &&
+                StringUtils.isNotEmpty(imp.getPmp().getDeals().get(0).getId())
                 ) {
-            List<OppoBidRequest.Imp.Pmp.Deal> delas = imp.getPmp().getDelas();
+            List<OppoBidRequest.Imp.Pmp.Deal> delas = imp.getPmp().getDeals();
             // 如果有多个pmp对象，随机取一个返回
             mediaRequest.setDealid(delas.get(Utility.nextInt(delas.size())).getId());
             imp.setImpressionType(OppoStatusCode.ImpressionType.PMP);
@@ -350,7 +350,7 @@ public class OppoHandler extends MediaBaseHandler {
                     OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
                     linkResponse.setUrl(mediaResponse.getLpgurl());
                     linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-                    oppoNativeResponse.setLint(linkResponse);
+                    oppoNativeResponse.setLink(linkResponse);
                     //展示监测
                     List<String> imptrackers = new ArrayList<String>();
                     for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
@@ -362,18 +362,18 @@ public class OppoHandler extends MediaBaseHandler {
                 bid.setAdm(JSON.toJSONString(oppoNativeResponse).toString());
 
             } else if (oppoBidRequest.getImp().get(0).getImpressionType() == OppoStatusCode.ImpressionType.PMP) {
-                if (null != oppoBidRequest.getImp().get(0).getPmp().getDelas() && oppoBidRequest.getImp().get(0).getPmp().getDelas().size() > 0) {
-                    bid.setDealid(oppoBidRequest.getImp().get(0).getPmp().getDelas().get(0).getId());
+                if (null != oppoBidRequest.getImp().get(0).getPmp().getDeals() && oppoBidRequest.getImp().get(0).getPmp().getDeals().size() > 0) {
+                    bid.setDealid(oppoBidRequest.getImp().get(0).getPmp().getDeals().get(0).getId());
+                    //设置点击和展示监测:如果asset对象中有，以asset为主，如果没有，则以bid对象中为主
+                    bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
+                    List<String> imptrackers = new ArrayList<String>();
+                    for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
+                        imptrackers.add(track.getUrl());
+                    }
+                    bid.setImptrackers(imptrackers);
                 }
             }
 
-            //设置点击和展示监测:如果asset对象中有，以asset为主，如果没有，则以bid对象中为主
-            bid.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-            List<String> imptrackers = new ArrayList<String>();
-            for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
-                imptrackers.add(track.getUrl());
-            }
-            bid.setImptrackers(imptrackers);
 
             //seatBid中的bid对象
             bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());

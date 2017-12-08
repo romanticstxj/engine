@@ -220,6 +220,17 @@ public class StringUtil {
         return null;
     }
 
+    public static final Date toDate(String date, String format) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat(format);
+            return df.parse(date);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        }
+
+        return null;
+    }
+
     public static final Date toDate(String date) {
         SimpleDateFormat df = null;
 
