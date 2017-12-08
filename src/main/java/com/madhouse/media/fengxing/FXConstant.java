@@ -1,19 +1,26 @@
 package com.madhouse.media.fengxing;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by wujunfeng on 2017-11-07.
  */
 public class FXConstant {
-	public static Map<String, String> TagId = new HashMap<>();
+    //OTT资源
+	public static Set<String> OTTagIds = new HashSet<>();
 
     static {
-    	//OTT资源
-    	TagId.put("ftv_bt_2", "OTT");
-    	TagId.put("ftv_pr", "OTT");
+        //开机
+        OTTagIds.add("ftv_bt_2");
+        //贴片
+        OTTagIds.add("ftv_pr");
+        //屏保
+        OTTagIds.add("ftv_src");
+        //关机
+        OTTagIds.add("ftv_sd");
     }
+
     public static class DeviceType {
         public static final int PHONE = 0;
         public static final int PAD = 1;
