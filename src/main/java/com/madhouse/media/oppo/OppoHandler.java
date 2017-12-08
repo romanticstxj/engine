@@ -302,21 +302,23 @@ public class OppoHandler extends MediaBaseHandler {
             if (oppoBidRequest.getImp().get(0).getImpressionType() == OppoStatusCode.ImpressionType.NATIVE) {
                 OppoNativeRequest oppoNativeRequest = getRequestNative(oppoBidRequest.getImp().get(0).getNatives().getRequest());
                 OppoNativeResponse oppoNativeResponse = new OppoNativeResponse();
+                OppoNativeResponse.AdmNative admNative = oppoNativeResponse.new AdmNative();
+                oppoNativeResponse.setAdmNative(admNative);
                 if (null != oppoNativeRequest && null != oppoNativeRequest.getAssets() && oppoNativeRequest.getAssets().size() > 0) {
-                    List<com.madhouse.media.oppo.OppoNativeResponse.Asset> assetNativeResponseList = new ArrayList<OppoNativeResponse.Asset>();
+                    List<com.madhouse.media.oppo.OppoNativeResponse.AdmNative.Asset> assetNativeResponseList = new ArrayList<>();
 
                     for (Asset assetNativeRequest : oppoNativeRequest.getAssets()) {
-                        OppoNativeResponse.Asset assetResponse = oppoNativeResponse.new Asset();
+                        OppoNativeResponse.AdmNative.Asset assetResponse = admNative.new Asset();
                         int h = 0;
                         int w = 0;
 
                         if (null != assetNativeRequest.getTitle()) {
-                            OppoNativeResponse.Asset.Title titleResponse = assetResponse.new Title();
+                            OppoNativeResponse.AdmNative.Asset.Title titleResponse = assetResponse.new Title();
                             titleResponse.setText(assetNativeRequest.getTitle().getLen());
                             assetResponse.setTitle(titleResponse);
                         }
                         if (null != assetNativeRequest.getImg()) {
-                            OppoNativeResponse.Asset.Img imgResponse = assetResponse.new Img();
+                            OppoNativeResponse.AdmNative.Asset.Img imgResponse = assetResponse.new Img();
                             imgResponse.setH(assetNativeRequest.getImg().getH());
                             imgResponse.setW(assetNativeRequest.getImg().getW());
                             imgResponse.setUrl(mediaResponse.getAdm().get(0));//物料url
@@ -325,12 +327,12 @@ public class OppoHandler extends MediaBaseHandler {
                             w = assetNativeRequest.getImg().getW();
                         }
                         if (null != assetNativeRequest.getData()) {
-                            OppoNativeResponse.Asset.Data dataResponse = assetResponse.new Data();
+                            OppoNativeResponse.AdmNative.Asset.Data dataResponse = assetResponse.new Data();
                             dataResponse.setValue(mediaResponse.getTitle());//指定类型的数据内容
                             assetResponse.setData(dataResponse);
                         }
                         if (null != assetNativeRequest.getSpecificFeeds()) {
-                            OppoNativeResponse.Asset.SpecificFeeds specificFeeds = assetResponse.new SpecificFeeds();
+                            OppoNativeResponse.AdmNative.Asset.SpecificFeeds specificFeeds = assetResponse.new SpecificFeeds();
                             if (h * w == 640 * 320 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
                                 specificFeeds.setFormateType(1);//信息流大图
                             } else if (h * w == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
@@ -345,19 +347,19 @@ public class OppoHandler extends MediaBaseHandler {
                         }
                         assetNativeResponseList.add(assetResponse);
                     }
-                    oppoNativeResponse.setAssets(assetNativeResponseList);
+                    admNative.setAssets(assetNativeResponseList);
                     //Link 对象:落地页和点击监测
-                    OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
+                    OppoNativeResponse.AdmNative.Link linkResponse = admNative.new Link();
                     linkResponse.setUrl(mediaResponse.getLpgurl());
                     linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-                    oppoNativeResponse.setLink(linkResponse);
+                    admNative.setLink(linkResponse);
                     //展示监测
                     List<String> imptrackers = new ArrayList<String>();
                     for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
                         imptrackers.add(track.getUrl());
                     }
-                    oppoNativeResponse.setImptrackers(imptrackers);
-                    oppoNativeResponse.setVer("1.1");
+                    admNative.setImptrackers(imptrackers);
+                    admNative.setVer("1.1");
                 }
                 bid.setAdm(JSON.toJSONString(oppoNativeResponse).toString());
 
