@@ -571,7 +571,7 @@ public class CacheManager implements Runnable {
 
                 if (!StringUtils.isEmpty(policyMetaData.getEndDate())) {
                     int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(currentDate)) + 1;
-                    this.redisMaster.expire(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), totalDays * 86400);
+                    this.redisMaster.expire(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), (totalDays + 1) * 86400);
                 }
 
                 String totalCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
