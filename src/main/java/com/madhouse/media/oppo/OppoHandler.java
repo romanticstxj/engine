@@ -336,7 +336,7 @@ public class OppoHandler extends MediaBaseHandler {
                                 specificFeeds.setFormateType(1);//信息流大图
                             } else if (imgAssetForFormateType!=null && imgAssetForFormateType.getW() * imgAssetForFormateType.getH() == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
                                 specificFeeds.setFormateType(2);//信息流小图
-                            } else if (imgAssetForFormateType!=null && imgAssetForFormateType.getW() * imgAssetForFormateType.getH() == 640 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 3) {
+                            } else if (imgAssetForFormateType!=null && imgAssetForFormateType.getW() * imgAssetForFormateType.getH() == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 3) {
                                 specificFeeds.setFormateType(3);//信息流多图
                             }
                             if (null != mediaResponse.getAdm()) {
