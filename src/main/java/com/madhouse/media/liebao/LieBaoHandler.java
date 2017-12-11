@@ -245,7 +245,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setName(StringUtil.toString(bidRequest.getApp().getName()));
                 mediaRequest.setBundle(StringUtil.toString(bidRequest.getApp().getBundle()));
                 mediaRequest.setType(Constant.MediaType.APP);
-            }else{
+            } else {
                 mediaRequest.setName(LieBaoConstants.App.APPNAME);
                 mediaRequest.setBundle(LieBaoConstants.App.BUNDLE);
                 mediaRequest.setType(Constant.MediaType.APP);
@@ -261,7 +261,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                 logger.warn("LieBao Video and Banner Cannot exist at the same time");
                 return null;
             }
-            if ((bidRequest.getAdmType()==LieBaoConstants.AdType.NATIVE_BIG || bidRequest.getAdmType()==LieBaoConstants.AdType.NATIVE_SMALL) && bidRequest.getSelectedAssetsId() <= 0) {
+            if ((bidRequest.getAdmType() == LieBaoConstants.AdType.NATIVE_BIG || bidRequest.getAdmType() == LieBaoConstants.AdType.NATIVE_SMALL) && bidRequest.getSelectedAssetsId() <= 0) {
                 logger.warn("LieBao bidRequest Native.Assets.id is null");
                 return null;
             }
@@ -275,7 +275,7 @@ public class LieBaoHandler extends MediaBaseHandler {
 
     private LieBaoNative.NativeTopLevel.Assets getMainImageAssets(List<LieBaoNative.NativeTopLevel.Assets> assetsList) {
         for (LieBaoNative.NativeTopLevel.Assets assets : assetsList) {
-            if (assets.getImg().getType()== LieBaoConstants.ImgType.MAIN_IGMAGE) {
+            if (assets.getImg().getType() == LieBaoConstants.ImgType.MAIN_IGMAGE) {
                 return assets;
             }
         }
@@ -318,14 +318,25 @@ public class LieBaoHandler extends MediaBaseHandler {
                     if (admType == LieBaoConstants.AdType.NATIVE_BIG || admType == LieBaoConstants.AdType.NATIVE_SMALL) {
                         // native时：
                         buildAdmNative(bidRequest, mediaResponse, bid, monitor);
-                    } else if (admType == LieBaoConstants.AdType.BANNER_IAB || admType == LieBaoConstants.AdType.BANNER_OPEN) {
-                        // banner时：
-                        buildAdmBanner(mediaBidMetaData, mediaResponse, bid, monitor);
+                    } else if (admType == LieBaoConstants.AdType.BANNER_OPEN) {
+                        // banner开屏时：
+                        buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
+                    } else if (admType == LieBaoConstants.AdType.BANNER_IAB) {
+                        // banner开屏时：
+                        buildAdmBannerForIAB(mediaBidMetaData, mediaResponse, bid, monitor);
                     } else if (admType == LieBaoConstants.AdType.VIDEO_HOR || admType == LieBaoConstants.AdType.VIDEO_VER) {
                         // video时：
+                        // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
+                        List<Integer> protocols = bidRequest.getImp().get(0).getVideo().getProtocols();
+                        if (protocols.containsAll(LieBaoConstants.Vast.INLINE_LIST)) {
+                            
+                        } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
+
+                        }
+
 
                     }
-
+                    bidResponse.setCur(LieBaoConstants.MoneyMark.CNY);
                     return outputStreamWrite(resp, bidResponse);
                 }
             }
@@ -336,7 +347,11 @@ public class LieBaoHandler extends MediaBaseHandler {
         return outputStreamWrite(resp, null);
     }
 
-    private void buildAdmBanner(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
+    private void buildAdmBannerForIAB(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
+
+    }
+
+    private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
         LieBaoBidResponse.Seatbid.Bid.AdmBanner admBanner = bid.new AdmBanner();
         bid.setAdmBanner(admBanner);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner banner = admBanner.new Banner();
