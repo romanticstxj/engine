@@ -317,24 +317,25 @@ public class LieBaoHandler extends MediaBaseHandler {
                     bid.setAdmType(admType);
                     if (admType == LieBaoConstants.AdType.NATIVE_BIG || admType == LieBaoConstants.AdType.NATIVE_SMALL) {
                         // native时：
-                        buildAdmNative(bidRequest, mediaResponse, bid, monitor);
+                        //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
+                        return outputStreamWrite(resp, null);
                     } else if (admType == LieBaoConstants.AdType.BANNER_OPEN) {
-                        // banner开屏时：
+                        // banner 开屏时：
                         buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
                     } else if (admType == LieBaoConstants.AdType.BANNER_IAB) {
-                        // banner开屏时：
-                        buildAdmBannerForIAB(mediaBidMetaData, mediaResponse, bid, monitor);
+                        // banner IAB时：
+                        // buildAdmBannerForIAB(mediaBidMetaData, mediaResponse, bid, monitor);
+                        return outputStreamWrite(resp, null);
                     } else if (admType == LieBaoConstants.AdType.VIDEO_HOR || admType == LieBaoConstants.AdType.VIDEO_VER) {
                         // video时：
                         // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
-                        List<Integer> protocols = bidRequest.getImp().get(0).getVideo().getProtocols();
-                        if (protocols.containsAll(LieBaoConstants.Vast.INLINE_LIST)) {
-                            
-                        } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
+                        // List<Integer> protocols = bidRequest.getImp().get(0).getVideo().getProtocols();
+                        // if (protocols.containsAll(LieBaoConstants.Vast.INLINE_LIST)) {
 
-                        }
+                        // } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
 
-
+                        // }
+                        return outputStreamWrite(resp, null);
                     }
                     bidResponse.setCur(LieBaoConstants.MoneyMark.CNY);
                     return outputStreamWrite(resp, bidResponse);
