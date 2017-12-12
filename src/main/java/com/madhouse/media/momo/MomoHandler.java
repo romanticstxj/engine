@@ -445,7 +445,7 @@ public class MomoHandler extends MediaBaseHandler {
                     
                     Object[] objType = (Object[])mediaBidMetaData.getRequestObject();
                     
-                    if(MomoStatusCode.Type.PROTOBUF.equals(objType[0])){
+                    if(MomoStatusCode.Type.PROTOBUF.equals(objType[0]) && mediaBidMetaData.getMaterialMetaData() != null){
                         MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(MomoExchange.BidRequest)objType[1],(String)objType[2]);
                         if(null != bidResponse){
                             resp.setContentType("application/octet-stream;charset=UTF-8");
@@ -548,7 +548,7 @@ public class MomoHandler extends MediaBaseHandler {
         bidBuilder.setPrice(mediaResponse.getPrice()/100);
         bidBuilder.setCid(mediaResponse.getCid());
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
-        bidBuilder.setCrid(StringUtil.toString(mediaResponse.getCrid()));  //物料id
+        bidBuilder.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
         
         bidBuilder.setNativeCreative(getNativeCreative(bidRequest,mediaResponse,mediaRequest,campainType));

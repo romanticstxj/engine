@@ -245,7 +245,7 @@ public class OppoHandler extends MediaBaseHandler {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 OppoResponse result;
-                if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     result = convertToOppoResponse(mediaBidMetaData, mediaBid.getStatus());
                 } else {
                     result = convertToOppoResponse(mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
@@ -302,40 +302,41 @@ public class OppoHandler extends MediaBaseHandler {
             if (oppoBidRequest.getImp().get(0).getImpressionType() == OppoStatusCode.ImpressionType.NATIVE) {
                 OppoNativeRequest oppoNativeRequest = getRequestNative(oppoBidRequest.getImp().get(0).getNatives().getRequest());
                 OppoNativeResponse oppoNativeResponse = new OppoNativeResponse();
+                OppoNativeResponse.AdmNative admNative = oppoNativeResponse.new AdmNative();
+                oppoNativeResponse.setAdmNative(admNative);
                 if (null != oppoNativeRequest && null != oppoNativeRequest.getAssets() && oppoNativeRequest.getAssets().size() > 0) {
-                    List<com.madhouse.media.oppo.OppoNativeResponse.Asset> assetNativeResponseList = new ArrayList<OppoNativeResponse.Asset>();
-
+                    List<com.madhouse.media.oppo.OppoNativeResponse.AdmNative.Asset> assetNativeResponseList = new ArrayList<>();
+                    // 用来临时存储封装img对象的asset，用来判断specificFeeds.FormateType
+                    OppoNativeResponse.AdmNative.Asset.Img imgAssetForFormateType = null;
                     for (Asset assetNativeRequest : oppoNativeRequest.getAssets()) {
-                        OppoNativeResponse.Asset assetResponse = oppoNativeResponse.new Asset();
-                        int h = 0;
-                        int w = 0;
-
+                        OppoNativeResponse.AdmNative.Asset assetResponse = admNative.new Asset();
+                        assetResponse.setId(assetNativeRequest.getId());
+                        assetResponse.setRequired(assetNativeRequest.getRequired());
                         if (null != assetNativeRequest.getTitle()) {
-                            OppoNativeResponse.Asset.Title titleResponse = assetResponse.new Title();
-                            titleResponse.setText(assetNativeRequest.getTitle().getLen());
+                            OppoNativeResponse.AdmNative.Asset.Title titleResponse = assetResponse.new Title();
+                            titleResponse.setText(mediaBidMetaData.getMaterialMetaData().getTitle());
                             assetResponse.setTitle(titleResponse);
                         }
                         if (null != assetNativeRequest.getImg()) {
-                            OppoNativeResponse.Asset.Img imgResponse = assetResponse.new Img();
-                            imgResponse.setH(assetNativeRequest.getImg().getH());
-                            imgResponse.setW(assetNativeRequest.getImg().getW());
+                            OppoNativeResponse.AdmNative.Asset.Img imgResponse = assetResponse.new Img();
+                            imgResponse.setH(mediaBidMetaData.getMaterialMetaData().getH());
+                            imgResponse.setW(mediaBidMetaData.getMaterialMetaData().getW());
                             imgResponse.setUrl(mediaResponse.getAdm().get(0));//物料url
                             assetResponse.setImg(imgResponse);
-                            h = assetNativeRequest.getImg().getH();
-                            w = assetNativeRequest.getImg().getW();
+                            imgAssetForFormateType = imgResponse;
                         }
                         if (null != assetNativeRequest.getData()) {
-                            OppoNativeResponse.Asset.Data dataResponse = assetResponse.new Data();
-                            dataResponse.setValue(mediaResponse.getTitle());//指定类型的数据内容
+                            OppoNativeResponse.AdmNative.Asset.Data dataResponse = assetResponse.new Data();
+                            dataResponse.setValue(mediaResponse.getBrand());//指定类型的数据内容
                             assetResponse.setData(dataResponse);
                         }
                         if (null != assetNativeRequest.getSpecificFeeds()) {
-                            OppoNativeResponse.Asset.SpecificFeeds specificFeeds = assetResponse.new SpecificFeeds();
-                            if (h * w == 640 * 320 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
+                            OppoNativeResponse.AdmNative.Asset.SpecificFeeds specificFeeds = assetResponse.new SpecificFeeds();
+                            if (imgAssetForFormateType!=null && imgAssetForFormateType.getW() * imgAssetForFormateType.getH() == 640 * 320 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
                                 specificFeeds.setFormateType(1);//信息流大图
-                            } else if (h * w == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
+                            } else if (imgAssetForFormateType!=null && imgAssetForFormateType.getW() * imgAssetForFormateType.getH() == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 1) {
                                 specificFeeds.setFormateType(2);//信息流小图
-                            } else if (h * w == 640 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 3) {
+                            } else if (imgAssetForFormateType!=null && imgAssetForFormateType.getW() * imgAssetForFormateType.getH() == 320 * 210 && null != mediaResponse.getAdm() && mediaResponse.getAdm().size() == 3) {
                                 specificFeeds.setFormateType(3);//信息流多图
                             }
                             if (null != mediaResponse.getAdm()) {
@@ -345,19 +346,19 @@ public class OppoHandler extends MediaBaseHandler {
                         }
                         assetNativeResponseList.add(assetResponse);
                     }
-                    oppoNativeResponse.setAssets(assetNativeResponseList);
+                    admNative.setAssets(assetNativeResponseList);
                     //Link 对象:落地页和点击监测
-                    OppoNativeResponse.Link linkResponse = oppoNativeResponse.new Link();
+                    OppoNativeResponse.AdmNative.Link linkResponse = admNative.new Link();
                     linkResponse.setUrl(mediaResponse.getLpgurl());
                     linkResponse.setClicktrackers(mediaResponse.getMonitorBuilder().getClkurl());
-                    oppoNativeResponse.setLink(linkResponse);
+                    admNative.setLink(linkResponse);
                     //展示监测
                     List<String> imptrackers = new ArrayList<String>();
                     for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
                         imptrackers.add(track.getUrl());
                     }
-                    oppoNativeResponse.setImptrackers(imptrackers);
-                    oppoNativeResponse.setVer("1.1");
+                    admNative.setImptrackers(imptrackers);
+                    admNative.setVer("1.1");
                 }
                 bid.setAdm(JSON.toJSONString(oppoNativeResponse).toString());
 
@@ -371,6 +372,7 @@ public class OppoHandler extends MediaBaseHandler {
                         imptrackers.add(track.getUrl());
                     }
                     bid.setImptrackers(imptrackers);
+                    bid.setCrid(Long.toString(mediaBidMetaData.getMaterialMetaData().getId()));
                 }
             }
 
