@@ -395,12 +395,14 @@ public class BaiduHandler extends MediaBaseHandler {
 									image.setUrl(mediaResponse.getAdm().get(imageIndex++));
 									image.setW(requestAsset.getImg().getW());
 									image.setH(requestAsset.getImg().getH());
+									asset.setImg(image);
 								}
 							} else {
 								if (requestAsset.getRequired()) {
 									image.setUrl(mediaResponse.getAdm().get(0));
 									image.setW(requestAsset.getImg().getW());
 									image.setH(requestAsset.getImg().getH());
+									asset.setImg(image);
 								}
 							}
 						} else {
@@ -408,11 +410,10 @@ public class BaiduHandler extends MediaBaseHandler {
 								image.setUrl(StringUtil.toString(mediaResponse.getIcon()));
 								image.setW(requestAsset.getImg().getW());
 								image.setH(requestAsset.getImg().getH());
+								asset.setImg(image);
 							}
 						}
-
-                		asset.setImg(image);
-                		admNative.addAssets(asset);
+						admNative.addAssets(asset);
                 		continue;
         			}
         		}
