@@ -364,17 +364,21 @@ public class BaiduHandler extends MediaBaseHandler {
         		for (Track track : mediaResponse.getMonitorBuilder().getImpurl()) {
         			admNative.addImptrackers(track.getUrl());
 				}
+
+				int imageIndex = 0;
         		for (Asset requestAsset : requestNative.getAssetsList()) {
         			Baidu.BidResponse.SeatBid.Bid.AdmNative.Asset.Builder asset = Baidu.BidResponse.SeatBid.Bid.AdmNative.Asset.newBuilder();
         			asset.setId(requestAsset.getId());
         			asset.setRequired(requestAsset.getRequired());
-        			if(requestAsset.hasTitle()){
+
+					if(requestAsset.hasTitle()){
         				Baidu.BidResponse.SeatBid.Bid.AdmNative.Title.Builder title = Baidu.BidResponse.SeatBid.Bid.AdmNative.Title.newBuilder();
                 		title.setText(mediaResponse.getTitle());
                 		asset.setTitle(title);
                 		admNative.addAssets(asset);
                 		continue;
         			}
+
         			if(requestAsset.hasData()){
         				Baidu.BidResponse.SeatBid.Bid.AdmNative.Data.Builder data = Baidu.BidResponse.SeatBid.Bid.AdmNative.Data.newBuilder();
                 		data.setValue(mediaResponse.getDesc());
@@ -382,11 +386,27 @@ public class BaiduHandler extends MediaBaseHandler {
                 		admNative.addAssets(asset);
                 		continue;
         			}
+
         			if(requestAsset.hasImg()){
         				Baidu.BidResponse.SeatBid.Bid.AdmNative.Image.Builder image = Baidu.BidResponse.SeatBid.Bid.AdmNative.Image.newBuilder();
-                		image.setUrl(mediaResponse.getAdm().get(0));
-                		image.setW(mediaBid.getRequestBuilder().getW());
-                		image.setH(mediaBid.getRequestBuilder().getH());
+						if (requestAsset.getImg().getType() == Imp.Native.Image.ImageAssetType.MAIN) {
+							if (mediaResponse.getAdm().size() > 1) {
+								if (mediaResponse.getAdm().size() > imageIndex) {
+									image.setUrl(mediaResponse.getAdm().get(imageIndex++));
+									image.setW(mediaBid.getRequestBuilder().getW());
+									image.setH(mediaBid.getRequestBuilder().getH());
+								}
+							} else {
+								if (requestAsset.getRequired()) {
+									image.setUrl(mediaResponse.getAdm().get(0));
+									image.setW(mediaBid.getRequestBuilder().getW());
+									image.setH(mediaBid.getRequestBuilder().getH());
+								}
+							}
+						} else {
+							image.setUrl(StringUtil.toString(mediaResponse.getIcon()));
+						}
+
                 		asset.setImg(image);
                 		admNative.addAssets(asset);
                 		continue;
