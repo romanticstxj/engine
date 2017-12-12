@@ -187,7 +187,7 @@ public class BaiduHandler extends MediaBaseHandler {
 			mediaRequest.setH(imp.getVideo().getH());
         }else if(imp.hasNative()){
         	for (Asset asset : imp.getNative().getAssetsList()) {
-        		if(asset.hasImg()){
+        		if(asset.hasImg() && asset.getImg().getType() == Imp.Native.Image.ImageAssetType.MAIN){
         			mediaRequest.setW(asset.getImg().getW());
         			mediaRequest.setH(asset.getImg().getH());
         		}
@@ -393,18 +393,22 @@ public class BaiduHandler extends MediaBaseHandler {
 							if (mediaResponse.getAdm().size() > 1) {
 								if (mediaResponse.getAdm().size() > imageIndex) {
 									image.setUrl(mediaResponse.getAdm().get(imageIndex++));
-									image.setW(mediaBid.getRequestBuilder().getW());
-									image.setH(mediaBid.getRequestBuilder().getH());
+									image.setW(requestAsset.getImg().getW());
+									image.setH(requestAsset.getImg().getH());
 								}
 							} else {
 								if (requestAsset.getRequired()) {
 									image.setUrl(mediaResponse.getAdm().get(0));
-									image.setW(mediaBid.getRequestBuilder().getW());
-									image.setH(mediaBid.getRequestBuilder().getH());
+									image.setW(requestAsset.getImg().getW());
+									image.setH(requestAsset.getImg().getH());
 								}
 							}
 						} else {
-							image.setUrl(StringUtil.toString(mediaResponse.getIcon()));
+							if (!StringUtils.isEmpty(mediaResponse.getIcon()) || requestAsset.getRequired()) {
+								image.setUrl(StringUtil.toString(mediaResponse.getIcon()));
+								image.setW(requestAsset.getImg().getW());
+								image.setH(requestAsset.getImg().getH());
+							}
 						}
 
                 		asset.setImg(image);
