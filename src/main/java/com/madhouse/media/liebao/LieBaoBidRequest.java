@@ -147,7 +147,7 @@ public class LieBaoBidRequest {
     }
 
     @SuppressWarnings("unused")
-    class Imp {
+    public static class Imp {
         private String id;//string required 曝光ID，通常从1开始
         private String tagid;//string optional 广告位标识ID
         private Float bidfloor;//Float required 竞价底价， 单位：中国地区CNY（元），其他国家USD(美元)，默认 0.01/CPM
@@ -231,7 +231,7 @@ public class LieBaoBidRequest {
             this.ext = ext;
         }
 
-        class Pmp {
+        public static class Pmp {
             @JSONField(name = "private_auction")
             private Integer privateAuction;//Integer optional 标识在Deal对象中指明的席位的竞拍合格标准， 0标识接受所有竞拍， 1标识 竞拍受deals属性中描述的规则的限制
             private List<Deal> deals;//object array optional 一组Deal对象， 用于传输适用于本次展 示的交易信息
@@ -261,7 +261,7 @@ public class LieBaoBidRequest {
                 this.ext = ext;
             }
 
-            class Deal {
+            public static class Deal {
                 private String id;//string required 直接交易的唯一ID
                 private Float bidfloor;//Float optional 竞价底价， 单位：中国地区CNY（元），其他国家USD(美元)，默认 0.01/CPM
                 private String bidfloorcur;//string optional 货币，使用ISO­4217标准，暂支持一种国内：CNY海外：USD单位：元/千次展现
@@ -310,7 +310,7 @@ public class LieBaoBidRequest {
             }
         }
 
-        class Video {
+        public static class Video {
             private List<String> mimes;//string array required 支持的视频格式（video/mp4,video/x­ms­wmv）
             private Integer minduration;//Integer optional 视频最短时长（单位：秒）
             private Integer maxduration;//Integer optional 视频最长时长（单位：秒）
@@ -394,7 +394,7 @@ public class LieBaoBidRequest {
             }
         }
 
-        class Banner {
+        public static class Banner {
             private Integer w;//Integer recommended 展示的宽度：像素
             private Integer h;//Integer recommended展示的高度：像素
             private Integer wmin;//Integer optional 展示宽度的最小值：像素
@@ -451,7 +451,7 @@ public class LieBaoBidRequest {
             }
         }
 
-        class Native {
+        public static class Native {
             private String ver;//String optional 版本
             private String request;//string required 请求信息,遵循NATIVE请求接口
             private Object ext;//object optional 扩展字段
@@ -490,10 +490,183 @@ public class LieBaoBidRequest {
             public void setExt(Object ext) {
                 this.ext = ext;
             }
+            @SuppressWarnings("unused")
+            public static class LieBaoNative {
+                @JSONField(name = "native")
+                private NativeTopLevel nativeTopLevel;
+
+                public NativeTopLevel getNativeTopLevel() {
+                    return nativeTopLevel;
+                }
+
+                public void setNativeTopLevel(NativeTopLevel nativeTopLevel) {
+                    this.nativeTopLevel = nativeTopLevel;
+                }
+
+                public static class NativeTopLevel {
+                    private List<Assets> assets;//Object array required 请求位置的信息
+
+                    public List<Assets> getAssets() {
+                        return assets;
+                    }
+
+                    public void setAssets(List<Assets> assets) {
+                        this.assets = assets;
+                    }
+
+                    public static class Assets {
+                        private Integer id;//Integer optional 位置ID，
+                        private Integer required;//Integer optional 1—需要此asset 0—不需要
+                        private Img img;//object optional 图片属性，用于样式区别
+                        private Title title;//object optional 标题属性
+                        private Data data;//object optional 描述属性
+
+                        public Integer getId() {
+                            return id;
+                        }
+
+                        public void setId(Integer id) {
+                            this.id = id;
+                        }
+
+                        public Integer getRequired() {
+                            return required;
+                        }
+
+                        public void setRequired(Integer required) {
+                            this.required = required;
+                        }
+
+                        public Img getImg() {
+                            return img;
+                        }
+
+                        public void setImg(Img img) {
+                            this.img = img;
+                        }
+
+                        public Title getTitle() {
+                            return title;
+                        }
+
+                        public void setTitle(Title title) {
+                            this.title = title;
+                        }
+
+                        public Data getData() {
+                            return data;
+                        }
+
+                        public void setData(Data data) {
+                            this.data = data;
+                        }
+
+                        @SuppressWarnings("SpellCheckingInspection")
+                        public static class Img {
+                            private Integer type;//Integer optional 图片类型，见附录4.3
+                            private Integer w;//Integer optional 图片宽，见附录4.4
+                            private Integer h;//Integer optional 图片高，见附录4.4
+                            private Integer wmin;//Integer optional 图片最小宽
+                            private Integer hmin;//Integer optional 图片最小高
+                            private List<String> mimes;//String array optional 支持的MIME type，目前只支持 image/jpeg
+                            private Object ext;//object optional 扩展字段
+
+                            public Integer getType() {
+                                return type;
+                            }
+
+                            public void setType(Integer type) {
+                                this.type = type;
+                            }
+
+                            public Integer getW() {
+                                return w;
+                            }
+
+                            public void setW(Integer w) {
+                                this.w = w;
+                            }
+
+                            public Integer getH() {
+                                return h;
+                            }
+
+                            public void setH(Integer h) {
+                                this.h = h;
+                            }
+
+                            public Integer getWmin() {
+                                return wmin;
+                            }
+
+                            public void setWmin(Integer wmin) {
+                                this.wmin = wmin;
+                            }
+
+                            public Integer getHmin() {
+                                return hmin;
+                            }
+
+                            public void setHmin(Integer hmin) {
+                                this.hmin = hmin;
+                            }
+
+                            public List<String> getMimes() {
+                                return mimes;
+                            }
+
+                            public void setMimes(List<String> mimes) {
+                                this.mimes = mimes;
+                            }
+
+                            public Object getExt() {
+                                return ext;
+                            }
+
+                            public void setExt(Object ext) {
+                                this.ext = ext;
+                            }
+                        }
+
+                        public static class Title {
+                            private Integer len;//Integer optional 小于等于100字符
+
+                            public Integer getLen() {
+                                return len;
+                            }
+
+                            public void setLen(Integer len) {
+                                this.len = len;
+                            }
+                        }
+
+                        public static class Data {
+                            private Integer type;//Integer optional 见附录4.5
+                            private Integer len;//Integer optional 长度小于等于500
+
+                            public Integer getType() {
+                                return type;
+                            }
+
+                            public void setType(Integer type) {
+                                this.type = type;
+                            }
+
+                            public Integer getLen() {
+                                return len;
+                            }
+
+                            public void setLen(Integer len) {
+                                this.len = len;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    class App {
+    public static class App {
         private String id;//string recommend 平台设置的APPID
         private String name;//string optional 应用名称
         private String bundle;//string optional 包名
@@ -603,7 +776,7 @@ public class LieBaoBidRequest {
             this.ext = ext;
         }
 
-        class Publisher {
+        public static class Publisher {
             private String id;//string recommend 平台设置的publisherid
             private String name;//string optional publisher名称
             private String cat;//string optional 对应类别，暂为空
@@ -653,7 +826,7 @@ public class LieBaoBidRequest {
     }
 
     @SuppressWarnings("unused")
-    class Device {
+    public static class Device {
         private String ua;//string recommend Browser User Agent
         private Geo geo;//object recommend 设备位置信息
         private String ip;//string recommend IPv4
@@ -826,7 +999,7 @@ public class LieBaoBidRequest {
             this.ext = ext;
         }
 
-        class Geo {
+        public static class Geo {
             private Double lat;//double optional 纬度 暂不支持
             private Double lon;//Double optional 经度 暂不支持
             private String country;//string optional 国家，SO­3166­1­alpha­3 标准
@@ -902,7 +1075,7 @@ public class LieBaoBidRequest {
         }
     }
 
-    class User {
+    public static class User {
         private String buyerid;//string recommended 买方提供的ID，暂无
         private Integer yob;//Integer optional 4位出生年 暂无
         private String gender;//string optional 性别 M—男 F—女 O—未知
@@ -951,176 +1124,3 @@ public class LieBaoBidRequest {
     }
 }
 
-@SuppressWarnings("unused")
-class LieBaoNative {
-    @JSONField(name = "native")
-    private NativeTopLevel nativeTopLevel;
-
-    public NativeTopLevel getNativeTopLevel() {
-        return nativeTopLevel;
-    }
-
-    public void setNativeTopLevel(NativeTopLevel nativeTopLevel) {
-        this.nativeTopLevel = nativeTopLevel;
-    }
-
-    class NativeTopLevel {
-        private List<Assets> assets;//Object array required 请求位置的信息
-
-        public List<Assets> getAssets() {
-            return assets;
-        }
-
-        public void setAssets(List<Assets> assets) {
-            this.assets = assets;
-        }
-
-        class Assets {
-            private Integer id;//Integer optional 位置ID，
-            private Integer required;//Integer optional 1—需要此asset 0—不需要
-            private Img img;//object optional 图片属性，用于样式区别
-            private Title title;//object optional 标题属性
-            private Data data;//object optional 描述属性
-
-            public Integer getId() {
-                return id;
-            }
-
-            public void setId(Integer id) {
-                this.id = id;
-            }
-
-            public Integer getRequired() {
-                return required;
-            }
-
-            public void setRequired(Integer required) {
-                this.required = required;
-            }
-
-            public Img getImg() {
-                return img;
-            }
-
-            public void setImg(Img img) {
-                this.img = img;
-            }
-
-            public Title getTitle() {
-                return title;
-            }
-
-            public void setTitle(Title title) {
-                this.title = title;
-            }
-
-            public Data getData() {
-                return data;
-            }
-
-            public void setData(Data data) {
-                this.data = data;
-            }
-
-            @SuppressWarnings("SpellCheckingInspection")
-            class Img {
-                private Integer type;//Integer optional 图片类型，见附录4.3
-                private Integer w;//Integer optional 图片宽，见附录4.4
-                private Integer h;//Integer optional 图片高，见附录4.4
-                private Integer wmin;//Integer optional 图片最小宽
-                private Integer hmin;//Integer optional 图片最小高
-                private List<String> mimes;//String array optional 支持的MIME type，目前只支持 image/jpeg
-                private Object ext;//object optional 扩展字段
-
-                public Integer getType() {
-                    return type;
-                }
-
-                public void setType(Integer type) {
-                    this.type = type;
-                }
-
-                public Integer getW() {
-                    return w;
-                }
-
-                public void setW(Integer w) {
-                    this.w = w;
-                }
-
-                public Integer getH() {
-                    return h;
-                }
-
-                public void setH(Integer h) {
-                    this.h = h;
-                }
-
-                public Integer getWmin() {
-                    return wmin;
-                }
-
-                public void setWmin(Integer wmin) {
-                    this.wmin = wmin;
-                }
-
-                public Integer getHmin() {
-                    return hmin;
-                }
-
-                public void setHmin(Integer hmin) {
-                    this.hmin = hmin;
-                }
-
-                public List<String> getMimes() {
-                    return mimes;
-                }
-
-                public void setMimes(List<String> mimes) {
-                    this.mimes = mimes;
-                }
-
-                public Object getExt() {
-                    return ext;
-                }
-
-                public void setExt(Object ext) {
-                    this.ext = ext;
-                }
-            }
-
-            class Title {
-                private Integer len;//Integer optional 小于等于100字符
-
-                public Integer getLen() {
-                    return len;
-                }
-
-                public void setLen(Integer len) {
-                    this.len = len;
-                }
-            }
-
-            class Data {
-                private Integer type;//Integer optional 见附录4.5
-                private Integer len;//Integer optional 长度小于等于500
-
-                public Integer getType() {
-                    return type;
-                }
-
-                public void setType(Integer type) {
-                    this.type = type;
-                }
-
-                public Integer getLen() {
-                    return len;
-                }
-
-                public void setLen(Integer len) {
-                    this.len = len;
-                }
-            }
-        }
-    }
-}
