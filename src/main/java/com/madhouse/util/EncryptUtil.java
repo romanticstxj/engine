@@ -13,17 +13,17 @@ import java.util.regex.Pattern;
  */
 public class EncryptUtil {
     public enum Type {
-        MD5("MD5", "^[0-9a-f]{32}$"),
-        SHA1("SHA1", "^[0-9a-f]{40}$"),
-        HMAC_MD5("HmacMD5", "^[0-9a-f]{32}$"),
-        HMAC_SHA1("HmacSHA1", "^[0-9a-f]{40}$");
+        MD5("MD5", Pattern.compile("^[0-9a-f]{32}$", Pattern.CASE_INSENSITIVE)),
+        SHA1("SHA1", Pattern.compile("^[0-9a-f]{40}$", Pattern.CASE_INSENSITIVE)),
+        HMAC_MD5("HmacMD5", Pattern.compile("^[0-9a-f]{32}$", Pattern.CASE_INSENSITIVE)),
+        HMAC_SHA1("HmacSHA1", Pattern.compile("^[0-9a-f]{40}$", Pattern.CASE_INSENSITIVE));
 
         private String name;
-        private String format;
+        private Pattern pattern;
 
-        private Type(String name, String format) {
+        private Type(String name, Pattern format) {
             this.name = name;
-            this.format = format;
+            this.pattern = format;
         }
 
         public String getName() {
@@ -34,12 +34,12 @@ public class EncryptUtil {
             this.name = name;
         }
 
-        public String getFormat() {
-            return format;
+        public Pattern getPattern() {
+            return pattern;
         }
 
-        public void setFormat(String format) {
-            this.format = format;
+        public void setPattern(Pattern pattern) {
+            this.pattern = pattern;
         }
     }
 
@@ -108,9 +108,7 @@ public class EncryptUtil {
     }
 
     public static boolean formatCheck(Type type, String text) {
-        Pattern pattern = Pattern.compile(type.getFormat(), Pattern.UNICODE_CASE);
-
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = type.getPattern().matcher(text);
         return matcher.matches();
     }
 }
