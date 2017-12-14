@@ -37,7 +37,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                if (!BidValidateUtil.validateMediaRequest(mediaRequest, logger)) {
+                if (!this.checkRequestParam(mediaRequest)) {
                     outputStreamWrite(resp, null);
                     return false;
                 }
