@@ -174,23 +174,25 @@ public class LieBaoHandler extends MediaBaseHandler {
 
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
             if (!StringUtils.isEmpty(device.getCarrier())) {
-                // TODO 猎豹没有提供carrier附录
-//                switch (device.getCarrier()) {
-//                    case LieBaoConstants.Carrier.CHINA_MOBILE: {
-//                        mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
-//                        break;
-//                    }
-//
-//                    case LieBaoConstants.Carrier.CHINA_UNICOM: {
-//                        mediaRequest.setCarrier(Constant.Carrier.CHINA_UNICOM);
-//                        break;
-//                    }
-//
-//                    case LieBaoConstants.Carrier.CHINA_TELECOM: {
-//                        mediaRequest.setCarrier(Constant.Carrier.CHINA_TELECOM);
-//                        break;
-//                    }
-//                }
+                // 使用mnc+mcc识别码，默认UNKNOWN
+                switch (device.getCarrier()) {
+                    case LieBaoConstants.Carrier.CHINA_MOBILE: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
+                        break;
+                    }
+
+                    case LieBaoConstants.Carrier.CHINA_UNICOM: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_UNICOM);
+                        break;
+                    }
+
+                    case LieBaoConstants.Carrier.CHINA_TELECOM: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_TELECOM);
+                        break;
+                    }
+                    default:
+                        mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
+                }
             }
 
             if (impression.getBidfloor() != null) {

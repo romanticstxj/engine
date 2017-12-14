@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LieBaoConstants {
-    class AdType {
+    public static class AdType {
         public static final float NATIVE_BIG = 1200f / 628f;
         public static final float NATIVE_SMALL = 84f / 84f;
         public static final float BANNER_IAB = 300f / 250f;
@@ -19,18 +19,18 @@ public class LieBaoConstants {
         public static final float VIDEO_VER = 720f / 1280f;
     }
 
-    public class ConnectionType {
+    public static class ConnectionType {
         public static final int UNKNOWN = 0;
         public static final int WIFI = 2;
     }
 
-    public class DeviceType {
+    public static class DeviceType {
         public static final int UNKNOWN = 0;
         public static final int PHONE = 4;
         public static final int TABLET = 5;
     }
 
-    public class ImgType {
+    public static class ImgType {
         public static final int ICON = 1;
         public static final int LOGO = 2;
         public static final int MAIN_IGMAGE = 3;
@@ -38,7 +38,7 @@ public class LieBaoConstants {
         public static final int BANNER = 5;
     }
 
-    public class App {
+    public static class App {
         public static final String APPNAME = "liebao";
         public static final String BUNDLE = "com.liebao";
     }
@@ -48,7 +48,7 @@ public class LieBaoConstants {
      * 国内：CNY
      * 海外：USD
      */
-    public class MoneyMark {
+    public static class MoneyMark {
         public static final String CNY = "CNY";
         public static final String USD = "USD";
     }
@@ -75,5 +75,10 @@ public class LieBaoConstants {
             wrapperList.add(WRAPPER_THREE);
             WRAPPER_LIST = wrapperList;
         }
+    }
+    public static class Carrier{
+        public static final String CHINA_MOBILE  = "46000";
+        public static final String CHINA_UNICOM  = "46001";
+        public static final String CHINA_TELECOM = "46003";
     }
 }
