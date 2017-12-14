@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.madhouse.util.EncryptUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Logger;
@@ -350,26 +351,42 @@ public class CacheManager implements Runnable {
     }
 
     public boolean isBlockedDevice(String ip, String ifa, String didmd5, String dpidmd5) {
-        if (!StringUtils.isEmpty(ip) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP())) {
-            if (this.metaData.getBlockedDeviceIP().contains(ip)) {
+        if (!StringUtils.isEmpty(ip)) {
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP()) &&
+                    this.metaData.getBlockedDeviceIP().contains(ip)) {
                 return true;
             }
         }
 
-        if (!StringUtils.isEmpty(ifa) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA())) {
-            if (this.metaData.getBlockedDeviceIFA().contains(ifa)) {
+        if (!StringUtils.isEmpty(ifa)) {
+            if (!StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", ifa)) {
+                return true;
+            }
+
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
+                    this.metaData.getBlockedDeviceIFA().contains(ifa)) {
                 return true;
             }
         }
 
-        if (!StringUtils.isEmpty(didmd5) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5())) {
-            if (this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
+        if (!StringUtils.isEmpty(didmd5)) {
+            if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, didmd5)) {
+                return true;
+            }
+
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5()) &&
+                    this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
                 return true;
             }
         }
 
-        if (!StringUtils.isEmpty(dpidmd5) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5())) {
-            if (this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
+        if (!StringUtils.isEmpty(dpidmd5)) {
+            if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
+                return true;
+            }
+
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
+                    this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
                 return true;
             }
         }

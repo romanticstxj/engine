@@ -7,7 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -111,58 +112,12 @@ public class StringUtil {
         return null;
     }
 
-    public static final String getMD5(InputStream is) {
-        if (is != null) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-
-                int len = 0;
-                byte[] buffer = new byte[4096];
-                if ((len = is.read(buffer)) > 0) {
-                    md.update(buffer, 0, len);
-                }
-
-                byte[] data = md.digest();
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
-        }
-        return null;
-    }
-
     public static final String getMD5(String str) {
-        if (str != null) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                byte[] data = md.digest(str.getBytes());
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
+        byte[] data = EncryptUtil.getMessageDigest(EncryptUtil.Type.MD5, str.getBytes());
+        if (data != null) {
+            return bytesToHex(data);
         }
 
-        return null;
-    }
-
-    public static final String getMD5(byte[] input, int off, int len) {
-        if (input != null && input.length >= off + len) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                md.update(input, off, len);
-                byte[] data = md.digest();
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
-        }
-        return null;
-    }
-
-    public static final String getMD5(byte[] input) {
-        if (input != null && input.length >= 0) {
-            return StringUtil.getMD5(input, 0, input.length);
-        }
         return null;
     }
 
@@ -278,5 +233,12 @@ public class StringUtil {
         }
 
         return false;
+    }
+
+    public static boolean formatCheck(String pattern, String text) {
+        Pattern var = Pattern.compile(pattern, Pattern.UNICODE_CASE);
+        
+        Matcher matcher = var.matcher(text);
+        return matcher.matches();
     }
 }
