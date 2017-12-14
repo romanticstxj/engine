@@ -110,9 +110,9 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setW(impression.getVideo().getW());
                 mediaRequest.setH(impression.getVideo().getH());
             } else if (impression.getNativeObject() != null && impression.getNativeObject().getRequestNativeObject() != null) {
-                LieBaoNative nativeObject = impression.getNativeObject().getRequestNativeObject();
-                List<LieBaoNative.NativeTopLevel.Assets> assetsList = nativeObject.getNativeTopLevel().getAssets();
-                LieBaoNative.NativeTopLevel.Assets assets = getMainImageAssets(assetsList);
+                LieBaoBidRequest.Imp.Native.LieBaoNative nativeObject = impression.getNativeObject().getRequestNativeObject();
+                List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList = nativeObject.getNativeTopLevel().getAssets();
+                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets = getMainImageAssets(assetsList);
                 bidRequest.setSelectedAssetsId(assets.getId());
                 adspaceKey.append(assets.getImg().getW()).append(":");
                 adspaceKey.append(assets.getImg().getH()).append(":");
@@ -174,23 +174,25 @@ public class LieBaoHandler extends MediaBaseHandler {
 
             mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
             if (!StringUtils.isEmpty(device.getCarrier())) {
-                // TODO 猎豹没有提供carrier附录
-//                switch (device.getCarrier()) {
-//                    case LieBaoConstants.Carrier.CHINA_MOBILE: {
-//                        mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
-//                        break;
-//                    }
-//
-//                    case LieBaoConstants.Carrier.CHINA_UNICOM: {
-//                        mediaRequest.setCarrier(Constant.Carrier.CHINA_UNICOM);
-//                        break;
-//                    }
-//
-//                    case LieBaoConstants.Carrier.CHINA_TELECOM: {
-//                        mediaRequest.setCarrier(Constant.Carrier.CHINA_TELECOM);
-//                        break;
-//                    }
-//                }
+                // 使用mnc+mcc识别码，默认UNKNOWN
+                switch (device.getCarrier()) {
+                    case LieBaoConstants.Carrier.CHINA_MOBILE: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_MOBILE);
+                        break;
+                    }
+
+                    case LieBaoConstants.Carrier.CHINA_UNICOM: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_UNICOM);
+                        break;
+                    }
+
+                    case LieBaoConstants.Carrier.CHINA_TELECOM: {
+                        mediaRequest.setCarrier(Constant.Carrier.CHINA_TELECOM);
+                        break;
+                    }
+                    default:
+                        mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
+                }
             }
 
             if (impression.getBidfloor() != null) {
@@ -249,8 +251,8 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setName(LieBaoConstants.App.APPNAME);
                 mediaRequest.setBundle(LieBaoConstants.App.BUNDLE);
                 mediaRequest.setType(Constant.MediaType.APP);
-                // TODO app非必填，response的必填参数bundle怎么填？
-                LieBaoBidRequest.App app = bidRequest.new App();
+
+                LieBaoBidRequest.App app = new LieBaoBidRequest.App();
                 app.setBundle(LieBaoConstants.App.BUNDLE);
                 app.setName(LieBaoConstants.App.APPNAME);
                 bidRequest.setApp(app);
@@ -273,8 +275,8 @@ public class LieBaoHandler extends MediaBaseHandler {
         return null;
     }
 
-    private LieBaoNative.NativeTopLevel.Assets getMainImageAssets(List<LieBaoNative.NativeTopLevel.Assets> assetsList) {
-        for (LieBaoNative.NativeTopLevel.Assets assets : assetsList) {
+    private LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets getMainImageAssets(List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList) {
+        for (LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets : assetsList) {
             if (assets.getImg().getType() == LieBaoConstants.ImgType.MAIN_IGMAGE) {
                 return assets;
             }
@@ -297,11 +299,11 @@ public class LieBaoHandler extends MediaBaseHandler {
                     bidResponse.setId(bidRequest.getId());
                     bidResponse.setBidid(mediaBid.getImpid());
 
-                    LieBaoBidResponse.Seatbid seatBid = bidResponse.new Seatbid();
+                    LieBaoBidResponse.Seatbid seatBid = new LieBaoBidResponse.Seatbid();
                     bidResponse.setSeatbid(new LinkedList<>());
                     bidResponse.getSeatbid().add(seatBid);
 
-                    LieBaoBidResponse.Seatbid.Bid bid = seatBid.new Bid();
+                    LieBaoBidResponse.Seatbid.Bid bid = new LieBaoBidResponse.Seatbid.Bid();
                     seatBid.setBid(new LinkedList<>());
                     seatBid.getBid().add(bid);
 
@@ -309,8 +311,9 @@ public class LieBaoHandler extends MediaBaseHandler {
                     bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
                     // ssp engine价格单位是分，猎豹是元
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() / 100 : 0);
-                    bid.setBundle(bidRequest.getApp().getBundle());
-                    // TODO 分别构建native，banner，video，的adm字段
+                    // 当前只对接banner 开屏，可以没有bundle字段
+                    // bid.setBundle(bidRequest.getApp().getBundle());
+                    // 分别构建native，banner，video，的adm字段,目前只构建banner 开屏
                     Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
                     // 这个字段是自定义的，用来在序列化response时选中适当的数据类型
                     float admType = bidRequest.getAdmType();
@@ -353,20 +356,20 @@ public class LieBaoHandler extends MediaBaseHandler {
     }
 
     private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
-        LieBaoBidResponse.Seatbid.Bid.AdmBanner admBanner = bid.new AdmBanner();
+        LieBaoBidResponse.Seatbid.Bid.AdmBanner admBanner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner();
         bid.setAdmBanner(admBanner);
-        LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner banner = admBanner.new Banner();
+        LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner banner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner();
         admBanner.setBanner(banner);
         List<String> impUrls = new ArrayList<>(monitor.getImpurl().size());
         for (Track track : monitor.getImpurl()) {
             impUrls.add(track.getUrl());
         }
         banner.setImptrackers(impUrls);
-        LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Link link = banner.new Link();
+        LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Link link = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Link();
         link.setClicktrackers(monitor.getClkurl());
         link.setUrl(mediaResponse.getLpgurl());
         banner.setLink(link);
-        LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = banner.new Img();
+        LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img();
         img.setH(mediaBidMetaData.getMaterialMetaData().getH());
         img.setW(mediaBidMetaData.getMaterialMetaData().getW());
         img.setUrl(mediaBidMetaData.getMaterialMetaData().getMediaMaterialUrl());
@@ -375,9 +378,9 @@ public class LieBaoHandler extends MediaBaseHandler {
 
     private void buildAdmNative(LieBaoBidRequest bidRequest, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
         bid.setAdmType(LieBaoConstants.AdType.NATIVE_BIG);
-        LieBaoBidResponse.Seatbid.Bid.AdmNative admNative = bid.new AdmNative();
+        LieBaoBidResponse.Seatbid.Bid.AdmNative admNative = new LieBaoBidResponse.Seatbid.Bid.AdmNative();
         bid.setAdmNative(admNative);
-        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative adsResNative = admNative.new ResponseNative();
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative adsResNative = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative();
         admNative.setResponseNative(adsResNative);
         // 封装展示，点击跟踪链接
         if (monitor != null) {
@@ -387,7 +390,7 @@ public class LieBaoHandler extends MediaBaseHandler {
             for (Track track : monitor.getImpurl()) {
                 imptrackers.add(track.getUrl());
             }
-            LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Link link = adsResNative.new Link();
+            LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Link link = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Link();
             // 设置点击跟踪链接
             link.setClicktrackers(monitor.getClkurl());
             // 设置落地页
@@ -395,7 +398,7 @@ public class LieBaoHandler extends MediaBaseHandler {
             adsResNative.setLink(link);
         }
         // 设置素材信息
-        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets assets = adsResNative.new Assets();
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets assets = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets();
         ArrayList<LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets> assetsArrayList = new ArrayList<>();
         assetsArrayList.add(assets);
         adsResNative.setAssets(assetsArrayList);
