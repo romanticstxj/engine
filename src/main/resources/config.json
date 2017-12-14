@@ -61,7 +61,10 @@
             }, {
                 "path": "/adcall/baidu/bidrequest",
                 "className": "com.madhouse.media.baidu.BaiduHandler"
-             }
+            }, {
+                "path": "/adcall/liebao/bidrequest",
+                "className": "com.madhouse.media.liebao.LieBaoHandler"
+            }
         ],
         "impression": "/adtrack/impression",
         "click": "/adtrack/click"
