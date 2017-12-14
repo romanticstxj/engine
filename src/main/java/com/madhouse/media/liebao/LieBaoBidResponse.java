@@ -53,7 +53,7 @@ public class LieBaoBidResponse {
         this.ext = ext;
     }
 
-    class Seatbid {
+    public static class Seatbid {
         private List<Bid> bid;//Object array required 与impression对应
         private String seat;//string optional Bidder seat name
         private Integer group;//int optional 0—独赢 1­组赢，暂只支持0
@@ -92,7 +92,7 @@ public class LieBaoBidResponse {
         }
 
         @SuppressWarnings("unused")
-        class Bid {
+        public static class Bid {
             private String id;//string optional Bidder定义的ID，用于日志跟踪
             private String impid;//string optional 对应imp对象中的id
             private float price;//float required 竞价价格，单位：元/千次展现
@@ -108,11 +108,11 @@ public class LieBaoBidResponse {
             private String nurl;//String recommend Win url
             private Object ext;//object optional 扩展字段
 
-            // TODO VAST协议待定
+            // VAST协议 暂不实现
             @JSONField(serialize = false)
             private AdmNative admNative;
 
-            // TODO IAB Banner待定，这里只实现了开屏Banner
+            // 猎豹：雅儿(153783658) 2017-12-11 15:23:06 国内的字段应该是banner  没有iab
             @JSONField(serialize = false)
             private AdmBanner admBanner;
             // 辅助字段
@@ -175,7 +175,7 @@ public class LieBaoBidResponse {
                 this.addomain = addomain;
             }
 
-            // TODO 完善不同的adm格式返回
+            // 目前只对接banner 开屏。
             public String getAdm() {
                 if (admType == LieBaoConstants.AdType.NATIVE_BIG || admType == LieBaoConstants.AdType.NATIVE_SMALL) {
                     return JSON.toJSONString(admNative);
@@ -263,7 +263,7 @@ public class LieBaoBidResponse {
                 this.admBanner = admBanner;
             }
 
-            class AdmBanner {
+            public static class AdmBanner {
                 private Banner banner;//object required TOP LEVEL
 
                 public Banner getBanner() {
@@ -274,7 +274,7 @@ public class LieBaoBidResponse {
                     this.banner = banner;
                 }
 
-                class Banner {
+                public static class Banner {
                     private List<String> imptrackers;//String array required 展现跟踪链接
                     private Link link;//object required 点击跳转
                     private Img img;//object required 广告素材
@@ -303,7 +303,7 @@ public class LieBaoBidResponse {
                         this.img = img;
                     }
 
-                    class Link {
+                    public static class Link {
                         private List<String> clicktrackers;//String array optional 点击跟踪链接
                         private String url;//string required 跳转URL
 
@@ -324,7 +324,7 @@ public class LieBaoBidResponse {
                         }
                     }
 
-                    class Img {
+                    public static class Img {
                         private String url;//string required 图片下载地址
                         private Integer w;//int required 图片宽，见附录4.4
                         private Integer h;//int required 图片高，见附录4.4
@@ -356,7 +356,7 @@ public class LieBaoBidResponse {
                 }
             }
 
-            class AdmNative {
+            public static class AdmNative {
                 @JSONField(name = "native")
                 private ResponseNative responseNative;
 
@@ -368,7 +368,7 @@ public class LieBaoBidResponse {
                     this.responseNative = responseNative;
                 }
 
-                class ResponseNative {
+                public static class ResponseNative {
                     private List<String> imptrackers;//String array required 展现跟踪链接
                     private Link link;//object required 点击跳转
                     private List<Assets> assets;//array required 广告素材
@@ -397,7 +397,7 @@ public class LieBaoBidResponse {
                         this.assets = assets;
                     }
 
-                    class Link {
+                    public static class Link {
                         private List<String> clicktrackers;//String array optional 点击跟踪链接
                         private String url;//string required 跳转URL
                         private String landurl;//string optional h5落地页url
@@ -436,7 +436,7 @@ public class LieBaoBidResponse {
                         }
                     }
 
-                    class Assets {
+                    public static class Assets {
                         private Integer id;//Int required 请求时的assets id
                         private Title title;//Json Object optional 标题
                         private Data data;//Json Object optional 描述
@@ -483,7 +483,7 @@ public class LieBaoBidResponse {
                             this.img = img;
                         }
 
-                        class Title {
+                        public static class Title {
                             private String text;//string required 标题描述
 
                             public String getText() {
@@ -495,7 +495,7 @@ public class LieBaoBidResponse {
                             }
                         }
 
-                        class Data {
+                        public static class Data {
                             private String label;//string required 数据类型，目前只有描述”desc” 见附录有4.6
                             private String value;// string required 描述
 
@@ -516,7 +516,7 @@ public class LieBaoBidResponse {
                             }
                         }
 
-                        class Link {
+                        public static class Link {
                             private String url;//string optional 跳转URL，存在替换外层url
                             private String landurl;//string optional h5落地页url，存在替换外层landurl
                             private List<String> clicktrackers;//string array optional 点击跟踪，存在替换外层clicktrackers
@@ -555,7 +555,7 @@ public class LieBaoBidResponse {
                             }
                         }
 
-                        class Img {
+                        public static class Img {
                             private String url;//string required 图片下载地址
                             private Integer w;//int required 图片宽，见附录4.4
                             private Integer h;//int required 图片高，见附录4.4
