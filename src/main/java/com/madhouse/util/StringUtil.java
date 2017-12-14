@@ -235,10 +235,10 @@ public class StringUtil {
         return false;
     }
 
-    public static boolean formatCheck(String pattern, String text) {
-        Pattern var = Pattern.compile(pattern, Pattern.UNICODE_CASE);
+    public static boolean formatCheck(String regex, String text) {
+        Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE);
         
-        Matcher matcher = var.matcher(text);
+        Matcher matcher = pattern.matcher(text);
         return matcher.matches();
     }
 }
