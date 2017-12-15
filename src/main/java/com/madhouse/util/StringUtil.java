@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
@@ -240,5 +238,18 @@ public class StringUtil {
         
         Matcher matcher = pattern.matcher(text);
         return matcher.matches();
+    }
+
+    public static String[] split(String text, String delim) {
+        int pos = 0;
+        List<String> result = new LinkedList<>();
+
+        while ((pos = text.indexOf(delim)) >= 0) {
+            result.add(text.substring(0, pos));
+            text = text.substring(pos + delim.length());
+        }
+
+        result.add(text);
+        return result.toArray(new String[result.size()]);
     }
 }

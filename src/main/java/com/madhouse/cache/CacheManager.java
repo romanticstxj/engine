@@ -606,15 +606,18 @@ public class CacheManager implements Runnable {
             for (Map.Entry entry1 : policyMetaData.getAdspaceInfoMap().entrySet()) {
                 PolicyMetaData.AdspaceInfo adspaceInfo = (PolicyMetaData.AdspaceInfo)entry1.getValue();
                 if (adspaceInfo.getStatus() > 0) {
-                    String adspaceKey = String.format("%d-%s", adspaceInfo.getId(), StringUtil.toString(adspaceInfo.getDealId()));
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.PLACEMENT, adspaceKey);
-                    HashSet<Long> var2 = var.get(key);
-                    if (var2 == null) {
-                        var2 = new HashSet<>();
-                        var.put(key, var2);
-                    }
+                    String[] dealIds = StringUtil.toString(adspaceInfo.getDealId()).split(",");
+                    for (int i = 0; i < dealIds.length; ++i) {
+                        String adspaceKey = String.format("%d-%s", adspaceInfo.getId(), StringUtil.toString(dealIds[i]));
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.PLACEMENT, adspaceKey);
+                        HashSet<Long> var2 = var.get(key);
+                        if (var2 == null) {
+                            var2 = new HashSet<>();
+                            var.put(key, var2);
+                        }
 
-                    var2.add(policyMetaData.getId());
+                        var2.add(policyMetaData.getId());
+                    }
                 }
             }
 
