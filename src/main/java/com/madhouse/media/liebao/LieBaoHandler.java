@@ -128,7 +128,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setOs(Constant.OSType.IOS);
             }
 
-            float ratio = mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue();
+            float ratio = (float)Math.round(mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue()*10)/10;
             if (ratio == LieBaoConstants.AdType.NATIVE_BIG) {
                 adspaceKey.append("NATIVE_BIG");
                 bidRequest.setAdmType(LieBaoConstants.AdType.NATIVE_BIG);
