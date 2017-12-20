@@ -327,7 +327,9 @@ public class LieBaoHandler extends MediaBaseHandler {
                     } else if (admType == LieBaoConstants.AdType.BANNER_OPEN) {
                         // 当前猎豹只支持image/jpeg类型。
                         String[] split = mediaBidMetaData.getMaterialMetaData().getAdm().get(0).split("\\.");
-                        if (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) {
+                        if ((bidRequest.getImp().get(0).getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
+                                (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
+                                (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
                             // banner 开屏时：
                             buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
                         } else {

@@ -85,14 +85,24 @@ public class LieBaoConstants {
 
     public static class MimeType {
         public static final List<String> IMAGE_JPEG;
+        public static final List<String> IMAGE_PNG;
+        public static final List<String> IMAGE_GIF;
 
         static {
-            List<String> tmpList = new ArrayList<>();
-            tmpList.add("jpe");
-            tmpList.add("jpeg");
-            tmpList.add("jpg");
-            tmpList.add("jpz");
-            IMAGE_JPEG = tmpList;
+            List<String> jpegList = new ArrayList<>();
+            jpegList.add("jpe");
+            jpegList.add("jpeg");
+            jpegList.add("jpg");
+            jpegList.add("jpz");
+            IMAGE_JPEG = jpegList;
+            List<String> pngList = new ArrayList<>();
+            pngList.add("png");
+            pngList.add("pnz");
+            IMAGE_PNG = pngList;
+            List<String> gifList = new ArrayList<>();
+            gifList.add("gif");
+            gifList.add("ifm");
+            IMAGE_GIF = gifList;
         }
     }
 
