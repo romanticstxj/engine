@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.madhouse.util.EncryptUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Logger;
@@ -350,26 +351,42 @@ public class CacheManager implements Runnable {
     }
 
     public boolean isBlockedDevice(String ip, String ifa, String didmd5, String dpidmd5) {
-        if (!StringUtils.isEmpty(ip) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP())) {
-            if (this.metaData.getBlockedDeviceIP().contains(ip)) {
+        if (!StringUtils.isEmpty(ip)) {
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP()) &&
+                    this.metaData.getBlockedDeviceIP().contains(ip)) {
                 return true;
             }
         }
 
-        if (!StringUtils.isEmpty(ifa) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA())) {
-            if (this.metaData.getBlockedDeviceIFA().contains(ifa)) {
+        if (!StringUtils.isEmpty(ifa)) {
+            if (!StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", ifa)) {
+                return true;
+            }
+
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
+                    this.metaData.getBlockedDeviceIFA().contains(ifa)) {
                 return true;
             }
         }
 
-        if (!StringUtils.isEmpty(didmd5) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5())) {
-            if (this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
+        if (!StringUtils.isEmpty(didmd5)) {
+            if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, didmd5)) {
+                return true;
+            }
+
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5()) &&
+                    this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
                 return true;
             }
         }
 
-        if (!StringUtils.isEmpty(dpidmd5) && !ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5())) {
-            if (this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
+        if (!StringUtils.isEmpty(dpidmd5)) {
+            if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
+                return true;
+            }
+
+            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
+                    this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
                 return true;
             }
         }
@@ -571,7 +588,7 @@ public class CacheManager implements Runnable {
 
                 if (!StringUtils.isEmpty(policyMetaData.getEndDate())) {
                     int totalDays = Utility.dateDiff(StringUtil.toDate(policyMetaData.getEndDate()), StringUtil.toDate(currentDate)) + 1;
-                    this.redisMaster.expire(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), totalDays * 86400);
+                    this.redisMaster.expire(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()), (totalDays + 1) * 86400);
                 }
 
                 String totalCount = this.redisSlave.get(String.format(Constant.CommonKey.POLICY_CONTORL_TOTAL, policyMetaData.getId()));
@@ -589,15 +606,18 @@ public class CacheManager implements Runnable {
             for (Map.Entry entry1 : policyMetaData.getAdspaceInfoMap().entrySet()) {
                 PolicyMetaData.AdspaceInfo adspaceInfo = (PolicyMetaData.AdspaceInfo)entry1.getValue();
                 if (adspaceInfo.getStatus() > 0) {
-                    String adspaceKey = String.format("%d-%s", adspaceInfo.getId(), StringUtil.toString(adspaceInfo.getDealId()));
-                    String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.PLACEMENT, adspaceKey);
-                    HashSet<Long> var2 = var.get(key);
-                    if (var2 == null) {
-                        var2 = new HashSet<>();
-                        var.put(key, var2);
-                    }
+                    String[] dealIds = StringUtil.toString(adspaceInfo.getDealId()).split(",");
+                    for (int i = 0; i < dealIds.length; ++i) {
+                        String adspaceKey = String.format("%d-%s", adspaceInfo.getId(), StringUtil.toString(dealIds[i]));
+                        String key = String.format(Constant.CommonKey.TARGET_KEY, policyMetaData.getDeliveryType(), Constant.TargetType.PLACEMENT, adspaceKey);
+                        HashSet<Long> var2 = var.get(key);
+                        if (var2 == null) {
+                            var2 = new HashSet<>();
+                            var.put(key, var2);
+                        }
 
-                    var2.add(policyMetaData.getId());
+                        var2.add(policyMetaData.getId());
+                    }
                 }
             }
 

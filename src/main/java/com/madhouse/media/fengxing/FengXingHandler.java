@@ -8,10 +8,7 @@ import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
-import com.madhouse.util.HttpUtil;
-import com.madhouse.util.ObjectUtils;
-import com.madhouse.util.StringUtil;
-import com.madhouse.util.Utility;
+import com.madhouse.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,7 +46,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                if (!this.validateMediaRequest(mediaRequest)) {
+                if (!this.checkRequestParam(mediaRequest)) {
                     outputStreamWrite(resp, null);
                     return false;
                 }
@@ -111,12 +108,13 @@ public class FengXingHandler extends MediaBaseHandler {
             
             StringBuilder adspaceKey = new StringBuilder();
             adspaceKey.append("FUNADX:");
-            if(!StringUtils.isEmpty(FXConstant.TagId.get(impression.getTagid()))){
+            if (FXConstant.OTTagIds.contains(StringUtil.toString(impression.getTagid()))) {
             	String dealId = mediaRequest.getDealid();
             	if(!StringUtils.isEmpty(dealId) && dealId.length() >=2){
             		adspaceKey.append(dealId.substring(0,2)).append(":");
             	}
             }
+
             adspaceKey.append(StringUtil.toString(impression.getTagid()));
             mediaRequest.setOs(Constant.OSType.UNKNOWN);
             if (os.equals("ANDROID")) {
@@ -294,100 +292,6 @@ public class FengXingHandler extends MediaBaseHandler {
         }
 
         return null;
-    }
-
-    private boolean validateMediaRequest(MediaRequest.Builder mediaRequest) {
-        if (mediaRequest != null) {
-            if (StringUtils.isEmpty(mediaRequest.getAdspacekey())) {
-                logger.warn("adspaceKey is missing.");
-                return false;
-            }
-
-            String adspaceKey = mediaRequest.getAdspacekey();
-            if (StringUtils.isEmpty(mediaRequest.getBid())) {
-                logger.warn("[{}]bid is missing.", adspaceKey);
-                return false;
-            }
-
-            if (StringUtils.isEmpty(mediaRequest.getUa())) {
-                logger.warn("[{}]ua is missing.", adspaceKey);
-                return false;
-            }
-            
-            if (StringUtils.isEmpty(mediaRequest.getName())) {
-                logger.warn("[{}]appName is missing.", adspaceKey);
-                return false;
-            }
-
-            if (StringUtils.isEmpty(mediaRequest.getBundle())) {
-                logger.warn("[{}]pkgName is missing.", adspaceKey);
-                return false;
-            }
-
-            if (StringUtils.isEmpty(mediaRequest.getOsv())) {
-                logger.warn("[{}]osv is missing.", adspaceKey);
-                return false;
-            }
-
-            if (!mediaRequest.hasOs()) {
-                logger.warn("[{}]os is missing.", adspaceKey);
-                return false;
-            }
-           
-            switch (mediaRequest.getOs()) {
-                case Constant.OSType.ANDROID: {
-                    if (StringUtils.isEmpty(mediaRequest.getDid()) && StringUtils.isEmpty(mediaRequest.getDidmd5()) &&
-                            StringUtils.isEmpty(mediaRequest.getDpid()) && StringUtils.isEmpty(mediaRequest.getDpidmd5())) {
-                        logger.warn("[{}]android deviceId is missing.", adspaceKey);
-                        return false;
-                    }
-
-                    break;
-                }
-
-                case Constant.OSType.IOS: {
-                    if (StringUtils.isEmpty(mediaRequest.getDpid()) && StringUtils.isEmpty(mediaRequest.getDpidmd5()) &&
-                            StringUtils.isEmpty(mediaRequest.getIfa())) {
-                        logger.warn("[{}]iOS deviceId is missing.", adspaceKey);
-                        return false;
-                    }
-
-                    break;
-                }
-
-                default: {
-                    if (StringUtils.isEmpty(mediaRequest.getDpid()) && StringUtils.isEmpty(mediaRequest.getDpidmd5()) &&
-                            StringUtils.isEmpty(mediaRequest.getMac()) && StringUtils.isEmpty(mediaRequest.getMacmd5())) {
-                        logger.warn("[{}]deviceId is missing.", adspaceKey);
-                    }
-
-                    break;
-                }
-            }
-
-            if (!mediaRequest.hasCarrier()) {
-                logger.warn("[{}]carrier is missing.", adspaceKey);
-                return false;
-            }
-
-            if (!mediaRequest.hasConnectiontype()) {
-                logger.warn("[{}]connection is missing.", adspaceKey);
-                return false;
-            }
-
-            if (!mediaRequest.hasDevicetype()) {
-                logger.warn("[{}]devicetype is missing.", adspaceKey);
-                return false;
-            }
-
-            if (!mediaRequest.hasCarrier()) {
-                logger.warn("[{}]carrier is missing.", adspaceKey);
-                return false;
-            }
-            return true;
-        }
-
-        return false;
     }
 
     @Override

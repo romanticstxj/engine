@@ -224,7 +224,7 @@ public class SinaHandler extends MediaBaseHandler {
         try {
             if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK && mediaBidMetaData.getMaterialMetaData() !=null ) {
                     SinaResponse result = convertToSinaResponse(mediaBidMetaData);
                     if (result != null) {
                         resp.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -276,7 +276,7 @@ public class SinaHandler extends MediaBaseHandler {
         bid.setImpid(impid);
         bid.setNurl("");
         bid.setPrice((float)mediaResponse.getPrice());
-        bid.setCrid(mediaResponse.getCrid());
+        bid.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
         
         List<SinaResponse.Seatbid.Bid> bidList = new ArrayList<>(1);
         bidList.add(bid);

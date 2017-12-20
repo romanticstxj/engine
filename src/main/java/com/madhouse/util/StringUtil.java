@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -111,58 +110,12 @@ public class StringUtil {
         return null;
     }
 
-    public static final String getMD5(InputStream is) {
-        if (is != null) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-
-                int len = 0;
-                byte[] buffer = new byte[4096];
-                if ((len = is.read(buffer)) > 0) {
-                    md.update(buffer, 0, len);
-                }
-
-                byte[] data = md.digest();
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
-        }
-        return null;
-    }
-
     public static final String getMD5(String str) {
-        if (str != null) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                byte[] data = md.digest(str.getBytes());
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
+        byte[] data = EncryptUtil.getMessageDigest(EncryptUtil.Type.MD5, str.getBytes());
+        if (data != null) {
+            return bytesToHex(data);
         }
 
-        return null;
-    }
-
-    public static final String getMD5(byte[] input, int off, int len) {
-        if (input != null && input.length >= off + len) {
-            try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                md.update(input, off, len);
-                byte[] data = md.digest();
-                return bytesToHex(data);
-            } catch (Exception e) {
-                System.err.println(e.toString());
-            }
-        }
-        return null;
-    }
-
-    public static final String getMD5(byte[] input) {
-        if (input != null && input.length >= 0) {
-            return StringUtil.getMD5(input, 0, input.length);
-        }
         return null;
     }
 
@@ -220,6 +173,17 @@ public class StringUtil {
         return null;
     }
 
+    public static final Date toDate(String date, String format) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat(format);
+            return df.parse(date);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        }
+
+        return null;
+    }
+
     public static final Date toDate(String date) {
         SimpleDateFormat df = null;
 
@@ -267,5 +231,25 @@ public class StringUtil {
         }
 
         return false;
+    }
+
+    public static boolean formatCheck(String regex, String text) {
+        Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE);
+        
+        Matcher matcher = pattern.matcher(text);
+        return matcher.matches();
+    }
+
+    public static String[] split(String text, String delim) {
+        int pos = 0;
+        List<String> result = new LinkedList<>();
+
+        while ((pos = text.indexOf(delim)) >= 0) {
+            result.add(text.substring(0, pos));
+            text = text.substring(pos + delim.length());
+        }
+
+        result.add(text);
+        return result.toArray(new String[result.size()]);
     }
 }

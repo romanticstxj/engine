@@ -12,8 +12,8 @@ import java.util.*;
 public final class Utility {
     private static final Random random = new Random(System.currentTimeMillis());
 
-    public static int nextInt(int bound) {
-        if (bound > 0) {
+    public static int nextInt(Integer bound) {
+        if (bound != null && bound > 0) {
             return random.nextInt(bound);
         }
 
@@ -52,6 +52,6 @@ public final class Utility {
     }
 
     public static int dateDiff(Date dateFrom, Date dateTo) {
-        return (int)((dateFrom.getTime() - dateTo.getTime()) / 86400000);
+        return (int)((dateFrom.getTime() - dateTo.getTime()) / 86400000L);
     }
 }
