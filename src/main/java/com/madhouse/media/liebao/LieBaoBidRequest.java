@@ -439,6 +439,9 @@ public class LieBaoBidRequest {
             }
 
             public void setMimes(List<String> mimes) {
+                for (int i = 0; i < mimes.size(); i++) {
+                    mimes.set(i,mimes.get(i).toLowerCase());
+                }
                 this.mimes = mimes;
             }
 

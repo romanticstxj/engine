@@ -5,18 +5,18 @@ import java.util.List;
 
 public class LieBaoConstants {
     public static class AdType {
-        public static final float NATIVE_BIG = 1200f / 628f;
-        public static final float NATIVE_SMALL = 84f / 84f;
-        public static final float BANNER_IAB = 300f / 250f;
-        public static final float BANNER_OPEN = 480f / 684f;
+        public static final float NATIVE_BIG = (float) Math.round(1200f / 628f * 10) / 10;
+        public static final float NATIVE_SMALL = (float) Math.round(84f / 84f * 10) / 10;
+        public static final float BANNER_IAB = (float) Math.round(300f / 250f * 10) / 10;
+        public static final float BANNER_OPEN = (float) Math.round(480f / 684f * 10) / 10;
         /**
          * 横凭
          */
-        public static final float VIDEO_HOR = 1280f / 720f;
+        public static final float VIDEO_HOR = (float) Math.round(1280f / 720f * 10) / 10;
         /**
          * 竖屏
          */
-        public static final float VIDEO_VER = 720f / 1280f;
+        public static final float VIDEO_VER = (float) Math.round(720f / 1280f * 10) / 10;
     }
 
     public static class ConnectionType {
@@ -76,9 +76,34 @@ public class LieBaoConstants {
             WRAPPER_LIST = wrapperList;
         }
     }
-    public static class Carrier{
-        public static final String CHINA_MOBILE  = "46000";
-        public static final String CHINA_UNICOM  = "46001";
+
+    public static class Carrier {
+        public static final String CHINA_MOBILE = "46000";
+        public static final String CHINA_UNICOM = "46001";
         public static final String CHINA_TELECOM = "46003";
     }
+
+    public static class MimeType {
+        public static final List<String> IMAGE_JPEG;
+        public static final List<String> IMAGE_PNG;
+        public static final List<String> IMAGE_GIF;
+
+        static {
+            List<String> jpegList = new ArrayList<>();
+            jpegList.add("jpe");
+            jpegList.add("jpeg");
+            jpegList.add("jpg");
+            jpegList.add("jpz");
+            IMAGE_JPEG = jpegList;
+            List<String> pngList = new ArrayList<>();
+            pngList.add("png");
+            pngList.add("pnz");
+            IMAGE_PNG = pngList;
+            List<String> gifList = new ArrayList<>();
+            gifList.add("gif");
+            gifList.add("ifm");
+            IMAGE_GIF = gifList;
+        }
+    }
+
 }

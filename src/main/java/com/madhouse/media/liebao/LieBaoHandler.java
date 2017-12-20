@@ -123,12 +123,15 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (os.equals("ANDROID")) {
                 adspaceKey.append("ANDROID").append(":");
                 mediaRequest.setOs(Constant.OSType.ANDROID);
+                mediaRequest.setDid(device.getImei());
+                mediaRequest.setDpid(device.getIfa());
             } else if (os.equals("IOS")) {
                 adspaceKey.append("IOS").append(":");
                 mediaRequest.setOs(Constant.OSType.IOS);
+                mediaRequest.setIfa(device.getIfa());
             }
 
-            float ratio = mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue();
+            float ratio = (float) Math.round(mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue() * 10) / 10;
             if (ratio == LieBaoConstants.AdType.NATIVE_BIG) {
                 adspaceKey.append("NATIVE_BIG");
                 bidRequest.setAdmType(LieBaoConstants.AdType.NATIVE_BIG);
@@ -160,7 +163,6 @@ public class LieBaoHandler extends MediaBaseHandler {
             mediaRequest.setIp(StringUtil.toString(device.getIp()));
             mediaRequest.setUa(StringUtil.toString(device.getUa()));
 
-            mediaRequest.setDid(StringUtil.toString(device.getImei()));
             mediaRequest.setDpidmd5(StringUtil.toString(device.getDpidmd5()));
             mediaRequest.setMake(StringUtil.toString(device.getMake()));
             mediaRequest.setModel(StringUtil.toString(device.getModel()));
@@ -323,8 +325,16 @@ public class LieBaoHandler extends MediaBaseHandler {
                         //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
                         return outputStreamWrite(resp, null);
                     } else if (admType == LieBaoConstants.AdType.BANNER_OPEN) {
-                        // banner 开屏时：
-                        buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
+                        // 当前猎豹只支持image/jpeg类型。
+                        String[] split = mediaBidMetaData.getMaterialMetaData().getAdm().get(0).split("\\.");
+                        if ((bidRequest.getImp().get(0).getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
+                                (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
+                                (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
+                            // banner 开屏时：
+                            buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
+                        } else {
+                            return outputStreamWrite(resp, null);
+                        }
                     } else if (admType == LieBaoConstants.AdType.BANNER_IAB) {
                         // banner IAB时：
                         // buildAdmBannerForIAB(mediaBidMetaData, mediaResponse, bid, monitor);
@@ -372,7 +382,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img();
         img.setH(mediaBidMetaData.getMaterialMetaData().getH());
         img.setW(mediaBidMetaData.getMaterialMetaData().getW());
-        img.setUrl(mediaBidMetaData.getMaterialMetaData().getMediaMaterialUrl());
+        img.setUrl(mediaBidMetaData.getMaterialMetaData().getAdm().get(0));
         banner.setImg(img);
     }
 
