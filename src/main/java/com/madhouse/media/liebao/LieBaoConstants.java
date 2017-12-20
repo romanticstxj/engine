@@ -82,4 +82,18 @@ public class LieBaoConstants {
         public static final String CHINA_UNICOM = "46001";
         public static final String CHINA_TELECOM = "46003";
     }
+
+    public static class MimeType {
+        public static final List<String> IMAGE_JPEG;
+
+        static {
+            List<String> tmpList = new ArrayList<>();
+            tmpList.add("jpe");
+            tmpList.add("jpeg");
+            tmpList.add("jpg");
+            tmpList.add("jpz");
+            IMAGE_JPEG = tmpList;
+        }
+    }
+
 }
