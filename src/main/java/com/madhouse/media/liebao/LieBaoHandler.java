@@ -128,7 +128,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setOs(Constant.OSType.IOS);
             }
 
-            float ratio = (float)Math.round(mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue()*10)/10;
+            float ratio = (float) Math.round(mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue() * 10) / 10;
             if (ratio == LieBaoConstants.AdType.NATIVE_BIG) {
                 adspaceKey.append("NATIVE_BIG");
                 bidRequest.setAdmType(LieBaoConstants.AdType.NATIVE_BIG);
@@ -323,8 +323,14 @@ public class LieBaoHandler extends MediaBaseHandler {
                         //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
                         return outputStreamWrite(resp, null);
                     } else if (admType == LieBaoConstants.AdType.BANNER_OPEN) {
-                        // banner 开屏时：
-                        buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
+                        // 当前猎豹只支持image/jpeg类型。
+                        String[] split = mediaBidMetaData.getMaterialMetaData().getAdm().get(0).split("\\.");
+                        if (LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) {
+                            // banner 开屏时：
+                            buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
+                        }else{
+                            return outputStreamWrite(resp, null);
+                        }
                     } else if (admType == LieBaoConstants.AdType.BANNER_IAB) {
                         // banner IAB时：
                         // buildAdmBannerForIAB(mediaBidMetaData, mediaResponse, bid, monitor);
