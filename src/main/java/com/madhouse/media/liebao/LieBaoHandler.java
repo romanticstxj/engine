@@ -372,7 +372,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img();
         img.setH(mediaBidMetaData.getMaterialMetaData().getH());
         img.setW(mediaBidMetaData.getMaterialMetaData().getW());
-        img.setUrl(mediaBidMetaData.getMaterialMetaData().getMediaMaterialUrl());
+        img.setUrl(mediaBidMetaData.getMaterialMetaData().getAdm().get(0));
         banner.setImg(img);
     }
 
