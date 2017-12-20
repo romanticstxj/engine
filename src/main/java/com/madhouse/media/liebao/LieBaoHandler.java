@@ -123,9 +123,11 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (os.equals("ANDROID")) {
                 adspaceKey.append("ANDROID").append(":");
                 mediaRequest.setOs(Constant.OSType.ANDROID);
+                mediaRequest.setDid(device.getIfa());
             } else if (os.equals("IOS")) {
                 adspaceKey.append("IOS").append(":");
                 mediaRequest.setOs(Constant.OSType.IOS);
+                mediaRequest.setIfa(device.getIfa());
             }
 
             float ratio = (float) Math.round(mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue() * 10) / 10;
@@ -160,7 +162,6 @@ public class LieBaoHandler extends MediaBaseHandler {
             mediaRequest.setIp(StringUtil.toString(device.getIp()));
             mediaRequest.setUa(StringUtil.toString(device.getUa()));
 
-            mediaRequest.setDid(StringUtil.toString(device.getImei()));
             mediaRequest.setDpidmd5(StringUtil.toString(device.getDpidmd5()));
             mediaRequest.setMake(StringUtil.toString(device.getMake()));
             mediaRequest.setModel(StringUtil.toString(device.getModel()));
