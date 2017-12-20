@@ -123,7 +123,8 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (os.equals("ANDROID")) {
                 adspaceKey.append("ANDROID").append(":");
                 mediaRequest.setOs(Constant.OSType.ANDROID);
-                mediaRequest.setDid(device.getIfa());
+                mediaRequest.setDid(device.getImei());
+                mediaRequest.setDpid(device.getIfa());
             } else if (os.equals("IOS")) {
                 adspaceKey.append("IOS").append(":");
                 mediaRequest.setOs(Constant.OSType.IOS);
