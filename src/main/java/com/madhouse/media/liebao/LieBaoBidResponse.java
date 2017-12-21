@@ -117,14 +117,14 @@ public class LieBaoBidResponse {
             private AdmBanner admBanner;
             // 辅助字段
             @JSONField(serialize = false)
-            private float admType;
+            private LieBaoBidRequest bidRequest;
 
-            public float getAdmType() {
-                return admType;
+            public LieBaoBidRequest getBidRequest() {
+                return bidRequest;
             }
 
-            public void setAdmType(float admType) {
-                this.admType = admType;
+            public void setBidRequest(LieBaoBidRequest bidRequest) {
+                this.bidRequest = bidRequest;
             }
 
             public String getId() {
@@ -177,11 +177,11 @@ public class LieBaoBidResponse {
 
             // 目前只对接banner 开屏。
             public String getAdm() {
-                if (admType == LieBaoConstants.AdType.NATIVE_BIG || admType == LieBaoConstants.AdType.NATIVE_SMALL) {
+                if (bidRequest.getImp().get(0).getNativeObject() != null) {
                     return JSON.toJSONString(admNative);
-                } else if (admType == LieBaoConstants.AdType.BANNER_OPEN || admType == LieBaoConstants.AdType.BANNER_IAB) {
+                } else if (bidRequest.getImp().get(0).getBanner() != null) {
                     return JSON.toJSONString(admBanner);
-                } else if (admType == LieBaoConstants.AdType.VIDEO_HOR || admType == LieBaoConstants.AdType.VIDEO_VER) {
+                } else if (bidRequest.getImp().get(0).getVideo() != null) {
                     return JSON.toJSONString("admVideo");
                 }
                 return adm;
