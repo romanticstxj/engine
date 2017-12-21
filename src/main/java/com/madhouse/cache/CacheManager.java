@@ -364,10 +364,20 @@ public class CacheManager implements Runnable {
                     if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, didmd5)) {
                         return true;
                     }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5()) &&
+                            this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
+                        return true;
+                    }
                 }
 
                 if (!StringUtils.isEmpty(dpidmd5)) {
                     if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
+                        return true;
+                    }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
+                            this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
                         return true;
                     }
                 }
@@ -380,6 +390,11 @@ public class CacheManager implements Runnable {
                     if (!StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", ifa)) {
                         return true;
                     }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
+                            this.metaData.getBlockedDeviceIFA().contains(ifa)) {
+                        return true;
+                    }
                 }
 
                 break;
@@ -390,30 +405,14 @@ public class CacheManager implements Runnable {
                     if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
                         return true;
                     }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
+                            this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
+                        return true;
+                    }
                 }
 
                 break;
-            }
-        }
-
-        if (!StringUtils.isEmpty(didmd5)) {
-            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5()) &&
-                    this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
-                return true;
-            }
-        }
-
-        if (!StringUtils.isEmpty(dpidmd5)) {
-            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
-                    this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
-                return true;
-            }
-        }
-
-        if (!StringUtils.isEmpty(ifa)) {
-            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
-                    this.metaData.getBlockedDeviceIFA().contains(ifa)) {
-                return true;
             }
         }
 
