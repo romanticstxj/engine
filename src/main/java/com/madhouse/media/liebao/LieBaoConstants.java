@@ -4,20 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LieBaoConstants {
-    public static class AdType {
-        public static final float NATIVE_BIG = (float) Math.round(1200f / 628f * 10) / 10;
-        public static final float NATIVE_SMALL = (float) Math.round(84f / 84f * 10) / 10;
-        public static final float BANNER_IAB = (float) Math.round(300f / 250f * 10) / 10;
-        public static final float BANNER_OPEN = (float) Math.round(480f / 684f * 10) / 10;
-        /**
-         * 横凭
-         */
-        public static final float VIDEO_HOR = (float) Math.round(1280f / 720f * 10) / 10;
-        /**
-         * 竖屏
-         */
-        public static final float VIDEO_VER = (float) Math.round(720f / 1280f * 10) / 10;
-    }
 
     public static class ConnectionType {
         public static final int UNKNOWN = 0;

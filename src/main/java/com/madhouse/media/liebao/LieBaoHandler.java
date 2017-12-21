@@ -98,27 +98,8 @@ public class LieBaoHandler extends MediaBaseHandler {
             }
 
             StringBuilder adspaceKey = new StringBuilder();
-            adspaceKey.append("LB:");
-            if (impression.getBanner() != null) {
-                adspaceKey.append(impression.getBanner().getW()).append(":");
-                adspaceKey.append(impression.getBanner().getH()).append(":");
-                mediaRequest.setW(impression.getBanner().getW());
-                mediaRequest.setH(impression.getBanner().getH());
-            } else if (impression.getVideo() != null) {
-                adspaceKey.append(impression.getVideo().getW()).append(":");
-                adspaceKey.append(impression.getVideo().getH()).append(":");
-                mediaRequest.setW(impression.getVideo().getW());
-                mediaRequest.setH(impression.getVideo().getH());
-            } else if (impression.getNativeObject() != null && impression.getNativeObject().getRequestNativeObject() != null) {
-                LieBaoBidRequest.Imp.Native.LieBaoNative nativeObject = impression.getNativeObject().getRequestNativeObject();
-                List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList = nativeObject.getNativeTopLevel().getAssets();
-                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets = getMainImageAssets(assetsList);
-                bidRequest.setSelectedAssetsId(assets.getId());
-                adspaceKey.append(assets.getImg().getW()).append(":");
-                adspaceKey.append(assets.getImg().getH()).append(":");
-                mediaRequest.setW(assets.getImg().getW());
-                mediaRequest.setH(assets.getImg().getH());
-            }
+            adspaceKey.append("LB:").append(impression.getTagid()).append(":");
+
             mediaRequest.setOs(Constant.OSType.UNKNOWN);
             if (os.equals("ANDROID")) {
                 adspaceKey.append("ANDROID").append(":");
@@ -131,26 +112,21 @@ public class LieBaoHandler extends MediaBaseHandler {
                 mediaRequest.setIfa(device.getIfa());
             }
 
-            float ratio = (float) Math.round(mediaRequest.getW().floatValue() / mediaRequest.getH().floatValue() * 10) / 10;
-            if (ratio == LieBaoConstants.AdType.NATIVE_BIG) {
-                adspaceKey.append("NATIVE_BIG");
-                bidRequest.setAdmType(LieBaoConstants.AdType.NATIVE_BIG);
-            } else if (ratio == LieBaoConstants.AdType.NATIVE_SMALL) {
-                adspaceKey.append("NATIVE_SMALL");
-                bidRequest.setAdmType(LieBaoConstants.AdType.NATIVE_SMALL);
-            } else if (ratio == LieBaoConstants.AdType.BANNER_IAB) {
-                adspaceKey.append("BANNER_IAB");
-                bidRequest.setAdmType(LieBaoConstants.AdType.BANNER_IAB);
-            } else if (ratio == LieBaoConstants.AdType.BANNER_OPEN) {
-                adspaceKey.append("BANNER_OPEN");
-                bidRequest.setAdmType(LieBaoConstants.AdType.BANNER_OPEN);
-            } else if (ratio == LieBaoConstants.AdType.VIDEO_HOR) {
-                adspaceKey.append("VIDEO_HOR");
-                bidRequest.setAdmType(LieBaoConstants.AdType.VIDEO_HOR);
-            } else if (ratio == LieBaoConstants.AdType.VIDEO_VER) {
-                adspaceKey.append("VIDEO_VER");
-                bidRequest.setAdmType(LieBaoConstants.AdType.VIDEO_VER);
+            if (impression.getBanner() != null) {
+                mediaRequest.setW(impression.getBanner().getW());
+                mediaRequest.setH(impression.getBanner().getH());
+            } else if (impression.getVideo() != null) {
+                mediaRequest.setW(impression.getVideo().getW());
+                mediaRequest.setH(impression.getVideo().getH());
+            } else if (impression.getNativeObject() != null && impression.getNativeObject().getRequestNativeObject() != null) {
+                LieBaoBidRequest.Imp.Native.LieBaoNative nativeObject = impression.getNativeObject().getRequestNativeObject();
+                List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList = nativeObject.getNativeTopLevel().getAssets();
+                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets = getMainImageAssets(assetsList);
+                bidRequest.setSelectedAssetsId(assets.getId());
+                mediaRequest.setW(assets.getImg().getW());
+                mediaRequest.setH(assets.getImg().getH());
             }
+
 
             MediaMappingMetaData mediaMappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
             if (mediaMappingMetaData == null) {
@@ -265,7 +241,12 @@ public class LieBaoHandler extends MediaBaseHandler {
                 logger.warn("LieBao Video and Banner Cannot exist at the same time");
                 return null;
             }
-            if ((bidRequest.getAdmType() == LieBaoConstants.AdType.NATIVE_BIG || bidRequest.getAdmType() == LieBaoConstants.AdType.NATIVE_SMALL) && bidRequest.getSelectedAssetsId() <= 0) {
+            if (impression.getNativeObject() != null &&
+                    null != impression.getNativeObject().getRequestNativeObject() &&
+                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel() != null &&
+                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets() != null &&
+                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets().get(0) != null &&
+                    impression.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets().get(0).getId() == null) {
                 logger.warn("LieBao bidRequest Native.Assets.id is null");
                 return null;
             }
@@ -309,8 +290,10 @@ public class LieBaoHandler extends MediaBaseHandler {
                     seatBid.setBid(new LinkedList<>());
                     seatBid.getBid().add(bid);
 
+                    LieBaoBidRequest.Imp imp = bidRequest.getImp().get(0);
+
                     bid.setId(mediaBid.getImpid());
-                    bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
+                    bid.setImpid(StringUtil.toString(imp.getId()));
                     // ssp engine价格单位是分，猎豹是元
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() / 100 : 0);
                     // 当前只对接banner 开屏，可以没有bundle字段
@@ -318,28 +301,22 @@ public class LieBaoHandler extends MediaBaseHandler {
                     // 分别构建native，banner，video，的adm字段,目前只构建banner 开屏
                     Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
                     // 这个字段是自定义的，用来在序列化response时选中适当的数据类型
-                    float admType = bidRequest.getAdmType();
-                    bid.setAdmType(admType);
-                    if (admType == LieBaoConstants.AdType.NATIVE_BIG || admType == LieBaoConstants.AdType.NATIVE_SMALL) {
+                    bid.setBidRequest(bidRequest);
+                    if (null != imp.getNativeObject()) {
                         // native时：
                         //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
                         return outputStreamWrite(resp, null);
-                    } else if (admType == LieBaoConstants.AdType.BANNER_OPEN) {
-                        // 当前猎豹只支持image/jpeg类型。
+                    } else if (null != imp.getBanner()) {// IAB暂时不接
+                        // 猎豹支持jpeg，png，gif三种mime
                         String[] split = mediaBidMetaData.getMaterialMetaData().getAdm().get(0).split("\\.");
-                        if ((bidRequest.getImp().get(0).getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
-                                (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
-                                (bidRequest.getImp().get(0).getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
-                            // banner 开屏时：
+                        if ((imp.getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
+                                (imp.getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
+                                (imp.getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
                             buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
                         } else {
                             return outputStreamWrite(resp, null);
                         }
-                    } else if (admType == LieBaoConstants.AdType.BANNER_IAB) {
-                        // banner IAB时：
-                        // buildAdmBannerForIAB(mediaBidMetaData, mediaResponse, bid, monitor);
-                        return outputStreamWrite(resp, null);
-                    } else if (admType == LieBaoConstants.AdType.VIDEO_HOR || admType == LieBaoConstants.AdType.VIDEO_VER) {
+                    } else if (null != imp.getVideo()) {
                         // video时：
                         // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
                         // List<Integer> protocols = bidRequest.getImp().get(0).getVideo().getProtocols();
@@ -359,10 +336,6 @@ public class LieBaoHandler extends MediaBaseHandler {
         }
 
         return outputStreamWrite(resp, null);
-    }
-
-    private void buildAdmBannerForIAB(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
-
     }
 
     private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
@@ -387,7 +360,6 @@ public class LieBaoHandler extends MediaBaseHandler {
     }
 
     private void buildAdmNative(LieBaoBidRequest bidRequest, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
-        bid.setAdmType(LieBaoConstants.AdType.NATIVE_BIG);
         LieBaoBidResponse.Seatbid.Bid.AdmNative admNative = new LieBaoBidResponse.Seatbid.Bid.AdmNative();
         bid.setAdmNative(admNative);
         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative adsResNative = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative();
