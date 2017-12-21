@@ -350,7 +350,7 @@ public class CacheManager implements Runnable {
         logger.info("load metadata cache end.");
     }
 
-    public boolean isBlockedDevice(String ip, String ifa, String didmd5, String dpidmd5) {
+    public boolean isBlockedDevice(int osType, String ip, String ifa, String didmd5, String dpidmd5) {
         if (!StringUtils.isEmpty(ip)) {
             if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP()) &&
                     this.metaData.getBlockedDeviceIP().contains(ip)) {
@@ -358,36 +358,61 @@ public class CacheManager implements Runnable {
             }
         }
 
-        if (!StringUtils.isEmpty(ifa)) {
-            if (!StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", ifa)) {
-                return true;
+        switch (osType) {
+            case Constant.OSType.ANDROID: {
+                if (!StringUtils.isEmpty(didmd5)) {
+                    if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, didmd5)) {
+                        return true;
+                    }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5()) &&
+                            this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
+                        return true;
+                    }
+                }
+
+                if (!StringUtils.isEmpty(dpidmd5)) {
+                    if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
+                        return true;
+                    }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
+                            this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
+                        return true;
+                    }
+                }
+
+                break;
             }
 
-            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
-                    this.metaData.getBlockedDeviceIFA().contains(ifa)) {
-                return true;
-            }
-        }
+            case Constant.OSType.IOS: {
+                if (!StringUtils.isEmpty(ifa)) {
+                    if (!StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", ifa)) {
+                        return true;
+                    }
 
-        if (!StringUtils.isEmpty(didmd5)) {
-            if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, didmd5)) {
-                return true;
-            }
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
+                            this.metaData.getBlockedDeviceIFA().contains(ifa)) {
+                        return true;
+                    }
+                }
 
-            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDidmd5()) &&
-                    this.metaData.getBlockedDeviceDidmd5().contains(didmd5)) {
-                return true;
-            }
-        }
-
-        if (!StringUtils.isEmpty(dpidmd5)) {
-            if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
-                return true;
+                break;
             }
 
-            if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
-                    this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
-                return true;
+            default: {
+                if (!StringUtils.isEmpty(dpidmd5)) {
+                    if (!EncryptUtil.formatCheck(EncryptUtil.Type.MD5, dpidmd5)) {
+                        return true;
+                    }
+
+                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceDpidmd5()) &&
+                            this.metaData.getBlockedDeviceDpidmd5().contains(dpidmd5)) {
+                        return true;
+                    }
+                }
+
+                break;
             }
         }
 
