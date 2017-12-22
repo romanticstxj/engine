@@ -31,6 +31,7 @@
             <includes>
                 <include>*.json</include>
                 <include>log4j2.xml</include>
+                <include>*.dat</include>
             </includes>
         </fileSet>
         <fileSet>
