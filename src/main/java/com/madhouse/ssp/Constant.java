@@ -36,7 +36,7 @@ public final class Constant {
         //engine control
         public static final String POLICY_CONTORL_TOTAL = "str:%d:policy_total";
         public static final String POLICY_CONTORL_DAILY = "str:%d:%s:policy_daily";
-        public static final String DSP_QPS_CONTROL = "str:%d:max_qps";
+        public static final String DSP_QPS_CONTROL = "str:%d:%d:max_qps";
         //str:dspid,materialId,mediaId,adspaceId:adm
         public static final String MATERIAL_MAPPING_DATA = "str:%d:%s:%d:%d:adm";
 
