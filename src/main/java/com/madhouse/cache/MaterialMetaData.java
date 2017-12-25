@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class MaterialMetaData {
     public static class Monitor {
-        public class Track {
+        public static class Track {
             private int startDelay;
             private String url;
 
