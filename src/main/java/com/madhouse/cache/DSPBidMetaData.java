@@ -12,8 +12,9 @@ public class DSPBidMetaData {
     private DSPMetaData dspMetaData;
     private DSPBid.Builder dspBidBuilder;
     private DSPBaseHandler dspBaseHandler;
-
     private HttpClient httpClient;
+
+    private int timeout;
     private HttpRequestBase httpRequestBase;
 
     private AuctionPriceInfo auctionPriceInfo;
@@ -64,5 +65,13 @@ public class DSPBidMetaData {
 
     public void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }

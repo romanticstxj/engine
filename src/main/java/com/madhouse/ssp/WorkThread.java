@@ -484,6 +484,7 @@ public class WorkThread {
                                 httpClient.setHttpRequest(httpRequestBase, timeout);
                                 this.multiHttpClient.addHttpClient(httpClient);
                                 dspBidMetaData.setHttpClient(httpClient);
+                                dspBidMetaData.setTimeout(timeout);
                                 dspBidMetaData.setHttpRequestBase(httpRequestBase);
                                 selectedDspList.put(dspInfo.getId(), dspBidMetaData);
                             }
@@ -503,7 +504,9 @@ public class WorkThread {
                             DSPBidMetaData dspBidMetaData = (DSPBidMetaData)entry.getValue();
                             DSPBaseHandler dspBaseHandler = dspBidMetaData.getDspBaseHandler();
                             HttpResponse httpResponse = dspBidMetaData.getHttpClient().getResponse();
-                            if (httpResponse != null) {
+
+                            int executeTime = (int)dspBidMetaData.getHttpClient().getExecuteTime();
+                            if (httpResponse != null && executeTime <= dspBidMetaData.getTimeout()) {
                                 if (dspBaseHandler.parseResponse(httpResponse, dspBidMetaData)) {
                                     if (policyMetaData.getDeliveryType() != Constant.DeliveryType.RTB ||
                                             dspBidMetaData.getDspBidBuilder().getResponseBuilder().getPrice() > plcmtMetaData.getBidFloor()) {
@@ -514,7 +517,6 @@ public class WorkThread {
                                 dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
                             }
 
-                            int executeTime = (int)dspBidMetaData.getHttpClient().getExecuteTime();
                             dspBidMetaData.getDspBidBuilder().setExecutetime(executeTime);
                             logger.debug("dsp [id={}] execute time: {}ms", dspBidMetaData.getDspMetaData().getId(), executeTime);
                             dspBidMetaData.getHttpRequestBase().releaseConnection();
