@@ -34,6 +34,10 @@ import com.madhouse.util.StringUtil;
  * Created by WUJUNFENG on 2017/5/22.
  */
 public class MADMaxHandler extends DSPBaseHandler {
+    private static final int NO_BID = 405;
+    private static final int REDIS_TIMEOUT = 407;
+    private static final int HBASE_TIMEOUT = 408;
+
     @Override
     public HttpRequestBase packageBidRequest(MediaBid.Builder mediaBidBuilder, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
 
@@ -163,11 +167,17 @@ public class MADMaxHandler extends DSPBaseHandler {
                     break;
                 }
 
-                case HttpServletResponse.SC_METHOD_NOT_ALLOWED : {
+                case NO_BID: {
                     dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.NO_CONTENT);
                     break;
                 }
 
+                case REDIS_TIMEOUT:
+                case HBASE_TIMEOUT: {
+                    dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.REQUEST_TIMEOUT);
+                    break;
+                }
+                
                 default: {
                     dspBidMetaData.getDspBidBuilder().setStatus(Constant.StatusCode.BAD_REQUEST);
                     break;
