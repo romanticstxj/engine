@@ -384,11 +384,13 @@ public class WorkThread {
                 mediaRequest.setDpidmd5(dpidmd5);
             }
 
-            if (CacheManager.getInstance().isBlockedDevice(mediaRequest.getOs(), ip, ifa, didmd5, dpidmd5)) {
-                logger.error("[{}] device is blocked.", mediaRequest.getAdspacekey());
-                mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
-                mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
-                return;
+            if (!CacheManager.getInstance().isMediaWhiteList(mediaMetaData.getId())) {
+                if (CacheManager.getInstance().isBlockedDevice(mediaRequest.getOs(), ip, ifa, didmd5, dpidmd5)) {
+                    logger.error("[{}] device is blocked.", mediaRequest.getAdspacekey());
+                    mediaBid.setStatus(Constant.StatusCode.BAD_REQUEST);
+                    mediaBaseHandler.packageResponse(mediaBidMetaData, resp, null, null);
+                    return;
+                }
             }
 
             MediaBidMetaData.TrackingParam trackingParam = new MediaBidMetaData.TrackingParam();

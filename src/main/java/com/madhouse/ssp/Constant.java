@@ -41,6 +41,7 @@ public final class Constant {
         public static final String MATERIAL_MAPPING_DATA = "str:%d:%s:%d:%d:adm";
 
         //blocked device
+        public static final String ALL_MEDIA_WHITELIST = "set:all_media_whitelist";
         public static final String ALL_BLOCKED_DEVICE_IP = "set:all_blocked_ip";
         public static final String ALL_BLOCKED_DEVICE_IFA = "set:all_blocked_ifa";
         public static final String ALL_BLOCKED_DEVICE_DIDMD5 = "set:all_blocked_didmd5";
