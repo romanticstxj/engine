@@ -458,7 +458,7 @@ public class WorkThread {
                                 String qpsControl = String.format(Constant.CommonKey.DSP_QPS_CONTROL, dspInfo.getId(), tsec);
                                 redisMaster.set(qpsControl, "0", "NX", "EX", 60);
                                 long totalCount = redisMaster.incr(qpsControl);
-                                if (totalCount > dspMetaData.getMaxQPS()) {
+                                if (totalCount > dspMetaData.getMaxQPS() && policyMetaData.getDeliveryType() != Constant.DeliveryType.PDB) {
                                     logger.warn("out of dsp[{}] max qps.", dspInfo.getId());
                                     continue;
                                 }
