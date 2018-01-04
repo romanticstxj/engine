@@ -274,7 +274,7 @@ public class WorkThread {
             //get media request handler
             MediaBaseHandler mediaBaseHandler = ResourceManager.getInstance().getMediaApiType(req.getRequestURI());
             if (mediaBaseHandler == null) {
-                logger.error("get media hanlder error.");
+                logger.error("get media handler error.");
                 resp.setStatus(Constant.StatusCode.BAD_REQUEST);
                 return;
             }
@@ -414,10 +414,6 @@ public class WorkThread {
                 adBlockMetaData = CacheManager.getInstance().getAdBlockMetaData(adBlockId);
             }
 
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-
             int[] deliveryTypes = {Constant.DeliveryType.PDB, Constant.DeliveryType.PD, Constant.DeliveryType.RTB};
 
             for (int i = 0; i < deliveryTypes.length; ++i) {
@@ -474,7 +470,7 @@ public class WorkThread {
 
                             DSPBaseHandler dspBaseHandler = ResourceManager.getInstance().getDSPHandler(dspMetaData.getApiType());
                             if (dspBaseHandler == null) {
-                                logger.error("get dsp handler [id={} apitype={}] error.", dspMetaData.getId(), dspMetaData.getApiType());
+                                logger.error("get dsp handler[id={} apitype={}] error.", dspMetaData.getId(), dspMetaData.getApiType());
                                 continue;
                             }
 
@@ -559,7 +555,7 @@ public class WorkThread {
                                 long dspId = winner.getDspMetaData().getId();
                                 long mediaId = mediaMetaData.getId();
                                 long adspaceId = plcmtMetaData.getId();
-                                String crid = winner.getDspBidBuilder().getResponseBuilder().getCrid();
+                                String crid = StringUtil.toString(winner.getDspBidBuilder().getResponseBuilder().getCrid());
 
                                 materialMetaData = CacheManager.getInstance().getMaterialMetaData(dspId, crid, mediaId, 0);
                                 if (materialMetaData == null) {
