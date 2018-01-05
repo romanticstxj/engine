@@ -22,7 +22,7 @@ import com.madhouse.ssp.avro.MediaRequest.Builder;
 import com.madhouse.util.ObjectUtils;
 
 public class MTDPHandler extends MediaBaseHandler {
-    
+
     @Override
     public boolean parseMediaRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         boolean isSandbox = false;
@@ -37,7 +37,9 @@ public class MTDPHandler extends MediaBaseHandler {
             if(Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                    MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                    mediaBid.setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -50,7 +52,7 @@ public class MTDPHandler extends MediaBaseHandler {
             return false;
         }
     }
-    
+
     private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, BidRequest bidRequest) throws UnsupportedEncodingException {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
         DPAds.BidRequest.Imp imp = bidRequest.getImpList().get(0);
@@ -68,7 +70,7 @@ public class MTDPHandler extends MediaBaseHandler {
         MediaMappingMetaData mappingMetaData= CacheManager.getInstance().getMediaMapping(adspaceKey);
         if (mappingMetaData != null) {
             mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-        } else { 
+        } else {
             if (isSandbox) {//sandbox环境
                 mappingMetaData = CacheManager.getInstance().getMediaMapping("sandbox:DP:0:0");
             } else {
@@ -82,15 +84,15 @@ public class MTDPHandler extends MediaBaseHandler {
         }
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setBid(bidRequest.getId());
-        
+
         mediaRequest.setW(banner.getW());
-        
+
         mediaRequest.setH(banner.getH());
-        
+
         mediaRequest.setBidfloor((new Double(imp.getBidfloor())).intValue());
-        
-        mediaRequest.setName(bidRequest.getApp().getName());   
-        
+
+        mediaRequest.setName(bidRequest.getApp().getName());
+
         if(!StringUtils.isEmpty(device.getOsv())){
             mediaRequest.setOsv(device.getOsv());
         }
@@ -125,7 +127,7 @@ public class MTDPHandler extends MediaBaseHandler {
         mediaRequest.setCarrier(Constant.Carrier.UNKNOWN);
         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
         mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
-        
+
         String ua = device.getUa();
         if (!StringUtils.isEmpty(ua)) {
             mediaRequest.setUa(ua);
@@ -191,8 +193,8 @@ public class MTDPHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBids() != null && mediaBidMetaData.getMediaBids().size() > 0) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     DPAds.BidResponse bidResponse = convertToMTDPResponse(mediaBidMetaData);
                     if(null != bidResponse){
@@ -215,23 +217,24 @@ public class MTDPHandler extends MediaBaseHandler {
     }
 
     private DPAds.BidResponse convertToMTDPResponse(MediaBidMetaData mediaBidMetaData) {
-        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
-        
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaResponse.Builder mediaResponse= mediaBid.getResponseBuilder();
+        Builder mediaRequest= mediaBid.getRequestBuilder();
+
         DPAds.BidRequest bidRequest = (DPAds.BidRequest) mediaBidMetaData.getRequestObject();
-        
+
         DPAds.BidResponse.SeatBid.Builder seatbid = DPAds.BidResponse.SeatBid.newBuilder();
         DPAds.BidResponse.Bid.Builder bid = DPAds.BidResponse.Bid.newBuilder();
-        
-        
-        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
+
+
+        bid.setId(mediaBid.getImpid());
         bid.setImpid(bidRequest.getImp(0).getId());
         if (bidRequest != null &&  bidRequest.getImp(0).getBidfloor() != 0) {
             bid.setPrice((float)bidRequest.getImp(0).getBidfloor());
         } else {
             bid.setPrice(0.01f);
         }
-        
+
         //bid.setAdid(mediaResponse.geta);
         bid.setCid(mediaResponse.getCid());
         bid.setCrid(mediaResponse.getCrid());
@@ -253,9 +256,9 @@ public class MTDPHandler extends MediaBaseHandler {
         // 投标人id
         seatbid.setSeat("madhouse");
         DPAds.BidResponse bidResponse = DPAds.BidResponse.newBuilder().setId(mediaRequest.getBid()).addSeatbid(seatbid).build();
-        
+
         logger.info("MTDP Response params is : {}", bidResponse.toString());
         return bidResponse;
     }
-    
+
 }
