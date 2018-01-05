@@ -1,5 +1,6 @@
 package com.madhouse.media.yiche;
 
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,10 +15,7 @@ import com.madhouse.cache.CacheManager;
 import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
-import com.madhouse.cache.MediaMetaData;
-import com.madhouse.cache.PlcmtMetaData;
 import com.madhouse.media.MediaBaseHandler;
-import com.madhouse.media.tencent.GPBForDSP.Request.Impression;
 import com.madhouse.media.yiche.YiCheBidRequest.Imp;
 import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
@@ -243,7 +241,10 @@ public class YiCheHandler extends MediaBaseHandler {
 							 }
 							 if (ObjectUtils.isNotEmpty(monitor.getClkurl())) {
 								 List<String> clkUrls = monitor.getClkurl();
-								 bid.setCurl(StringUtil.toString(clkUrls.get(clkUrls.size()-1) + "&_url=" +mediaResponse.getLpgurl()));
+								 bid.setCurl(StringUtil.toString(clkUrls.get(clkUrls.size()-1)));
+								 if(!StringUtils.isEmpty(mediaResponse.getLpgurl())){
+									 bid.setCurl(bid.getCurl() + "&_url=" + URLEncoder.encode(mediaResponse.getLpgurl(), "utf-8"));
+								 }
 							 }
 						 }
 						 seatBid.getBid().add(bid);

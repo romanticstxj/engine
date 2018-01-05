@@ -83,8 +83,7 @@ public class BaiduHandler extends MediaBaseHandler {
         mediaRequest.setType(bidRequest.hasSite()? Constant.MediaType.SITE : Constant.MediaType.APP);
         
         mediaRequest.setMac(!StringUtils.isEmpty(device.getMac()) ? device.getMac() : 
-        	!StringUtils.isEmpty(device.getMacmd5()) ? device.getMacmd5() : 
-        		!StringUtils.isEmpty(device.getMacsha1()) ? device.getMacsha1() : "");
+        	!StringUtils.isEmpty(device.getMacmd5()) ? device.getMacmd5() : "");
         
         if(pmp!=null && pmp.getDealsList().size() >0 ){
         	int size = Utility.nextInt(pmp.getDealsList().size());
@@ -167,19 +166,16 @@ public class BaiduHandler extends MediaBaseHandler {
         if(os.equalsIgnoreCase(BaiduStatusCode.OSType.IOS)){
         	adspaceKey.append(BaiduStatusCode.OSType.IOS);
         	String ifa = !StringUtils.isEmpty(device.getIdfa()) ? device.getIdfa() : 
-				 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : 
-				 !StringUtils.isEmpty(device.getIdfasha1()) ? device.getIdfasha1() : "";
+				 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : "";
         	mediaRequest.setIfa(ifa);
         	mediaRequest.setOs(Constant.OSType.IOS);
         } else if (os.equalsIgnoreCase(BaiduStatusCode.OSType.ANDROID)){
         	adspaceKey.append(BaiduStatusCode.OSType.ANDROID);
         	mediaRequest.setDid(StringUtil.toString(device.getDid()));
-        	mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : 
-				 !StringUtils.isEmpty(device.getDidsha1()) ? device.getDidsha1() : "");
+        	mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() :  "");
         	
         	mediaRequest.setDpid(StringUtil.toString(device.getDpid()));
-        	mediaRequest.setDpidmd5(!StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() : 
-				 !StringUtils.isEmpty(device.getDpidsha1()) ? device.getDpidsha1() : "");
+        	mediaRequest.setDpidmd5(!StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() :  "");
         	mediaRequest.setOs(Constant.OSType.ANDROID);
         }
         if(imp.hasBanner() && imp.getBanner().hasW() && imp.getBanner().hasH()){
@@ -257,19 +253,16 @@ public class BaiduHandler extends MediaBaseHandler {
 			 }
 			 if(os.equalsIgnoreCase(BaiduStatusCode.OSType.IOS)){
 				 String ifa = !StringUtils.isEmpty(device.getIdfa()) ? device.getIdfa() : 
-					 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : 
-					 !StringUtils.isEmpty(device.getIdfasha1()) ? device.getIdfasha1() : "";
+					 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() :  "";
 				 if(StringUtils.isEmpty(ifa)){
 						 logger.warn("{},Baidu.bidRequest.Device.os.IOS.ifa or aid is missing",id);
 						 return Constant.StatusCode.BAD_REQUEST;
 				 }	 
 			 } else if(os.equalsIgnoreCase(BaiduStatusCode.OSType.ANDROID)){
 				 String imei = !StringUtils.isEmpty(device.getDid()) ? device.getDid() : 
-					 !StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : 
-					 !StringUtils.isEmpty(device.getDidsha1()) ? device.getDidsha1() : "" ;
+					 !StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : "" ;
 				 String dpid = !StringUtils.isEmpty(device.getDpid()) ? device.getDpid() : 
-					 !StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() : 
-					 !StringUtils.isEmpty(device.getDpidsha1()) ? device.getDpidsha1() : "";
+					 !StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() :  "";
 				 if(StringUtils.isEmpty(imei) && StringUtils.isEmpty(dpid)){
 					 logger.warn("{},Baidu.bidRequest.Device.os.ANDROID.ifa or aid is missing",id);
 					 return Constant.StatusCode.BAD_REQUEST;
