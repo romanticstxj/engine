@@ -290,14 +290,10 @@ public class WorkThread {
             CountDownLatch latch = new CountDownLatch(mediaBidMetaData.getMediaBids().size());
 
             for (MediaBid.Builder mediaBid : mediaBidMetaData.getMediaBids()) {
-                mediaBid.setImpid(ResourceManager.getInstance().nextId());
                 mediaBid.setIp(HttpUtil.getRealIp(req));
                 mediaBid.setUa(HttpUtil.getUserAgent(req));
                 mediaBid.setTime(System.currentTimeMillis());
-                mediaBid.setBidfloor(0);
-                mediaBid.setBidtype(Constant.BidType.CPM);
-                mediaBid.setLocation(Constant.LOCATION_UNKNOWN);
-                mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
+                mediaBid.setImpid(ResourceManager.getInstance().nextId());
 
                 MediaBidMetaData.BidMetaData bidMetaData = new MediaBidMetaData.BidMetaData();
                 mediaBidMetaData.getBidMetaDataMap().put(mediaBid.getImpid(), bidMetaData);
