@@ -178,7 +178,7 @@ public class YiCheHandler extends MediaBaseHandler {
                 }
                 MediaMappingMetaData mediaMappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
                 if (mediaMappingMetaData == null) {
-                    break;
+                    continue;
                 }
                 
                 request.setBid(StringUtil.toString(imp.getId()));
