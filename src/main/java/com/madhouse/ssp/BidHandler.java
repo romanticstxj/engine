@@ -358,10 +358,10 @@ public class BidHandler implements Runnable {
         }
     }
 
-    private List<Long> policyTargeting(MediaBid.Builder mediaBidBuilder, int deliveryType) {
+    private List<Long> policyTargeting(MediaBid.Builder mediaBid, int deliveryType) {
         List<Pair<Integer, List<String>>> targetInfo = new LinkedList<>();
 
-        MediaRequest.Builder mediaRequest = mediaBidBuilder.getRequestBuilder();
+        MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -395,9 +395,9 @@ public class BidHandler implements Runnable {
         //location
         {
             List<String> info = new LinkedList<>();
-            info.add(mediaBidBuilder.getLocation().subSequence(0, 4) + "000000");
-            info.add(mediaBidBuilder.getLocation().subSequence(0, 6) + "0000");
-            info.add(mediaBidBuilder.getLocation());
+            info.add(mediaBid.getLocation().subSequence(0, 4) + "000000");
+            info.add(mediaBid.getLocation().subSequence(0, 6) + "0000");
+            info.add(mediaBid.getLocation());
             targetInfo.add(Pair.of(Constant.TargetType.LOCATION, info));
         }
 

@@ -143,7 +143,9 @@ public abstract class MediaBaseHandler {
                     }
                 }
 
-                LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
+                if (mediaBid.getStatus() != Constant.StatusCode.NOT_ALLOWED) {
+                    LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
+                }
             }
 
             resp.setHeader("Connection", "keep-alive");
