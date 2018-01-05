@@ -62,8 +62,11 @@
                 "path": "/adcall/baidu/bidrequest",
                 "className": "com.madhouse.media.baidu.BaiduHandler"
             }, {
-            "path": "/adcall/liebao/bidrequest",
-            "className": "com.madhouse.media.liebao.LieBaoHandler"
+            	"path": "/adcall/liebao/bidrequest",
+            	"className": "com.madhouse.media.liebao.LieBaoHandler"
+            }, {
+            	"path": "/adcall/yiche/bidrequest",
+            	"className": "com.madhouse.media.yiche.YiCheHandler"
             }
         ],
         "impression": "/adtrack/impression",
