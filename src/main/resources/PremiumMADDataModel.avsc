@@ -78,16 +78,20 @@
 			"name": "impid"
 		}, {
 			"type": "int",
-			"name": "status"
+			"name": "status",
+			"default": 400
 		}, {
 			"type": "int",
-			"name": "bidfloor"
+			"name": "bidfloor",
+			"default": 0
 		}, {
 			"type": "int",
-			"name": "bidtype"
+			"name": "bidtype",
+			"default": 1
 		}, {
 			"type": "string",
-			"name": "location"
+			"name": "location",
+			"default": "1000000000"
 		}, {
 			"name": "request",
 			"type": {
