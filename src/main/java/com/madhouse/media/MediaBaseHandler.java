@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
+import com.madhouse.util.HttpUtil;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +41,11 @@ public abstract class MediaBaseHandler {
                         if (mediaMetaData != null) {
                             mediaRequest.setMediaid(mediaMetaData.getId());
                             mediaRequest.setAdspaceid(plcmtMetaData.getId());
+
+                            mediaBid.setIp(HttpUtil.getRealIp(req));
+                            mediaBid.setUa(HttpUtil.getUserAgent(req));
+                            mediaBid.setTime(System.currentTimeMillis());
+                            mediaBid.setImpid(ResourceManager.getInstance().nextId());
                             LoggerUtil.getInstance().writeMediaLog(ResourceManager.getInstance().getKafkaProducer(), mediaBid);
                         }
                     }

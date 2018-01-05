@@ -60,10 +60,16 @@ public class BidHandler implements Runnable {
 
     @Override
     public void run() {
-        Jedis redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+        Jedis redisMaster = null;
 
         try {
+            if (this.mediaBid.hasStatus() && this.mediaBid.getStatus() >= Constant.StatusCode.NO_CONTENT) {
+                return;
+            }
+
+            this.mediaBid.setStatus(Constant.StatusCode.NO_CONTENT);
             MediaRequest.Builder mediaRequest = this.mediaBid.getRequestBuilder();
+            redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
 
             //get placement metadata
             PlcmtMetaData plcmtMetaData = CacheManager.getInstance().getPlcmtMetaData(mediaRequest.getAdspacekey());
