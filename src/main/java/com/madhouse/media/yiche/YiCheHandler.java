@@ -247,12 +247,13 @@ public class YiCheHandler extends MediaBaseHandler {
 							 }
 						 }
 						 seatBid.getBid().add(bid);
-						 
 					 }
 				 }
-				 bidResponse.getSeatbid().add(seatBid);
-				 return outputStreamWrite(resp, bidResponse);
-				 
+
+                 if (seatBid.getBid().size() > 0) {
+                     bidResponse.getSeatbid().add(seatBid);
+                     return outputStreamWrite(resp, bidResponse);
+                 }
 			 }
 		} catch (Exception e) {
 			logger.error("yiche Exception:{}" ,e.toString());
