@@ -2,9 +2,11 @@ package com.madhouse.media.liebao;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
+import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.*;
@@ -42,7 +44,9 @@ public class LieBaoHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                mediaBid.setRequestBuilder(mediaRequest);
+                mediaBidMetaData.getMediaBids().add(mediaBid);
                 mediaBidMetaData.setRequestObject(bidRequest);
                 return true;
             } else {
@@ -272,15 +276,15 @@ public class LieBaoHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && mediaBidMetaData.getMaterialMetaData() != null) {
-                if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBids() != null && mediaBidMetaData.getMediaBids().size() > 0) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+                if (mediaBid.getStatus() == Constant.StatusCode.OK) {
                     LieBaoBidRequest bidRequest = (LieBaoBidRequest) mediaBidMetaData.getRequestObject();
-                    MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                     MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
 
                     LieBaoBidResponse bidResponse = new LieBaoBidResponse();
                     bidResponse.setId(bidRequest.getId());
-                    bidResponse.setBidid(mediaBid.getImpid());
+                    bidResponse.setBidid(ResourceManager.getInstance().nextId());
 
                     LieBaoBidResponse.Seatbid seatBid = new LieBaoBidResponse.Seatbid();
                     bidResponse.setSeatbid(new LinkedList<>());
@@ -308,7 +312,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                         return outputStreamWrite(resp, null);
                     } else if (null != imp.getBanner()) {// IAB暂时不接
                         // 猎豹支持jpeg，png，gif三种mime
-                        String[] split = mediaBidMetaData.getMaterialMetaData().getAdm().get(0).split("\\.");
+                        String[] split = mediaBid.getResponseBuilder().getAdm().get(0).split("\\.");
                         if ((imp.getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
                                 (imp.getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
                                 (imp.getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
@@ -353,9 +357,11 @@ public class LieBaoHandler extends MediaBaseHandler {
         link.setUrl(mediaResponse.getLpgurl());
         banner.setLink(link);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img();
-        img.setH(mediaBidMetaData.getMaterialMetaData().getH());
-        img.setW(mediaBidMetaData.getMaterialMetaData().getW());
-        img.setUrl(mediaBidMetaData.getMaterialMetaData().getAdm().get(0));
+        String impid = mediaBidMetaData.getMediaBids().get(0).getImpid();
+        MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(impid).getMaterialMetaData();
+        img.setH(materialMetaData.getH());
+        img.setW(materialMetaData.getW());
+        img.setUrl(materialMetaData.getAdm().get(0));
         banner.setImg(img);
     }
 
