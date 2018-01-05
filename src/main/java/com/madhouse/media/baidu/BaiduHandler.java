@@ -3,6 +3,7 @@ package com.madhouse.media.baidu;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.cache.PlcmtMetaData;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,7 +41,9 @@ public class BaiduHandler extends MediaBaseHandler {
             if (Constant.StatusCode.OK == status) {
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if (mediaRequest != null) {
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+					MediaBid.Builder mediaBid = MediaBid.newBuilder();
+					mediaBid.setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
                     return true;
                 }
             }
@@ -282,8 +285,9 @@ public class BaiduHandler extends MediaBaseHandler {
 	public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData,
 			HttpServletResponse resp) {
 		try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && mediaBidMetaData.getPlcmtMetaData() != null) {
-                if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
+            if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+				MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+                if (mediaBid.getStatus() == Constant.StatusCode.OK) {
                 	Baidu.BidResponse.Builder bidResponse = convertToBaiduResponse(mediaBidMetaData);
                 	if(bidResponse != null){
                 		Baidu.BidResponse responseBuiler = bidResponse.build();
@@ -309,9 +313,10 @@ public class BaiduHandler extends MediaBaseHandler {
 		
 		Baidu.BidResponse.Builder bidResponse = Baidu.BidResponse.newBuilder();
 		Baidu.BidRequest bidRequest = (BidRequest) mediaBidMetaData.getRequestObject();
-    	MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+    	MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
     	MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
-    	
+		MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+		PlcmtMetaData plcmtMetaData = bidMetaData.getPlcmtMetaData();
     	bidResponse.setId(bidRequest.getId());
     	bidResponse.setBidid(mediaBid.getImpid());
     	
@@ -321,7 +326,7 @@ public class BaiduHandler extends MediaBaseHandler {
     	bid.setId(mediaBid.getImpid());
     	bid.setImpid(bidRequest.getImp(0).getId());
     	bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice() : 0);
-    	bid.setBidtype(mediaBidMetaData.getPlcmtMetaData().getBidType()-1);
+    	bid.setBidtype(plcmtMetaData.getBidType()-1);
     	bid.setCrid(mediaResponse.getCrid());
     	bid.setCid(mediaResponse.getCid());
     	bid.setAction(AdActionType.IN_APP_WEBVIEW);
@@ -329,7 +334,7 @@ public class BaiduHandler extends MediaBaseHandler {
     		bid.setDealid(mediaBid.getRequestBuilder().getDealid());
     	}
     	
-    	switch (mediaBidMetaData.getPlcmtMetaData().getAdType()) {
+    	switch (plcmtMetaData.getAdType()) {
         	case Constant.PlcmtType.BANNER : {
         		Baidu.BidResponse.SeatBid.Bid.Adm.Builder adm = Baidu.BidResponse.SeatBid.Bid.Adm.newBuilder();
         		adm.setAsseturl(mediaResponse.getAdm().get(0));
