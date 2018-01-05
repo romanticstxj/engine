@@ -1,10 +1,7 @@
 package com.madhouse.media.tencent;
 
 import com.googlecode.protobuf.format.JsonFormat;
-import com.madhouse.cache.CacheManager;
-import com.madhouse.cache.MaterialMetaData;
-import com.madhouse.cache.MediaBidMetaData;
-import com.madhouse.cache.MediaMappingMetaData;
+import com.madhouse.cache.*;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.tencent.GPBForDSP.Request;
 import com.madhouse.media.tencent.GPBForDSP.Request.App;
@@ -24,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TencentHandler extends MediaBaseHandler {
@@ -36,9 +34,9 @@ public class TencentHandler extends MediaBaseHandler {
             int status = validateRequiredParam(bidRequest);
             mediaBidMetaData.setRequestObject(bidRequest);
             if (Constant.StatusCode.OK == status) {
-                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
-                if (mediaRequest != null) {
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                List<MediaBid.Builder> mediaBids = conversionToPremiumMADDataModel(bidRequest);
+                if (!ObjectUtils.isEmpty(mediaBids)) {
+                    mediaBidMetaData.setMediaBids(mediaBids);
                     return true;
                 }
             }
@@ -53,8 +51,17 @@ public class TencentHandler extends MediaBaseHandler {
     }
 
 
-    private MediaRequest.Builder conversionToPremiumMADDataModel(Request bidRequest) {
+    private List<MediaBid.Builder> conversionToPremiumMADDataModel(Request bidRequest) {
+        List<MediaBid.Builder> mediaBids = new LinkedList<>();
+
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
+
+        for (Impression imp : bidRequest.getImpressionList()) {
+            MediaBid.Builder mediaBid = MediaBid.newBuilder();
+            MediaRequest.Builder request = MediaRequest.newBuilder(mediaRequest);
+            mediaBid.setRequestBuilder(request);
+            mediaBids.add(mediaBid);
+        }
 
         Impression impression = bidRequest.getImpression(0);
         Device device = bidRequest.getDevice();
@@ -282,7 +289,16 @@ public class TencentHandler extends MediaBaseHandler {
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
             GPBForDSP.Response.Builder bidResponse = GPBForDSP.Response.newBuilder();
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
+            if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+                for (MediaBid.Builder mediaBid : mediaBidMetaData.getMediaBids()) {
+                    if (mediaBid.getStatus() == Constant.StatusCode.OK) {
+                        MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+                        MediaMetaData mediaMetaData = bidMetaData.getMediaMetaData();
+                        PlcmtMetaData plcmtMetaData = bidMetaData.getPlcmtMetaData();
+                        MaterialMetaData materialMetaData = bidMetaData.getMaterialMetaData();
+                    }
+                }
+
                 MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                 if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     bidResponse = convertToTencentResponse(mediaBidMetaData, mediaBid.getStatus());
