@@ -49,7 +49,9 @@ public class BaoFengHandler extends MediaBaseHandler {
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
                 }
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                mediaBid.setRequestBuilder(mediaRequest);
+                mediaBidMetaData.getMediaBids().add(mediaBid);
                 mediaBidMetaData.setRequestObject(baoFengBidRequest);
                 return true;
             } else {
@@ -66,8 +68,8 @@ public class BaoFengHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
 
-        if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 try {
                     BaoFengResponse baoFengResponse = convertToBaofengResponse(mediaBidMetaData);
@@ -91,17 +93,19 @@ public class BaoFengHandler extends MediaBaseHandler {
     
     private BaoFengResponse convertToBaofengResponse(MediaBidMetaData mediaBidMetaData) {
         BaoFengResponse baoFengResponse = new BaoFengResponse();
-        
+
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
         // 广告高度
-        Integer adheight = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH();
+        Integer adheight = mediaRequest.getH();
         
         // 广告位宽度
-        Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW();
+        Integer adwidth = mediaRequest.getW();
         
         // 广告流水唯一标识
-        String bid = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid();
+        String bid = mediaRequest.getBid();
 
-        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
         
         // 点击url
         baoFengResponse.setTarget(mediaResponse.getLpgurl());
