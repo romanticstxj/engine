@@ -49,7 +49,9 @@ public class PremiumMADHandler extends MediaBaseHandler {
                 logger.info("PremiumMAD Request params is : {}",JSON.toJSONString(mediaRequest));
                 MediaRequest.Builder request = conversionToPremiumMADDataModel(mediaRequest);
                 if(request != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(request);
+                    MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                    mediaBid.setRequestBuilder(request);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
                     mediaBidMetaData.setRequestObject(request);
                     return true;
                 }
@@ -385,8 +387,8 @@ public class PremiumMADHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         resp.setStatus(Constant.StatusCode.OK);
-        if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
             PremiumMADResponse premiumMADResponse=new PremiumMADResponse();
             if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 premiumMADResponse = convertToPremiumMADResponse(mediaBidMetaData,Constant.StatusCode.OK);
@@ -431,15 +433,18 @@ public class PremiumMADHandler extends MediaBaseHandler {
     
     private PremiumMADResponse convertToPremiumMADResponse(MediaBidMetaData mediaBidMetaData, int status) {
         PremiumMADResponse premiumMADResponse = new PremiumMADResponse();
+
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
+
         if(Constant.StatusCode.OK == status){
-            MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
-            MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+            MediaResponse.Builder mediaResponse= mediaBid.getResponseBuilder();
 
             premiumMADResponse.setReturncode(Constant.StatusCode.OK);
             premiumMADResponse.setAdtype(mediaRequest.getAdtype());
             premiumMADResponse.setAdspaceid(mediaRequest.getAdspacekey());
             premiumMADResponse.setBid(mediaRequest.getBid());
-            premiumMADResponse.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
+            premiumMADResponse.setBidid(mediaBid.getImpid());
             premiumMADResponse.setCid(mediaResponse.getCid());
             premiumMADResponse.setCrid(mediaResponse.getCrid());
             premiumMADResponse.setAdwidth(mediaRequest.getW());
@@ -485,7 +490,7 @@ public class PremiumMADHandler extends MediaBaseHandler {
             premiumMADResponse.setDealid(StringUtils.isEmpty(mediaRequest.getDealid()) ? null : mediaRequest.getDealid());
             
         } else {
-            premiumMADResponse.setAdspaceid(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getAdspacekey());
+            premiumMADResponse.setAdspaceid(mediaRequest.getAdspacekey());
             premiumMADResponse.setReturncode(status);
         }
         return premiumMADResponse;
