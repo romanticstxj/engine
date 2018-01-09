@@ -51,7 +51,7 @@ public class TencentHandler extends MediaBaseHandler {
     }
 
 
-    private List<MediaBid.Builder> conversionToPremiumMADDataModel(Request bidRequest) {
+    private List<MediaBid.Builder>  conversionToPremiumMADDataModel(Request bidRequest) {
         List<MediaBid.Builder> mediaBids = new LinkedList<>();
 
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
@@ -151,7 +151,28 @@ public class TencentHandler extends MediaBaseHandler {
             sb.append("TENC:");
             String tencAdspaceId = bidRequest.getImpression(0).getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
             sb.append(tencAdspaceId).append(":");
-
+            String os = device.getOs();//iPhone.OS.9.3.2
+            if (!StringUtils.isEmpty(os)) {
+                if (os.toLowerCase().contains(TencentStatusCode.Os.OS_IPHONE) || os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)) {
+                    request.setOs(Constant.OSType.IOS);
+                    sb.append("IOS");
+                    if (TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()) {
+                        request.setIfa(device.getIdfa());
+                    }
+                    if (device.hasOpenudid()) {
+                        request.setDpid(device.getOpenudid());
+                    }
+                } else {
+                    sb.append("ANDROID");
+                    request.setOs(Constant.OSType.ANDROID);
+                    if (device.hasImei()) {
+                        request.setDidmd5(device.getImei());
+                    }
+                    if (device.hasAndroidid()) {
+                        request.setDpidmd5(device.getAndroidid());
+                    }
+                }
+            }
             if (imp.hasVideo()) {
                 request.setW(imp.getVideo().getWidth());
                 request.setH(imp.getVideo().getHeight());
@@ -178,28 +199,7 @@ public class TencentHandler extends MediaBaseHandler {
             } else {
                 sb.append(":VIDEO");
             }
-            String os = device.getOs();//iPhone.OS.9.3.2
-            if (!StringUtils.isEmpty(os)) {
-                if (os.toLowerCase().contains(TencentStatusCode.Os.OS_IPHONE) || os.toLowerCase().contains(TencentStatusCode.Os.OS_IOS)) {
-                    request.setOs(Constant.OSType.IOS);
-                    sb.append("IOS");
-                    if (TencentStatusCode.Encryption.EXPRESS == device.getIdfaEnc()) {
-                        request.setIfa(device.getIdfa());
-                    }
-                    if (device.hasOpenudid()) {
-                        request.setDpid(device.getOpenudid());
-                    }
-                } else {
-                    sb.append("ANDROID");
-                    request.setOs(Constant.OSType.ANDROID);
-                    if (device.hasImei()) {
-                        request.setDidmd5(device.getImei());
-                    }
-                    if (device.hasAndroidid()) {
-                        request.setDpidmd5(device.getAndroidid());
-                    }
-                }
-            }
+
 
             MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(sb.toString());
             if (mappingMetaData != null) {
