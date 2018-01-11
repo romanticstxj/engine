@@ -232,7 +232,7 @@ public class BaoFengHandler extends MediaBaseHandler {
     
     private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
-        
+
         BaoFengBidRequest.App app = baoFengBidRequest.getApp();
         BaoFengBidRequest.Device device = baoFengBidRequest.getDevice();
         BaoFengBidRequest.Impression imp = baoFengBidRequest.getImp();
@@ -261,18 +261,7 @@ public class BaoFengHandler extends MediaBaseHandler {
             }
         }
 
-        switch (mediaRequest.getOs()) {
-            case Constant.OSType.IOS: {
-                mediaRequest.setIfa(device.getDpid());
-                break;
-            }
-            case Constant.OSType.ANDROID: {
-                mediaRequest.setDid(device.getDpid());
-                break;
-            }
-            default:
-                break;
-        }
+
 
         // 广告请求唯一id
         mediaRequest.setBid(baoFengBidRequest.getId());
@@ -301,19 +290,32 @@ public class BaoFengHandler extends MediaBaseHandler {
         }
         
         // 广告位ID
-        String adspaceKey = null;
+        StringBuilder adspaceKey = new StringBuilder();
         if (isSandbox) {
             // sandbox环境
-            adspaceKey = "sandbox:BF:" + mediaRequest.getW() + ":" + mediaRequest.getH();
+            adspaceKey.append("sandbox:BF:").append(baoFengBidRequest.getImp().getPos()).append(":");
             //模拟竞价，不计费
             mediaRequest.setTest(Constant.Test.SIMULATION);
         } else {
-            adspaceKey = "BF:" + mediaRequest.getW() + ":" + mediaRequest.getH();
+            adspaceKey.append("BF:").append(baoFengBidRequest.getImp().getPos()).append(":");
             mediaRequest.setTest(Constant.Test.REAL);
         }
-        
+        switch (mediaRequest.getOs()) {
+            case Constant.OSType.IOS: {
+                mediaRequest.setIfa(device.getDpid());
+                adspaceKey.append("IOS");
+                break;
+            }
+            case Constant.OSType.ANDROID: {
+                mediaRequest.setDid(device.getDpid());
+                adspaceKey.append("ANDROID");
+                break;
+            }
+            default:
+                break;
+        }
         if (adspaceKey != null) {
-            MediaMappingMetaData mappingMetaData=CacheManager.getInstance().getMediaMapping(adspaceKey);
+            MediaMappingMetaData mappingMetaData=CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
             if (mappingMetaData != null) {
                 mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{
