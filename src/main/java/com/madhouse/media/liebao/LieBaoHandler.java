@@ -222,8 +222,10 @@ public class LieBaoHandler extends MediaBaseHandler {
             }
 
             if (bidRequest.getApp() != null) {
-                mediaRequest.setName(StringUtil.toString(bidRequest.getApp().getName()));
-                mediaRequest.setBundle(StringUtil.toString(bidRequest.getApp().getBundle()));
+                String name = StringUtil.toString(bidRequest.getApp().getName());
+                String bundle = StringUtil.toString(bidRequest.getApp().getBundle());
+                mediaRequest.setName(StringUtils.isBlank(name)?LieBaoConstants.App.getAppname(bundle):name);
+                mediaRequest.setBundle(StringUtils.isBlank(bundle)?LieBaoConstants.App.BUNDLE:bundle);
                 mediaRequest.setType(Constant.MediaType.APP);
             } else {
                 mediaRequest.setName(LieBaoConstants.App.APPNAME);
