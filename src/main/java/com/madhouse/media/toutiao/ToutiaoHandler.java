@@ -1,6 +1,5 @@
 package com.madhouse.media.toutiao;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
         try {
             TOUTIAOAds.BidRequest bidRequest = TOUTIAOAds.BidRequest.parseFrom(IOUtils.toByteArray(req.getInputStream()));
             if (bidRequest == null) {
-                resp.setStatus(Constant.StatusCode.BAD_REQUEST);
+                resp.setStatus(Constant.StatusCode.NO_CONTENT);
                 return false;
             }
             logger.info("Toutiao Request params is {} "+JsonFormat.printToString(bidRequest));
@@ -168,10 +167,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 }
             	
             	StringBuilder adspaceKey = new StringBuilder();
-            	Integer adType = getAdType(bidRequest).getNumber();
-            	request.setAdtype(adType);
-                adspaceKey.append("TT:").append(adType).append(":").append(adSlot.getChannelId()).append(":");
-                
+                adspaceKey.append("TT:").append("adType").append(":").append(adSlot.getChannelId()).append(":");
                 if (ToutiaoConstant.OSType.ANDROID.equalsIgnoreCase(device.getOs())){
                 	adspaceKey.append(ToutiaoConstant.OSType.ANDROID);
                 	request.setOs(Constant.OSType.ANDROID);
@@ -184,12 +180,6 @@ public class ToutiaoHandler extends MediaBaseHandler {
                 	request.setOs(Constant.OSType.IOS);
                 	request.setIfa(device.getDeviceId());
                 }
-                MediaMappingMetaData mediaMappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
-                if (mediaMappingMetaData == null) {
-                    continue;
-                }
-        		
-                request.setAdspacekey(mediaMappingMetaData.getAdspaceKey());
                 
         		if (adSlot.getBanner(0) != null) {
                     Banner banner = adSlot.getBanner(0);
@@ -200,6 +190,26 @@ public class ToutiaoHandler extends MediaBaseHandler {
                     	request.setH(banner.getHeight());
                     }
                 }
+        		List<Integer> adTypes = conversionInteger(adSlot.getAdTypeList());
+        		Integer random = null;
+            	while ((random =this.randomAdType(adTypes))!= null) {
+            		AdType adType=AdType.valueOf(random);
+            		String key = adspaceKey.toString().replace("adType", String.valueOf(adType.getNumber()));
+            		
+            		MediaMappingMetaData mediaMappingMetaData = CacheManager.getInstance().getMediaMapping(key);
+                    if (mediaMappingMetaData != null) {
+                    	request.setAdspacekey(mediaMappingMetaData.getAdspaceKey());
+                    	request.setAdtype(adType.getNumber());
+                    	break;
+                    }else{
+                    	adTypes.remove(random);
+                    	continue;
+                    }
+				}
+            	if(!request.hasAdspacekey()){
+            		break;
+            	}
+            	
         		mediaBid.setRequestBuilder(request);
                 mediaBids.add(mediaBid);
         	}
@@ -210,29 +220,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
 		}
 		return null;
     }
-    /**
-     * 根据广告位的宽度和高度返回今日头条的广告类型，头条只会传1，2，20，如果有多个，就随机取一个
-     * @param bidRequest
-     * @return
-     */
-    private AdType getAdType(BidRequest bidRequest) {
-        if (bidRequest.getAdslots(0).getAdTypeCount() < 1) {
-            return null;
-        }
-
-        List<TOUTIAOAds.AdType> needAdTypes = new ArrayList<TOUTIAOAds.AdType>();
-
-        List<TOUTIAOAds.AdType> adTypes = bidRequest.getAdslots(0).getAdTypeList();
-        for (TOUTIAOAds.AdType adType : adTypes) {
-            if (ToutiaoConstant.ADTYPE.contains(adType.getNumber())) {
-                needAdTypes.add(adType);
-            }
-        }
-        if (needAdTypes.size() < 1) {
-            return null;
-        }
-        return needAdTypes.get(Utility.nextInt(needAdTypes.size()));
-    }
+    
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         
@@ -285,12 +273,15 @@ public class ToutiaoHandler extends MediaBaseHandler {
                     bidBuilder.setCreative(materialMetaBuilder.build());
                     seatBidBuilder.addAds(bidBuilder);
 		 		}
-            	bidResposeBuilder.addSeatbids(seatBidBuilder);
+            	if(seatBidBuilder.getAdsCount() > 0){
+            		bidResposeBuilder.addSeatbids(seatBidBuilder);
+            	}
 		 	}
             if(bidResposeBuilder.getSeatbidsCount() > 0){
             	return outputStreamWrite(bidResposeBuilder, resp);
             }
         }
+    	resp.setStatus(Constant.StatusCode.NO_CONTENT);
 		return false;
     }
     private boolean outputStreamWrite(TOUTIAOAds.BidResponse.Builder builder,  HttpServletResponse resp)  {
@@ -298,6 +289,7 @@ public class ToutiaoHandler extends MediaBaseHandler {
             resp.setContentType("application/octet-stream;charset=UTF-8");
             BidResponse responseBuiler = builder.build();
     		logger.info("Toutiao Response params is : {}", JsonFormat.printToString(responseBuiler));
+    		resp.setStatus(Constant.StatusCode.OK);
             resp.getOutputStream().write(responseBuiler.toByteArray());
             return true;
         } catch (Exception e) {
@@ -305,6 +297,24 @@ public class ToutiaoHandler extends MediaBaseHandler {
             return false;
         }
     }
+    
+    public Integer randomAdType(List<Integer> adTypes){
+    	if(ObjectUtils.isEmpty(adTypes)){
+            return null;
+        }
+		return adTypes.get(Utility.nextInt(adTypes.size()));
+    	
+    }
+    public List<Integer> conversionInteger(List<AdType> adTypes) {
+    	if(ObjectUtils.isEmpty(adTypes)){
+            return null;
+        }
+    	List<Integer> list =new LinkedList<Integer>();
+    	for (AdType adType : adTypes) {
+    		list.add(adType.getNumber());
+		}
+		return list;
+	}
     
     
 }
