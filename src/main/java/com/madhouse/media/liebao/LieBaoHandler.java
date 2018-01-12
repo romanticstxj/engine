@@ -307,6 +307,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                     if (null != imp.getNativeObject()) {
                         // native时：
                         //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
+                        logger.warn("LieBao Response not join native ad.");
                         return outputStreamWrite(resp, null);
                     } else if (null != imp.getBanner()) {// IAB暂时不接
                         // 猎豹支持jpeg，png，gif三种mime
@@ -316,6 +317,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                                 (imp.getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
                             buildAdmBannerForOpen(mediaBidMetaData, imp, mediaResponse, bid, monitor);
                         } else {
+                            logger.warn("LieBao Response mimes not match.");
                             return outputStreamWrite(resp, null);
                         }
                     } else if (null != imp.getVideo()) {
@@ -327,12 +329,13 @@ public class LieBaoHandler extends MediaBaseHandler {
                         // } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
 
                         // }
+                        logger.warn("LieBao Response not join video ");
                         return outputStreamWrite(resp, null);
                     }
                     bidResponse.setCur(LieBaoConstants.MoneyMark.CNY);
                     return outputStreamWrite(resp, bidResponse);
                 }else{
-                    logger.warn("LieBao Response mediaBidMetaData.MediaBidBuilder.Status not ");
+                    logger.warn("LieBao Response mediaBidMetaData.MediaBidBuilder.Status not is 200 ");
                 }
             }else{
                 logger.warn("LieBao Response mediaBidMetaData or mediaBidMetaData.MediaBidBuilder is Null.");
