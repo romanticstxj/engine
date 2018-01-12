@@ -2,10 +2,7 @@ package com.madhouse.media.liebao;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LieBaoConstants {
 
@@ -90,28 +87,4 @@ public class LieBaoConstants {
         public static final String CHINA_UNICOM = "46001";
         public static final String CHINA_TELECOM = "46003";
     }
-
-    public static class MimeType {
-        public static final List<String> IMAGE_JPEG;
-        public static final List<String> IMAGE_PNG;
-        public static final List<String> IMAGE_GIF;
-
-        static {
-            List<String> jpegList = new ArrayList<>();
-            jpegList.add("jpe");
-            jpegList.add("jpeg");
-            jpegList.add("jpg");
-            jpegList.add("jpz");
-            IMAGE_JPEG = jpegList;
-            List<String> pngList = new ArrayList<>();
-            pngList.add("png");
-            pngList.add("pnz");
-            IMAGE_PNG = pngList;
-            List<String> gifList = new ArrayList<>();
-            gifList.add("gif");
-            gifList.add("ifm");
-            IMAGE_GIF = gifList;
-        }
-    }
-
 }

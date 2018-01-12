@@ -224,8 +224,8 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (bidRequest.getApp() != null) {
                 String name = StringUtil.toString(bidRequest.getApp().getName());
                 String bundle = StringUtil.toString(bidRequest.getApp().getBundle());
-                mediaRequest.setName(StringUtils.isBlank(name)?LieBaoConstants.App.getAppname(bundle):name);
-                mediaRequest.setBundle(StringUtils.isBlank(bundle)?LieBaoConstants.App.BUNDLE:bundle);
+                mediaRequest.setName(StringUtils.isBlank(name) ? LieBaoConstants.App.getAppname(bundle) : name);
+                mediaRequest.setBundle(StringUtils.isBlank(bundle) ? LieBaoConstants.App.BUNDLE : bundle);
                 mediaRequest.setType(Constant.MediaType.APP);
             } else {
                 mediaRequest.setName(LieBaoConstants.App.APPNAME);
@@ -274,7 +274,7 @@ public class LieBaoHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && mediaBidMetaData.getMaterialMetaData() != null) {
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
                 if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
                     LieBaoBidRequest bidRequest = (LieBaoBidRequest) mediaBidMetaData.getRequestObject();
                     MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
@@ -307,17 +307,11 @@ public class LieBaoHandler extends MediaBaseHandler {
                     if (null != imp.getNativeObject()) {
                         // native时：
                         //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
+                        logger.warn("LieBao Response not join native ad.");
                         return outputStreamWrite(resp, null);
                     } else if (null != imp.getBanner()) {// IAB暂时不接
                         // 猎豹支持jpeg，png，gif三种mime
-                        String[] split = mediaBidMetaData.getMaterialMetaData().getAdm().get(0).split("\\.");
-                        if ((imp.getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
-                                (imp.getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
-                                (imp.getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
-                            buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
-                        } else {
-                            return outputStreamWrite(resp, null);
-                        }
+                        buildAdmBannerForOpen(mediaBidMetaData, imp, mediaResponse, bid, monitor);
                     } else if (null != imp.getVideo()) {
                         // video时：
                         // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
@@ -327,11 +321,16 @@ public class LieBaoHandler extends MediaBaseHandler {
                         // } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
 
                         // }
+                        logger.warn("LieBao Response not join video ");
                         return outputStreamWrite(resp, null);
                     }
                     bidResponse.setCur(LieBaoConstants.MoneyMark.CNY);
                     return outputStreamWrite(resp, bidResponse);
+                } else {
+                    logger.warn("LieBao Response mediaBidMetaData.MediaBidBuilder.Status not is 200 ");
                 }
+            } else {
+                logger.warn("LieBao Response mediaBidMetaData or mediaBidMetaData.MediaBidBuilder is Null.");
             }
         } catch (Exception e) {
             logger.error(e.toString());
@@ -340,7 +339,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         return outputStreamWrite(resp, null);
     }
 
-    private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
+    private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, LieBaoBidRequest.Imp imp, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
         LieBaoBidResponse.Seatbid.Bid.AdmBanner admBanner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner();
         bid.setAdmBanner(admBanner);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner banner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner();
@@ -355,9 +354,9 @@ public class LieBaoHandler extends MediaBaseHandler {
         link.setUrl(mediaResponse.getLpgurl());
         banner.setLink(link);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img();
-        img.setH(mediaBidMetaData.getMaterialMetaData().getH());
-        img.setW(mediaBidMetaData.getMaterialMetaData().getW());
-        img.setUrl(mediaBidMetaData.getMaterialMetaData().getAdm().get(0));
+        img.setH(imp.getBanner().getH());
+        img.setW(imp.getBanner().getW());
+        img.setUrl(mediaResponse.getAdm().get(0));
         banner.setImg(img);
     }
 
