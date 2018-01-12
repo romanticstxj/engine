@@ -1,7 +1,11 @@
 package com.madhouse.media.liebao;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LieBaoConstants {
 
@@ -27,6 +31,24 @@ public class LieBaoConstants {
     public static class App {
         public static final String APPNAME = "liebao";
         public static final String BUNDLE = "com.liebao";
+        private static final Map<String, String> appName;
+
+        static {
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("com.cleanmaster.mguard_cn", "猎豹清理大师");
+            hashMap.put("com.cleanmaster.security_cn", "猎豹安全大师");
+            hashMap.put("com.ijinshan.browser_fast", "猎豹浏览器");
+            hashMap.put("com.ijinshan.kbatterydoctor", "金山电池医生");
+            appName = hashMap;
+        }
+
+        public static String getAppname(String bundle) {
+            if (null == bundle) {
+                return APPNAME;
+            }
+            String name = appName.get(bundle);
+            return StringUtils.isEmpty(name) ? APPNAME : name;
+        }
     }
 
     /**
