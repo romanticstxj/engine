@@ -228,8 +228,8 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (bidRequest.getApp() != null) {
                 String name = StringUtil.toString(bidRequest.getApp().getName());
                 String bundle = StringUtil.toString(bidRequest.getApp().getBundle());
-                mediaRequest.setName(StringUtils.isBlank(name)?LieBaoConstants.App.getAppname(bundle):name);
-                mediaRequest.setBundle(StringUtils.isBlank(bundle)?LieBaoConstants.App.BUNDLE:bundle);
+                mediaRequest.setName(StringUtils.isBlank(name) ? LieBaoConstants.App.getAppname(bundle) : name);
+                mediaRequest.setBundle(StringUtils.isBlank(bundle) ? LieBaoConstants.App.BUNDLE : bundle);
                 mediaRequest.setType(Constant.MediaType.APP);
             } else {
                 mediaRequest.setName(LieBaoConstants.App.APPNAME);
@@ -314,14 +314,7 @@ public class LieBaoHandler extends MediaBaseHandler {
                         return outputStreamWrite(resp, null);
                     } else if (null != imp.getBanner()) {// IAB暂时不接
                         // 猎豹支持jpeg，png，gif三种mime
-                        String[] split = mediaBid.getResponseBuilder().getAdm().get(0).split("\\.");
-                        if ((imp.getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
-                                (imp.getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
-                                (imp.getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
-                            buildAdmBannerForOpen(mediaBidMetaData, mediaResponse, bid, monitor);
-                        } else {
-                            return outputStreamWrite(resp, null);
-                        }
+                        buildAdmBannerForOpen(imp, mediaResponse, bid, monitor);
                     } else if (null != imp.getVideo()) {
                         // video时：
                         // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
@@ -344,7 +337,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         return outputStreamWrite(resp, null);
     }
 
-    private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
+    private void buildAdmBannerForOpen(LieBaoBidRequest.Imp imp, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
         LieBaoBidResponse.Seatbid.Bid.AdmBanner admBanner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner();
         bid.setAdmBanner(admBanner);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner banner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner();
@@ -359,11 +352,9 @@ public class LieBaoHandler extends MediaBaseHandler {
         link.setUrl(mediaResponse.getLpgurl());
         banner.setLink(link);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner.Img();
-        String impid = mediaBidMetaData.getMediaBids().get(0).getImpid();
-        MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(impid).getMaterialMetaData();
-        img.setH(materialMetaData.getH());
-        img.setW(materialMetaData.getW());
-        img.setUrl(materialMetaData.getAdm().get(0));
+        img.setH(imp.getBanner().getH());
+        img.setW(imp.getBanner().getW());
+        img.setUrl(mediaResponse.getAdm().get(0));
         banner.setImg(img);
     }
 
