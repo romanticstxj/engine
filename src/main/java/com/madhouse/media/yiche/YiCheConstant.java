@@ -3,6 +3,8 @@ package com.madhouse.media.yiche;
 
 public class YiCheConstant {
 	
+    public static final String DSP_ID = "3000";
+    
 	public static class OsType {
         public static final int OTHERS = 0;
         public static final int IOS = 1;
