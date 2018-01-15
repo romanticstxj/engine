@@ -395,17 +395,6 @@ public class CacheManager implements Runnable {
                         return true;
                     }
                 }
-
-                if (!StringUtils.isEmpty(ifa)) {
-                    if (!StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", ifa)) {
-                        return true;
-                    }
-
-                    if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIFA()) &&
-                            this.metaData.getBlockedDeviceIFA().contains(ifa)) {
-                        return true;
-                    }
-                }
                 
                 break;
             }
