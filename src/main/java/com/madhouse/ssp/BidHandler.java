@@ -135,21 +135,21 @@ public class BidHandler implements Runnable {
                 }
             }
 
+            String didmd5 = StringUtil.toString(mediaRequest.getDidmd5()).toLowerCase();
+            if (StringUtils.isEmpty(didmd5) && !StringUtils.isEmpty(mediaRequest.getDid())) {
+                didmd5 = StringUtil.getMD5(mediaRequest.getDid().toLowerCase());
+                mediaRequest.setDidmd5(didmd5);
+            }
+
+            String dpidmd5 = StringUtil.toString(mediaRequest.getDpidmd5()).toLowerCase();
+            if (StringUtils.isEmpty(dpidmd5) && !StringUtils.isEmpty(mediaRequest.getDpid())) {
+                dpidmd5 = StringUtil.getMD5(mediaRequest.getDpid().toLowerCase());
+                mediaRequest.setDpidmd5(dpidmd5);
+            }
+
             if (!CacheManager.getInstance().isMediaWhiteList(mediaMetaData.getId())) {
                 String ip = mediaRequest.getIp();
                 String ifa = StringUtil.toString(mediaRequest.getIfa()).toUpperCase();
-
-                String didmd5 = StringUtil.toString(mediaRequest.getDidmd5()).toLowerCase();
-                if (StringUtils.isEmpty(didmd5) && !StringUtils.isEmpty(mediaRequest.getDid())) {
-                    didmd5 = StringUtil.getMD5(mediaRequest.getDid().toLowerCase());
-                    mediaRequest.setDidmd5(didmd5);
-                }
-
-                String dpidmd5 = StringUtil.toString(mediaRequest.getDpidmd5()).toLowerCase();
-                if (StringUtils.isEmpty(dpidmd5) && !StringUtils.isEmpty(mediaRequest.getDpid())) {
-                    dpidmd5 = StringUtil.getMD5(mediaRequest.getDpid().toLowerCase());
-                    mediaRequest.setDpidmd5(dpidmd5);
-                }
 
                 if (CacheManager.getInstance().isBlockedDevice(mediaRequest.getOs(), ip, ifa, didmd5, dpidmd5)) {
                     logger.error("[{}] device is blocked.", mediaRequest.getAdspacekey());
