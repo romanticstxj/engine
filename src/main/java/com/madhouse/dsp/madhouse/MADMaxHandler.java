@@ -80,14 +80,14 @@ public class MADMaxHandler extends DSPBaseHandler {
             adspaceId = dspMappingMetaData.getMappingKey();
         }
 
-        String imei = mediaRequest.getDid();
-        if (StringUtils.isEmpty(imei)) {
-            imei = mediaRequest.getDidmd5();
+        String did = mediaRequest.getDid();
+        if (StringUtils.isEmpty(did)) {
+            did = mediaRequest.getDidmd5();
         }
 
-        String aid = mediaRequest.getDpid();
-        if (StringUtils.isEmpty(aid)) {
-            aid = mediaRequest.getDpidmd5();
+        String dpid = mediaRequest.getDpid();
+        if (StringUtils.isEmpty(dpid)) {
+            dpid = mediaRequest.getDpidmd5();
         }
 
         sb.append("adspaceid=").append(adspaceId)
@@ -118,26 +118,28 @@ public class MADMaxHandler extends DSPBaseHandler {
         switch (mediaRequest.getOs()) {
             case Constant.OSType.ANDROID:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_ANDROID)
-                   .append("&imei=").append(StringUtil.toString(imei))
-                   .append("&aid=").append(StringUtil.toString(aid))
+                   .append("&imei=").append(StringUtil.toString(did))
+                   .append("&aid=").append(StringUtil.toString(dpid))
                    .append("&aaid=").append(StringUtil.toString(mediaRequest.getIfa()));
                 break;
             case Constant.OSType.IOS:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_IOS)
                     .append("&idfa=").append(StringUtil.toString(mediaRequest.getIfa()))
-                    .append("&oid=").append(StringUtil.toString(mediaRequest.getDpidmd5()));
+                    .append("&oid=").append(StringUtil.toString(dpid));
                 break;
             case Constant.OSType.WINDOWS_PHONE:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_WINDOWS_PHONE)
-                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpidmd5()));
+                .append("&uid=").append(StringUtil.toString(dpid));
                 break;
             default:
                 sb.append("&os=").append(PremiumMADStatusCode.PremiumMadOs.OS_OTHERS)
-                .append("&uid=").append(StringUtil.toString(mediaRequest.getDpidmd5()));
+                .append("&uid=").append(StringUtil.toString(dpid));
                 break;
         }
+
+        // httpclient无法解析空格，需要把空格替换掉
         String str = sb.toString().replace(" ", "%20");
-        logger.info("MADMax request url:{}", str);// httpclient无法解析空格，需要把空格替换掉
+        logger.info("MADMax request url:{}", str);
         HttpGet httpGet = new HttpGet(str);
         
         return httpGet;

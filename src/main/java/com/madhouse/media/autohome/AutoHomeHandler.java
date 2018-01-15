@@ -335,27 +335,28 @@ public class AutoHomeHandler extends MediaBaseHandler {
         }
         return false;
 	}
-	  public static String decryptDeviceId(String text, String key) {
-		  if(StringUtils.isEmpty(text)){
-			  return null;
-		  }
-		  byte[] data = StringUtil.base64Decode(text);
-		  int len = data.length - 4;
-			
-		  byte[] md5 = DigestUtils.md5(key);
-		  byte[] deviceId = new byte[len];
-			
-		  for (int i = 0; i < len; ++i) {
-			  deviceId[i] = (byte)(data[i] ^ md5[i % 16]);
-		  }
-			
-		  byte[] md5sum = DigestUtils.md5(deviceId);
-		  for (int i = 0; i < 4; ++i) {
-			  if (md5sum[i] != data[len + i]) {
-				  return null;
-			  }
-		  }
 
-		  return new String(deviceId);
-	  }
+	public static String decryptDeviceId(String text, String key) {
+		if (StringUtils.isEmpty(text)) {
+			return null;
+		}
+		byte[] data = StringUtil.base64Decode(text);
+		int len = data.length - 4;
+
+		byte[] md5 = DigestUtils.md5(key);
+		byte[] deviceId = new byte[len];
+
+		for (int i = 0; i < len; ++i) {
+			deviceId[i] = (byte) (data[i] ^ md5[i % 16]);
+		}
+
+		byte[] md5sum = DigestUtils.md5(deviceId);
+		for (int i = 0; i < 4; ++i) {
+			if (md5sum[i] != data[len + i]) {
+				return null;
+			}
+		}
+
+		return new String(deviceId);
+	}
 }
