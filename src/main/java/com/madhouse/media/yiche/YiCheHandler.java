@@ -128,9 +128,7 @@ public class YiCheHandler extends MediaBaseHandler {
                         mediaRequest.setConnectiontype(Constant.ConnectionType._4G);
                         break;
                     }
-                    default: {
-                        mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
-                    }
+
                 }
             }
             mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
@@ -146,9 +144,7 @@ public class YiCheHandler extends MediaBaseHandler {
                         mediaRequest.setDevicetype(Constant.DeviceType.PAD);
                         break;
                     }
-                    default: {
-                        mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
-                    }
+
                 }
             }
             
@@ -172,7 +168,6 @@ public class YiCheHandler extends MediaBaseHandler {
                 }
                 StringBuilder adspaceKey = new StringBuilder();
                 adspaceKey.append("YICHE:").append(StringUtil.toString(imp.getTagid()));
-                ;
                 
                 if (YiCheConstant.OsType.ANDROID == device.getOs()) {
                     adspaceKey.append(":ANDROID");
