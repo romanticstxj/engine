@@ -84,8 +84,26 @@ public class MaterialMetaData {
     private String mediaQueryKey;
     private String mediaMaterialKey;
     private String mediaMaterialUrl;
+    private int advertiserId;
+    private String advertiserName;
 
-    public Monitor getMonitor() {
+    public int getAdvertiserId() {
+		return advertiserId;
+	}
+
+	public void setAdvertiserId(int advertiserId) {
+		this.advertiserId = advertiserId;
+	}
+
+	public String getAdvertiserName() {
+		return advertiserName;
+	}
+
+	public void setAdvertiserName(String advertiserName) {
+		this.advertiserName = advertiserName;
+	}
+
+	public Monitor getMonitor() {
         return monitor;
     }
 

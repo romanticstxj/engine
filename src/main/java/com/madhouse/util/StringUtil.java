@@ -111,9 +111,10 @@ public class StringUtil {
     }
 
     public static final String getMD5(String str) {
-        byte[] data = EncryptUtil.getMessageDigest(EncryptUtil.Type.MD5, str.getBytes());
-        if (data != null) {
-            return bytesToHex(data);
+        byte[] data = str.getBytes();
+        byte[] md5sum = EncryptUtil.getMessageDigest(EncryptUtil.Type.MD5, data, 0, data.length);
+        if (md5sum != null) {
+            return bytesToHex(md5sum);
         }
 
         return null;

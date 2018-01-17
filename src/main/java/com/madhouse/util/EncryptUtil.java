@@ -61,10 +61,10 @@ public class EncryptUtil {
         return null;
     }
 
-    public static byte[] getMessageDigest(Type type, byte[] data) {
+    public static byte[] getMessageDigest(Type type, byte[] data, int offset, int len) {
         try {
             MessageDigest md = MessageDigest.getInstance(type.getName());
-            md.update(data);
+            md.update(data, offset, len);
             return md.digest();
         } catch (Exception e) {
             System.err.println(e.toString());

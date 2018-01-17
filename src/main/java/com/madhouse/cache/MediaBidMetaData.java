@@ -2,11 +2,14 @@ package com.madhouse.cache;
 
 import com.madhouse.configuration.WebApp;
 import com.madhouse.resource.ResourceManager;
-import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.CRC32;
 
 /**
@@ -14,18 +17,72 @@ import java.util.zip.CRC32;
  */
 public class MediaBidMetaData {
     private Object requestObject;
-    private MediaBid.Builder mediaBidBuilder;
-    private TrackingParam trackingParam;
-    private MediaMetaData mediaMetaData;
-    private PlcmtMetaData plcmtMetaData;
-    private MaterialMetaData materialMetaData;
+    private List<MediaBid.Builder> mediaBids = new LinkedList<>();
+    private Map<String, BidMetaData> bidMetaDataMap = new HashMap<>();
 
-    public MaterialMetaData getMaterialMetaData() {
-        return materialMetaData;
+    public List<MediaBid.Builder> getMediaBids() {
+        return mediaBids;
     }
 
-    public void setMaterialMetaData(MaterialMetaData materialMetaData) {
-        this.materialMetaData = materialMetaData;
+    public void setMediaBids(List<MediaBid.Builder> mediaBids) {
+        this.mediaBids = mediaBids;
+    }
+
+    public Map<String, BidMetaData> getBidMetaDataMap() {
+        return bidMetaDataMap;
+    }
+
+    public void setBidMetaDataMap(Map<String, BidMetaData> bidMetaDataMap) {
+        this.bidMetaDataMap = bidMetaDataMap;
+    }
+
+    public static class BidMetaData {
+        private MediaMetaData mediaMetaData;
+        private PlcmtMetaData plcmtMetaData;
+
+        private DSPBid.Builder dspBid;
+        private TrackingParam trackingParam;
+        private MaterialMetaData materialMetaData;
+
+        public MediaMetaData getMediaMetaData() {
+            return mediaMetaData;
+        }
+
+        public void setMediaMetaData(MediaMetaData mediaMetaData) {
+            this.mediaMetaData = mediaMetaData;
+        }
+
+        public PlcmtMetaData getPlcmtMetaData() {
+            return plcmtMetaData;
+        }
+
+        public void setPlcmtMetaData(PlcmtMetaData plcmtMetaData) {
+            this.plcmtMetaData = plcmtMetaData;
+        }
+
+        public DSPBid.Builder getDspBid() {
+            return dspBid;
+        }
+
+        public void setDspBid(DSPBid.Builder dspBid) {
+            this.dspBid = dspBid;
+        }
+
+        public TrackingParam getTrackingParam() {
+            return trackingParam;
+        }
+
+        public void setTrackingParam(TrackingParam trackingParam) {
+            this.trackingParam = trackingParam;
+        }
+
+        public MaterialMetaData getMaterialMetaData() {
+            return materialMetaData;
+        }
+
+        public void setMaterialMetaData(MaterialMetaData materialMetaData) {
+            this.materialMetaData = materialMetaData;
+        }
     }
 
     public Object getRequestObject() {
@@ -36,39 +93,7 @@ public class MediaBidMetaData {
         this.requestObject = requestObject;
     }
 
-    public MediaBid.Builder getMediaBidBuilder() {
-        return mediaBidBuilder;
-    }
-
-    public void setMediaBidBuilder(MediaBid.Builder mediaBidBuilder) {
-        this.mediaBidBuilder = mediaBidBuilder;
-    }
-
-    public TrackingParam getTrackingParam() {
-        return trackingParam;
-    }
-
-    public void setTrackingParam(TrackingParam trackingParam) {
-        this.trackingParam = trackingParam;
-    }
-
-    public MediaMetaData getMediaMetaData() {
-        return mediaMetaData;
-    }
-
-    public void setMediaMetaData(MediaMetaData mediaMetaData) {
-        this.mediaMetaData = mediaMetaData;
-    }
-
-    public PlcmtMetaData getPlcmtMetaData() {
-        return plcmtMetaData;
-    }
-
-    public void setPlcmtMetaData(PlcmtMetaData plcmtMetaData) {
-        this.plcmtMetaData = plcmtMetaData;
-    }
-
-    public String getImpressionTrackingUrl() {
+    public String getImpressionTrackingUrl(String impid) {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
         String requestUrl = webApp.getDomain() + webApp.getImpression();
         StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getImpression());
@@ -78,11 +103,11 @@ public class MediaBidMetaData {
             sb.append("?");
         }
 
-        sb.append(this.trackingParam.toString());
+        sb.append(this.bidMetaDataMap.get(impid).trackingParam.toString());
         return sb.toString();
     }
 
-    public String getClickTrackingUrl() {
+    public String getClickTrackingUrl(String impid) {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
         String requestUrl = webApp.getDomain() + webApp.getImpression();
         StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getClick());
@@ -92,7 +117,7 @@ public class MediaBidMetaData {
             sb.append("?");
         }
 
-        sb.append(this.trackingParam.toString());
+        sb.append(this.bidMetaDataMap.get(impid).trackingParam.toString());
         return sb.toString();
     }
 

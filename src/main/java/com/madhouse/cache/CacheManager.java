@@ -63,6 +63,7 @@ public class CacheManager implements Runnable {
         //dspid:material_key:media_id:adspaceid, materialMetaData
         private ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap = new ConcurrentHashMap<>();
         //blocked device
+        private ConcurrentHashSet<Long> mediaWhiteList = new ConcurrentHashSet<>();
         private ConcurrentHashSet<String> blockedDeviceIP = new ConcurrentHashSet<>();
         private ConcurrentHashSet<String> blockedDeviceIFA = new ConcurrentHashSet<>();
         private ConcurrentHashSet<String> blockedDeviceDidmd5 = new ConcurrentHashSet<>();
@@ -170,6 +171,14 @@ public class CacheManager implements Runnable {
 
         public void setMaterialMetaDataMap(ConcurrentHashMap<String, MaterialMetaData> materialMetaDataMap) {
             this.materialMetaDataMap = materialMetaDataMap;
+        }
+
+        public ConcurrentHashSet<Long> getMediaWhiteList() {
+            return mediaWhiteList;
+        }
+
+        public void setMediaWhiteList(ConcurrentHashSet<Long> mediaWhiteList) {
+            this.mediaWhiteList = mediaWhiteList;
         }
     }
 
@@ -329,6 +338,7 @@ public class CacheManager implements Runnable {
         logger.debug("loading material metadata.");
         var.setMaterialMetaDataMap(this.loadMaterialMappingData());
         logger.debug("loading blocked device metadata.");
+        var.setMediaWhiteList(this.loadMediaWhiteList());
         var.setBlockedDeviceIP(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IP));
         var.setBlockedDeviceIFA(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IFA));
         var.setBlockedDeviceDidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DIDMD5));
@@ -350,6 +360,10 @@ public class CacheManager implements Runnable {
         logger.info("load metadata cache end.");
     }
 
+    public boolean isMediaWhiteList(long mediaId) {
+        return this.metaData.getMediaWhiteList().contains(mediaId);
+    }
+    
     public boolean isBlockedDevice(int osType, String ip, String ifa, String didmd5, String dpidmd5) {
         if (!StringUtils.isEmpty(ip)) {
             if (!ObjectUtils.isEmpty(this.metaData.getBlockedDeviceIP()) &&
@@ -381,7 +395,7 @@ public class CacheManager implements Runnable {
                         return true;
                     }
                 }
-
+                
                 break;
             }
 
@@ -417,6 +431,19 @@ public class CacheManager implements Runnable {
         }
 
         return false;
+    }
+
+    private ConcurrentHashSet<Long> loadMediaWhiteList() {
+        ConcurrentHashSet<Long> var = new ConcurrentHashSet<>();
+
+        Set<String> mediaWhilteList = this.redisSlave.smembers(Constant.CommonKey.ALL_MEDIA_WHITELIST);
+        if (!ObjectUtils.isEmpty(mediaWhilteList)) {
+            for (String str : mediaWhilteList) {
+                var.add(Long.parseLong(str));
+            }
+        }
+
+        return var;
     }
 
     private ConcurrentHashSet<String> loadBlockedDeviceMetaData(String key) {

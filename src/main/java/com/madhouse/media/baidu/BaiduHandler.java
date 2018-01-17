@@ -3,6 +3,7 @@ package com.madhouse.media.baidu;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.cache.PlcmtMetaData;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,7 +41,9 @@ public class BaiduHandler extends MediaBaseHandler {
             if (Constant.StatusCode.OK == status) {
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if (mediaRequest != null) {
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+					MediaBid.Builder mediaBid = MediaBid.newBuilder();
+					mediaBid.setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
                     return true;
                 }
             }
@@ -80,8 +83,7 @@ public class BaiduHandler extends MediaBaseHandler {
         mediaRequest.setType(bidRequest.hasSite()? Constant.MediaType.SITE : Constant.MediaType.APP);
         
         mediaRequest.setMac(!StringUtils.isEmpty(device.getMac()) ? device.getMac() : 
-        	!StringUtils.isEmpty(device.getMacmd5()) ? device.getMacmd5() : 
-        		!StringUtils.isEmpty(device.getMacsha1()) ? device.getMacsha1() : "");
+        	!StringUtils.isEmpty(device.getMacmd5()) ? device.getMacmd5() : "");
         
         if(pmp!=null && pmp.getDealsList().size() >0 ){
         	int size = Utility.nextInt(pmp.getDealsList().size());
@@ -164,19 +166,16 @@ public class BaiduHandler extends MediaBaseHandler {
         if(os.equalsIgnoreCase(BaiduStatusCode.OSType.IOS)){
         	adspaceKey.append(BaiduStatusCode.OSType.IOS);
         	String ifa = !StringUtils.isEmpty(device.getIdfa()) ? device.getIdfa() : 
-				 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : 
-				 !StringUtils.isEmpty(device.getIdfasha1()) ? device.getIdfasha1() : "";
+				 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : "";
         	mediaRequest.setIfa(ifa);
         	mediaRequest.setOs(Constant.OSType.IOS);
         } else if (os.equalsIgnoreCase(BaiduStatusCode.OSType.ANDROID)){
         	adspaceKey.append(BaiduStatusCode.OSType.ANDROID);
         	mediaRequest.setDid(StringUtil.toString(device.getDid()));
-        	mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : 
-				 !StringUtils.isEmpty(device.getDidsha1()) ? device.getDidsha1() : "");
+        	mediaRequest.setDidmd5(!StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() :  "");
         	
         	mediaRequest.setDpid(StringUtil.toString(device.getDpid()));
-        	mediaRequest.setDpidmd5(!StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() : 
-				 !StringUtils.isEmpty(device.getDpidsha1()) ? device.getDpidsha1() : "");
+        	mediaRequest.setDpidmd5(!StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() :  "");
         	mediaRequest.setOs(Constant.OSType.ANDROID);
         }
         if(imp.hasBanner() && imp.getBanner().hasW() && imp.getBanner().hasH()){
@@ -254,19 +253,16 @@ public class BaiduHandler extends MediaBaseHandler {
 			 }
 			 if(os.equalsIgnoreCase(BaiduStatusCode.OSType.IOS)){
 				 String ifa = !StringUtils.isEmpty(device.getIdfa()) ? device.getIdfa() : 
-					 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() : 
-					 !StringUtils.isEmpty(device.getIdfasha1()) ? device.getIdfasha1() : "";
+					 !StringUtils.isEmpty(device.getIdfamd5()) ? device.getIdfamd5() :  "";
 				 if(StringUtils.isEmpty(ifa)){
 						 logger.warn("{},Baidu.bidRequest.Device.os.IOS.ifa or aid is missing",id);
 						 return Constant.StatusCode.BAD_REQUEST;
 				 }	 
 			 } else if(os.equalsIgnoreCase(BaiduStatusCode.OSType.ANDROID)){
 				 String imei = !StringUtils.isEmpty(device.getDid()) ? device.getDid() : 
-					 !StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : 
-					 !StringUtils.isEmpty(device.getDidsha1()) ? device.getDidsha1() : "" ;
+					 !StringUtils.isEmpty(device.getDidmd5()) ? device.getDidmd5() : "" ;
 				 String dpid = !StringUtils.isEmpty(device.getDpid()) ? device.getDpid() : 
-					 !StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() : 
-					 !StringUtils.isEmpty(device.getDpidsha1()) ? device.getDpidsha1() : "";
+					 !StringUtils.isEmpty(device.getDpidmd5()) ? device.getDpidmd5() :  "";
 				 if(StringUtils.isEmpty(imei) && StringUtils.isEmpty(dpid)){
 					 logger.warn("{},Baidu.bidRequest.Device.os.ANDROID.ifa or aid is missing",id);
 					 return Constant.StatusCode.BAD_REQUEST;
@@ -282,8 +278,9 @@ public class BaiduHandler extends MediaBaseHandler {
 	public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData,
 			HttpServletResponse resp) {
 		try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && mediaBidMetaData.getPlcmtMetaData() != null) {
-                if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
+            if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+				MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+                if (mediaBid.getStatus() == Constant.StatusCode.OK) {
                 	Baidu.BidResponse.Builder bidResponse = convertToBaiduResponse(mediaBidMetaData);
                 	if(bidResponse != null){
                 		Baidu.BidResponse responseBuiler = bidResponse.build();
@@ -309,9 +306,10 @@ public class BaiduHandler extends MediaBaseHandler {
 		
 		Baidu.BidResponse.Builder bidResponse = Baidu.BidResponse.newBuilder();
 		Baidu.BidRequest bidRequest = (BidRequest) mediaBidMetaData.getRequestObject();
-    	MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+    	MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
     	MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
-    	
+		MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+		PlcmtMetaData plcmtMetaData = bidMetaData.getPlcmtMetaData();
     	bidResponse.setId(bidRequest.getId());
     	bidResponse.setBidid(mediaBid.getImpid());
     	
@@ -321,7 +319,7 @@ public class BaiduHandler extends MediaBaseHandler {
     	bid.setId(mediaBid.getImpid());
     	bid.setImpid(bidRequest.getImp(0).getId());
     	bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice() : 0);
-    	bid.setBidtype(mediaBidMetaData.getPlcmtMetaData().getBidType()-1);
+    	bid.setBidtype(plcmtMetaData.getBidType()-1);
     	bid.setCrid(mediaResponse.getCrid());
     	bid.setCid(mediaResponse.getCid());
     	bid.setAction(AdActionType.IN_APP_WEBVIEW);
@@ -329,7 +327,7 @@ public class BaiduHandler extends MediaBaseHandler {
     		bid.setDealid(mediaBid.getRequestBuilder().getDealid());
     	}
     	
-    	switch (mediaBidMetaData.getPlcmtMetaData().getAdType()) {
+    	switch (plcmtMetaData.getAdType()) {
         	case Constant.PlcmtType.BANNER : {
         		Baidu.BidResponse.SeatBid.Bid.Adm.Builder adm = Baidu.BidResponse.SeatBid.Bid.Adm.newBuilder();
         		adm.setAsseturl(mediaResponse.getAdm().get(0));

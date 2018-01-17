@@ -2,9 +2,11 @@ package com.madhouse.media.liebao;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
+import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.*;
 import com.madhouse.util.*;
@@ -42,7 +44,9 @@ public class LieBaoHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                mediaBid.setRequestBuilder(mediaRequest);
+                mediaBidMetaData.getMediaBids().add(mediaBid);
                 mediaBidMetaData.setRequestObject(bidRequest);
                 return true;
             } else {
@@ -224,8 +228,8 @@ public class LieBaoHandler extends MediaBaseHandler {
             if (bidRequest.getApp() != null) {
                 String name = StringUtil.toString(bidRequest.getApp().getName());
                 String bundle = StringUtil.toString(bidRequest.getApp().getBundle());
-                mediaRequest.setName(StringUtils.isBlank(name)?LieBaoConstants.App.getAppname(bundle):name);
-                mediaRequest.setBundle(StringUtils.isBlank(bundle)?LieBaoConstants.App.BUNDLE:bundle);
+                mediaRequest.setName(StringUtils.isBlank(name) ? LieBaoConstants.App.getAppname(bundle) : name);
+                mediaRequest.setBundle(StringUtils.isBlank(bundle) ? LieBaoConstants.App.BUNDLE : bundle);
                 mediaRequest.setType(Constant.MediaType.APP);
             } else {
                 mediaRequest.setName(LieBaoConstants.App.APPNAME);
@@ -274,15 +278,15 @@ public class LieBaoHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBids() != null && mediaBidMetaData.getMediaBids().size() > 0) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+                if (mediaBid.getStatus() == Constant.StatusCode.OK) {
                     LieBaoBidRequest bidRequest = (LieBaoBidRequest) mediaBidMetaData.getRequestObject();
-                    MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                     MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
 
                     LieBaoBidResponse bidResponse = new LieBaoBidResponse();
                     bidResponse.setId(bidRequest.getId());
-                    bidResponse.setBidid(mediaBid.getImpid());
+                    bidResponse.setBidid(ResourceManager.getInstance().nextId());
 
                     LieBaoBidResponse.Seatbid seatBid = new LieBaoBidResponse.Seatbid();
                     bidResponse.setSeatbid(new LinkedList<>());
@@ -307,19 +311,10 @@ public class LieBaoHandler extends MediaBaseHandler {
                     if (null != imp.getNativeObject()) {
                         // native时：
                         //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
-                        logger.warn("LieBao Response not join native ad.");
                         return outputStreamWrite(resp, null);
                     } else if (null != imp.getBanner()) {// IAB暂时不接
                         // 猎豹支持jpeg，png，gif三种mime
-                        String[] split = mediaResponse.getAdm().get(0).split("\\.");
-                        if ((imp.getBanner().getMimes().contains("image/jpeg") && LieBaoConstants.MimeType.IMAGE_JPEG.contains(split[split.length - 1])) ||
-                                (imp.getBanner().getMimes().contains("image/png") && LieBaoConstants.MimeType.IMAGE_PNG.contains(split[split.length - 1])) ||
-                                (imp.getBanner().getMimes().contains("image/gif") && LieBaoConstants.MimeType.IMAGE_GIF.contains(split[split.length - 1]))) {
-                            buildAdmBannerForOpen(mediaBidMetaData, imp, mediaResponse, bid, monitor);
-                        } else {
-                            logger.warn("LieBao Response mimes not match.");
-                            return outputStreamWrite(resp, null);
-                        }
+                        buildAdmBannerForOpen(imp, mediaResponse, bid, monitor);
                     } else if (null != imp.getVideo()) {
                         // video时：
                         // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
@@ -329,16 +324,11 @@ public class LieBaoHandler extends MediaBaseHandler {
                         // } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
 
                         // }
-                        logger.warn("LieBao Response not join video ");
                         return outputStreamWrite(resp, null);
                     }
                     bidResponse.setCur(LieBaoConstants.MoneyMark.CNY);
                     return outputStreamWrite(resp, bidResponse);
-                }else{
-                    logger.warn("LieBao Response mediaBidMetaData.MediaBidBuilder.Status not is 200 ");
                 }
-            }else{
-                logger.warn("LieBao Response mediaBidMetaData or mediaBidMetaData.MediaBidBuilder is Null.");
             }
         } catch (Exception e) {
             logger.error(e.toString());
@@ -347,7 +337,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         return outputStreamWrite(resp, null);
     }
 
-    private void buildAdmBannerForOpen(MediaBidMetaData mediaBidMetaData, LieBaoBidRequest.Imp imp, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
+    private void buildAdmBannerForOpen(LieBaoBidRequest.Imp imp, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
         LieBaoBidResponse.Seatbid.Bid.AdmBanner admBanner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner();
         bid.setAdmBanner(admBanner);
         LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner banner = new LieBaoBidResponse.Seatbid.Bid.AdmBanner.Banner();

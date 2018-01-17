@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.madhouse.ssp.avro.*;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -37,7 +38,9 @@ public class XtraderHandler extends MediaBaseHandler {
             if (Constant.StatusCode.OK != status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox, xtraderBidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                	MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                	mediaBid.setRequestBuilder(mediaRequest);
+                 	mediaBidMetaData.getMediaBids().add(mediaBid);
                     mediaBidMetaData.setRequestObject(xtraderBidRequest);
                     return true;
                 }
@@ -209,8 +212,8 @@ public class XtraderHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        	if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     XtraderResponse  bidResponse = convertToXtraderResponse(mediaBidMetaData);
                     if(null != bidResponse){
@@ -234,8 +237,10 @@ public class XtraderHandler extends MediaBaseHandler {
     }
 
     private XtraderResponse convertToXtraderResponse(MediaBidMetaData mediaBidMetaData) {
+    	MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+    	
         XtraderBidRequest xtraderRequest = (XtraderBidRequest) mediaBidMetaData.getRequestObject();
-        Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        Builder mediaResponse = mediaBid.getResponseBuilder();
         XtraderResponse response = new XtraderResponse();  
         XtraderResponse.Seatbid seatbid = response.new Seatbid();
         XtraderResponse.Seatbid.Bid bid = seatbid.new Bid();
@@ -249,7 +254,7 @@ public class XtraderHandler extends MediaBaseHandler {
         bid.setExt(ext);
         bid.setAdm(mediaResponse.getAdm().get(0));
         String impid = xtraderRequest.getImp().get(0).getId();
-        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        bid.setId(mediaBid.getImpid());
         bid.setImpid(impid);
         bid.setNurl("");
         bid.setCrid("");
@@ -261,7 +266,7 @@ public class XtraderHandler extends MediaBaseHandler {
         ArrayList<XtraderResponse.Seatbid> seatbids = new ArrayList<>(1);
         seatbids.add(seatbid);
         response.setId(xtraderRequest.getId());
-        response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        response.setBidid(mediaBid.getImpid());
         response.setSeatbid(seatbids);
         logger.info("Xtrader Response params is : {}", response.toString());
         return response;
