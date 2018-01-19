@@ -1,7 +1,19 @@
 package com.madhouse.media.tencent;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.googlecode.protobuf.format.JsonFormat;
-import com.madhouse.cache.*;
+import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.MaterialMetaData;
+import com.madhouse.cache.MediaBidMetaData;
+import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.tencent.GPBForDSP.Request;
 import com.madhouse.media.tencent.GPBForDSP.Request.App;
@@ -16,13 +28,6 @@ import com.madhouse.ssp.avro.MediaResponse.Builder;
 import com.madhouse.ssp.avro.Track;
 import com.madhouse.util.ObjectUtils;
 import com.madhouse.util.StringUtil;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedList;
-import java.util.List;
 
 public class TencentHandler extends MediaBaseHandler {
 
@@ -43,9 +48,8 @@ public class TencentHandler extends MediaBaseHandler {
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
         }
-        GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
+        GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData);
         outputStreamWrite(resp, bidResponse);
-        resp.setStatus(Constant.StatusCode.OK);
         return false;
 
     }
@@ -149,7 +153,7 @@ public class TencentHandler extends MediaBaseHandler {
             request.setDealid(StringUtil.toString(imp.getDealid()));
             StringBuilder sb = new StringBuilder();
             sb.append("TENC:");
-            String tencAdspaceId = bidRequest.getImpression(0).getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
+            String tencAdspaceId = imp.getTagid();//腾讯广告位(广告位ID，同资源报表中的广告位ID，如 Ent_F_Width1)
             sb.append(tencAdspaceId).append(":");
             String os = device.getOs();//iPhone.OS.9.3.2
             if (!StringUtils.isEmpty(os)) {
@@ -205,7 +209,7 @@ public class TencentHandler extends MediaBaseHandler {
             if (mappingMetaData != null) {
                 request.setAdspacekey(mappingMetaData.getAdspaceKey());
             } else {
-                return null;
+                continue;
             }
 
             mediaBid.setRequestBuilder(request);
@@ -293,22 +297,16 @@ public class TencentHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            GPBForDSP.Response.Builder bidResponse = GPBForDSP.Response.newBuilder();
             if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
-                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
-                    bidResponse = convertToTencentResponse(mediaBidMetaData, mediaBid.getStatus());
-                } else {
-                    bidResponse = convertToTencentResponse(mediaBidMetaData, Constant.StatusCode.NO_CONTENT);
-                }
+                GPBForDSP.Response.Builder bidResponse = convertToTencentResponse(mediaBidMetaData);
+                outputStreamWrite(resp, bidResponse);
+                return true;
             }
-            outputStreamWrite(resp, bidResponse);
-            return true;
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             resp.setStatus(Constant.StatusCode.NO_CONTENT);
-            return false;
         }
+        return false;
     }
 
     private boolean outputStreamWrite(HttpServletResponse resp, GPBForDSP.Response.Builder bidResponse) {
@@ -316,6 +314,7 @@ public class TencentHandler extends MediaBaseHandler {
         try {
             resp.setContentType("application/octet-stream;charset=UTF-8");
             resp.getOutputStream().write(response.toByteArray());
+            resp.setStatus(Constant.StatusCode.OK);
         } catch (Exception e) {
             logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
             return false;
@@ -324,50 +323,56 @@ public class TencentHandler extends MediaBaseHandler {
         return true;
     }
 
-    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData, int status) {
-        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+    private Response.Builder convertToTencentResponse(MediaBidMetaData mediaBidMetaData) {
         GPBForDSP.Response.Builder responseBuiler = GPBForDSP.Response.newBuilder();
         GPBForDSP.Request bidRequest = (GPBForDSP.Request) mediaBidMetaData.getRequestObject();
         responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
-        MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid()).getMaterialMetaData();
-        if (Constant.StatusCode.OK == status && materialMetaData != null) {
-            GPBForDSP.Response.SeatBid.Builder seatBuilder = GPBForDSP.Response.SeatBid.newBuilder();
-            Builder mediaResponse = mediaBid.getResponseBuilder();
-            responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
-            GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
-            bidResponseBuilder.setId(mediaBid.getImpid());
-            bidResponseBuilder.setImpid(mediaBid.getRequestBuilder().getBid());
-            bidResponseBuilder.setAdid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
-            //宏替换
-            List<String> extList = mediaResponse.getMonitorBuilder().getExts();
-            if (!ObjectUtils.isEmpty(extList)) {
-                if (extList.size() >= 1) {
-                    bidResponseBuilder.setExt(StringUtil.toString(extList.get(0)));
-                }
-                if (extList.size() >= 2) {
-                    bidResponseBuilder.setExt2(StringUtil.toString(extList.get(1)));
-                }
-                if (extList.size() >= 3) {
-                    bidResponseBuilder.setExt3(StringUtil.toString(extList.get(2)));
-                }
-            }
-            //ssp自己的展示和点击监测:去掉域名
-            List<Track> tracks = mediaResponse.getMonitorBuilder().getImpurl();
-            if (!tracks.isEmpty()) {
-                String impUrl = tracks.get(tracks.size() - 1).getUrl();
-                bidResponseBuilder.addDispExts(impUrl.substring(impUrl.lastIndexOf("?") + 1, impUrl.length()));
-            }
 
-            List<String> clkUrls = mediaResponse.getMonitorBuilder().getClkurl();
-            if (!clkUrls.isEmpty()) {
-                String clkUrl = clkUrls.get(clkUrls.size() - 1).toString();
-                bidResponseBuilder.addClickExts(clkUrl.substring(clkUrl.lastIndexOf("?") + 1, clkUrl.length()));
+        GPBForDSP.Response.SeatBid.Builder seatBuilder = GPBForDSP.Response.SeatBid.newBuilder();
+        for (MediaBid.Builder mediaBid : mediaBidMetaData.getMediaBids()) {
+            if (mediaBid.getStatus() == Constant.StatusCode.OK) {
+                MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid()).getMaterialMetaData();
+                Builder mediaResponse = mediaBid.getResponseBuilder();
+                GPBForDSP.Response.Bid.Builder bidResponseBuilder = GPBForDSP.Response.Bid.newBuilder();
+                
+                responseBuiler.setId(StringUtil.toString(bidRequest.getId()));
+                bidResponseBuilder.setId(mediaBid.getImpid());
+                bidResponseBuilder.setImpid(mediaBid.getRequestBuilder().getBid());
+                bidResponseBuilder.setAdid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
+                
+                //宏替换
+                List<String> extList = mediaResponse.getMonitorBuilder().getExts();
+                if (!ObjectUtils.isEmpty(extList)) {
+                    if (extList.size() >= 1) {
+                        bidResponseBuilder.setExt(StringUtil.toString(extList.get(0)));
+                    }
+                    if (extList.size() >= 2) {
+                        bidResponseBuilder.setExt2(StringUtil.toString(extList.get(1)));
+                    }
+                    if (extList.size() >= 3) {
+                        bidResponseBuilder.setExt3(StringUtil.toString(extList.get(2)));
+                    }
+                }
+                
+                //ssp自己的展示和点击监测:去掉域名
+                List<Track> tracks = mediaResponse.getMonitorBuilder().getImpurl();
+                if (!tracks.isEmpty()) {
+                    String impUrl = tracks.get(tracks.size() - 1).getUrl();
+                    bidResponseBuilder.addDispExts(impUrl.substring(impUrl.lastIndexOf("?") + 1, impUrl.length()));
+                }
+                
+                List<String> clkUrls = mediaResponse.getMonitorBuilder().getClkurl();
+                if (!clkUrls.isEmpty()) {
+                    String clkUrl = clkUrls.get(clkUrls.size() - 1).toString();
+                    bidResponseBuilder.addClickExts(clkUrl.substring(clkUrl.lastIndexOf("?") + 1, clkUrl.length()));
+                }
+                seatBuilder.addBid(bidResponseBuilder);//与request中的impression对应，可以对多个impression回复参与竞价，也可以对其中一部分回复参与竞价
             }
-
-            seatBuilder.addBid(bidResponseBuilder);//与request中的impression对应，可以对多个impression回复参与竞价，也可以对其中一部分回复参与竞价
-            responseBuiler.addSeatbid(seatBuilder);
-
         }
+        if (seatBuilder.getBidCount() > 0) {
+            responseBuiler.addSeatbid(seatBuilder);
+        }
+
         return responseBuiler;
     }
 
