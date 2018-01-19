@@ -3,7 +3,7 @@ package com.madhouse.media.autohome;
 
 public class AutoHomeConstant {
     
-	public static final String DEVICEIDKEY = "test_key";
+    public static final String DEVICEID_KEY = "whx92BVo4AdTETWM";
 	public static class Os {
         public static final int IOS = 1;
         public static final int ANDROID = 2;
