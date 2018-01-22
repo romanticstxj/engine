@@ -49,7 +49,9 @@ public class MojiWeatherHandler extends MediaBaseHandler {
                 logger.info("MojiWeather Request params is : {}", JSON.toJSONString(mojiWeatherBidRequest));
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(mojiWeatherBidRequest);
                 if (mediaRequest != null) {
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                    MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                    mediaBid.setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
                     mediaBidMetaData.setRequestObject(mojiWeatherBidRequest);
                     return true;
                 }
@@ -300,8 +302,8 @@ public class MojiWeatherHandler extends MediaBaseHandler {
 
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
-        if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
             MojiWeatherBidRequest mojiWeatherBidRequest = (MojiWeatherBidRequest)mediaBidMetaData.getRequestObject();
 
             MojiWeatherResponse mojiWeatherResponse = new MojiWeatherResponse();
@@ -371,8 +373,9 @@ public class MojiWeatherHandler extends MediaBaseHandler {
             return moWeatherBidResponse;
         }
 
-        MediaRequest.Builder mediaRequest = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
-        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
+        MediaResponse.Builder mediaResponse= mediaBid.getResponseBuilder();
         moWeatherBidResponse.setCode(MojiWeather.StatusCode.CODE_200);
         data.setPrice(mediaResponse.getPrice());
         data.setChargingtype(1);

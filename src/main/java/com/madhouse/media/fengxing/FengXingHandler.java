@@ -51,7 +51,9 @@ public class FengXingHandler extends MediaBaseHandler {
                     return false;
                 }
 
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                mediaBid.setRequestBuilder(mediaRequest);
+                mediaBidMetaData.getMediaBids().add(mediaBid);
                 mediaBidMetaData.setRequestObject(bidRequest);
                 return true;
             } else {
@@ -297,10 +299,12 @@ public class FengXingHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null && mediaBidMetaData.getMaterialMetaData() != null) {
-                if (mediaBidMetaData.getMediaBidBuilder().getStatus() == Constant.StatusCode.OK) {
+            if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+                MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+                if (mediaBid.getStatus() == Constant.StatusCode.OK && bidMetaData != null) {
+                    MaterialMetaData materialMetaData = bidMetaData.getMaterialMetaData();
                     FXBidRequest bidRequest = (FXBidRequest)mediaBidMetaData.getRequestObject();
-                    MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
                     MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
 
                     FXBidResponse bidResponse = new FXBidResponse();
@@ -318,7 +322,7 @@ public class FengXingHandler extends MediaBaseHandler {
                     bid.setId(mediaBid.getImpid());
                     bid.setImpid(StringUtil.toString(bidRequest.getImp().get(0).getId()));
                     bid.setAdm(mediaResponse.getAdm().get(0));
-                    bid.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
+                    bid.setCrid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() : 0);
                     
                     FXBidResponse.SeatBid.Bid.Ext ext = new FXBidResponse.SeatBid.Bid.Ext();

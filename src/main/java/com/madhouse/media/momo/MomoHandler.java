@@ -46,7 +46,9 @@ public class MomoHandler extends MediaBaseHandler {
                     if(Constant.StatusCode.OK == status){
                         mediaRequest = conversionToPremiumMADData(bidRequest);
                         if (mediaRequest != null){
-                            mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                            MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                            mediaBid.setRequestBuilder(mediaRequest);
+                            mediaBidMetaData.getMediaBids().add(mediaBid);
                             mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.JSON,bidRequest});
                             return true;
                         }
@@ -58,7 +60,9 @@ public class MomoHandler extends MediaBaseHandler {
                     if(Constant.StatusCode.OK == status){
                         Object[]  object= conversionToPremiumMADDataModel(bidRequest);
                         if(object != null){
-                            mediaBidMetaData.getMediaBidBuilder().setRequestBuilder((Builder) object[0]);
+                            MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                            mediaBid.setRequestBuilder((Builder)object[0]);
+                            mediaBidMetaData.getMediaBids().add(mediaBid);
                             mediaBidMetaData.setRequestObject(new Object[]{MomoStatusCode.Type.PROTOBUF,bidRequest, object[1]});
                             return true;
                         }
@@ -439,13 +443,13 @@ public class MomoHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     
                     Object[] objType = (Object[])mediaBidMetaData.getRequestObject();
-                    
-                    if(MomoStatusCode.Type.PROTOBUF.equals(objType[0]) && mediaBidMetaData.getMaterialMetaData() != null){
+                    MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+                    if(MomoStatusCode.Type.PROTOBUF.equals(objType[0]) && bidMetaData.getMaterialMetaData() != null){
                         MomoExchange.BidResponse bidResponse = convertToMomoResponse(mediaBidMetaData,(MomoExchange.BidRequest)objType[1],(String)objType[2]);
                         if(null != bidResponse){
                             resp.setContentType("application/octet-stream;charset=UTF-8");
@@ -486,8 +490,9 @@ public class MomoHandler extends MediaBaseHandler {
         MomoResponse.Bid.Url image = bid.new Url();
         MomoResponse.Bid.Url gif = bid.new Url();
         MomoResponse.Bid.Url video = bid.new Url();
-        
-        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
         
         
         bid.setImpid(objType.getImp().get(0).getId());
@@ -528,7 +533,7 @@ public class MomoHandler extends MediaBaseHandler {
         
         bidList.add(bid);
         momoBidResponse.setBid(bidList);
-        momoBidResponse.setId(mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid());
+        momoBidResponse.setId(mediaBid.getRequestBuilder().getBid());
         
         logger.info("MoMO Response params is : {}", JSON.toJSONString(momoBidResponse));
         return momoBidResponse;
@@ -538,17 +543,18 @@ public class MomoHandler extends MediaBaseHandler {
 
     private BidResponse convertToMomoResponse(MediaBidMetaData mediaBidMetaData, MomoExchange.BidRequest bidRequest, String campainType) {
         
-        
-        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        MediaRequest.Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
-        
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaResponse.Builder mediaResponse= mediaBid.getResponseBuilder();
+        MediaRequest.Builder mediaRequest= mediaBid.getRequestBuilder();
+        MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+
         MomoExchange.BidResponse.SeatBid.Bid.Builder bidBuilder = MomoExchange.BidResponse.SeatBid.Bid.newBuilder();
-        bidBuilder.setId(mediaBidMetaData.getMediaBidBuilder().getImpid().toString());
+        bidBuilder.setId(mediaBid.getImpid());
         bidBuilder.setImpid(bidRequest.getImpList().get(0).getId());
         bidBuilder.setPrice(mediaResponse.getPrice()/100);
         bidBuilder.setCid(mediaResponse.getCid());
         bidBuilder.setAdid(mediaResponse.getCid());   //广告位id
-        bidBuilder.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));  //物料id
+        bidBuilder.setCrid(StringUtil.toString(bidMetaData.getMaterialMetaData().getMediaQueryKey()));  //物料id
         bidBuilder.addCat("");  //premiummad暂不支持 默认为空
         
         bidBuilder.setNativeCreative(getNativeCreative(bidRequest,mediaResponse,mediaRequest,campainType));
@@ -584,12 +590,11 @@ public class MomoHandler extends MediaBaseHandler {
         MomoExchange.BidResponse.Builder bidResposeBuilder = MomoExchange.BidResponse.newBuilder();
         bidResposeBuilder.setId(bidRequest.getId());
         bidResposeBuilder.addSeatbid(seatBidBuilder);
-        bidResposeBuilder.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        bidResposeBuilder.setBidid(mediaBid.getImpid());
         MomoExchange.BidResponse resposeBuilder = bidResposeBuilder.build();
         logger.info("MoMO Response params is : {}", JsonFormat.printToString(resposeBuilder));
         return resposeBuilder;
     }
-
 
     private NativeCreative.Builder getNativeCreative(BidRequest bidRequest, MediaResponse.Builder mediaResponse, Builder mediaRequest, String campainType) {
         
@@ -657,7 +662,7 @@ public class MomoHandler extends MediaBaseHandler {
     
     /**
      * 单图
-     * @param jsonEntity
+     * @param
      * @return
      */
     private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder getImage(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder) {
@@ -671,7 +676,7 @@ public class MomoHandler extends MediaBaseHandler {
 
     /**
      * 多图
-     * @param jsonEntity
+     * @param
      * @return
      */
     private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder getImageList(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder,int i) {
@@ -697,7 +702,7 @@ public class MomoHandler extends MediaBaseHandler {
     
     /**
      * momo 视频专用
-     * @param jsonEntity
+     * @param
      * @return
      */
     private MomoExchange.BidResponse.SeatBid.Bid.NativeCreative.Image.Builder moMoVideoGetImage(MediaRequest.Builder requestBuilder,MediaResponse.Builder responseBuilder) {

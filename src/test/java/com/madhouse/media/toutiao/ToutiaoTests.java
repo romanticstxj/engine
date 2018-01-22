@@ -17,8 +17,8 @@ public class ToutiaoTests {
     
     public static void main(String[] arg) {
         TOUTIAOAds.AdSlot.Banner.Builder bannerBuilder = TOUTIAOAds.AdSlot.Banner.newBuilder();
-        bannerBuilder.setHeight(150);
-        bannerBuilder.setWidth(228);
+        bannerBuilder.setHeight(100);
+        bannerBuilder.setWidth(640);
         bannerBuilder.setPos(TOUTIAOAds.AdSlot.Position.DETAIL);
         bannerBuilder.setSequence("21");
 
@@ -32,17 +32,18 @@ public class ToutiaoTests {
   /*      adSlotBuilder.addAdType(TOUTIAOAds.AdType.TOUTIAO_FEED_APP_LARGE);
         adSlotBuilder.addAdType(TOUTIAOAds.AdType.TOUTIAO_FEED_APP_SMALL);
         adSlotBuilder.addAdType(TOUTIAOAds.AdType.TOUTIAO_FEED_LP_LARGE);*/
-        adSlotBuilder.addAdType(TOUTIAOAds.AdType.TOUTIAO_FEED_LP_SMALL);
+        adSlotBuilder.addAdType(TOUTIAOAds.AdType.TOUTIAO_FEED_LP_LARGE);
         //adSlotBuilder.addAdType(TOUTIAOAds.AdType.TOUTIAO_FEED_LP_GROUP);
         adSlotBuilder.addBanner(bannerBuilder);
         adSlotBuilder.setBidFloor(400);
+        adSlotBuilder.setChannelId(Long.valueOf("12312313213"));
 
         adSlotBuilder.setPmp(TOUTIAOAds.Pmp.newBuilder().addDeals(deal));
         
         TOUTIAOAds.App.Builder appBuilder = TOUTIAOAds.App.newBuilder();
         appBuilder.setId("appid01");
 //      appBuilder.setDomain("toutiao.com");
-//      appBuilder.setBundle("ll.com");
+        appBuilder.setBundle("ll.com");
         appBuilder.setVer("50701");
         appBuilder.setName("news_article");
 //      appBuilder.setPrivacypolicy(1);
@@ -55,7 +56,7 @@ public class ToutiaoTests {
 
         TOUTIAOAds.Device.Builder deviceBuilder = TOUTIAOAds.Device.newBuilder();
         deviceBuilder.setDnt(false);
-        deviceBuilder.setUa("");
+        deviceBuilder.setUa("13213213134646513");
         deviceBuilder.setGeo(geoBuilder);
         deviceBuilder.setDeviceId("EC8E44F5-20E3-4DE8-943E-270D0EB734C8");
         deviceBuilder.setOs("ios");
@@ -75,9 +76,11 @@ public class ToutiaoTests {
         requestBuilder.setRequestId("asdfghjkl123456789");
         requestBuilder.setApiVersion("2.1");
         requestBuilder.addAdslots(adSlotBuilder);
+        requestBuilder.addAdslots(adSlotBuilder);
         requestBuilder.setApp(appBuilder);
         requestBuilder.setDevice(deviceBuilder);
         requestBuilder.setUser(userBuilder);
+        requestBuilder.setDspId(123);
         System.out.println(requestBuilder.build().toString());
 
 //        String str = JsonFormat.printToString(requestBuilder.build());
