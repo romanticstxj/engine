@@ -40,7 +40,7 @@ public class CacheManager implements Runnable {
         return cacheManager;
     }
 
-    private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    private Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     private ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
     public class MetaData {
