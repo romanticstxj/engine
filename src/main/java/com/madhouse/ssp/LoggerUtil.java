@@ -34,15 +34,17 @@ import com.madhouse.ssp.avro.WinNotice;
 public class LoggerUtil extends KafkaCallback {
     private static final LoggerUtil logger = new LoggerUtil();
     
-    private static final Logger premiumMadLogger = LogManager.getLogger("premiummad");
-    
+    private Logger premiumMadLogger = LogManager.getLogger("premiummad");
+
     private static ConcurrentHashMap<String, Logger> loggerBaseMap = new ConcurrentHashMap<String, Logger>();
+
     static{
         List<Kafka.Topic> list=  ResourceManager.getInstance().getConfiguration().getKafka().getTopics();
         for (Kafka.Topic topic : list) {
             loggerBaseMap.put(topic.getType(),LogManager.getLogger(topic.getTopic()));
         }
     }
+
     private LoggerUtil() {
     }
 
@@ -136,7 +138,7 @@ public class LoggerUtil extends KafkaCallback {
         }
     }
 
-    public static Logger getPremiummadlogger() {
+    public Logger getPremiummadlogger() {
         return premiumMadLogger;
     }
 
@@ -147,6 +149,7 @@ public class LoggerUtil extends KafkaCallback {
     private void sendMessage(KafkaProducer kafkaProducer,byte[] message,String topic ) {
         kafkaProducer.sendMessage(topic, message);
     }
+
     public byte[] getAvroBytes(SpecificRecordBase record) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         SpecificDatumWriter writer = new SpecificDatumWriter(record.getSchema());

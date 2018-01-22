@@ -22,8 +22,7 @@ import java.util.List;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public abstract class MediaBaseHandler {
-    @SuppressWarnings("static-access")
-    public static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    protected Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
 
     public final boolean parseRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {

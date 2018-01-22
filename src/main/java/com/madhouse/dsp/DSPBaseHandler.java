@@ -25,9 +25,7 @@ import org.apache.logging.log4j.Logger;
 
 
 public abstract class DSPBaseHandler {
-    
-    @SuppressWarnings("static-access")
-    public static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    protected Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
 
     public final HttpRequestBase packageRequest(MediaBid.Builder mediaBid, MediaMetaData mediaMetaData, PlcmtMetaData plcmtMetaData, AdBlockMetaData adBlockMetaData, PolicyMetaData policyMetaData, DSPBidMetaData dspBidMetaData) {
 
