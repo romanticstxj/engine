@@ -314,12 +314,13 @@ public class CacheManager implements Runnable {
         return this.metaData.getPolicyMetaDataMap().get(id);
     }
 
+    @Override
     public void run() {
         try {
-            logger.info("load metadata cache begin.");
-
             this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
             this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+
+            logger.info("load metadata cache begin.");
 
             MetaData var = new MetaData();
             logger.info("loading media metadata.");
@@ -350,6 +351,10 @@ public class CacheManager implements Runnable {
             this.metaData = var;
             this.blockedPolicy.clear();
 
+            logger.info("load metadata cache end.");
+        } catch (Exception e) {
+            logger.error("load metadata cache error[{}].", e.toString());
+        } finally {
             if (this.redisMaster != null) {
                 this.redisMaster.close();
             }
@@ -357,10 +362,6 @@ public class CacheManager implements Runnable {
             if (this.redisSlave != null) {
                 this.redisSlave.close();
             }
-
-            logger.info("load metadata cache end.");
-        } catch (Exception e) {
-            logger.error("load metadata cache error[{}].", e.toString());
         }
     }
 
