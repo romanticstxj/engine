@@ -39,12 +39,15 @@ public class SohuHandler extends MediaBaseHandler {
             if(status == Constant.StatusCode.OK){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                	MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                	mediaBid.setRequestBuilder(mediaRequest);
+                 	mediaBidMetaData.getMediaBids().add(mediaBid);
+                 	mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
             }
         } catch (Exception e) {
-            logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
+            logger.error("Sohu Exception:{}",e.toString());
         }
         convertToSohuResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,resp);
         return false;
@@ -207,15 +210,15 @@ public class SohuHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        	if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+        		MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     convertToSohuResponse(mediaBidMetaData,Constant.StatusCode.OK,resp);
                     return true;
                 }
             } 
         } catch (Exception e) {
-            logger.error(e.toString() + "_Status_" + Constant.StatusCode.NO_CONTENT);
+            logger.error("Sohu Exception:{}",e.toString());
         }
         convertToSohuResponse(mediaBidMetaData,Constant.StatusCode.NO_CONTENT,resp);
         return false;
@@ -225,10 +228,13 @@ public class SohuHandler extends MediaBaseHandler {
         SohuRTB.Request bidRequest = (Request) mediaBidMetaData.getRequestObject();
         bidResponseBuiler.setBidid(bidRequest.getBidid());
         bidResponseBuiler.setVersion(bidRequest.getVersion());
-
-        MaterialMetaData materialMetaData = mediaBidMetaData.getMaterialMetaData();
-    	if (status == Constant.StatusCode.OK && materialMetaData != null){
-    		MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        
+    	if (status == Constant.StatusCode.OK ){
+    		MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+            MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+            MaterialMetaData materialMetaData = bidMetaData.getMaterialMetaData();
+    		 
+    		MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
             SohuRTB.Response.SeatBid.Builder seatBuilder =SohuRTB.Response.SeatBid.newBuilder();
             if(bidRequest.getImpression(0).hasIdx()){
             	seatBuilder.setIdx(bidRequest.getImpression(0).getIdx());
@@ -273,7 +279,7 @@ public class SohuHandler extends MediaBaseHandler {
     		resp.setContentType("application/octet-stream;charset=UTF-8");
 			resp.getOutputStream().write(responseBuiler.toByteArray());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Sohu Exception:{}",e.toString());
 		}
         resp.setStatus(Constant.StatusCode.OK);
     }

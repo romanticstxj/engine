@@ -3,10 +3,12 @@ package com.madhouse.media.oppo;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
+import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
 import com.madhouse.media.oppo.OppoNativeRequest.Asset;
+import com.madhouse.resource.ResourceManager;
 import com.madhouse.ssp.Constant;
 import com.madhouse.ssp.avro.MediaBid;
 import com.madhouse.ssp.avro.MediaRequest;
@@ -37,7 +39,10 @@ public class OppoHandler extends MediaBaseHandler {
                 mediaBidMetaData.setRequestObject(oppoBidRequest);
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(oppoBidRequest);
                 if (mediaRequest != null) {
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                    MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                    mediaBid.setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
+                    mediaBidMetaData.setRequestObject(oppoBidRequest);
                     return true;
                 } else {
                     status = Constant.StatusCode.BAD_REQUEST;
@@ -242,8 +247,8 @@ public class OppoHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBids() != null && mediaBidMetaData.getMediaBids().size() > 0) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 OppoResponse result;
                 if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     result = convertToOppoResponse(mediaBidMetaData, mediaBid.getStatus());
@@ -280,7 +285,8 @@ public class OppoHandler extends MediaBaseHandler {
     private OppoResponse convertToOppoResponse(MediaBidMetaData mediaBidMetaData, int status) {
         OppoBidRequest oppoBidRequest = (OppoBidRequest) mediaBidMetaData.getRequestObject();
         //response DSP对象
-        Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        Builder mediaResponse = mediaBid.getResponseBuilder();
         OppoResponse response = new OppoResponse();
         List<OppoResponse.SeatBid.Bid> bids = new ArrayList<>(1);
         List<OppoResponse.SeatBid> seatbids = new ArrayList<>(1);
@@ -309,18 +315,19 @@ public class OppoHandler extends MediaBaseHandler {
                     // 用来临时存储封装img对象的asset，用来判断specificFeeds.FormateType
                     OppoNativeResponse.AdmNative.Asset.Img imgAssetForFormateType = null;
                     for (Asset assetNativeRequest : oppoNativeRequest.getAssets()) {
+                        MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid()).getMaterialMetaData();
                         OppoNativeResponse.AdmNative.Asset assetResponse = admNative.new Asset();
                         assetResponse.setId(assetNativeRequest.getId());
                         assetResponse.setRequired(assetNativeRequest.getRequired());
                         if (null != assetNativeRequest.getTitle()) {
                             OppoNativeResponse.AdmNative.Asset.Title titleResponse = assetResponse.new Title();
-                            titleResponse.setText(mediaBidMetaData.getMaterialMetaData().getTitle());
+                            titleResponse.setText(materialMetaData.getTitle());
                             assetResponse.setTitle(titleResponse);
                         }
                         if (null != assetNativeRequest.getImg()) {
                             OppoNativeResponse.AdmNative.Asset.Img imgResponse = assetResponse.new Img();
-                            imgResponse.setH(mediaBidMetaData.getMaterialMetaData().getH());
-                            imgResponse.setW(mediaBidMetaData.getMaterialMetaData().getW());
+                            imgResponse.setH(materialMetaData.getH());
+                            imgResponse.setW(materialMetaData.getW());
                             imgResponse.setUrl(mediaResponse.getAdm().get(0));//物料url
                             assetResponse.setImg(imgResponse);
                             imgAssetForFormateType = imgResponse;
@@ -372,13 +379,14 @@ public class OppoHandler extends MediaBaseHandler {
                         imptrackers.add(track.getUrl());
                     }
                     bid.setImptrackers(imptrackers);
-                    bid.setCrid(Long.toString(mediaBidMetaData.getMaterialMetaData().getId()));
+                    MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid()).getMaterialMetaData();
+                    bid.setCrid(Long.toString(materialMetaData.getId()));
                 }
             }
 
 
             //seatBid中的bid对象
-            bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
+            bid.setId(mediaBid.getImpid());
             bid.setImpid(oppoBidRequest.getImp().get(0).getId());
             bid.setPrice(mediaResponse.getPrice());
             bid.setAdid(mediaResponse.getCid());//预加载的广告id(dsp广告活动id)
@@ -390,7 +398,7 @@ public class OppoHandler extends MediaBaseHandler {
             response.setSeatbid(seatbids);
 
             response.setId(oppoBidRequest.getId());//竞价请求id
-            response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());//竞价者生成的id唯一标识
+            response.setBidid(ResourceManager.getInstance().nextId());//竞价者生成的id唯一标识
         }
         logger.debug("OPPO Response params is : {}", JSON.toJSONString(response));
         return response;

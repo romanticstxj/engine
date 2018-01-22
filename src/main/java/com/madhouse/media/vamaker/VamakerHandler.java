@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.googlecode.protobuf.format.JsonFormat;
 import com.madhouse.ssp.avro.*;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.UrlEncoded;
@@ -35,7 +36,9 @@ public class VamakerHandler extends MediaBaseHandler {
             if (Constant.StatusCode.OK == status){
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(bidRequest);
                 if (null != mediaRequest){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                	MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                	mediaBid.setRequestBuilder(mediaRequest);
+                 	mediaBidMetaData.getMediaBids().add(mediaBid);
                     mediaBidMetaData.setRequestObject(bidRequest);
                     return true;
                 }
@@ -224,8 +227,8 @@ public class VamakerHandler extends MediaBaseHandler {
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        	if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     VamakerRTB.VamResponse vamResponse = convertToVamakerResponse(mediaBidMetaData);
                     if(null != vamResponse){
@@ -244,7 +247,10 @@ public class VamakerHandler extends MediaBaseHandler {
     }
 
     private VamakerRTB.VamResponse convertToVamakerResponse(MediaBidMetaData mediaBidMetaData) {
-        if (mediaBidMetaData.getMaterialMetaData() == null) {
+    	
+    	MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+    	MediaBidMetaData.BidMetaData bidMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid());
+        if (bidMetaData.getMaterialMetaData() == null) {
             return null;
         }
 
@@ -252,10 +258,10 @@ public class VamakerHandler extends MediaBaseHandler {
         VamakerRTB.VamResponse.Bid.Builder bidBuilder = VamakerRTB.VamResponse.Bid.newBuilder();
         VamakerRTB.VamRequest bidRequest= (VamRequest)mediaBidMetaData.getRequestObject();
 
-        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
 
         vamResponse.setId(bidRequest.getId());
-        bidBuilder.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
+        bidBuilder.setCrid(StringUtil.toString(bidMetaData.getMaterialMetaData().getMediaQueryKey()));
         bidBuilder.setPrice(mediaResponse.getPrice());
 
         if (mediaResponse.hasDealid() && !StringUtils.isEmpty(mediaResponse.getDealid())) {

@@ -49,7 +49,9 @@ public class BaoFengHandler extends MediaBaseHandler {
                     logger.debug(Constant.StatusCode.BAD_REQUEST);
                     return false;
                 }
-                mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                mediaBid.setRequestBuilder(mediaRequest);
+                mediaBidMetaData.getMediaBids().add(mediaBid);
                 mediaBidMetaData.setRequestObject(baoFengBidRequest);
                 return true;
             } else {
@@ -66,8 +68,8 @@ public class BaoFengHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
 
-        if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+        if (mediaBidMetaData != null && !ObjectUtils.isEmpty(mediaBidMetaData.getMediaBids())) {
+            MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
             if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                 try {
                     BaoFengResponse baoFengResponse = convertToBaofengResponse(mediaBidMetaData);
@@ -91,17 +93,19 @@ public class BaoFengHandler extends MediaBaseHandler {
     
     private BaoFengResponse convertToBaofengResponse(MediaBidMetaData mediaBidMetaData) {
         BaoFengResponse baoFengResponse = new BaoFengResponse();
-        
+
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaRequest.Builder mediaRequest = mediaBid.getRequestBuilder();
         // 广告高度
-        Integer adheight = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getH();
+        Integer adheight = mediaRequest.getH();
         
         // 广告位宽度
-        Integer adwidth = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getW();
+        Integer adwidth = mediaRequest.getW();
         
         // 广告流水唯一标识
-        String bid = mediaBidMetaData.getMediaBidBuilder().getRequestBuilder().getBid();
+        String bid = mediaRequest.getBid();
 
-        MediaResponse.Builder mediaResponse = mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaResponse.Builder mediaResponse = mediaBid.getResponseBuilder();
         
         // 点击url
         baoFengResponse.setTarget(mediaResponse.getLpgurl());
@@ -228,7 +232,7 @@ public class BaoFengHandler extends MediaBaseHandler {
     
     private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, BaoFengBidRequest baoFengBidRequest) {
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
-        
+
         BaoFengBidRequest.App app = baoFengBidRequest.getApp();
         BaoFengBidRequest.Device device = baoFengBidRequest.getDevice();
         BaoFengBidRequest.Impression imp = baoFengBidRequest.getImp();
@@ -257,18 +261,7 @@ public class BaoFengHandler extends MediaBaseHandler {
             }
         }
 
-        switch (mediaRequest.getOs()) {
-            case Constant.OSType.IOS: {
-                mediaRequest.setIfa(device.getDpid());
-                break;
-            }
-            case Constant.OSType.ANDROID: {
-                mediaRequest.setDid(device.getDpid());
-                break;
-            }
-            default:
-                break;
-        }
+
 
         // 广告请求唯一id
         mediaRequest.setBid(baoFengBidRequest.getId());
@@ -297,19 +290,32 @@ public class BaoFengHandler extends MediaBaseHandler {
         }
         
         // 广告位ID
-        String adspaceKey = null;
+        StringBuilder adspaceKey = new StringBuilder();
         if (isSandbox) {
             // sandbox环境
-            adspaceKey = "sandbox:BF:" + mediaRequest.getW() + ":" + mediaRequest.getH();
+            adspaceKey.append("sandbox:BF:").append(baoFengBidRequest.getImp().getPos()).append(":");
             //模拟竞价，不计费
             mediaRequest.setTest(Constant.Test.SIMULATION);
         } else {
-            adspaceKey = "BF:" + mediaRequest.getW() + ":" + mediaRequest.getH();
+            adspaceKey.append("BF:").append(baoFengBidRequest.getImp().getPos()).append(":");
             mediaRequest.setTest(Constant.Test.REAL);
         }
-        
+        switch (mediaRequest.getOs()) {
+            case Constant.OSType.IOS: {
+                mediaRequest.setIfa(device.getDpid());
+                adspaceKey.append("IOS");
+                break;
+            }
+            case Constant.OSType.ANDROID: {
+                mediaRequest.setDid(device.getDpid());
+                adspaceKey.append("ANDROID");
+                break;
+            }
+            default:
+                break;
+        }
         if (adspaceKey != null) {
-            MediaMappingMetaData mappingMetaData=CacheManager.getInstance().getMediaMapping(adspaceKey);
+            MediaMappingMetaData mappingMetaData=CacheManager.getInstance().getMediaMapping(adspaceKey.toString());
             if (mappingMetaData != null) {
                 mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
             }else{

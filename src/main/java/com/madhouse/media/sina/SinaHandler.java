@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.cache.MaterialMetaData;
+import com.madhouse.resource.ResourceManager;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -38,7 +40,9 @@ public class SinaHandler extends MediaBaseHandler {
             if (status == Constant.StatusCode.OK) {
                 MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(sinaBidRequest);
                 if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
+                    MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                    mediaBid.setRequestBuilder(mediaRequest);
+                    mediaBidMetaData.getMediaBids().add(mediaBid);
                     mediaBidMetaData.setRequestObject(sinaBidRequest);
                     return true;
                 }
@@ -222,9 +226,9 @@ public class SinaHandler extends MediaBaseHandler {
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
-                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK && mediaBidMetaData.getMaterialMetaData() !=null ) {
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBids() != null && mediaBidMetaData.getMediaBids().size() > 0) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+                if (mediaBid.hasResponseBuilder() && mediaBid.getStatus() == Constant.StatusCode.OK && mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid()).getMaterialMetaData() !=null ) {
                     SinaResponse result = convertToSinaResponse(mediaBidMetaData);
                     if (result != null) {
                         resp.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -254,8 +258,9 @@ public class SinaHandler extends MediaBaseHandler {
         SinaResponse response=new SinaResponse();
         
         SinaBidRequest sinaRequest = (SinaBidRequest) mediaBidMetaData.getRequestObject();
-
-        Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MaterialMetaData materialMetaData = mediaBidMetaData.getBidMetaDataMap().get(mediaBid.getImpid()).getMaterialMetaData();
+        Builder mediaResponse= mediaBid.getResponseBuilder();
         SinaResponse.Seatbid seatbid = response.new Seatbid();
         SinaResponse.Seatbid.Bid bid = seatbid.new Bid();
         SinaResponse.Seatbid.Bid.Ext ext = bid.new Ext();
@@ -269,14 +274,14 @@ public class SinaHandler extends MediaBaseHandler {
         ext.setCm(mediaResponse.getMonitorBuilder().getClkurl());
         
         bid.setExt(ext);
-        bid.setAdm(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaMaterialKey()));
+        bid.setAdm(StringUtil.toString(materialMetaData.getMediaMaterialKey()));
         // TODO DSP对该次出价分配的ID
         String impid = sinaRequest.getImp().get(0).getId();
-        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        bid.setId(mediaBid.getImpid());
         bid.setImpid(impid);
         bid.setNurl("");
         bid.setPrice((float)mediaResponse.getPrice());
-        bid.setCrid(StringUtil.toString(mediaBidMetaData.getMaterialMetaData().getMediaQueryKey()));
+        bid.setCrid(StringUtil.toString(materialMetaData.getMediaQueryKey()));
         
         List<SinaResponse.Seatbid.Bid> bidList = new ArrayList<>(1);
         bidList.add(bid);
@@ -286,7 +291,7 @@ public class SinaHandler extends MediaBaseHandler {
         seatbids.add(seatbid);
 
         response.setId(sinaRequest.getId());
-        response.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        response.setBidid(ResourceManager.getInstance().nextId());
         response.setSeatbid(seatbids);
         response.setDealid(StringUtil.toString(sinaRequest.getDealid()));
         logger.info("Sina Response params is : {}", JSON.toJSONString(response));

@@ -64,6 +64,12 @@
             }, {
                 "path": "/adcall/liebao/bidrequest",
                 "className": "com.madhouse.media.liebao.LieBaoHandler"
+            }, {
+            	"path": "/adcall/yiche/bidrequest",
+            	"className": "com.madhouse.media.yiche.YiCheHandler"
+            }, {
+                "path": "/adcall/autohome/bidrequest",
+                "className": "com.madhouse.media.autohome.AutoHomeHandler"
             }
         ],
         "impression": "/adtrack/impression",

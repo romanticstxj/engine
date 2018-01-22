@@ -1,5 +1,6 @@
 package com.madhouse.media.xiaomi;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.madhouse.resource.ResourceManager;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -47,10 +49,9 @@ public class XiaoMiHandler extends MediaBaseHandler {
             logger.info("XiaoMi Request params is : {}", JSON.toJSONString(bidRequest));
             int status = validateRequiredParam(bidRequest);
             if (status == Constant.StatusCode.OK) {
-                MediaRequest.Builder mediaRequest = conversionToPremiumMADDataModel(isSandbox,bidRequest);
-                if(mediaRequest != null){
-                    mediaBidMetaData.getMediaBidBuilder().setRequestBuilder(mediaRequest);
-                    mediaBidMetaData.setRequestObject(bidRequest);
+                List<MediaBid.Builder> mediaBids = conversionToPremiumMADDataModel(isSandbox, bidRequest);
+                if(mediaBids != null){
+                    mediaBidMetaData.setMediaBids(mediaBids);
                     return true;
                 }
             }
@@ -127,17 +128,9 @@ public class XiaoMiHandler extends MediaBaseHandler {
         }
         return Constant.StatusCode.BAD_REQUEST;
     }
-    private MediaRequest.Builder conversionToPremiumMADDataModel(boolean isSandbox, XiaoMiBidRequest bidRequest) {
+    private List<MediaBid.Builder> conversionToPremiumMADDataModel(boolean isSandbox, XiaoMiBidRequest bidRequest) {
+        List<MediaBid.Builder> mediaBids = new ArrayList<>();
         MediaRequest.Builder mediaRequest = MediaRequest.newBuilder();
-        
-        Imp imp = bidRequest.getImp()[0];
-        AdTemplate[] adTemplates = imp.getTemplates();
-        AdTemplate adTemplate = adTemplates[0];
-        
-        mediaRequest.setW(adTemplate.getWidth());
-        mediaRequest.setH(adTemplate.getHeight());
-        mediaRequest.setBidfloor((int)imp.getBidfloor());
-        mediaRequest.setBid(imp.getId());
         App app = bidRequest.getApp();
         if (app != null) {
             mediaRequest.setName(StringUtil.toString(app.getName()));
@@ -226,46 +219,62 @@ public class XiaoMiHandler extends MediaBaseHandler {
                 }
                 mediaRequest.setGeoBuilder(vargeo);
             }
-            String adspaceKey = "";
-            if (isSandbox) {//sandbox环境
-                adspaceKey = new StringBuffer().append("sandbox:").append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
-                //模拟竞价，
-                mediaRequest.setTest(Constant.Test.SIMULATION);
-            } else {
-                adspaceKey = new StringBuffer().append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
-                mediaRequest.setTest(Constant.Test.REAL);
-            }
-            MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
-            if (mappingMetaData != null) {
-                mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-            } else {
-                if (isSandbox) {//sandbox环境
-                    mappingMetaData = CacheManager.getInstance().getMediaMapping("sandbox:XM:0:0");
-                } else {
-                    mappingMetaData = CacheManager.getInstance().getMediaMapping("XM:0:0");
-                }
-                if(mappingMetaData != null){
-                    mediaRequest.setAdspacekey(mappingMetaData.getAdspaceKey());
-                }else{
-                    return null;
-                }
-                
-            }
             mediaRequest.setType(Constant.MediaType.APP);
+            boolean isExsitsMediaMappingMetadata = true;
+            for (Imp imp : bidRequest.getImp()) {
+                MediaBid.Builder mediaBid = MediaBid.newBuilder();
+                MediaRequest.Builder request = MediaRequest.newBuilder(mediaRequest);
+                AdTemplate[] adTemplates = imp.getTemplates();
+                AdTemplate adTemplate = adTemplates[0];
+                request.setW(adTemplate.getWidth());
+                request.setH(adTemplate.getHeight());
+                request.setBidfloor((int)imp.getBidfloor());
+                request.setBid(imp.getId());
+                String adspaceKey = "";
+                if (isSandbox) {//sandbox环境
+                    adspaceKey = new StringBuffer().append("sandbox:").append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
+                    //模拟竞价，
+                    request.setTest(Constant.Test.SIMULATION);
+                } else {
+                    adspaceKey = new StringBuffer().append("XM:").append(adTemplate.getWidth()).append(":").append(adTemplate.getHeight()).toString();
+                    request.setTest(Constant.Test.REAL);
+                }
+                MediaMappingMetaData mappingMetaData = CacheManager.getInstance().getMediaMapping(adspaceKey);
+                if (mappingMetaData != null) {
+                    request.setAdspacekey(mappingMetaData.getAdspaceKey());
+                } else {
+                    if (isSandbox) {//sandbox环境
+                        mappingMetaData = CacheManager.getInstance().getMediaMapping("sandbox:XM:0:0");
+                    } else {
+                        mappingMetaData = CacheManager.getInstance().getMediaMapping("XM:0:0");
+                    }
+                    if(mappingMetaData != null){
+                        request.setAdspacekey(mappingMetaData.getAdspaceKey());
+                    }else{
+                        isExsitsMediaMappingMetadata = false;
+                    }
+                }
+                mediaBid.setRequestBuilder(request);
+                mediaBids.add(mediaBid);
+            }
+            if (!isExsitsMediaMappingMetadata) {
+                return null;
+            }
+
             logger.info("xiaomi convert mediaRequest is : {}", mediaRequest.toString());
         }else{
             return null;
         }
         
-        return mediaRequest;
+        return mediaBids;
         
     }
 
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
-            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBidBuilder() != null) {
-                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBidBuilder();
+            if (mediaBidMetaData != null && mediaBidMetaData.getMediaBids() != null && mediaBidMetaData.getMediaBids().size()>0) {
+                MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
                 if (mediaBid.getResponseBuilder() != null && mediaBid.getStatus() == Constant.StatusCode.OK) {
                     XiaoMiResponse xiaoMiResponse = convertToXiaoMiResponse(mediaBidMetaData);
                     if(null != xiaoMiResponse){
@@ -288,8 +297,9 @@ public class XiaoMiHandler extends MediaBaseHandler {
     }
     private XiaoMiResponse convertToXiaoMiResponse(MediaBidMetaData mediaBidMetaData) {
         XiaoMiResponse bidResponse = new XiaoMiResponse();
-        MediaResponse.Builder mediaResponse= mediaBidMetaData.getMediaBidBuilder().getResponseBuilder();
-        Builder mediaRequest= mediaBidMetaData.getMediaBidBuilder().getRequestBuilder();
+        MediaBid.Builder mediaBid = mediaBidMetaData.getMediaBids().get(0);
+        MediaResponse.Builder mediaResponse= mediaBid.getResponseBuilder();
+        Builder mediaRequest= mediaBid.getRequestBuilder();
         
         XiaoMiBidRequest bidRequest =(XiaoMiBidRequest)mediaBidMetaData.getRequestObject();
         
@@ -299,8 +309,8 @@ public class XiaoMiHandler extends MediaBaseHandler {
         
         
         XiaoMiResponse.Bid bid = bidResponse.new Bid();
-        bid.setId(mediaBidMetaData.getMediaBidBuilder().getImpid());
-        bid.setImpid(bidRequest.getImp()[0].getId());
+        bid.setId(mediaBid.getImpid());
+        bid.setImpid(mediaBid.getRequestBuilder().getBid());
         bid.setPrice(mediaResponse.getPrice());//Bid price as CPM; 必须高于底价,否则竞价失败 ;必须字段,单位为分
         bid.setAdid(mediaRequest.getAdspacekey());
         //判断接受的类型
@@ -376,7 +386,7 @@ public class XiaoMiHandler extends MediaBaseHandler {
 
         XiaoMiResponse.SeatBid[] setBids = {seatBid};//目前仅支持长度为1
         bidResponse.setSeatbid(setBids);
-        bidResponse.setBidid(mediaBidMetaData.getMediaBidBuilder().getImpid());
+        bidResponse.setBidid(ResourceManager.getInstance().nextId());
         logger.info("XiaoMi Response params is : {}", JSON.toJSONString(bidResponse));
         return bidResponse;
     }
