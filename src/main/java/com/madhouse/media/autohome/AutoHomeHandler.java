@@ -260,7 +260,7 @@ public class AutoHomeHandler extends MediaBaseHandler {
                         ads.setAdvertiser_id(materialMetaData.getAdvertiserId());
                         ads.setWidth(mediaBid.getRequestBuilder().getW());
                         ads.setHeight(mediaBid.getRequestBuilder().getH());
-                        ads.setTemplateId(100002);
+                        ads.setTemplateId(10002);
                         Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
                         
                         if (monitor != null) {
