@@ -102,11 +102,14 @@ public class AutoHomeHandler extends MediaBaseHandler {
             
             mediaRequest.setAdtype(2);
             
-            mediaRequest.setIp(StringUtil.toString(bidRequest.getUser().getIp()));
-            mediaRequest.setUa(StringUtil.toString(bidRequest.getUser().getUser_agent()));
+            if (ObjectUtils.isNotEmpty(bidRequest.getUser())) {
+                mediaRequest.setIp(StringUtil.toString(bidRequest.getUser().getIp()));
+                mediaRequest.setUa(StringUtil.toString(bidRequest.getUser().getUser_agent()));
+            }
+
             mediaRequest.setMake(StringUtil.toString(device.getDevicebrand()));
             mediaRequest.setModel(StringUtil.toString(device.getDevicemodel()));
-            mediaRequest.setOsv(StringUtil.toString(device.getOs_version()));
+            mediaRequest.setOsv(StringUtil.toString(StringUtils.isEmpty(device.getOs_version()) ? "1.0.0" : device.getOs_version()));
             mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
             
             if (bidRequest.isIs_test()) {
@@ -164,7 +167,7 @@ public class AutoHomeHandler extends MediaBaseHandler {
             }
             if (bidRequest.getMobile() != null) {
                 mediaRequest.setName("AutoHome");
-                mediaRequest.setBundle(StringUtil.toString(bidRequest.getMobile().getPkgname()));
+                mediaRequest.setBundle(StringUtils.isEmpty(bidRequest.getMobile().getPkgname()) ? "com.car.autohome" : bidRequest.getMobile().getPkgname());
                 mediaRequest.setType(Constant.MediaType.APP);
             }
             
@@ -190,7 +193,7 @@ public class AutoHomeHandler extends MediaBaseHandler {
                     request.setOs(Constant.OSType.IOS);
                     
                     if (StringUtil.formatCheck("^[0-9A-F]{8}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{4}\\-[0-9A-F]{12}$", deviceId)) {
-                        request.setIfa(StringUtil.toString(device.getDeviceid()));
+                        request.setIfa(StringUtil.toString(deviceId));
                     } else {
                         request.setDpid(StringUtil.toString(deviceId));
                     }
