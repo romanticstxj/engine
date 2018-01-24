@@ -194,26 +194,24 @@ public class LieBaoHandler extends MediaBaseHandler {
                         mediaRequest.setConnectiontype(Constant.ConnectionType.WIFI);
                         break;
                     }
+                    default:
+                        mediaRequest.setConnectiontype(Constant.ConnectionType.UNKNOWN);
+                        break;
                 }
             }
 
             mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
             if (device.getDevicetype() != null) {
                 switch (device.getDevicetype()) {
-                    case LieBaoConstants.DeviceType.PHONE: {
+                    case LieBaoConstants.DeviceType.PHONE:
                         mediaRequest.setDevicetype(Constant.DeviceType.PHONE);
                         break;
-                    }
-
-                    case LieBaoConstants.DeviceType.TABLET: {
+                    case LieBaoConstants.DeviceType.TABLET:
                         mediaRequest.setDevicetype(Constant.DeviceType.PAD);
                         break;
-                    }
-
-                    case LieBaoConstants.DeviceType.UNKNOWN: {
+                    default:
                         mediaRequest.setDevicetype(Constant.DeviceType.UNKNOWN);
                         break;
-                    }
                 }
             }
 
@@ -303,27 +301,15 @@ public class LieBaoHandler extends MediaBaseHandler {
                     // ssp engine价格单位是分，猎豹是元
                     bid.setPrice(mediaResponse.getPrice() != null ? mediaResponse.getPrice().floatValue() / 100 : 0);
                     // 当前只对接banner 开屏，可以没有bundle字段
-                    // bid.setBundle(bidRequest.getApp().getBundle());
-                    // 分别构建native，banner，video，的adm字段,目前只构建banner 开屏
                     Monitor.Builder monitor = mediaResponse.getMonitorBuilder();
                     // 这个字段是自定义的，用来在序列化response时选中适当的数据类型
                     bid.setBidRequest(bidRequest);
                     if (null != imp.getNativeObject()) {
-                        // native时：
-                        //  buildAdmNative(bidRequest, mediaResponse, bid, monitor);
-                        return outputStreamWrite(resp, null);
-                    } else if (null != imp.getBanner()) {// IAB暂时不接
-                        // 猎豹支持jpeg，png，gif三种mime
+                        buildAdmNative(bidRequest, imp, mediaResponse, bid, monitor);
+                    } else if (null != imp.getBanner()) {
                         buildAdmBannerForOpen(imp, mediaResponse, bid, monitor);
                     } else if (null != imp.getVideo()) {
-                        // video时：
-                        // 不管是那个版本，都转成文档中提供的google网盘中的vast版本
-                        // List<Integer> protocols = bidRequest.getImp().get(0).getVideo().getProtocols();
-                        // if (protocols.containsAll(LieBaoConstants.Vast.INLINE_LIST)) {
-
-                        // } else if (protocols.containsAll(LieBaoConstants.Vast.WRAPPER_LIST)) {
-
-                        // }
+                        // video是 vast协议，暂不对接
                         return outputStreamWrite(resp, null);
                     }
                     bidResponse.setCur(LieBaoConstants.MoneyMark.CNY);
@@ -358,7 +344,7 @@ public class LieBaoHandler extends MediaBaseHandler {
         banner.setImg(img);
     }
 
-    private void buildAdmNative(LieBaoBidRequest bidRequest, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
+    private void buildAdmNative(LieBaoBidRequest bidRequest, LieBaoBidRequest.Imp imp, MediaResponse.Builder mediaResponse, LieBaoBidResponse.Seatbid.Bid bid, Monitor.Builder monitor) {
         LieBaoBidResponse.Seatbid.Bid.AdmNative admNative = new LieBaoBidResponse.Seatbid.Bid.AdmNative();
         bid.setAdmNative(admNative);
         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative adsResNative = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative();
@@ -384,22 +370,22 @@ public class LieBaoHandler extends MediaBaseHandler {
         assetsArrayList.add(assets);
         adsResNative.setAssets(assetsArrayList);
         assets.setId(bidRequest.getSelectedAssetsId());
-        /**
-         // 由于assets只有id是必须的，其他的可以先不设置，需要的时候再打开。节省带宽
-         // 设置素材title
-         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Title title = assets.new Title();
-         title.setText(mediaBidMetaData.getMaterialMetaData().getTitle());
-         assets.setTitle(title);
-         // 设置素材img
-         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Img img = assets.new Img();
-         img.setW(mediaBidMetaData.getMaterialMetaData().getW());
-         img.setH(mediaBidMetaData.getMaterialMetaData().getH());
-         img.setUrl(mediaBidMetaData.getMaterialMetaData().getMediaMaterialUrl());
-         assets.setImg(img);
-         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data data = assets.new Data();
-         data.setLabel("desc");
-         data.setValue(mediaBidMetaData.getMaterialMetaData().getDesc());
-         assets.setData(data);
-         // link对象有外层的link就足够了，如果这里也设置link外层的将被替换
-         */}
+        // 由于assets只有id是必须的，其他的可以先不设置，需要的时候再打开。节省带宽
+        // 设置素材title
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Title title = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Title();
+        title.setText(mediaResponse.getTitle());
+        assets.setTitle(title);
+        // 设置素材img
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Img();
+        LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets mainImageAssets = getMainImageAssets(imp.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets());
+        img.setW(mainImageAssets.getImg().getW());
+        img.setH(mainImageAssets.getImg().getH());
+        img.setUrl(mediaResponse.getAdm().get(0));
+        assets.setImg(img);
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data data = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data();
+        data.setLabel("desc");
+        data.setValue(mediaResponse.getDesc());
+        assets.setData(data);
+        // link对象有外层的link就足够了，如果这里也设置link外层的将被替换
+    }
 }
