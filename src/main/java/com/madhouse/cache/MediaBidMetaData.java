@@ -113,7 +113,7 @@ public class MediaBidMetaData {
 
     public String getClickTrackingUrl(String impid, boolean enableHttps) {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
-        String requestUrl = webApp.getDomain() + webApp.getImpression();
+        String requestUrl = webApp.getDomain() + webApp.getClick();
         if (enableHttps) {
             requestUrl = requestUrl.replace("http://", "https://");
         }
