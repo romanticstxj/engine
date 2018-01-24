@@ -2,7 +2,6 @@ package com.madhouse.media.liebao;
 
 import com.alibaba.fastjson.JSON;
 import com.madhouse.cache.CacheManager;
-import com.madhouse.cache.MaterialMetaData;
 import com.madhouse.cache.MediaBidMetaData;
 import com.madhouse.cache.MediaMappingMetaData;
 import com.madhouse.media.MediaBaseHandler;
@@ -125,10 +124,14 @@ public class LieBaoHandler extends MediaBaseHandler {
             } else if (impression.getNativeObject() != null && impression.getNativeObject().getRequestNativeObject() != null) {
                 LieBaoBidRequest.Imp.Native.LieBaoNative nativeObject = impression.getNativeObject().getRequestNativeObject();
                 List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList = nativeObject.getNativeTopLevel().getAssets();
-                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets = getMainImageAssets(assetsList);
-                bidRequest.setSelectedAssetsId(assets.getId());
-                mediaRequest.setW(assets.getImg().getW());
-                mediaRequest.setH(assets.getImg().getH());
+                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets imgAssets = getMainImageAssets(assetsList);
+                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets titleAssets = getTitleAssets(assetsList);
+                LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets dataAssets = getDataAssets(assetsList);
+                bidRequest.setSelectedImgId(imgAssets.getId());
+                bidRequest.setSelectedTitleId(titleAssets.getId());
+                bidRequest.setSelectedDataId(dataAssets.getId());
+                mediaRequest.setW(imgAssets.getImg().getW());
+                mediaRequest.setH(imgAssets.getImg().getH());
             }
 
 
@@ -272,6 +275,26 @@ public class LieBaoHandler extends MediaBaseHandler {
         return null;
     }
 
+    private LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets getTitleAssets(List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList) {
+        for (LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets : assetsList) {
+            if (assets.getTitle() != null) {
+                return assets;
+            }
+        }
+
+        return null;
+    }
+
+    private LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets getDataAssets(List<LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets> assetsList) {
+        for (LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets assets : assetsList) {
+            if (assets.getData() != null) {
+                return assets;
+            }
+        }
+
+        return null;
+    }
+
 
     @Override
     public boolean packageMediaResponse(MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
@@ -365,27 +388,42 @@ public class LieBaoHandler extends MediaBaseHandler {
             adsResNative.setLink(link);
         }
         // 设置素材信息
-        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets assets = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets();
         ArrayList<LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets> assetsArrayList = new ArrayList<>();
-        assetsArrayList.add(assets);
+        assetsArrayList.add(buildImage(bidRequest,imp, mediaResponse));
+        assetsArrayList.add(buildTitle(bidRequest,mediaResponse));
+        assetsArrayList.add(buildData(bidRequest,mediaResponse));
         adsResNative.setAssets(assetsArrayList);
-        assets.setId(bidRequest.getSelectedAssetsId());
-        // 由于assets只有id是必须的，其他的可以先不设置，需要的时候再打开。节省带宽
-        // 设置素材title
+    }
+
+    private LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets buildData(LieBaoBidRequest bidRequest, MediaResponse.Builder mediaResponse) {
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets assets = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets();
+        assets.setId(bidRequest.getSelectedDataId());
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data data = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data();
+        data.setLabel("desc");
+        data.setValue(mediaResponse.getDesc());
+        assets.setData(data);
+        return assets;
+    }
+
+    private LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets buildTitle(LieBaoBidRequest bidRequest, MediaResponse.Builder mediaResponse) {
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets assets = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets();
+        assets.setId(bidRequest.getSelectedTitleId());
         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Title title = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Title();
         title.setText(mediaResponse.getTitle());
         assets.setTitle(title);
-        // 设置素材img
+        return assets;
+    }
+
+    private LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets buildImage(LieBaoBidRequest bidRequest, LieBaoBidRequest.Imp imp, MediaResponse.Builder mediaResponse) {
+
+        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets assets = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets();
+        assets.setId(bidRequest.getSelectedImgId());
         LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Img img = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Img();
         LieBaoBidRequest.Imp.Native.LieBaoNative.NativeTopLevel.Assets mainImageAssets = getMainImageAssets(imp.getNativeObject().getRequestNativeObject().getNativeTopLevel().getAssets());
         img.setW(mainImageAssets.getImg().getW());
         img.setH(mainImageAssets.getImg().getH());
         img.setUrl(mediaResponse.getAdm().get(0));
         assets.setImg(img);
-        LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data data = new LieBaoBidResponse.Seatbid.Bid.AdmNative.ResponseNative.Assets.Data();
-        data.setLabel("desc");
-        data.setValue(mediaResponse.getDesc());
-        assets.setData(data);
-        // link对象有外层的link就足够了，如果这里也设置link外层的将被替换
+        return assets;
     }
 }
