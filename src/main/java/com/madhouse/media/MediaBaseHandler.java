@@ -140,8 +140,8 @@ public abstract class MediaBaseHandler {
                             monitor.setClkurl(new LinkedList<>());
                         }
 
-                        monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl(impId)));
-                        monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl(impId));
+                        monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl(impId, bidMetaData.getPlcmtMetaData().isEnableHttps())));
+                        monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl(impId, bidMetaData.getPlcmtMetaData().isEnableHttps()));
 
                         mediaBid.setResponseBuilder(mediaResponse);
                         mediaBid.setStatus(Constant.StatusCode.OK);
