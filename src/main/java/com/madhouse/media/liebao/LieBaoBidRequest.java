@@ -24,15 +24,6 @@ public class LieBaoBidRequest {
     // 这个字段是为了辅助response构建创建的
     private float admType;
     // 由于assets有多个，这里记录一下使用的assetsid，方便在构建response时使用
-    private int selectedAssetsId;
-
-    public int getSelectedAssetsId() {
-        return selectedAssetsId;
-    }
-
-    public void setSelectedAssetsId(int selectedAssetsId) {
-        this.selectedAssetsId = selectedAssetsId;
-    }
 
     public float getAdmType() {
         return admType;

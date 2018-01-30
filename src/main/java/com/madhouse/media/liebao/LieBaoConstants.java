@@ -90,4 +90,9 @@ public class LieBaoConstants {
         public static final String CHINA_UNICOM = "46001";
         public static final String CHINA_TELECOM = "46003";
     }
+
+    public static class Assets {
+        public static final int NO_NEED = 0;
+        public static final int NEED = 1;
+    }
 }

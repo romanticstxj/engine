@@ -39,7 +39,7 @@ public class BidHandler implements Runnable {
     private Map<Long, HttpClient> httpClientMap = new ConcurrentHashMap<>();
     private ExecutorService asyncExecutorService = Executors.newCachedThreadPool();
 
-    private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    private Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
 
     public boolean init(CountDownLatch latch, MediaBid.Builder mediaBid, MediaBidMetaData.BidMetaData bidMetaData) {
         this.latch = latch;
@@ -301,6 +301,7 @@ public class BidHandler implements Runnable {
                                         final HttpGet httpGet = new HttpGet(url);
                                         final HttpClient httpClient = this.getHttpClient(winner.getDspMetaData().getId());
                                         this.asyncExecutorService.submit(new Runnable() {
+                                            @Override
                                             public void run() {
                                                 httpClient.execute(httpGet, 150);
                                                 httpGet.releaseConnection();

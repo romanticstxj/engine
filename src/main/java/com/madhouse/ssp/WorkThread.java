@@ -35,7 +35,7 @@ import java.util.zip.CRC32;
 public class WorkThread {
     private LinkedList<BidHandler> bidHandlers = new LinkedList<>();
     private ExecutorService asyncExecutorService = Executors.newCachedThreadPool();
-    private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    private Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
 
     private final byte[] image = {  0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
                                     (byte)0x80, 0x01, 0x00, 0x00, 0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, 0x21,

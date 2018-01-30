@@ -40,7 +40,7 @@ public class CacheManager implements Runnable {
         return cacheManager;
     }
 
-    private static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    private Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
     private ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
     public class MetaData {
@@ -314,50 +314,55 @@ public class CacheManager implements Runnable {
         return this.metaData.getPolicyMetaDataMap().get(id);
     }
 
+    @Override
     public void run() {
-        logger.info("load metadata cache begin.");
+        try {
+            this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
+            this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
 
-        this.redisMaster = ResourceManager.getInstance().getJedisPoolMaster().getResource();
-        this.redisSlave = ResourceManager.getInstance().getJedisPoolSlave().getResource();
+            logger.info("load metadata cache begin.");
 
-        MetaData var = new MetaData();
-        logger.debug("loading media metadata.");
-        var.setMediaMetaDataMap(this.loadMediaMetaData());
-        logger.debug("loading adspace metadata.");
-        var.setPlcmtMetaDataMap(this.loadPlcmtMetaData());
-        logger.debug("loading adblock metadata.");
-        var.setAdBlockMetaDataMap(this.loadAdBlockMetaData());
-        logger.debug("loading policy metadata.");
-        var.setPolicyMetaDataMap(this.loadPolicyMetaData());
-        logger.debug("loading dsp metadata.");
-        var.setDspMetaDataMap(this.loadDSPMetaData());
-        logger.debug("loading media mapping metadata.");
-        var.setMediaMappingMetaDataMap(this.loadMediaMappingData());
-        logger.debug("loading dsp mapping metadata.");
-        var.setDspMappingMetaDataMap(this.loadDSPMappingData());
-        logger.debug("loading material metadata.");
-        var.setMaterialMetaDataMap(this.loadMaterialMappingData());
-        logger.debug("loading blocked device metadata.");
-        var.setMediaWhiteList(this.loadMediaWhiteList());
-        var.setBlockedDeviceIP(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IP));
-        var.setBlockedDeviceIFA(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IFA));
-        var.setBlockedDeviceDidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DIDMD5));
-        var.setBlockedDeviceDpidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DPIDMD5));
-        logger.debug("updating policy targeting metadata.");
-        var.setPolicyTargetMap(this.updatePolicyTargetInfo(var.getPolicyMetaDataMap()));
+            MetaData var = new MetaData();
+            logger.info("loading media metadata.");
+            var.setMediaMetaDataMap(this.loadMediaMetaData());
+            logger.info("loading adspace metadata.");
+            var.setPlcmtMetaDataMap(this.loadPlcmtMetaData());
+            logger.info("loading adblock metadata.");
+            var.setAdBlockMetaDataMap(this.loadAdBlockMetaData());
+            logger.info("loading policy metadata.");
+            var.setPolicyMetaDataMap(this.loadPolicyMetaData());
+            logger.info("loading dsp metadata.");
+            var.setDspMetaDataMap(this.loadDSPMetaData());
+            logger.info("loading media mapping metadata.");
+            var.setMediaMappingMetaDataMap(this.loadMediaMappingData());
+            logger.info("loading dsp mapping metadata.");
+            var.setDspMappingMetaDataMap(this.loadDSPMappingData());
+            logger.info("loading material metadata.");
+            var.setMaterialMetaDataMap(this.loadMaterialMappingData());
+            logger.info("loading blocked device metadata.");
+            var.setMediaWhiteList(this.loadMediaWhiteList());
+            var.setBlockedDeviceIP(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IP));
+            var.setBlockedDeviceIFA(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_IFA));
+            var.setBlockedDeviceDidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DIDMD5));
+            var.setBlockedDeviceDpidmd5(this.loadBlockedDeviceMetaData(Constant.CommonKey.ALL_BLOCKED_DEVICE_DPIDMD5));
+            logger.info("updating policy targeting metadata.");
+            var.setPolicyTargetMap(this.updatePolicyTargetInfo(var.getPolicyMetaDataMap()));
 
-        this.metaData = var;
-        this.blockedPolicy.clear();
+            this.metaData = var;
+            this.blockedPolicy.clear();
 
-        if (this.redisMaster != null) {
-            this.redisMaster.close();
+            logger.info("load metadata cache end.");
+        } catch (Exception e) {
+            logger.error("load metadata cache error[{}].", e.toString());
+        } finally {
+            if (this.redisMaster != null) {
+                this.redisMaster.close();
+            }
+
+            if (this.redisSlave != null) {
+                this.redisSlave.close();
+            }
         }
-
-        if (this.redisSlave != null) {
-            this.redisSlave.close();
-        }
-
-        logger.info("load metadata cache end.");
     }
 
     public boolean isMediaWhiteList(long mediaId) {

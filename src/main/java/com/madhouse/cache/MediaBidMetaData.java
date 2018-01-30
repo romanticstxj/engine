@@ -93,10 +93,14 @@ public class MediaBidMetaData {
         this.requestObject = requestObject;
     }
 
-    public String getImpressionTrackingUrl(String impid) {
+    public String getImpressionTrackingUrl(String impid, boolean enableHttps) {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
         String requestUrl = webApp.getDomain() + webApp.getImpression();
-        StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getImpression());
+        if (enableHttps) {
+            requestUrl = requestUrl.replace("http://", "https://");
+        }
+
+        StringBuilder sb = new StringBuilder(requestUrl);
         if (requestUrl.contains("?")) {
             sb.append("&");
         } else {
@@ -107,10 +111,14 @@ public class MediaBidMetaData {
         return sb.toString();
     }
 
-    public String getClickTrackingUrl(String impid) {
+    public String getClickTrackingUrl(String impid, boolean enableHttps) {
         WebApp webApp = ResourceManager.getInstance().getConfiguration().getWebapp();
-        String requestUrl = webApp.getDomain() + webApp.getImpression();
-        StringBuilder sb = new StringBuilder(webApp.getDomain() + webApp.getClick());
+        String requestUrl = webApp.getDomain() + webApp.getClick();
+        if (enableHttps) {
+            requestUrl = requestUrl.replace("http://", "https://");
+        }
+
+        StringBuilder sb = new StringBuilder(requestUrl);
         if (requestUrl.contains("?")) {
             sb.append("&");
         } else {

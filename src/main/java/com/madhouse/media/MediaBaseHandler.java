@@ -22,8 +22,7 @@ import java.util.List;
  * Created by WUJUNFENG on 2017/5/23.
  */
 public abstract class MediaBaseHandler {
-    @SuppressWarnings("static-access")
-    public static Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
+    protected Logger logger = LoggerUtil.getInstance().getPremiummadlogger();
 
     public final boolean parseRequest(HttpServletRequest req, MediaBidMetaData mediaBidMetaData, HttpServletResponse resp) {
         try {
@@ -141,8 +140,8 @@ public abstract class MediaBaseHandler {
                             monitor.setClkurl(new LinkedList<>());
                         }
 
-                        monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl(impId)));
-                        monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl(impId));
+                        monitor.getImpurl().add(new Track(0, mediaBidMetaData.getImpressionTrackingUrl(impId, bidMetaData.getPlcmtMetaData().isEnableHttps())));
+                        monitor.getClkurl().add(mediaBidMetaData.getClickTrackingUrl(impId, bidMetaData.getPlcmtMetaData().isEnableHttps()));
 
                         mediaBid.setResponseBuilder(mediaResponse);
                         mediaBid.setStatus(Constant.StatusCode.OK);
