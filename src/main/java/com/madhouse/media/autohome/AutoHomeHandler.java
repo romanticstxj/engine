@@ -271,7 +271,7 @@ public class AutoHomeHandler extends MediaBaseHandler {
                             }
                             if (ObjectUtils.isNotEmpty(monitor.getClkurl())) {
                                 List<String> clkUrls = monitor.getClkurl();
-                                adsnippet.setLink(StringUtil.toString(clkUrls.get(clkUrls.size() - 1)));
+                                adsnippet.setLink("%%CLICK_URL_UNESC%%&url=" + StringUtil.toString(clkUrls.get(clkUrls.size() - 1)));
                                 if (!StringUtils.isEmpty(mediaResponse.getLpgurl())) {
                                     adsnippet.setLink(adsnippet.getLink() + "&_url=" + URLEncoder.encode(mediaResponse.getLpgurl(), "utf-8"));
                                 }
